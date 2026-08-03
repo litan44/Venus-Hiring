@@ -91,13 +91,23 @@
 
   /* Elevation + motion */
   --shadow-soft: 0 1px 2px oklch(0.229 0.048 258 / 6%), 0 8px 24px oklch(0.229 0.048 258 / 6%);
-  --shadow-lift: 0 2px 6px oklch(0.229 0.048 258 / 8%), 0 22px 48px -12px oklch(0.229 0.048 258 / 18%);
+  --shadow-lift:
+    0 2px 6px oklch(0.229 0.048 258 / 8%), 0 22px 48px -12px oklch(0.229 0.048 258 / 18%);
   --shadow-brand: 0 12px 32px -10px oklch(0.53 0.213 26.5 / 45%);
   --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
 
-  --gradient-ink: linear-gradient(150deg, oklch(0.205 0.045 258) 0%, oklch(0.26 0.06 262) 55%, oklch(0.3 0.075 268) 100%);
+  --gradient-ink: linear-gradient(
+    150deg,
+    oklch(0.205 0.045 258) 0%,
+    oklch(0.26 0.06 262) 55%,
+    oklch(0.3 0.075 268) 100%
+  );
   --gradient-brand: linear-gradient(120deg, oklch(0.53 0.213 26.5), oklch(0.6 0.19 20));
-  --gradient-halo: radial-gradient(60% 60% at 50% 0%, oklch(0.53 0.213 26.5 / 16%), transparent 70%);
+  --gradient-halo: radial-gradient(
+    60% 60% at 50% 0%,
+    oklch(0.53 0.213 26.5 / 16%),
+    transparent 70%
+  );
 }
 
 .dark {
@@ -139,7 +149,9 @@
     font-feature-settings: "cv02", "cv03", "cv04", "ss01";
   }
 
-  h1, h2, h3 {
+  h1,
+  h2,
+  h3 {
     font-family: var(--font-display);
     letter-spacing: -0.028em;
     text-wrap: balance;
@@ -233,7 +245,13 @@
   overflow: hidden;
   -webkit-overflow-scrolling: touch;
   mask-image: linear-gradient(to right, transparent 0%, black 9%, black 91%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 9%, black 91%, transparent 100%);
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 9%,
+    black 91%,
+    transparent 100%
+  );
   padding-block: 0.5rem;
   &:hover .marquee-lane {
     animation-play-state: paused;
@@ -241,8 +259,12 @@
 }
 
 @keyframes marquee {
-  from { transform: translate3d(0, 0, 0); }
-  to { transform: translate3d(-50%, 0, 0); }
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
 }
 
 @utility reveal-item {
@@ -271,10 +293,14 @@
   }
 }
 
-
 @keyframes float-soft {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 @utility float-soft {
@@ -282,8 +308,14 @@
 }
 
 @keyframes rise-in {
-  from { opacity: 0; transform: translateY(18px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @utility rise-in {
@@ -291,8 +323,12 @@
 }
 
 @keyframes ken-burns {
-  from { transform: scale(1.05); }
-  to { transform: scale(1.16) translate3d(-1%, -1%, 0); }
+  from {
+    transform: scale(1.05);
+  }
+  to {
+    transform: scale(1.16) translate3d(-1%, -1%, 0);
+  }
 }
 
 @utility ken-burns {
@@ -301,23 +337,34 @@
 
 @utility hero-scrim {
   background-image:
-    linear-gradient(90deg, oklch(0.18 0.035 258 / 92%) 0%, oklch(0.18 0.035 258 / 70%) 45%, oklch(0.18 0.035 258 / 28%) 100%),
+    linear-gradient(
+      90deg,
+      oklch(0.18 0.035 258 / 92%) 0%,
+      oklch(0.18 0.035 258 / 70%) 45%,
+      oklch(0.18 0.035 258 / 28%) 100%
+    ),
     linear-gradient(to top, oklch(0.18 0.035 258 / 70%) 0%, transparent 45%);
 }
 
 @keyframes nav-drop {
-  from { opacity: 0; transform: translate3d(0, -14px, 0); }
-  to { opacity: 1; transform: translate3d(0, 0, 0); }
+  from {
+    opacity: 0;
+    transform: translate3d(0, -14px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
 }
 
 @utility nav-drop {
   animation: nav-drop 0.45s ease-out both;
 }
 
-
-
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -337,12 +384,18 @@
 }
 
 @utility dot-grid {
-  background-image: radial-gradient(color-mix(in oklab, var(--color-ink-foreground) 16%, transparent) 1px, transparent 1px);
+  background-image: radial-gradient(
+    color-mix(in oklab, var(--color-ink-foreground) 16%, transparent) 1px,
+    transparent 1px
+  );
   background-size: 22px 22px;
 }
 
 @utility dot-grid-light {
-  background-image: radial-gradient(color-mix(in oklab, var(--color-foreground) 12%, transparent) 1px, transparent 1px);
+  background-image: radial-gradient(
+    color-mix(in oklab, var(--color-foreground) 12%, transparent) 1px,
+    transparent 1px
+  );
   background-size: 22px 22px;
 }
 
@@ -368,9 +421,21 @@
 
 @utility mesh-light {
   background-image:
-    radial-gradient(48% 42% at 12% 8%, color-mix(in oklab, var(--color-brand) 12%, transparent), transparent 70%),
-    radial-gradient(42% 38% at 88% 0%, color-mix(in oklab, var(--color-ink) 10%, transparent), transparent 70%),
-    radial-gradient(60% 50% at 50% 100%, color-mix(in oklab, var(--color-brand) 7%, transparent), transparent 75%);
+    radial-gradient(
+      48% 42% at 12% 8%,
+      color-mix(in oklab, var(--color-brand) 12%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      42% 38% at 88% 0%,
+      color-mix(in oklab, var(--color-ink) 10%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      60% 50% at 50% 100%,
+      color-mix(in oklab, var(--color-brand) 7%, transparent),
+      transparent 75%
+    );
 }
 
 @utility sheen {
@@ -380,7 +445,12 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(115deg, transparent 35%, color-mix(in oklab, white 32%, transparent) 50%, transparent 65%);
+    background: linear-gradient(
+      115deg,
+      transparent 35%,
+      color-mix(in oklab, white 32%, transparent) 50%,
+      transparent 65%
+    );
     transform: translateX(-120%);
     transition: transform 0.9s var(--ease-premium);
     pointer-events: none;
@@ -397,9 +467,17 @@
 }
 
 @keyframes scroll-cue {
-  0% { transform: translateY(-40%); opacity: 0; }
-  35% { opacity: 1; }
-  100% { transform: translateY(150%); opacity: 0; }
+  0% {
+    transform: translateY(-40%);
+    opacity: 0;
+  }
+  35% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(150%);
+    opacity: 0;
+  }
 }
 
 @utility scroll-cue {
@@ -407,8 +485,16 @@
 }
 
 @keyframes blur-reveal {
-  from { opacity: 0; filter: blur(14px); transform: translateY(20px); }
-  to { opacity: 1; filter: blur(0); transform: translateY(0); }
+  from {
+    opacity: 0;
+    filter: blur(14px);
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
 }
 
 @utility blur-reveal {

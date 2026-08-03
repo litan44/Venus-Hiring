@@ -66,7 +66,10 @@ export function Hero() {
       className="relative isolate flex min-h-[100svh] items-center overflow-hidden bg-ink"
     >
       {/* Background photograph with Ken Burns + soft parallax */}
-      <div className="absolute inset-0 -z-20" style={{ transform: `translate3d(0, ${offset}px, 0)` }}>
+      <div
+        className="absolute inset-0 -z-20"
+        style={{ transform: `translate3d(0, ${offset}px, 0)` }}
+      >
         <img
           src={heroImg}
           alt="Diverse team of professionals in a modern Canadian corporate office meeting"
@@ -90,11 +93,12 @@ export function Hero() {
         />
         <span
           className="float-soft absolute right-[8%] top-10 h-64 w-64 rounded-full bg-ink-foreground/10 blur-3xl transition-transform duration-700 ease-out"
-          style={{ animationDelay: "1.6s", transform: `translate3d(${pointer.x * -55}px, ${pointer.y * -34}px, 0)` }}
+          style={{
+            animationDelay: "1.6s",
+            transform: `translate3d(${pointer.x * -55}px, ${pointer.y * -34}px, 0)`,
+          }}
         />
-        <span
-          className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-ink via-ink/40 to-transparent"
-        />
+        <span className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-ink via-ink/40 to-transparent" />
       </div>
 
       <div className="shell relative w-full py-20 sm:py-24 lg:py-28">
@@ -112,8 +116,8 @@ export function Hero() {
             className="blur-reveal mt-7 max-w-xl text-lg leading-relaxed text-ink-foreground/80 sm:text-xl"
             style={{ animationDelay: "300ms" }}
           >
-            We unite technology, talent and opportunity — partnering with Canadian employers to hire faster, and with
-            professionals to land the role that fits.
+            We unite technology, talent and opportunity — partnering with Canadian employers to hire
+            faster, and with professionals to land the role that fits.
           </p>
 
           <div className="mt-10 flex flex-wrap items-center gap-3">

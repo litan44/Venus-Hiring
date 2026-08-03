@@ -1,7 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteNav } from "@/components/site/SiteNav";
 import { Hero } from "@/components/site/Hero";
-import { TrustedStrip, WhyUs, Services, Industries, Process, Stats } from "@/components/site/Sections";
+import {
+  TrustedStrip,
+  WhyUs,
+  Services,
+  Industries,
+  Process,
+  Stats,
+} from "@/components/site/Sections";
 import { Testimonials, Insights, Faq, CtaBanner } from "@/components/site/Social";
 import { SiteFooter } from "@/components/site/SiteFooter";
 
@@ -23,11 +30,49 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
+const LOCAL_BUSINESS_SCHEMA = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "ProfessionalService",
+      "@id": "https://www.venushiring.ca/#localbusiness-toronto",
+      name: "Venus Consultancy - Toronto Office",
+      url: "https://www.venushiring.ca",
+      telephone: "+1-647-722-0837",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "#205 - 1085 Bellamy Road North",
+        addressLocality: "Toronto",
+        addressRegion: "ON",
+        postalCode: "M1H 3C7",
+        addressCountry: "CA",
+      },
+      priceRange: "$$",
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://www.venushiring.ca/#breadcrumb",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: "https://www.venushiring.ca",
+        },
+      ],
+    },
+  ],
+};
+
 function Home() {
   return (
     <div className="min-h-screen bg-background">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(LOCAL_BUSINESS_SCHEMA) }}
+      />
       <SiteNav />
-      <main>
+      <main id="main-content">
         <Hero />
         <TrustedStrip />
         <WhyUs />

@@ -15,7 +15,7 @@ export function scrollToSection(
     offset?: number;
     duration?: number;
     onComplete?: () => void;
-  }
+  },
 ) {
   stopScrollAnimation();
 

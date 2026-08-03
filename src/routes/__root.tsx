@@ -68,6 +68,52 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
+const ORGANIZATION_SCHEMA = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://www.venushiring.ca/#organization",
+      name: "Venus Consultancy",
+      alternateName: "Venus Hiring",
+      url: "https://www.venushiring.ca",
+      logo: "https://www.venushiring.ca/favicon.ico",
+      description:
+        "Enterprise recruitment, staffing, executive search, and HR advisory across Canada, USA, and India.",
+      contactPoint: [
+        {
+          "@type": "ContactPoint",
+          telephone: "+1-647-722-0837",
+          contactType: "customer service",
+          areaServed: "CA",
+          availableLanguage: "English",
+        },
+        {
+          "@type": "ContactPoint",
+          telephone: "+1-248-275-1077",
+          contactType: "customer service",
+          areaServed: "US",
+          availableLanguage: "English",
+        },
+      ],
+      sameAs: [
+        "https://www.linkedin.com/company/venushiring",
+        "https://www.facebook.com/venushiring",
+        "https://www.instagram.com/venushiring",
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.venushiring.ca/#website",
+      url: "https://www.venushiring.ca",
+      name: "Venus Consultancy",
+      publisher: {
+        "@id": "https://www.venushiring.ca/#organization",
+      },
+    },
+  ],
+};
+
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
@@ -77,13 +123,34 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Recruitment, staffing and HR advisory for Canadian employers and professionals — Venus Consultancy.",
+          "Venus Consultancy unites technology, talent and opportunity — permanent, contract and executive recruitment plus HR advisory for Canadian employers and professionals.",
       },
       { name: "author", content: "Venus Consultancy" },
+      { name: "robots", content: "index, follow" },
+      { property: "og:site_name", content: "Venus Consultancy" },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://www.venushiring.ca/" },
+      { property: "og:title", content: "Venus Consultancy | Recruitment & Staffing Across Canada" },
+      {
+        property: "og:description",
+        content:
+          "Venus Consultancy unites technology, talent and opportunity — permanent, contract and executive recruitment plus HR advisory for Canadian employers and professionals.",
+      },
+      { property: "og:locale", content: "en_CA" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:site", content: "@venushiring" },
+      {
+        name: "twitter:title",
+        content: "Venus Consultancy | Recruitment & Staffing Across Canada",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "Venus Consultancy unites technology, talent and opportunity — permanent, contract and executive recruitment plus HR advisory for Canadian employers and professionals.",
+      },
     ],
     links: [
+      { rel: "canonical", href: "https://www.venushiring.ca/" },
       {
         rel: "stylesheet",
         href: appCss,
@@ -109,6 +176,10 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(ORGANIZATION_SCHEMA) }}
+        />
       </head>
       <body>
         {children}

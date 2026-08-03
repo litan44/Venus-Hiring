@@ -49,9 +49,18 @@ export function SiteFooter() {
   return (
     <>
       {/* ── Office Locations Section (Website Deep Navy Blue Theme) ── */}
-      <section className="relative isolate overflow-hidden bg-ink py-20" aria-label="Office locations">
-        <div className="pointer-events-none absolute inset-0 -z-10 dot-grid opacity-[0.15]" aria-hidden />
-        <div className="pointer-events-none absolute -left-32 top-1/2 -z-10 h-80 w-80 -translate-y-1/2 rounded-full bg-brand/20 blur-[130px]" aria-hidden />
+      <section
+        className="relative isolate overflow-hidden bg-ink py-20"
+        aria-label="Office locations"
+      >
+        <div
+          className="pointer-events-none absolute inset-0 -z-10 dot-grid opacity-[0.15]"
+          aria-hidden
+        />
+        <div
+          className="pointer-events-none absolute -left-32 top-1/2 -z-10 h-80 w-80 -translate-y-1/2 rounded-full bg-brand/20 blur-[130px]"
+          aria-hidden
+        />
 
         <div className="shell relative">
           <h2 className="text-center text-3xl font-bold tracking-tight text-ink-foreground sm:text-4xl">
@@ -113,7 +122,6 @@ export function SiteFooter() {
       <footer className="bg-porcelain border-t border-ink/10">
         <div className="shell py-16">
           <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-
             {/* Quick Links */}
             <nav aria-label="Quick Links">
               <h3 className="text-sm font-bold text-ink">Quick Links</h3>

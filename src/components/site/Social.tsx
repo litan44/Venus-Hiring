@@ -1,5 +1,14 @@
 import { useState } from "react";
-import { ArrowLeft, ArrowRight, ArrowUpRight, CalendarDays, Minus, Plus, Quote, Star } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  ArrowUpRight,
+  CalendarDays,
+  Minus,
+  Plus,
+  Quote,
+  Star,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useReveal } from "@/hooks/use-reveal";
 import { CtaLink, SectionHeading } from "./primitives";
@@ -37,7 +46,13 @@ function Stars() {
   return (
     <div className="flex gap-1" aria-label="Rated five out of five">
       {Array.from({ length: 5 }).map((_, i) => (
-        <Star key={i} className="h-4 w-4 text-gold" fill="currentColor" strokeWidth={0} aria-hidden />
+        <Star
+          key={i}
+          className="h-4 w-4 text-gold"
+          fill="currentColor"
+          strokeWidth={0}
+          aria-hidden
+        />
       ))}
     </div>
   );
@@ -50,7 +65,10 @@ export function Testimonials() {
 
   return (
     <section className="relative overflow-hidden border-b border-border bg-background py-24">
-      <div className="pointer-events-none absolute inset-0 -z-10 mesh-light opacity-70" aria-hidden />
+      <div
+        className="pointer-events-none absolute inset-0 -z-10 mesh-light opacity-70"
+        aria-hidden
+      />
       <div className="shell relative">
         <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
           <SectionHeading
@@ -78,7 +96,10 @@ export function Testimonials() {
         </div>
 
         {/* Slider */}
-        <div ref={ref} className={cn("reveal-item mt-12 overflow-hidden rounded-[2rem]", shown && "is-shown")}>
+        <div
+          ref={ref}
+          className={cn("reveal-item mt-12 overflow-hidden rounded-[2rem]", shown && "is-shown")}
+        >
           <div
             className="flex transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
             style={{ transform: `translate3d(-${index * 100}%, 0, 0)` }}
@@ -92,7 +113,10 @@ export function Testimonials() {
                   className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(60%_60%_at_85%_0%,var(--color-brand-soft),transparent_70%)]"
                   aria-hidden
                 />
-                <Quote className="absolute right-8 top-8 -z-10 h-24 w-24 text-brand/10" aria-hidden />
+                <Quote
+                  className="absolute right-8 top-8 -z-10 h-24 w-24 text-brand/10"
+                  aria-hidden
+                />
                 <Stars />
                 <blockquote className="mt-7 max-w-3xl text-xl leading-relaxed text-foreground sm:text-2xl">
                   “{q.quote}”
@@ -147,7 +171,8 @@ const ARTICLES = [
     title: "How to hire remote engineers without wasting time",
     copy: "A streamlined process for sourcing, interviewing and onboarding remote engineering talent that actually sticks.",
     href: "https://www.venushiring.ca/blog/how-to-hire-remote-engineers",
-    image: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&h=500&fit=crop&auto=format",
+    image:
+      "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&h=500&fit=crop&auto=format",
   },
   {
     tag: "Diversity · Recruitment",
@@ -155,7 +180,8 @@ const ARTICLES = [
     title: "Building an inclusive interview process",
     copy: "Simple adjustments to job descriptions, interviewing and feedback loops that make hiring fairer and more effective.",
     href: "https://www.venushiring.ca/blog/build-a-inclusive-interview-process",
-    image: "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&h=500&fit=crop&auto=format",
+    image:
+      "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&h=500&fit=crop&auto=format",
   },
   {
     tag: "Branding · Startups",
@@ -163,7 +189,8 @@ const ARTICLES = [
     title: "Employer branding for startups: what actually works",
     copy: "From employee storytelling to practical social proof — tactics that help early-stage companies attract the right talent.",
     href: "https://www.venushiring.ca/blog/employer-branding-matters",
-    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=500&fit=crop&auto=format",
+    image:
+      "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=500&fit=crop&auto=format",
   },
 ];
 
@@ -171,13 +198,27 @@ export function Insights() {
   const { ref, shown } = useReveal<HTMLDivElement>();
 
   return (
-    <section id="insights" className="section-curve relative -mt-8 overflow-hidden border-b border-border bg-porcelain py-24">
-      <div className="pointer-events-none absolute inset-0 -z-10 mesh-light opacity-80" aria-hidden />
-      <div className="pointer-events-none absolute inset-0 -z-10 dot-grid-light opacity-[0.28]" aria-hidden />
+    <section
+      id="insights"
+      className="section-curve relative -mt-8 overflow-hidden border-b border-border bg-porcelain py-24"
+    >
+      <div
+        className="pointer-events-none absolute inset-0 -z-10 mesh-light opacity-80"
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute inset-0 -z-10 dot-grid-light opacity-[0.28]"
+        aria-hidden
+      />
       <div className="shell relative">
         <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
           <SectionHeading title="Hiring intelligence from our consultants" />
-          <CtaLink href="https://www.venushiring.ca/blog" variant="outline" size="lg" className="justify-self-start">
+          <CtaLink
+            href="https://www.venushiring.ca/blog"
+            variant="outline"
+            size="lg"
+            className="justify-self-start"
+          >
             View all articles
           </CtaLink>
         </div>
@@ -212,7 +253,9 @@ export function Insights() {
                 </span>
               </div>
               <div className="p-5 pt-6">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-brand">{a.tag}</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-brand">
+                  {a.tag}
+                </p>
                 <h3 className="mt-4 text-lg font-semibold leading-snug transition-colors duration-300 group-hover:text-brand">
                   {a.title}
                 </h3>
@@ -267,8 +310,14 @@ export function Faq() {
   const [open, setOpen] = useState<number | null>(null);
 
   return (
-    <section id="faq" className="relative overflow-hidden border-b border-border bg-background py-24">
-      <div className="pointer-events-none absolute inset-0 -z-10 mesh-light opacity-60" aria-hidden />
+    <section
+      id="faq"
+      className="relative overflow-hidden border-b border-border bg-background py-24"
+    >
+      <div
+        className="pointer-events-none absolute inset-0 -z-10 mesh-light opacity-60"
+        aria-hidden
+      />
       <div className="shell relative grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
         <SectionHeading
           title="Answers before you book the call"
@@ -295,7 +344,12 @@ export function Faq() {
                     onClick={() => setOpen(isOpen ? null : i)}
                     className="flex w-full items-center justify-between gap-6 py-5 text-left"
                   >
-                    <span className={cn("text-base font-semibold transition-colors duration-300", isOpen ? "text-brand" : "text-foreground")}>
+                    <span
+                      className={cn(
+                        "text-base font-semibold transition-colors duration-300",
+                        isOpen ? "text-brand" : "text-foreground",
+                      )}
+                    >
                       {f.q}
                     </span>
                     <span
@@ -346,10 +400,19 @@ export function CtaBanner() {
   const { ref, shown } = useReveal<HTMLDivElement>();
 
   return (
-    <section className="relative overflow-hidden bg-background py-20 lg:py-28" aria-label="Get started">
+    <section
+      className="relative overflow-hidden bg-background py-20 lg:py-28"
+      aria-label="Get started"
+    >
       {/* Background glow graphics */}
-      <div className="pointer-events-none absolute -right-32 top-1/2 -z-10 h-96 w-96 -translate-y-1/2 rounded-full bg-brand/10 blur-[130px]" aria-hidden />
-      <div className="pointer-events-none absolute -left-20 bottom-10 -z-10 h-72 w-72 rounded-full bg-brand/5 blur-[100px]" aria-hidden />
+      <div
+        className="pointer-events-none absolute -right-32 top-1/2 -z-10 h-96 w-96 -translate-y-1/2 rounded-full bg-brand/10 blur-[130px]"
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute -left-20 bottom-10 -z-10 h-72 w-72 rounded-full bg-brand/5 blur-[100px]"
+        aria-hidden
+      />
 
       <div className="shell relative">
         <div ref={ref} className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
@@ -363,10 +426,12 @@ export function CtaBanner() {
 
             <div className="space-y-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
               <p>
-                At Venus Consultancy, we connect exceptional Canadian talent with forward-thinking companies across Canada—from coast to coast.
+                At Venus Consultancy, we connect exceptional Canadian talent with forward-thinking
+                companies across Canada—from coast to coast.
               </p>
               <p>
-                Whether you're a Canadian business looking to hire or a professional seeking your next opportunity, we make the perfect match happen.
+                Whether you're a Canadian business looking to hire or a professional seeking your
+                next opportunity, we make the perfect match happen.
               </p>
             </div>
 
@@ -377,7 +442,10 @@ export function CtaBanner() {
                 className="group inline-flex items-center justify-center gap-2.5 rounded-xl bg-brand px-7 py-3.5 text-base font-semibold text-white shadow-brand transition-all duration-300 ease-out hover:-translate-y-1 hover:brightness-110 hover:shadow-lg"
               >
                 Hire Top Talent
-                <span className="transition-transform duration-300 group-hover:translate-x-1" aria-hidden>
+                <span
+                  className="transition-transform duration-300 group-hover:translate-x-1"
+                  aria-hidden
+                >
                   →
                 </span>
               </a>
@@ -387,7 +455,10 @@ export function CtaBanner() {
                 className="group inline-flex items-center justify-center gap-2.5 rounded-xl border-2 border-brand bg-white px-7 py-3.5 text-base font-semibold text-brand transition-all duration-300 ease-out hover:-translate-y-1 hover:bg-brand/5 hover:shadow-md"
               >
                 Explore Career Opportunities
-                <span className="transition-transform duration-300 group-hover:translate-x-1" aria-hidden>
+                <span
+                  className="transition-transform duration-300 group-hover:translate-x-1"
+                  aria-hidden
+                >
                   →
                 </span>
               </a>
@@ -398,7 +469,7 @@ export function CtaBanner() {
           <div
             className={cn(
               "group relative isolate mx-auto w-full max-w-xl lg:max-w-none reveal-item",
-              shown && "is-shown"
+              shown && "is-shown",
             )}
             style={{ transitionDelay: "180ms" }}
           >
@@ -420,7 +491,10 @@ export function CtaBanner() {
               />
 
               {/* Gradient Overlay */}
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60 transition-opacity duration-300 group-hover:opacity-40" aria-hidden />
+              <div
+                className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60 transition-opacity duration-300 group-hover:opacity-40"
+                aria-hidden
+              />
             </div>
 
             {/* Floating Glassmorphism Badge 1 - Top Left */}
@@ -430,7 +504,9 @@ export function CtaBanner() {
               </div>
               <div>
                 <p className="text-xs font-bold text-foreground">Coast-to-Coast Reach</p>
-                <p className="text-[11px] font-medium text-muted-foreground">Serving Canada & USA</p>
+                <p className="text-[11px] font-medium text-muted-foreground">
+                  Serving Canada & USA
+                </p>
               </div>
             </div>
 
@@ -440,7 +516,13 @@ export function CtaBanner() {
               style={{ animationDelay: "1.8s" }}
             >
               <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand text-white shadow-brand">
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <svg
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2.5}
+                >
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
               </div>
@@ -455,4 +537,3 @@ export function CtaBanner() {
     </section>
   );
 }
-

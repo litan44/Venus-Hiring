@@ -1,7 +1,13 @@
 import { cn } from "@/lib/utils";
 import type { ReactNode } from "react";
 
-export function Eyebrow({ children, tone = "light" }: { children: ReactNode; tone?: "light" | "dark" }) {
+export function Eyebrow({
+  children,
+  tone = "light",
+}: {
+  children: ReactNode;
+  tone?: "light" | "dark";
+}) {
   return (
     <span
       className={cn(
@@ -50,7 +56,12 @@ export function SectionHeading({
         {title}
       </h2>
       {copy ? (
-        <p className={cn("text-base leading-relaxed", tone === "dark" ? "text-ink-foreground/70" : "text-muted-foreground")}>
+        <p
+          className={cn(
+            "text-base leading-relaxed",
+            tone === "dark" ? "text-ink-foreground/70" : "text-muted-foreground",
+          )}
+        >
           {copy}
         </p>
       ) : null}
