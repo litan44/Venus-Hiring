@@ -3,17 +3,24 @@ import {
   ArrowLeft,
   ArrowRight,
   ArrowUpRight,
+  Building2,
   CalendarDays,
   CheckCircle2,
+  Clock,
   Facebook,
   Instagram,
   Linkedin,
   Mail,
+  MapPin,
   Minus,
   Phone,
   Plus,
   Quote,
+  Send,
+  ShieldCheck,
+  Sparkles,
   Star,
+  User,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useReveal } from "@/hooks/use-reveal";
@@ -611,10 +618,14 @@ export function CtaBanner() {
 /* -------------------------------- Contact Us --------------------------------- */
 
 export function ContactSection() {
+  const { ref, shown } = useReveal<HTMLDivElement>();
+  const [roleType, setRoleType] = useState<"employer" | "candidate">("employer");
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    phone: "",
+    service: "",
     source: "",
     message: "",
   });
@@ -624,8 +635,8 @@ export function ContactSection() {
     setSubmitted(true);
     setTimeout(() => {
       setSubmitted(false);
-      setFormData({ name: "", email: "", source: "", message: "" });
-    }, 4000);
+      setFormData({ name: "", email: "", phone: "", service: "", source: "", message: "" });
+    }, 4500);
   };
 
   return (
@@ -634,198 +645,332 @@ export function ContactSection() {
       className="relative overflow-hidden border-b border-border bg-background section-padding"
       aria-label="Contact Us"
     >
+      {/* Background ambient lighting and mesh graphics */}
       <div
-        className="pointer-events-none absolute inset-0 -z-10 mesh-light opacity-70"
+        className="pointer-events-none absolute inset-0 -z-10 mesh-light opacity-80"
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute -right-32 top-1/2 -z-10 h-96 w-96 -translate-y-1/2 rounded-full bg-brand/10 blur-[140px]"
+        className="pointer-events-none absolute -left-32 top-1/4 -z-10 h-[30rem] w-[30rem] rounded-full bg-brand/15 blur-[160px]"
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute -right-32 bottom-1/4 -z-10 h-[30rem] w-[30rem] rounded-full bg-brand/10 blur-[150px]"
         aria-hidden
       />
 
       <div className="shell relative">
-        {/* Top Header Card */}
-        <div className="mx-auto max-w-4xl text-center mb-10">
-          <div className="inline-flex flex-col items-center justify-center rounded-3xl border border-brand/20 bg-brand/10 p-8 sm:p-10 backdrop-blur-md w-full shadow-sm">
-            <h2 className="font-display text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-              Contact Us
-            </h2>
-            <p className="mt-2 text-base sm:text-lg text-muted-foreground">
-              Get in touch with our team
-            </p>
-          </div>
+        {/* Section Header */}
+        <div className="flex flex-col items-center text-center max-w-3xl mx-auto">
+          <span className="inline-flex items-center gap-2 rounded-full border border-brand/30 bg-brand/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-brand backdrop-blur-md">
+            <span className="h-2 w-2 rounded-full bg-brand animate-pulse" />
+            Let's Build Together
+          </span>
+          <h2 className="mt-4 font-display text-4xl font-bold leading-[1.08] tracking-tight text-foreground sm:text-5xl lg:text-[3.5rem]">
+            Ready to scale your team?{" "}
+            <span className="text-gradient-brand">Let's talk.</span>
+          </h2>
+          <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
+            Whether you are hiring top talent across Canada & the US or exploring executive career pathways, our recruitment partners respond within 24 hours.
+          </p>
         </div>
 
-        {/* Form & Info Card */}
-        <div className="mx-auto max-w-4xl overflow-hidden rounded-[2.5rem] border border-border/80 bg-card p-8 sm:p-12 shadow-[0_30px_80px_-30px_rgba(15,23,42,0.15)]">
-          <div className="grid gap-12 lg:grid-cols-12 lg:gap-14 items-start">
-            {/* Left Column: Contact Details */}
+        {/* Master Glassmorphic Grid Container */}
+        <div
+          ref={ref}
+          className={cn(
+            "mt-14 overflow-hidden rounded-[2.5rem] border border-border/80 bg-card/90 p-6 sm:p-10 lg:p-12 shadow-[0_30px_90px_-30px_rgba(15,23,42,0.18)] backdrop-blur-xl reveal-item",
+            shown && "is-shown",
+          )}
+        >
+          <div className="grid gap-12 lg:grid-cols-12 lg:gap-16 items-start">
+            {/* Left Column: Direct Contact Hub, SLA Guarantees & Socials */}
             <div className="lg:col-span-5 flex flex-col gap-8">
               <div>
-                <h3 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-                  Contact Us
+                <span className="text-xs font-bold uppercase tracking-[0.16em] text-brand">
+                  Direct Contact Hub
+                </span>
+                <h3 className="mt-2 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+                  Reach out directly
                 </h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  Connect with our Canadian executive search team or book a discovery session.
+                </p>
               </div>
 
-              <div className="flex flex-col gap-6">
+              {/* Direct Info Cards */}
+              <div className="flex flex-col gap-4">
                 {/* Phone Box */}
-                <div className="flex items-center gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand/10 text-brand">
-                    <Phone className="h-5 w-5" />
+                <a
+                  href="tel:+16477220837"
+                  className="group flex items-center justify-between rounded-2xl border border-border/80 bg-background/80 p-4 transition-all duration-300 hover:border-brand/50 hover:bg-card hover:shadow-md"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand/10 text-brand transition-colors group-hover:bg-brand group-hover:text-white">
+                      <Phone className="h-5 w-5" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+                        Direct Phone
+                      </p>
+                      <p className="text-base font-bold text-foreground transition-colors group-hover:text-brand">
+                        +1-647-722-0837
+                      </p>
+                    </div>
                   </div>
-                  <div className="min-w-0">
-                    <p className="text-xs font-semibold text-muted-foreground">Phone Number</p>
-                    <a
-                      href="tel:+16477220837"
-                      className="text-base font-bold text-foreground transition-colors hover:text-brand"
-                    >
-                      +1-647-722-0837
-                    </a>
-                  </div>
-                </div>
+                  <span className="rounded-full bg-brand/10 px-2.5 py-1 text-[10px] font-bold uppercase text-brand">
+                    Call Now
+                  </span>
+                </a>
 
                 {/* Email Box */}
-                <div className="flex items-center gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand/10 text-brand">
-                    <Mail className="h-5 w-5" />
+                <a
+                  href="mailto:info@venushiring.ca"
+                  className="group flex items-center justify-between rounded-2xl border border-border/80 bg-background/80 p-4 transition-all duration-300 hover:border-brand/50 hover:bg-card hover:shadow-md"
+                >
+                  <div className="flex items-center gap-4 min-w-0">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand/10 text-brand transition-colors group-hover:bg-brand group-hover:text-white">
+                      <Mail className="h-5 w-5" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+                        Email Inquiry
+                      </p>
+                      <p className="text-base font-bold text-foreground transition-colors group-hover:text-brand truncate">
+                        info@venushiring.ca
+                      </p>
+                    </div>
+                  </div>
+                  <span className="rounded-full bg-emerald-500/15 px-2.5 py-1 text-[10px] font-bold uppercase text-emerald-600 dark:text-emerald-400 shrink-0">
+                    24h SLA
+                  </span>
+                </a>
+
+                {/* Location Box */}
+                <div className="flex items-center gap-4 rounded-2xl border border-border/80 bg-background/80 p-4">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand/10 text-brand">
+                    <MapPin className="h-5 w-5" />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-xs font-semibold text-muted-foreground">Email</p>
-                    <a
-                      href="mailto:info@venushiring.ca"
-                      className="text-base font-bold text-foreground transition-colors hover:text-brand truncate block"
-                    >
-                      info@venushiring.ca
-                    </a>
+                    <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+                      Toronto Headquarters
+                    </p>
+                    <p className="text-sm font-semibold text-foreground">
+                      #205 - 1085 Bellamy Rd N, Toronto, ON
+                    </p>
                   </div>
                 </div>
               </div>
 
-              {/* Follow Us */}
-              <div className="pt-2">
-                <p className="text-sm font-bold text-foreground">Follow Us</p>
+              {/* Response SLA Badges */}
+              <div className="rounded-2xl border border-brand/20 bg-brand/5 p-5">
+                <p className="text-xs font-bold uppercase tracking-wider text-brand">
+                  Our Service Level Guarantee
+                </p>
+                <div className="mt-3 flex flex-wrap gap-2.5">
+                  <span className="inline-flex items-center gap-1.5 rounded-lg border border-brand/20 bg-background/90 px-3 py-1.5 text-xs font-semibold text-foreground shadow-sm">
+                    <Clock className="h-3.5 w-3.5 text-brand" />
+                    24-Hour Callback
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 rounded-lg border border-brand/20 bg-background/90 px-3 py-1.5 text-xs font-semibold text-foreground shadow-sm">
+                    <ShieldCheck className="h-3.5 w-3.5 text-brand" />
+                    100% Replacement Guarantee
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 rounded-lg border border-brand/20 bg-background/90 px-3 py-1.5 text-xs font-semibold text-foreground shadow-sm">
+                    🇨🇦 Coast-to-Coast Reach
+                  </span>
+                </div>
+              </div>
+
+              {/* Social Channels */}
+              <div>
+                <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                  Follow & Connect
+                </p>
                 <div className="mt-3 flex items-center gap-3">
-                  <a
-                    href="https://www.linkedin.com/company/venus-consultancy"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="LinkedIn"
-                    className="flex h-10 w-10 items-center justify-center rounded-full border border-border/80 bg-background text-muted-foreground transition-all duration-300 hover:border-brand hover:bg-brand hover:text-white hover:scale-105"
-                  >
-                    <Linkedin className="h-4 w-4" />
-                  </a>
-                  <a
-                    href="https://www.facebook.com/venushiring"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Facebook"
-                    className="flex h-10 w-10 items-center justify-center rounded-full border border-border/80 bg-background text-muted-foreground transition-all duration-300 hover:border-brand hover:bg-brand hover:text-white hover:scale-105"
-                  >
-                    <Facebook className="h-4 w-4" />
-                  </a>
-                  <a
-                    href="https://www.instagram.com/venushiring"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Instagram"
-                    className="flex h-10 w-10 items-center justify-center rounded-full border border-border/80 bg-background text-muted-foreground transition-all duration-300 hover:border-brand hover:bg-brand hover:text-white hover:scale-105"
-                  >
-                    <Instagram className="h-4 w-4" />
-                  </a>
+                  {[
+                    { icon: Linkedin, href: "https://www.linkedin.com/company/venus-consultancy", label: "LinkedIn" },
+                    { icon: Facebook, href: "https://www.facebook.com/venushiring", label: "Facebook" },
+                    { icon: Instagram, href: "https://www.instagram.com/venushiring", label: "Instagram" },
+                  ].map((soc) => (
+                    <a
+                      key={soc.label}
+                      href={soc.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={soc.label}
+                      className="flex h-11 w-11 items-center justify-center rounded-xl border border-border/80 bg-background text-muted-foreground transition-all duration-300 hover:scale-110 hover:border-brand hover:bg-brand hover:text-white hover:shadow-brand"
+                    >
+                      <soc.icon className="h-5 w-5" />
+                    </a>
+                  ))}
                 </div>
               </div>
             </div>
 
-            {/* Right Column: Contact Form */}
-            <div className="lg:col-span-7 flex flex-col gap-6 lg:border-l lg:border-border/60 lg:pl-10">
+            {/* Right Column: Premium Interactive Form */}
+            <div className="lg:col-span-7 flex flex-col gap-6 lg:border-l lg:border-border/60 lg:pl-12">
+              {/* Audience Selector Pills */}
+              <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-border/80 bg-background/80 p-1.5 shadow-inner">
+                <button
+                  type="button"
+                  onClick={() => setRoleType("employer")}
+                  className={cn(
+                    "flex-1 rounded-xl py-2.5 px-4 text-xs font-bold transition-all duration-300",
+                    roleType === "employer"
+                      ? "bg-primary text-primary-foreground shadow-sm scale-[1.02]"
+                      : "text-muted-foreground hover:text-foreground",
+                  )}
+                >
+                  🏢 I am an Employer looking to hire
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setRoleType("candidate")}
+                  className={cn(
+                    "flex-1 rounded-xl py-2.5 px-4 text-xs font-bold transition-all duration-300",
+                    roleType === "candidate"
+                      ? "bg-primary text-primary-foreground shadow-sm scale-[1.02]"
+                      : "text-muted-foreground hover:text-foreground",
+                  )}
+                >
+                  💼 I am a Professional seeking jobs
+                </button>
+              </div>
+
               <div>
-                <h3 className="text-2xl font-bold text-foreground sm:text-3xl">Get in Touch</h3>
+                <h3 className="text-2xl font-bold text-foreground sm:text-3xl">
+                  {roleType === "employer" ? "Request Talent Shortlist" : "Submit Your Profile"}
+                </h3>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  {roleType === "employer"
+                    ? "Fill in your requirements below to receive a calibrated shortlist of pre-vetted candidates."
+                    : "Connect with our talent acquisition partners to explore confidential job opportunities."}
+                </p>
               </div>
 
               {submitted ? (
-                <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-8 text-center backdrop-blur-md">
-                  <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-500 text-white shadow-lg">
-                    <CheckCircle2 className="h-7 w-7" />
+                <div className="rounded-3xl border border-emerald-500/30 bg-gradient-to-b from-emerald-500/15 to-emerald-500/5 p-10 text-center backdrop-blur-md shadow-lg">
+                  <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-500 text-white shadow-lg">
+                    <CheckCircle2 className="h-8 w-8" />
                   </div>
-                  <h4 className="mt-4 text-xl font-bold text-foreground">Message Sent!</h4>
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    Thank you for reaching out to Venus Consultancy. A consultant will get back to you shortly.
+                  <h4 className="mt-5 text-2xl font-bold text-foreground">Inquiry Received!</h4>
+                  <p className="mt-2 text-base text-muted-foreground max-w-md mx-auto">
+                    Thank you for contacting Venus Consultancy. A senior recruitment specialist will get back to you within 24 hours.
                   </p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                  <div>
-                    <label htmlFor="contact-name" className="sr-only">
-                      Name
-                    </label>
-                    <input
-                      id="contact-name"
-                      type="text"
-                      required
-                      placeholder="Name"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full rounded-xl border border-border/80 bg-background/80 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground transition-all focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
-                    />
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="relative">
+                      <label htmlFor="contact-name" className="sr-only">
+                        Full Name
+                      </label>
+                      <input
+                        id="contact-name"
+                        type="text"
+                        required
+                        placeholder="Full Name *"
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        className="w-full rounded-2xl border border-border/80 bg-background/80 px-4 py-3.5 pl-11 text-sm text-foreground placeholder:text-muted-foreground transition-all duration-300 focus:border-brand focus:bg-background focus:outline-none focus:ring-2 focus:ring-brand/20 shadow-sm"
+                      />
+                      <User className="absolute left-4 top-4 h-4 w-4 text-muted-foreground/60" />
+                    </div>
+
+                    <div className="relative">
+                      <label htmlFor="contact-email" className="sr-only">
+                        Work Email
+                      </label>
+                      <input
+                        id="contact-email"
+                        type="email"
+                        required
+                        placeholder={roleType === "employer" ? "Work Email *" : "Email Address *"}
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        className="w-full rounded-2xl border border-border/80 bg-background/80 px-4 py-3.5 pl-11 text-sm text-foreground placeholder:text-muted-foreground transition-all duration-300 focus:border-brand focus:bg-background focus:outline-none focus:ring-2 focus:ring-brand/20 shadow-sm"
+                      />
+                      <Mail className="absolute left-4 top-4 h-4 w-4 text-muted-foreground/60" />
+                    </div>
                   </div>
 
-                  <div>
-                    <label htmlFor="contact-email" className="sr-only">
-                      Email
-                    </label>
-                    <input
-                      id="contact-email"
-                      type="email"
-                      required
-                      placeholder="Email"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full rounded-xl border border-border/80 bg-background/80 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground transition-all focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
-                    />
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="relative">
+                      <label htmlFor="contact-phone" className="sr-only">
+                        Phone Number
+                      </label>
+                      <input
+                        id="contact-phone"
+                        type="tel"
+                        placeholder="Phone Number"
+                        value={formData.phone}
+                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                        className="w-full rounded-2xl border border-border/80 bg-background/80 px-4 py-3.5 pl-11 text-sm text-foreground placeholder:text-muted-foreground transition-all duration-300 focus:border-brand focus:bg-background focus:outline-none focus:ring-2 focus:ring-brand/20 shadow-sm"
+                      />
+                      <Phone className="absolute left-4 top-4 h-4 w-4 text-muted-foreground/60" />
+                    </div>
+
+                    <div className="relative">
+                      <label htmlFor="contact-service" className="sr-only">
+                        Role / Industry Interest
+                      </label>
+                      <select
+                        id="contact-service"
+                        value={formData.service}
+                        onChange={(e) => setFormData({ ...formData, service: e.target.value })}
+                        className="w-full rounded-2xl border border-border/80 bg-background/80 px-4 py-3.5 pl-11 text-sm text-foreground transition-all duration-300 focus:border-brand focus:bg-background focus:outline-none focus:ring-2 focus:ring-brand/20 shadow-sm"
+                      >
+                        <option value="" disabled>
+                          {roleType === "employer" ? "Select Hiring Service *" : "Select Primary Sector *"}
+                        </option>
+                        {roleType === "employer" ? (
+                          <>
+                            <option value="direct">Permanent Direct Hire</option>
+                            <option value="executive">Executive Search</option>
+                            <option value="sow">SOW Project Pods</option>
+                            <option value="hr">Fractional HR & Advisory</option>
+                          </>
+                        ) : (
+                          <>
+                            <option value="finance">Finance & Accounting</option>
+                            <option value="tech">Technology & Software</option>
+                            <option value="auto">Automotive & EV</option>
+                            <option value="aerospace">Aerospace & Engineering</option>
+                            <option value="other">Other Executive Role</option>
+                          </>
+                        )}
+                      </select>
+                      <Building2 className="absolute left-4 top-4 h-4 w-4 text-muted-foreground/60" />
+                    </div>
                   </div>
 
-                  <div>
-                    <label htmlFor="contact-source" className="sr-only">
-                      How did you hear about us?
-                    </label>
-                    <select
-                      id="contact-source"
-                      value={formData.source}
-                      onChange={(e) => setFormData({ ...formData, source: e.target.value })}
-                      className="w-full rounded-xl border border-border/80 bg-background/80 px-4 py-3 text-sm text-foreground transition-all focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
-                    >
-                      <option value="" disabled>
-                        How did you hear about us?
-                      </option>
-                      <option value="google">Google Search</option>
-                      <option value="linkedin">LinkedIn</option>
-                      <option value="referral">Referral / Word of Mouth</option>
-                      <option value="social">Social Media</option>
-                      <option value="other">Other</option>
-                    </select>
-                  </div>
-
-                  <div>
+                  <div className="relative">
                     <label htmlFor="contact-message" className="sr-only">
-                      Leave us a Message
+                      Message
                     </label>
                     <textarea
                       id="contact-message"
                       rows={4}
                       required
-                      placeholder="Leave us a Message"
+                      placeholder={
+                        roleType === "employer"
+                          ? "Tell us about your open roles, required skills, or hiring timeline *"
+                          : "Tell us about your career experience, targets, or preferred location *"
+                      }
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      className="w-full rounded-xl border border-border/80 bg-background/80 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground transition-all focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 resize-none"
+                      className="w-full rounded-2xl border border-border/80 bg-background/80 px-4 py-3.5 text-sm text-foreground placeholder:text-muted-foreground transition-all duration-300 focus:border-brand focus:bg-background focus:outline-none focus:ring-2 focus:ring-brand/20 resize-none shadow-sm"
                     />
                   </div>
 
                   <div className="pt-2">
                     <button
                       type="submit"
-                      className="inline-flex items-center justify-center gap-2 rounded-full bg-brand px-8 py-3 text-sm font-bold text-white shadow-brand transition-all duration-300 hover:brightness-110 hover:shadow-lg active:scale-95"
+                      className="group inline-flex w-full items-center justify-center gap-2.5 rounded-2xl bg-brand py-4 text-base font-bold text-white shadow-brand transition-all duration-300 hover:brightness-110 hover:shadow-lg hover:scale-[1.01] active:scale-[0.99]"
                     >
-                      Submit
+                      <Send className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                      {roleType === "employer" ? "Submit Hiring Request" : "Submit Career Inquiry"}
                     </button>
                   </div>
                 </form>
