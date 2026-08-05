@@ -102,9 +102,9 @@ export function Hero() {
       </div>
 
       <div className="shell relative w-full py-20 sm:py-24 lg:py-28">
-        <div className="max-w-2xl">
+        <div className="max-w-4xl">
           <h1
-            className="blur-reveal text-[2.85rem] font-semibold leading-[1.02] tracking-tight text-ink-foreground sm:text-6xl lg:text-[4.5rem]"
+            className="blur-reveal text-[3rem] font-semibold leading-[1.02] tracking-tight text-ink-foreground sm:text-6xl lg:text-[5.5rem]"
             style={{ animationDelay: "80ms" }}
           >
             Beyond solutions,
