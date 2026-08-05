@@ -75,9 +75,9 @@ function Home() {
       <main id="main-content">
         <Hero />
         <TrustedStrip />
-        <WhyUs />
         <Services />
         <Industries />
+        <WhyUs />
         <Process />
         <Stats />
         <Testimonials />

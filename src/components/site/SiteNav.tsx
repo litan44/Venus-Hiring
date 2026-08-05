@@ -4,18 +4,21 @@ import logo from "@/assets/venus-logo.png";
 import { scrollToSection } from "@/lib/scroll";
 
 const NAV = [
+  { label: "Home", href: "#top" },
   { label: "Services", href: "#services" },
   { label: "Industries", href: "#industries" },
-  { label: "Process", href: "#process" },
-  { label: "Insights", href: "#insights" },
+  { label: "Blog", href: "#insights" },
   { label: "FAQ", href: "#faq" },
+  { label: "Contact Us", href: "https://www.venushiring.ca/contact" },
 ];
 
-const SECTION_IDS = NAV.map((item) => item.href.slice(1));
+const SECTION_IDS = NAV.filter((item) => item.href.startsWith("#")).map((item) =>
+  item.href.slice(1),
+);
 
 export function SiteNav() {
   const [scrolled, setScrolled] = useState(false);
-  const [active, setActive] = useState<string | null>(null);
+  const [active, setActive] = useState<string | null>("top");
   const [open, setOpen] = useState(false);
   const isNavigatingRef = useRef(false);
 
@@ -80,9 +83,14 @@ export function SiteNav() {
   }, []);
 
   // Fast, lag-free navigation handler
-  const handleNavClick = (targetId: string, e?: React.MouseEvent) => {
+  const handleNavClick = (href: string, e?: React.MouseEvent) => {
+    if (href.startsWith("http")) {
+      if (open) setOpen(false);
+      return;
+    }
     if (e) e.preventDefault();
-    setActive(targetId === "top" ? null : targetId);
+    const targetId = href.startsWith("#") ? href.slice(1) : href;
+    setActive(targetId === "top" ? "top" : targetId);
     isNavigatingRef.current = true;
     if (open) setOpen(false);
 
@@ -156,13 +164,13 @@ export function SiteNav() {
                 )}
               >
                 {NAV.map((item) => {
-                  const targetId = item.href.slice(1);
+                  const targetId = item.href.startsWith("#") ? item.href.slice(1) : "";
                   const isActive = active === targetId;
                   return (
                     <li key={item.label}>
                       <a
                         href={item.href}
-                        onClick={(e) => handleNavClick(targetId, e)}
+                        onClick={(e) => handleNavClick(item.href, e)}
                         aria-current={isActive ? "true" : undefined}
                         className={cn(
                           "group relative inline-block py-1 text-[0.95rem] tracking-[0.005em] transition-colors duration-300 ease-out",
@@ -265,13 +273,12 @@ export function SiteNav() {
             className="shell flex h-full flex-col justify-center gap-2 pb-16"
           >
             {NAV.map((item, index) => {
-              const targetId = item.href.slice(1);
               return (
                 <a
                   key={item.label}
                   href={item.href}
                   tabIndex={open ? 0 : -1}
-                  onClick={(e) => handleNavClick(targetId, e)}
+                  onClick={(e) => handleNavClick(item.href, e)}
                   style={{ transitionDelay: open ? `${80 + index * 45}ms` : "0ms" }}
                   className={cn(
                     "border-b border-border/70 py-4 font-display text-2xl font-medium tracking-[-0.02em] transition-all duration-500 ease-out hover:text-brand",
