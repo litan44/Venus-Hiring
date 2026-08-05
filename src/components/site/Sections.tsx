@@ -766,13 +766,25 @@ export function Industries() {
     setIsDragging(false);
   };
 
+  const pauseTimerRef = useRef<NodeJS.Timeout | null>(null);
+
   const scrollNav = (direction: "left" | "right") => {
     if (!containerRef.current) return;
+    setIsHovered(true);
+    if (pauseTimerRef.current) clearTimeout(pauseTimerRef.current);
+
     const scrollAmount = 380;
-    containerRef.current.scrollBy({
-      left: direction === "left" ? -scrollAmount : scrollAmount,
+    const current = containerRef.current.scrollLeft;
+    const target = direction === "left" ? current - scrollAmount : current + scrollAmount;
+
+    containerRef.current.scrollTo({
+      left: target,
       behavior: "smooth",
     });
+
+    pauseTimerRef.current = setTimeout(() => {
+      setIsHovered(false);
+    }, 1800);
   };
 
   // Render exactly the 11 unique industry cards (01 to 11)
@@ -805,16 +817,18 @@ export function Industries() {
           {/* Interactive Controls */}
           <div className="flex items-center gap-3">
             <button
+              type="button"
               onClick={() => scrollNav("left")}
               aria-label="Scroll left"
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-ink-line bg-ink-soft/40 text-ink-foreground transition-all duration-300 hover:border-brand hover:bg-brand/10 hover:text-brand"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-ink-line bg-ink-soft/50 text-ink-foreground transition-all duration-300 hover:scale-105 hover:border-brand hover:bg-brand/20 hover:text-white active:scale-95 shadow-sm"
             >
               <ChevronLeft className="h-5 w-5" />
             </button>
             <button
+              type="button"
               onClick={() => scrollNav("right")}
               aria-label="Scroll right"
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-ink-line bg-ink-soft/40 text-ink-foreground transition-all duration-300 hover:border-brand hover:bg-brand/10 hover:text-brand"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-ink-line bg-ink-soft/50 text-ink-foreground transition-all duration-300 hover:scale-105 hover:border-brand hover:bg-brand/20 hover:text-white active:scale-95 shadow-sm"
             >
               <ChevronRight className="h-5 w-5" />
             </button>
