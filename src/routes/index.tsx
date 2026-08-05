@@ -9,7 +9,7 @@ import {
   Process,
   Stats,
 } from "@/components/site/Sections";
-import { Testimonials, Insights, Faq, CtaBanner } from "@/components/site/Social";
+import { Testimonials, Insights, Faq, CtaBanner, ContactSection } from "@/components/site/Social";
 import { SiteFooter } from "@/components/site/SiteFooter";
 
 const TITLE = "Venus Consultancy | Recruitment & Staffing Across Canada";
@@ -84,6 +84,7 @@ function Home() {
         <Insights />
         <Faq />
         <CtaBanner />
+        <ContactSection />
       </main>
       <SiteFooter />
     </div>

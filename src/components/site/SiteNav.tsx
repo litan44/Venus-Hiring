@@ -9,7 +9,7 @@ const NAV = [
   { label: "Industries", href: "#industries" },
   { label: "Blog", href: "#insights" },
   { label: "FAQ", href: "#faq" },
-  { label: "Contact Us", href: "https://www.venushiring.ca/contact" },
+  { label: "Contact Us", href: "#contact" },
 ];
 
 const SECTION_IDS = NAV.filter((item) => item.href.startsWith("#")).map((item) =>
@@ -212,7 +212,8 @@ export function SiteNav() {
                 Find jobs
               </a>
               <a
-                href="https://www.venushiring.ca/contact"
+                href="#contact"
+                onClick={(e) => handleNavClick("#contact", e)}
                 className="group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 text-[0.875rem] font-semibold text-primary-foreground shadow-brand transition-all duration-300 ease-out hover:-translate-y-0.5 hover:scale-[1.03] hover:brightness-110 active:translate-y-0 active:scale-100"
               >
                 Book a call
@@ -291,8 +292,9 @@ export function SiteNav() {
             })}
             <div className="mt-8 flex flex-col gap-3">
               <a
-                href="https://www.venushiring.ca/contact"
+                href="#contact"
                 tabIndex={open ? 0 : -1}
+                onClick={(e) => handleNavClick("#contact", e)}
                 className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary px-7 text-[0.95rem] font-semibold text-primary-foreground shadow-brand"
               >
                 Book a call <span aria-hidden>→</span>

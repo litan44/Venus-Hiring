@@ -4,7 +4,13 @@ import {
   ArrowRight,
   ArrowUpRight,
   CalendarDays,
+  CheckCircle2,
+  Facebook,
+  Instagram,
+  Linkedin,
+  Mail,
   Minus,
+  Phone,
   Plus,
   Quote,
   Star,
@@ -594,6 +600,236 @@ export function CtaBanner() {
                 <p className="text-sm font-bold text-foreground">100% Verified Candidates</p>
                 <p className="text-xs font-medium text-muted-foreground">Vetted Canadian Talent</p>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* -------------------------------- Contact Us --------------------------------- */
+
+export function ContactSection() {
+  const [submitted, setSubmitted] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    source: "",
+    message: "",
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+    setTimeout(() => {
+      setSubmitted(false);
+      setFormData({ name: "", email: "", source: "", message: "" });
+    }, 4000);
+  };
+
+  return (
+    <section
+      id="contact"
+      className="relative overflow-hidden border-b border-border bg-background section-padding"
+      aria-label="Contact Us"
+    >
+      <div
+        className="pointer-events-none absolute inset-0 -z-10 mesh-light opacity-70"
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute -right-32 top-1/2 -z-10 h-96 w-96 -translate-y-1/2 rounded-full bg-brand/10 blur-[140px]"
+        aria-hidden
+      />
+
+      <div className="shell relative">
+        {/* Top Header Card */}
+        <div className="mx-auto max-w-4xl text-center mb-10">
+          <div className="inline-flex flex-col items-center justify-center rounded-3xl border border-brand/20 bg-brand/10 p-8 sm:p-10 backdrop-blur-md w-full shadow-sm">
+            <h2 className="font-display text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+              Contact Us
+            </h2>
+            <p className="mt-2 text-base sm:text-lg text-muted-foreground">
+              Get in touch with our team
+            </p>
+          </div>
+        </div>
+
+        {/* Form & Info Card */}
+        <div className="mx-auto max-w-4xl overflow-hidden rounded-[2.5rem] border border-border/80 bg-card p-8 sm:p-12 shadow-[0_30px_80px_-30px_rgba(15,23,42,0.15)]">
+          <div className="grid gap-12 lg:grid-cols-12 lg:gap-14 items-start">
+            {/* Left Column: Contact Details */}
+            <div className="lg:col-span-5 flex flex-col gap-8">
+              <div>
+                <h3 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+                  Contact Us
+                </h3>
+              </div>
+
+              <div className="flex flex-col gap-6">
+                {/* Phone Box */}
+                <div className="flex items-center gap-4">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand/10 text-brand">
+                    <Phone className="h-5 w-5" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-xs font-semibold text-muted-foreground">Phone Number</p>
+                    <a
+                      href="tel:+16477220837"
+                      className="text-base font-bold text-foreground transition-colors hover:text-brand"
+                    >
+                      +1-647-722-0837
+                    </a>
+                  </div>
+                </div>
+
+                {/* Email Box */}
+                <div className="flex items-center gap-4">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand/10 text-brand">
+                    <Mail className="h-5 w-5" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-xs font-semibold text-muted-foreground">Email</p>
+                    <a
+                      href="mailto:info@venushiring.ca"
+                      className="text-base font-bold text-foreground transition-colors hover:text-brand truncate block"
+                    >
+                      info@venushiring.ca
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* Follow Us */}
+              <div className="pt-2">
+                <p className="text-sm font-bold text-foreground">Follow Us</p>
+                <div className="mt-3 flex items-center gap-3">
+                  <a
+                    href="https://www.linkedin.com/company/venus-consultancy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="LinkedIn"
+                    className="flex h-10 w-10 items-center justify-center rounded-full border border-border/80 bg-background text-muted-foreground transition-all duration-300 hover:border-brand hover:bg-brand hover:text-white hover:scale-105"
+                  >
+                    <Linkedin className="h-4 w-4" />
+                  </a>
+                  <a
+                    href="https://www.facebook.com/venushiring"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Facebook"
+                    className="flex h-10 w-10 items-center justify-center rounded-full border border-border/80 bg-background text-muted-foreground transition-all duration-300 hover:border-brand hover:bg-brand hover:text-white hover:scale-105"
+                  >
+                    <Facebook className="h-4 w-4" />
+                  </a>
+                  <a
+                    href="https://www.instagram.com/venushiring"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram"
+                    className="flex h-10 w-10 items-center justify-center rounded-full border border-border/80 bg-background text-muted-foreground transition-all duration-300 hover:border-brand hover:bg-brand hover:text-white hover:scale-105"
+                  >
+                    <Instagram className="h-4 w-4" />
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column: Contact Form */}
+            <div className="lg:col-span-7 flex flex-col gap-6 lg:border-l lg:border-border/60 lg:pl-10">
+              <div>
+                <h3 className="text-2xl font-bold text-foreground sm:text-3xl">Get in Touch</h3>
+              </div>
+
+              {submitted ? (
+                <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-8 text-center backdrop-blur-md">
+                  <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-500 text-white shadow-lg">
+                    <CheckCircle2 className="h-7 w-7" />
+                  </div>
+                  <h4 className="mt-4 text-xl font-bold text-foreground">Message Sent!</h4>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    Thank you for reaching out to Venus Consultancy. A consultant will get back to you shortly.
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                  <div>
+                    <label htmlFor="contact-name" className="sr-only">
+                      Name
+                    </label>
+                    <input
+                      id="contact-name"
+                      type="text"
+                      required
+                      placeholder="Name"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      className="w-full rounded-xl border border-border/80 bg-background/80 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground transition-all focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="contact-email" className="sr-only">
+                      Email
+                    </label>
+                    <input
+                      id="contact-email"
+                      type="email"
+                      required
+                      placeholder="Email"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      className="w-full rounded-xl border border-border/80 bg-background/80 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground transition-all focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="contact-source" className="sr-only">
+                      How did you hear about us?
+                    </label>
+                    <select
+                      id="contact-source"
+                      value={formData.source}
+                      onChange={(e) => setFormData({ ...formData, source: e.target.value })}
+                      className="w-full rounded-xl border border-border/80 bg-background/80 px-4 py-3 text-sm text-foreground transition-all focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
+                    >
+                      <option value="" disabled>
+                        How did you hear about us?
+                      </option>
+                      <option value="google">Google Search</option>
+                      <option value="linkedin">LinkedIn</option>
+                      <option value="referral">Referral / Word of Mouth</option>
+                      <option value="social">Social Media</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label htmlFor="contact-message" className="sr-only">
+                      Leave us a Message
+                    </label>
+                    <textarea
+                      id="contact-message"
+                      rows={4}
+                      required
+                      placeholder="Leave us a Message"
+                      value={formData.message}
+                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      className="w-full rounded-xl border border-border/80 bg-background/80 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground transition-all focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 resize-none"
+                    />
+                  </div>
+
+                  <div className="pt-2">
+                    <button
+                      type="submit"
+                      className="inline-flex items-center justify-center gap-2 rounded-full bg-brand px-8 py-3 text-sm font-bold text-white shadow-brand transition-all duration-300 hover:brightness-110 hover:shadow-lg active:scale-95"
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </form>
+              )}
             </div>
           </div>
         </div>
