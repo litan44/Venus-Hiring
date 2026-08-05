@@ -619,15 +619,17 @@ export function CtaBanner() {
 
 export function ContactSection() {
   const { ref, shown } = useReveal<HTMLDivElement>();
-  const [roleType, setRoleType] = useState<"employer" | "candidate">("employer");
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    serviceType: "",
     phone: "",
-    service: "",
-    source: "",
-    message: "",
+    company: "",
+    role: "",
+    budget: "",
+    country: "",
+    brief: "",
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -635,343 +637,286 @@ export function ContactSection() {
     setSubmitted(true);
     setTimeout(() => {
       setSubmitted(false);
-      setFormData({ name: "", email: "", phone: "", service: "", source: "", message: "" });
-    }, 4500);
+      setFormData({
+        name: "",
+        email: "",
+        serviceType: "",
+        phone: "",
+        company: "",
+        role: "",
+        budget: "",
+        country: "",
+        brief: "",
+      });
+    }, 5000);
   };
 
   return (
     <section
       id="contact"
-      className="relative overflow-hidden border-b border-border bg-background section-padding"
+      className="relative isolate overflow-hidden bg-ink section-padding border-b border-ink-line text-ink-foreground"
       aria-label="Contact Us"
     >
       {/* Background ambient lighting and mesh graphics */}
       <div
-        className="pointer-events-none absolute inset-0 -z-10 mesh-light opacity-80"
+        className="pointer-events-none absolute inset-0 -z-10 dot-grid opacity-[0.18]"
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute -left-32 top-1/4 -z-10 h-[30rem] w-[30rem] rounded-full bg-brand/15 blur-[160px]"
+        className="pointer-events-none absolute -left-32 top-1/4 -z-10 h-[32rem] w-[32rem] rounded-full bg-brand/20 blur-[160px]"
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute -right-32 bottom-1/4 -z-10 h-[30rem] w-[30rem] rounded-full bg-brand/10 blur-[150px]"
+        className="pointer-events-none absolute -right-32 bottom-1/4 -z-10 h-[30rem] w-[30rem] rounded-full bg-brand/15 blur-[150px]"
         aria-hidden
       />
 
       <div className="shell relative">
-        {/* Section Header */}
-        <div className="flex flex-col items-center text-center max-w-3xl mx-auto">
-          <span className="inline-flex items-center gap-2 rounded-full border border-brand/30 bg-brand/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-brand backdrop-blur-md">
-            <span className="h-2 w-2 rounded-full bg-brand animate-pulse" />
-            Let's Build Together
-          </span>
-          <h2 className="mt-4 font-display text-4xl font-bold leading-[1.08] tracking-tight text-foreground sm:text-5xl lg:text-[3.5rem]">
-            Ready to scale your team?{" "}
-            <span className="text-gradient-brand">Let's talk.</span>
-          </h2>
-          <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
-            Whether you are hiring top talent across Canada & the US or exploring executive career pathways, our recruitment partners respond within 24 hours.
-          </p>
-        </div>
-
-        {/* Master Glassmorphic Grid Container */}
         <div
           ref={ref}
           className={cn(
-            "mt-14 overflow-hidden rounded-[2.5rem] border border-border/80 bg-card/90 p-6 sm:p-10 lg:p-12 shadow-[0_30px_90px_-30px_rgba(15,23,42,0.18)] backdrop-blur-xl reveal-item",
+            "grid gap-12 lg:grid-cols-12 lg:gap-14 items-start reveal-item",
             shown && "is-shown",
           )}
         >
-          <div className="grid gap-12 lg:grid-cols-12 lg:gap-16 items-start">
-            {/* Left Column: Direct Contact Hub, SLA Guarantees & Socials */}
-            <div className="lg:col-span-5 flex flex-col gap-8">
-              <div>
-                <span className="text-xs font-bold uppercase tracking-[0.16em] text-brand">
-                  Direct Contact Hub
-                </span>
-                <h3 className="mt-2 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-                  Reach out directly
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  Connect with our Canadian executive search team or book a discovery session.
-                </p>
-              </div>
-
-              {/* Direct Info Cards */}
-              <div className="flex flex-col gap-4">
-                {/* Phone Box */}
-                <a
-                  href="tel:+16477220837"
-                  className="group flex items-center justify-between rounded-2xl border border-border/80 bg-background/80 p-4 transition-all duration-300 hover:border-brand/50 hover:bg-card hover:shadow-md"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand/10 text-brand transition-colors group-hover:bg-brand group-hover:text-white">
-                      <Phone className="h-5 w-5" />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
-                        Direct Phone
-                      </p>
-                      <p className="text-base font-bold text-foreground transition-colors group-hover:text-brand">
-                        +1-647-722-0837
-                      </p>
-                    </div>
-                  </div>
-                  <span className="rounded-full bg-brand/10 px-2.5 py-1 text-[10px] font-bold uppercase text-brand">
-                    Call Now
-                  </span>
-                </a>
-
-                {/* Email Box */}
-                <a
-                  href="mailto:info@venushiring.ca"
-                  className="group flex items-center justify-between rounded-2xl border border-border/80 bg-background/80 p-4 transition-all duration-300 hover:border-brand/50 hover:bg-card hover:shadow-md"
-                >
-                  <div className="flex items-center gap-4 min-w-0">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand/10 text-brand transition-colors group-hover:bg-brand group-hover:text-white">
-                      <Mail className="h-5 w-5" />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
-                        Email Inquiry
-                      </p>
-                      <p className="text-base font-bold text-foreground transition-colors group-hover:text-brand truncate">
-                        info@venushiring.ca
-                      </p>
-                    </div>
-                  </div>
-                  <span className="rounded-full bg-emerald-500/15 px-2.5 py-1 text-[10px] font-bold uppercase text-emerald-600 dark:text-emerald-400 shrink-0">
-                    24h SLA
-                  </span>
-                </a>
-
-                {/* Location Box */}
-                <div className="flex items-center gap-4 rounded-2xl border border-border/80 bg-background/80 p-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand/10 text-brand">
-                    <MapPin className="h-5 w-5" />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
-                      Toronto Headquarters
-                    </p>
-                    <p className="text-sm font-semibold text-foreground">
-                      #205 - 1085 Bellamy Rd N, Toronto, ON
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Response SLA Badges */}
-              <div className="rounded-2xl border border-brand/20 bg-brand/5 p-5">
-                <p className="text-xs font-bold uppercase tracking-wider text-brand">
-                  Our Service Level Guarantee
-                </p>
-                <div className="mt-3 flex flex-wrap gap-2.5">
-                  <span className="inline-flex items-center gap-1.5 rounded-lg border border-brand/20 bg-background/90 px-3 py-1.5 text-xs font-semibold text-foreground shadow-sm">
-                    <Clock className="h-3.5 w-3.5 text-brand" />
-                    24-Hour Callback
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 rounded-lg border border-brand/20 bg-background/90 px-3 py-1.5 text-xs font-semibold text-foreground shadow-sm">
-                    <ShieldCheck className="h-3.5 w-3.5 text-brand" />
-                    100% Replacement Guarantee
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 rounded-lg border border-brand/20 bg-background/90 px-3 py-1.5 text-xs font-semibold text-foreground shadow-sm">
-                    🇨🇦 Coast-to-Coast Reach
-                  </span>
-                </div>
-              </div>
-
-              {/* Social Channels */}
-              <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                  Follow & Connect
-                </p>
-                <div className="mt-3 flex items-center gap-3">
-                  {[
-                    { icon: Linkedin, href: "https://www.linkedin.com/company/venus-consultancy", label: "LinkedIn" },
-                    { icon: Facebook, href: "https://www.facebook.com/venushiring", label: "Facebook" },
-                    { icon: Instagram, href: "https://www.instagram.com/venushiring", label: "Instagram" },
-                  ].map((soc) => (
-                    <a
-                      key={soc.label}
-                      href={soc.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={soc.label}
-                      className="flex h-11 w-11 items-center justify-center rounded-xl border border-border/80 bg-background text-muted-foreground transition-all duration-300 hover:scale-110 hover:border-brand hover:bg-brand hover:text-white hover:shadow-brand"
-                    >
-                      <soc.icon className="h-5 w-5" />
-                    </a>
-                  ))}
-                </div>
-              </div>
+          {/* Left Column: Capermint Dark Copy + Lead Magnet + Bullet Checklist */}
+          <div className="lg:col-span-6 flex flex-col gap-8">
+            <div>
+              <span className="inline-flex items-center gap-2 rounded-full border border-brand/40 bg-brand/15 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-brand">
+                Get Your Hiring Estimate
+              </span>
+              <h2 className="mt-5 font-display text-4xl font-bold leading-[1.08] tracking-tight text-ink-foreground sm:text-5xl lg:text-[3.5rem]">
+                Tell Us About Your Role. We Reply In 24 Hours With A Custom Proposal.
+              </h2>
+              <p className="mt-5 text-base leading-relaxed text-ink-foreground/80 sm:text-lg">
+                No sales pitch. Just a clear scope, team recommendation, placement model, and itemized timeline so you can evaluate Venus Consultancy against any other vendor on equal terms.
+              </p>
             </div>
 
-            {/* Right Column: Premium Interactive Form */}
-            <div className="lg:col-span-7 flex flex-col gap-6 lg:border-l lg:border-border/60 lg:pl-12">
-              {/* Audience Selector Pills */}
-              <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-border/80 bg-background/80 p-1.5 shadow-inner">
-                <button
-                  type="button"
-                  onClick={() => setRoleType("employer")}
-                  className={cn(
-                    "flex-1 rounded-xl py-2.5 px-4 text-xs font-bold transition-all duration-300",
-                    roleType === "employer"
-                      ? "bg-primary text-primary-foreground shadow-sm scale-[1.02]"
-                      : "text-muted-foreground hover:text-foreground",
-                  )}
-                >
-                  🏢 I am an Employer looking to hire
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setRoleType("candidate")}
-                  className={cn(
-                    "flex-1 rounded-xl py-2.5 px-4 text-xs font-bold transition-all duration-300",
-                    roleType === "candidate"
-                      ? "bg-primary text-primary-foreground shadow-sm scale-[1.02]"
-                      : "text-muted-foreground hover:text-foreground",
-                  )}
-                >
-                  💼 I am a Professional seeking jobs
-                </button>
-              </div>
+            {/* Free Lead Magnet Box */}
+            <div className="relative overflow-hidden rounded-3xl border border-brand/30 bg-ink-soft/40 p-6 sm:p-8 backdrop-blur-xl shadow-lg">
+              <span className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-brand">
+                FREE LEAD MAGNET
+              </span>
+              <h3 className="mt-2 text-xl sm:text-2xl font-bold text-ink-foreground">
+                Workforce Readiness Assessment
+              </h3>
+              <p className="mt-3 text-sm leading-relaxed text-ink-foreground/75">
+                Submit your brief and receive a free Workforce Readiness Assessment: talent availability breakdown, recommended team shape, estimated timeline, salary benchmarks, and onboarding checklist. Delivered within 24 hours, no obligation.
+              </p>
+            </div>
 
-              <div>
-                <h3 className="text-2xl font-bold text-foreground sm:text-3xl">
-                  {roleType === "employer" ? "Request Talent Shortlist" : "Submit Your Profile"}
+            {/* Checklist items */}
+            <div className="flex flex-col gap-3.5 pt-2">
+              {[
+                "Custom itemized proposal within 24 hours",
+                "Confidentiality & SLA signed before briefing call",
+                "You choose the engagement model and team structure",
+                "Free Workforce Readiness Assessment included",
+                "No obligation and complete confidentiality",
+              ].map((item) => (
+                <div key={item} className="flex items-center gap-3">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand/20 text-brand">
+                    <CheckCircle2 className="h-4 w-4" />
+                  </span>
+                  <span className="text-sm font-semibold text-ink-foreground/90 sm:text-base">
+                    {item}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right Column: Floating White Capermint Form Card */}
+          <div className="lg:col-span-6">
+            <div className="overflow-hidden rounded-[2.5rem] border border-border/80 bg-white dark:bg-card p-7 sm:p-10 shadow-[0_30px_90px_-20px_rgba(0,0,0,0.35)] text-foreground">
+              <div className="mb-6">
+                <h3 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">
+                  Hiring Brief
                 </h3>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  {roleType === "employer"
-                    ? "Fill in your requirements below to receive a calibrated shortlist of pre-vetted candidates."
-                    : "Connect with our talent acquisition partners to explore confidential job opportunities."}
+                <p className="mt-1 text-xs text-muted-foreground">
+                  Fields marked with <span className="text-brand font-bold">*</span> are required to submit.
                 </p>
               </div>
 
               {submitted ? (
-                <div className="rounded-3xl border border-emerald-500/30 bg-gradient-to-b from-emerald-500/15 to-emerald-500/5 p-10 text-center backdrop-blur-md shadow-lg">
+                <div className="rounded-3xl border border-emerald-500/30 bg-emerald-500/10 p-10 text-center backdrop-blur-md">
                   <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-500 text-white shadow-lg">
                     <CheckCircle2 className="h-8 w-8" />
                   </div>
-                  <h4 className="mt-5 text-2xl font-bold text-foreground">Inquiry Received!</h4>
-                  <p className="mt-2 text-base text-muted-foreground max-w-md mx-auto">
-                    Thank you for contacting Venus Consultancy. A senior recruitment specialist will get back to you within 24 hours.
+                  <h4 className="mt-5 text-2xl font-bold text-foreground">Brief Submitted!</h4>
+                  <p className="mt-2 text-base text-muted-foreground">
+                    Thank you! We have received your hiring brief and will deliver your custom proposal within 24 hours.
                   </p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                  {/* Row 1: Name & Work Email */}
                   <div className="grid gap-4 sm:grid-cols-2">
-                    <div className="relative">
-                      <label htmlFor="contact-name" className="sr-only">
-                        Full Name
+                    <div>
+                      <label className="block text-[11px] font-bold uppercase tracking-wider text-foreground mb-1.5">
+                        YOUR NAME <span className="text-brand">*</span>
                       </label>
                       <input
-                        id="contact-name"
                         type="text"
                         required
-                        placeholder="Full Name *"
+                        placeholder="First and Last Name"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full rounded-2xl border border-border/80 bg-background/80 px-4 py-3.5 pl-11 text-sm text-foreground placeholder:text-muted-foreground transition-all duration-300 focus:border-brand focus:bg-background focus:outline-none focus:ring-2 focus:ring-brand/20 shadow-sm"
+                        className="w-full rounded-2xl border border-border/80 bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/70 transition-all focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 shadow-sm"
                       />
-                      <User className="absolute left-4 top-4 h-4 w-4 text-muted-foreground/60" />
                     </div>
 
-                    <div className="relative">
-                      <label htmlFor="contact-email" className="sr-only">
-                        Work Email
+                    <div>
+                      <label className="block text-[11px] font-bold uppercase tracking-wider text-foreground mb-1.5">
+                        WORK EMAIL <span className="text-brand">*</span>
                       </label>
                       <input
-                        id="contact-email"
                         type="email"
                         required
-                        placeholder={roleType === "employer" ? "Work Email *" : "Email Address *"}
+                        placeholder="you@company.com"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full rounded-2xl border border-border/80 bg-background/80 px-4 py-3.5 pl-11 text-sm text-foreground placeholder:text-muted-foreground transition-all duration-300 focus:border-brand focus:bg-background focus:outline-none focus:ring-2 focus:ring-brand/20 shadow-sm"
+                        className="w-full rounded-2xl border border-border/80 bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/70 transition-all focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 shadow-sm"
                       />
-                      <Mail className="absolute left-4 top-4 h-4 w-4 text-muted-foreground/60" />
                     </div>
                   </div>
 
+                  {/* Row 2: Service Type & Contact Number */}
                   <div className="grid gap-4 sm:grid-cols-2">
-                    <div className="relative">
-                      <label htmlFor="contact-phone" className="sr-only">
-                        Phone Number
-                      </label>
-                      <input
-                        id="contact-phone"
-                        type="tel"
-                        placeholder="Phone Number"
-                        value={formData.phone}
-                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        className="w-full rounded-2xl border border-border/80 bg-background/80 px-4 py-3.5 pl-11 text-sm text-foreground placeholder:text-muted-foreground transition-all duration-300 focus:border-brand focus:bg-background focus:outline-none focus:ring-2 focus:ring-brand/20 shadow-sm"
-                      />
-                      <Phone className="absolute left-4 top-4 h-4 w-4 text-muted-foreground/60" />
-                    </div>
-
-                    <div className="relative">
-                      <label htmlFor="contact-service" className="sr-only">
-                        Role / Industry Interest
+                    <div>
+                      <label className="block text-[11px] font-bold uppercase tracking-wider text-foreground mb-1.5">
+                        SERVICE TYPE <span className="text-brand">*</span>
                       </label>
                       <select
-                        id="contact-service"
-                        value={formData.service}
-                        onChange={(e) => setFormData({ ...formData, service: e.target.value })}
-                        className="w-full rounded-2xl border border-border/80 bg-background/80 px-4 py-3.5 pl-11 text-sm text-foreground transition-all duration-300 focus:border-brand focus:bg-background focus:outline-none focus:ring-2 focus:ring-brand/20 shadow-sm"
+                        required
+                        value={formData.serviceType}
+                        onChange={(e) => setFormData({ ...formData, serviceType: e.target.value })}
+                        className="w-full rounded-2xl border border-border/80 bg-background px-4 py-3 text-sm text-foreground transition-all focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 shadow-sm"
                       >
                         <option value="" disabled>
-                          {roleType === "employer" ? "Select Hiring Service *" : "Select Primary Sector *"}
+                          Select Service Type
                         </option>
-                        {roleType === "employer" ? (
-                          <>
-                            <option value="direct">Permanent Direct Hire</option>
-                            <option value="executive">Executive Search</option>
-                            <option value="sow">SOW Project Pods</option>
-                            <option value="hr">Fractional HR & Advisory</option>
-                          </>
-                        ) : (
-                          <>
-                            <option value="finance">Finance & Accounting</option>
-                            <option value="tech">Technology & Software</option>
-                            <option value="auto">Automotive & EV</option>
-                            <option value="aerospace">Aerospace & Engineering</option>
-                            <option value="other">Other Executive Role</option>
-                          </>
-                        )}
+                        <option value="direct">Permanent Direct Hire</option>
+                        <option value="executive">Executive Search</option>
+                        <option value="sow">SOW Project Pods</option>
+                        <option value="hr">Fractional HR Advisory</option>
                       </select>
-                      <Building2 className="absolute left-4 top-4 h-4 w-4 text-muted-foreground/60" />
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-bold uppercase tracking-wider text-foreground mb-1.5">
+                        YOUR CONTACT NUMBER <span className="text-brand">*</span>
+                      </label>
+                      <input
+                        type="tel"
+                        required
+                        placeholder="🇨🇦 +1 (647) 000-0000"
+                        value={formData.phone}
+                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                        className="w-full rounded-2xl border border-border/80 bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/70 transition-all focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 shadow-sm"
+                      />
                     </div>
                   </div>
 
-                  <div className="relative">
-                    <label htmlFor="contact-message" className="sr-only">
-                      Message
+                  {/* Row 3: Company Name & Your Role */}
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div>
+                      <label className="block text-[11px] font-bold uppercase tracking-wider text-foreground mb-1.5">
+                        COMPANY NAME <span className="text-brand">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="Your Company Name"
+                        value={formData.company}
+                        onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                        className="w-full rounded-2xl border border-border/80 bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/70 transition-all focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 shadow-sm"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-bold uppercase tracking-wider text-foreground mb-1.5">
+                        YOUR ROLE <span className="text-brand">*</span>
+                      </label>
+                      <select
+                        required
+                        value={formData.role}
+                        onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                        className="w-full rounded-2xl border border-border/80 bg-background px-4 py-3 text-sm text-foreground transition-all focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 shadow-sm"
+                      >
+                        <option value="" disabled>
+                          Select Your Role
+                        </option>
+                        <option value="hiring-manager">Hiring Manager</option>
+                        <option value="hr-leader">HR / Talent Leader</option>
+                        <option value="c-suite">C-Suite / Founder</option>
+                        <option value="other">Other Executive</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Row 4: Budget Range & Country */}
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div>
+                      <label className="block text-[11px] font-bold uppercase tracking-wider text-foreground mb-1.5">
+                        BUDGET RANGE
+                      </label>
+                      <select
+                        value={formData.budget}
+                        onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
+                        className="w-full rounded-2xl border border-border/80 bg-background px-4 py-3 text-sm text-foreground transition-all focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 shadow-sm"
+                      >
+                        <option value="" disabled>
+                          Select Your Budget Range
+                        </option>
+                        <option value="under50k">$10k – $50k</option>
+                        <option value="50k-100k">$50k – $100k</option>
+                        <option value="100k-250k">$100k – $250k</option>
+                        <option value="250k+">$250k+</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-bold uppercase tracking-wider text-foreground mb-1.5">
+                        COUNTRY / LOCATION
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Your City or Country"
+                        value={formData.country}
+                        onChange={(e) => setFormData({ ...formData, country: e.target.value })}
+                        className="w-full rounded-2xl border border-border/80 bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/70 transition-all focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 shadow-sm"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Full Textarea: Project / Hiring Brief */}
+                  <div>
+                    <label className="block text-[11px] font-bold uppercase tracking-wider text-foreground mb-1.5">
+                      HIRING BRIEF <span className="text-brand">*</span>
                     </label>
                     <textarea
-                      id="contact-message"
                       rows={4}
                       required
-                      placeholder={
-                        roleType === "employer"
-                          ? "Tell us about your open roles, required skills, or hiring timeline *"
-                          : "Tell us about your career experience, targets, or preferred location *"
-                      }
-                      value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      className="w-full rounded-2xl border border-border/80 bg-background/80 px-4 py-3.5 text-sm text-foreground placeholder:text-muted-foreground transition-all duration-300 focus:border-brand focus:bg-background focus:outline-none focus:ring-2 focus:ring-brand/20 resize-none shadow-sm"
+                      placeholder="Tell us about your requirements: target roles, key technical skills, expected timeline, and any existing specifications."
+                      value={formData.brief}
+                      onChange={(e) => setFormData({ ...formData, brief: e.target.value })}
+                      className="w-full rounded-2xl border border-border/80 bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/70 transition-all focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 resize-none shadow-sm"
                     />
                   </div>
 
+                  {/* Submit Button */}
                   <div className="pt-2">
                     <button
                       type="submit"
-                      className="group inline-flex w-full items-center justify-center gap-2.5 rounded-2xl bg-brand py-4 text-base font-bold text-white shadow-brand transition-all duration-300 hover:brightness-110 hover:shadow-lg hover:scale-[1.01] active:scale-[0.99]"
+                      className="group inline-flex w-full items-center justify-center gap-2.5 rounded-2xl bg-brand py-4 text-base font-bold text-white shadow-brand transition-all duration-300 hover:brightness-110 hover:shadow-lg active:scale-[0.99]"
                     >
-                      <Send className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                      {roleType === "employer" ? "Submit Hiring Request" : "Submit Career Inquiry"}
+                      Get Custom Proposal in 24 Hours
                     </button>
+                    <p className="mt-3 text-center text-[11px] text-muted-foreground">
+                      Submission goes via our secure system. 100% confidentiality guaranteed. No obligation.
+                    </p>
                   </div>
                 </form>
               )}
