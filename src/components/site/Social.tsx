@@ -61,7 +61,31 @@ function Stars() {
 export function Testimonials() {
   const { ref, shown } = useReveal<HTMLDivElement>();
   const [index, setIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
   const go = (next: number) => setIndex((next + QUOTES.length) % QUOTES.length);
+
+  const minSwipeDistance = 40;
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    if (distance > minSwipeDistance) {
+      go(index + 1);
+    } else if (distance < -minSwipeDistance) {
+      go(index - 1);
+    }
+  };
 
   return (
     <section className="relative overflow-hidden border-b border-border bg-background section-padding">
@@ -98,7 +122,10 @@ export function Testimonials() {
         {/* Slider */}
         <div
           ref={ref}
-          className={cn("reveal-item mt-12 overflow-hidden rounded-[2rem]", shown && "is-shown")}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          className={cn("reveal-item mt-12 overflow-hidden rounded-[2rem] touch-pan-y", shown && "is-shown")}
         >
           <div
             className="flex transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"

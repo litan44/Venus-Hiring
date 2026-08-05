@@ -438,8 +438,11 @@ export function Services() {
           {/* 4-Bento Grid */}
           <div ref={ref} className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {SERVICES_BENTO.map((item, i) => (
-              <article
+              <a
                 key={item.id}
+                href="https://www.venushiring.ca/contact"
+                target="_blank"
+                rel="noopener noreferrer"
                 className={cn(
                   "group relative isolate flex flex-col justify-between overflow-hidden rounded-[2.25rem] p-8 sm:p-10",
                   "border border-border/80 bg-background/90 backdrop-blur-xl shadow-[0_20px_50px_-20px_rgba(15,23,42,0.15)]",
@@ -507,11 +510,14 @@ export function Services() {
                     ))}
                   </div>
                 </div>
-              </article>
+              </a>
             ))}
 
             {/* Master Full-Width Feature Card for Startup & Employer Brand Strategy */}
-            <article
+            <a
+              href="https://www.venushiring.ca/contact"
+              target="_blank"
+              rel="noopener noreferrer"
               className={cn(
                 "group relative isolate flex flex-col justify-between overflow-hidden rounded-[2.25rem] p-8 sm:p-10 lg:col-span-3",
                 "border border-border/80 bg-gradient-to-br from-white via-slate-50 to-brand-soft/20 shadow-[0_20px_50px_-20px_rgba(15,23,42,0.12)] backdrop-blur-xl",
@@ -561,26 +567,14 @@ export function Services() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 lg:col-span-5 sm:grid-cols-2">
-                  {SERVICE_STATS.map((st) => (
-                    <div
-                      key={st.label}
-                      className="flex flex-col justify-center rounded-2xl border border-border bg-white p-5 shadow-sm transition-all duration-300 hover:border-brand/50 hover:shadow-md"
-                    >
-                      <span className="text-2xl font-extrabold text-foreground lg:text-3xl tracking-tight font-display">
-                        {st.value}
-                      </span>
-                      <span className="mt-1 text-xs font-semibold text-foreground/90">
-                        {st.label}
-                      </span>
-                      <span className="mt-1 text-[11px] text-muted-foreground leading-tight">
-                        {st.sub}
-                      </span>
-                    </div>
-                  ))}
+                <div className="flex flex-col items-start lg:items-end justify-center lg:col-span-5 border-t lg:border-t-0 lg:border-l border-border/70 pt-6 lg:pt-0 lg:pl-8">
+                  <div className="inline-flex items-center gap-2 rounded-xl bg-brand px-6 py-3.5 text-sm font-semibold text-white shadow-brand transition-all duration-300 group-hover:scale-105 group-hover:brightness-110">
+                    Book Strategy Call
+                    <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </div>
                 </div>
               </div>
-            </article>
+            </a>
           </div>
         </div>
       </div>
@@ -866,8 +860,11 @@ export function Industries() {
           <div className="flex gap-6 shrink-0">
             {items.map((ind, i) => {
               return (
-                <article
+                <a
                   key={`${ind.name}-${i}`}
+                  href="https://www.venushiring.ca/contact"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="group relative flex w-[330px] shrink-0 flex-col overflow-hidden rounded-3xl border border-ink-line bg-ink-soft/30 backdrop-blur-xl transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-2 hover:border-brand/60 hover:shadow-[0_20px_50px_-15px_rgba(239,68,68,0.35)] sm:w-[360px]"
                 >
                   {/* Card Background Image Header */}
@@ -898,7 +895,7 @@ export function Industries() {
                       {ind.copy}
                     </p>
                   </div>
-                </article>
+                </a>
               );
             })}
           </div>
