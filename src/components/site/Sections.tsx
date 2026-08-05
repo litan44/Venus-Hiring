@@ -1031,75 +1031,88 @@ export function Process() {
                   aria-hidden
                 />
 
-                {/* Top Badge & Step Number */}
-                <div className="flex items-start justify-between gap-3">
+                {/* 1. Category Tag Badge - Top Left (Absolute Z-20) */}
+                <div className="absolute top-7 left-7 sm:top-9 sm:left-9 z-20">
                   <span
                     className={cn(
                       "inline-flex items-center rounded-full border px-4 py-1.5 text-xs font-bold uppercase tracking-[0.18em] transition-all duration-500 backdrop-blur-md shadow-sm",
                       isActive
                         ? "border-white bg-white text-brand"
-                        : "border-white/40 bg-white/20 text-white group-hover:border-white group-hover:bg-white group-hover:text-brand",
+                        : "border-white/40 bg-black/40 text-white group-hover:border-white group-hover:bg-white group-hover:text-brand",
                     )}
                   >
                     {s.tag}
                   </span>
+                </div>
+
+                {/* 2. Step Number 01-05 - Top Right (Absolute Z-20) */}
+                <div className="absolute top-7 right-7 sm:top-9 sm:right-9 z-20">
                   <span
                     className={cn(
-                      "font-display text-4xl font-black tracking-tighter transition-all duration-500 sm:text-5xl",
-                      isActive ? "text-white/90" : "text-white/40 group-hover:text-white/90",
+                      "font-mono text-3xl sm:text-4xl font-black tracking-tight transition-all duration-500",
+                      isActive ? "text-white opacity-100" : "text-white/80 opacity-90 group-hover:opacity-100",
                     )}
                   >
                     {s.n}
                   </span>
                 </div>
 
-                {/* Middle / Tilted Title in Initial State */}
-                <div className="my-auto py-6 flex items-center justify-center lg:justify-start">
+                {/* 3. Title (Vertical in Closed state / Horizontal in Open state) */}
+                <div className="my-auto py-12 flex items-center justify-center lg:justify-start z-10">
                   <h3
                     className={cn(
                       "font-bold leading-tight text-white transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] text-2xl sm:text-3xl",
-                      // On Desktop: Tilted 90deg vertically (reading bottom-to-top) in initial state
-                      "lg:[writing-mode:vertical-rl] lg:rotate-180 lg:whitespace-nowrap lg:tracking-wide lg:text-3xl",
-                      // When Active or Hovered: Rotates horizontally to normal readable text
                       isActive
                         ? "lg:[writing-mode:horizontal-tb] lg:rotate-0 lg:whitespace-normal lg:text-3xl"
-                        : "lg:group-hover:[writing-mode:horizontal-tb] lg:group-hover:rotate-0 lg:group-hover:whitespace-normal lg:group-hover:text-3xl",
+                        : "lg:[writing-mode:vertical-rl] lg:rotate-180 lg:whitespace-nowrap lg:tracking-wide lg:text-2.5xl",
                     )}
                   >
                     {s.title}
                   </h3>
                 </div>
 
-                {/* Bottom Content: Copy description (expanded when active) & Action Button */}
-                <div>
+                {/* 4. Bottom Content Area */}
+                <div className="relative z-10 w-full pt-4">
+                  {/* Description Copy - ONLY Shown When Open */}
                   <div
                     className={cn(
                       "grid transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
                       isActive
-                        ? "grid-rows-[1fr] opacity-100 mt-2 mb-4"
-                        : "grid-rows-[0fr] opacity-0 group-hover:grid-rows-[1fr] group-hover:opacity-100 lg:group-hover:mt-2 lg:group-hover:mb-4",
+                        ? "grid-rows-[1fr] opacity-100 mb-4"
+                        : "grid-rows-[0fr] opacity-0 pointer-events-none",
                     )}
                   >
-                    <p className="overflow-hidden text-sm leading-relaxed text-white/90">
+                    <p className="overflow-hidden text-sm leading-relaxed text-white/95">
                       {s.copy}
                     </p>
                   </div>
 
-                  {/* Bottom Footer Action Bar */}
-                  <div className="flex items-center justify-between pt-2 border-t border-white/20">
-                    <span className="text-xs font-semibold uppercase tracking-wider text-white/80">
-                      Phase {s.n}
-                    </span>
-                    <span
-                      className={cn(
-                        "inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition-all duration-500 ease-out backdrop-blur-md",
-                        isActive
-                          ? "bg-white text-brand shadow-lg scale-105"
-                          : "bg-white/20 text-white group-hover:bg-white group-hover:text-brand group-hover:scale-105",
-                      )}
-                    >
-                      <ArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:rotate-45" />
-                    </span>
+                  {/* Phase Label & Bottom-Right Arrow Container */}
+                  <div className="flex items-center justify-between min-h-[44px]">
+                    {/* Phase Label - ONLY Rendered When Card Is Open */}
+                    {isActive ? (
+                      <div className="flex items-center gap-3 pt-3 border-t border-white/30 w-full transition-all duration-500">
+                        <span className="text-xs font-bold uppercase tracking-wider text-white">
+                          Phase {s.n}
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="w-full" />
+                    )}
+
+                    {/* 5. Arrow Button - Absolutely Positioned Bottom Right (Z-20) */}
+                    <div className="absolute bottom-0 right-0 z-20">
+                      <span
+                        className={cn(
+                          "inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition-all duration-500 ease-out backdrop-blur-md",
+                          isActive
+                            ? "bg-white text-brand shadow-lg scale-110"
+                            : "bg-white/20 text-white group-hover:bg-white group-hover:text-brand group-hover:scale-110",
+                        )}
+                      >
+                        <ArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
