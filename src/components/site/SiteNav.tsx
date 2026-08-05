@@ -536,10 +536,7 @@ export function SiteNav() {
                         />
                         <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t from-ink via-ink/80 to-transparent" />
                         <div>
-                          <span className="inline-flex items-center gap-1.5 rounded-full bg-brand/20 border border-brand/40 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-brand">
-                            <Sparkles className="h-3 w-3" /> Featured
-                          </span>
-                          <h4 className="mt-3 text-sm font-bold leading-snug">{promo.title}</h4>
+                          <h4 className="text-sm font-bold leading-snug">{promo.title}</h4>
                           <p className="mt-2 text-[11px] text-white/80 leading-relaxed">{promo.copy}</p>
                         </div>
                         <div className="mt-4 pt-3 border-t border-white/20">
