@@ -169,7 +169,7 @@ export function WhyUs() {
   return (
     <section
       id="why"
-      className="relative isolate flex flex-col justify-center overflow-hidden bg-ink py-12 lg:py-16 border-b border-ink-line"
+      className="relative isolate flex flex-col justify-center overflow-hidden bg-ink section-padding border-b border-ink-line"
     >
       <img
         src={whyImg}
@@ -213,14 +213,12 @@ export function WhyUs() {
                 key={reason.title}
                 type="button"
                 aria-expanded={isActive}
-                onMouseEnter={() => setActive(i)}
-                onFocus={() => setActive(i)}
                 onClick={() => setActive(i)}
-                style={{ transitionDelay: `${i * 110}ms` }}
+                style={{ transitionDelay: shown ? "0ms" : `${i * 110}ms` }}
                 className={cn(
                   "group relative isolate flex min-h-[22rem] flex-col overflow-hidden rounded-[2rem] p-8 text-left sm:min-h-[28rem]",
                   "glass-frost shadow-[0_30px_70px_-40px_rgba(0,0,0,0.9)]",
-                  "transition-[flex,background-color,border-color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+                  "transition-[flex,background-color,border-color,box-shadow,transform] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
                   "hover:-translate-y-1 lg:h-full lg:min-h-0",
                   isActive ? "lg:flex-[2.8] border-brand/60" : "lg:flex-1",
                   "reveal-item",
@@ -234,21 +232,21 @@ export function WhyUs() {
                   aria-hidden
                   loading="lazy"
                   className={cn(
-                    "pointer-events-none absolute inset-0 -z-20 h-full w-full object-cover transition-[transform,opacity] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
+                    "pointer-events-none absolute inset-0 -z-20 h-full w-full object-cover transition-[transform,opacity] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
                     isActive
                       ? "scale-105 opacity-70"
-                      : "scale-100 opacity-45 group-hover:opacity-60",
+                      : "scale-100 opacity-35 group-hover:opacity-50",
                   )}
                 />
                 {/* Gradient scrim for readable high-contrast text */}
                 <span
-                  className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t from-ink via-ink/75 to-transparent"
+                  className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t from-ink via-ink/75 to-transparent transition-opacity duration-700 ease-out"
                   aria-hidden
                 />
 
                 <span
                   className={cn(
-                    "pointer-events-none absolute inset-0 -z-10 transition-opacity duration-500",
+                    "pointer-events-none absolute inset-0 -z-10 transition-opacity duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
                     "bg-[radial-gradient(90%_70%_at_20%_0%,color-mix(in_oklab,var(--color-brand)_45%,transparent),transparent_72%)]",
                     isActive ? "opacity-100" : "opacity-0",
                   )}
@@ -256,12 +254,19 @@ export function WhyUs() {
                 />
 
                 <div className="flex items-start justify-between gap-3">
-                  <span className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-white backdrop-blur-md">
+                  <span
+                    className={cn(
+                      "inline-flex items-center rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-white backdrop-blur-md transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
+                      isActive
+                        ? "opacity-100 translate-y-0 scale-100"
+                        : "opacity-0 -translate-y-2 scale-90 pointer-events-none",
+                    )}
+                  >
                     {reason.pill}
                   </span>
                   <span
                     className={cn(
-                      "inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-white/20 transition-all duration-500 ease-out backdrop-blur-md",
+                      "inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-white/20 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] backdrop-blur-md",
                       isActive
                         ? "bg-primary text-primary-foreground shadow-brand scale-110"
                         : "bg-white/10 text-white group-hover:bg-white/20",
@@ -271,16 +276,16 @@ export function WhyUs() {
                   </span>
                 </div>
 
-                <h3 className="mt-auto pt-10 text-xl font-bold leading-snug text-white sm:text-2xl lg:text-[1.75rem]">
+                <h3 className="mt-auto pt-8 text-xl font-bold leading-snug text-white sm:text-2xl lg:text-[1.75rem]">
                   {reason.title}
                 </h3>
 
                 <div
                   className={cn(
-                    "grid transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+                    "grid transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
                     isActive
-                      ? "mt-4 grid-rows-[1fr] opacity-100"
-                      : "mt-0 grid-rows-[0fr] opacity-0 lg:opacity-0",
+                      ? "mt-3 grid-rows-[1fr] opacity-100"
+                      : "mt-0 grid-rows-[0fr] opacity-0 pointer-events-none",
                   )}
                 >
                   <p className="overflow-hidden text-base leading-relaxed text-white/90">
@@ -290,8 +295,8 @@ export function WhyUs() {
 
                 <span
                   className={cn(
-                    "mt-6 block h-1 rounded-full bg-gradient-to-r from-brand via-brand to-transparent transition-all duration-500 ease-out",
-                    isActive ? "w-full" : "w-12",
+                    "mt-5 block h-1 rounded-full bg-gradient-to-r from-brand via-brand to-transparent transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
+                    isActive ? "w-full opacity-100" : "w-10 opacity-30",
                   )}
                   aria-hidden
                 />
@@ -380,14 +385,14 @@ export function Services() {
   return (
     <section
       id="services"
-      className="relative isolate overflow-hidden bg-porcelain py-20 lg:py-28 border-b border-border"
+      className="relative isolate overflow-hidden bg-porcelain section-padding border-b border-border"
     >
       {/* Background Watermark Marquee */}
       <div
         className="pointer-events-none absolute top-12 left-0 right-0 -z-10 overflow-hidden opacity-[0.06] select-none"
         aria-hidden
       >
-        <div className="flex w-max animate-marquee gap-8 font-display text-[7rem] lg:text-[10rem] font-black uppercase tracking-tighter text-slate-900">
+        <div className="flex w-max marquee-lane gap-8 font-display text-[7rem] lg:text-[10rem] font-black uppercase tracking-tighter text-slate-900">
           <span>
             Solutions // Permanent Staffing // Executive Search // SOW Pods // HR Advisory //
           </span>
@@ -422,9 +427,6 @@ export function Services() {
             copy="End-to-end recruitment capabilities, agile staffing models, and strategic HR advisory tailored for high-growth enterprises and industry leaders."
           />
           <div className="flex items-center gap-3 shrink-0 self-start lg:self-end">
-            <span className="hidden sm:inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 shadow-sm">
-              <Sparkles className="h-3.5 w-3.5 text-brand" /> 5 Core Service Delivery Pods
-            </span>
             <CtaLink href="https://www.venushiring.ca/contact" variant="outline" size="lg">
               Talk to a consultant
             </CtaLink>
@@ -474,10 +476,6 @@ export function Services() {
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <span className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.14em] text-white backdrop-blur-md">
                     {item.tag}
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 rounded-full border border-brand/40 bg-brand/20 px-3.5 py-1.5 text-xs font-semibold text-white backdrop-blur-md">
-                    <Sparkles className="h-3.5 w-3.5 text-brand" />
-                    {item.metric}
                   </span>
                 </div>
 
@@ -783,7 +781,7 @@ export function Industries() {
   return (
     <section
       id="industries"
-      className="relative isolate overflow-hidden bg-ink py-24 border-b border-ink-line"
+      className="relative isolate overflow-hidden bg-ink section-padding border-b border-ink-line"
       aria-label="Industries we serve"
     >
       {/* High-tech ambient background glow & mesh grid */}
@@ -953,7 +951,7 @@ export function Process() {
   return (
     <section
       id="process"
-      className="relative overflow-hidden border-b border-border bg-porcelain py-24"
+      className="relative overflow-hidden border-b border-border bg-porcelain section-padding"
     >
       {/* Background aesthetics */}
       <div
@@ -1199,7 +1197,7 @@ export function Stats() {
   }, []);
 
   return (
-    <section className="section-curve relative -mt-8 overflow-hidden border-b border-border bg-porcelain py-24">
+    <section className="section-curve relative -mt-8 overflow-hidden border-b border-border bg-porcelain section-padding">
       <div
         className="pointer-events-none absolute inset-0 -z-10 mesh-light opacity-80"
         aria-hidden

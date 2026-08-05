@@ -64,7 +64,7 @@ export function Testimonials() {
   const go = (next: number) => setIndex((next + QUOTES.length) % QUOTES.length);
 
   return (
-    <section className="relative overflow-hidden border-b border-border bg-background py-24">
+    <section className="relative overflow-hidden border-b border-border bg-background section-padding">
       <div
         className="pointer-events-none absolute inset-0 -z-10 mesh-light opacity-70"
         aria-hidden
@@ -200,7 +200,7 @@ export function Insights() {
   return (
     <section
       id="insights"
-      className="section-curve relative -mt-8 overflow-hidden border-b border-border bg-porcelain py-24"
+      className="section-curve relative -mt-8 overflow-hidden border-b border-border bg-porcelain section-padding"
     >
       <div
         className="pointer-events-none absolute inset-0 -z-10 mesh-light opacity-80"
@@ -285,56 +285,92 @@ export function Insights() {
 
 const FAQS = [
   {
-    q: "How quickly can you present candidates?",
-    a: "For most roles you receive a calibrated shortlist within five business days of the discovery session. Specialist and executive searches typically run two to three weeks.",
+    q: "How quickly can you present qualified candidates?",
+    a: "For most standard and specialized roles, you receive a calibrated shortlist of pre-screened candidates within 5 business days of our initial discovery session. Complex executive or niche technical searches typically take 2 to 3 weeks.",
   },
   {
-    q: "Do you support international and work-permit hiring?",
-    a: "Yes. We regularly place internationally trained professionals and guide employers through LMIA, work-permit and PR-pathway considerations alongside our Canadian sourcing.",
+    q: "Do you support international hiring and Canadian work-permit pathways?",
+    a: "Yes. We regularly source internationally trained professionals and guide employers through LMIA applications, work-permit transitions, and PR-pathway considerations alongside our domestic Canadian talent pools.",
   },
   {
-    q: "What guarantees do you offer?",
-    a: "Permanent placements carry a written replacement guarantee. If a hire does not work out inside the agreed period, we restart the search at no additional fee.",
+    q: "What placement guarantees do you provide?",
+    a: "All permanent placements carry a written replacement guarantee. If a hire does not work out inside the agreed period, we restart the search at zero additional fee.",
   },
   {
-    q: "Which industries do you specialize in?",
-    a: "Finance and accounting, technology, automotive and EV, aerospace, manufacturing, skilled trades and corporate functions — across Canada and the US Midwest.",
+    q: "Which industries and sectors do you specialize in?",
+    a: "We specialize in Finance & Accounting, Technology, Automotive & EV, Aerospace, Advanced Manufacturing, Skilled Trades, and Executive Leadership across Canada and the US Midwest.",
   },
   {
-    q: "Can you act as our HR team?",
-    a: "Our fractional HR and advisory practice provides interim HR leadership for workforce planning, compliance, policy and engagement without adding permanent overhead.",
+    q: "Can Venus Consultancy function as our fractional HR department?",
+    a: "Our fractional HR and advisory practice provides interim HR leadership for workforce planning, compliance frameworks, policy drafting, and team scaling without adding permanent overhead.",
+  },
+  {
+    q: "What is the difference between direct placement and SOW project pods?",
+    a: "Direct placement focuses on sourcing full-time employees for your internal payroll. SOW (Statement of Work) pods deploy specialized, managed teams committed to specific project deliverables and milestones under a fixed budget.",
+  },
+  {
+    q: "How do you screen and vet candidates before presenting them?",
+    a: "Every candidate undergoes a multi-stage vetting process including structured technical interviews, behavioral evaluations, credential verification, and deep reference checks tailored to your technical requirements.",
+  },
+  {
+    q: "What are your recruitment fee structures and engagement options?",
+    a: "We offer transparent contingency pricing for standard placements, retained search structures for executive roles, and milestone-based pricing for SOW delivery pods.",
   },
 ];
 
 export function Faq() {
-  const [open, setOpen] = useState<number | null>(null);
+  const [open, setOpen] = useState<number | null>(0);
 
   return (
     <section
       id="faq"
-      className="relative overflow-hidden border-b border-border bg-background py-24"
+      className="relative border-b border-border bg-background section-padding"
     >
       <div
         className="pointer-events-none absolute inset-0 -z-10 mesh-light opacity-60"
         aria-hidden
       />
-      <div className="shell relative grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
-        <SectionHeading
-          title="Answers before you book the call"
-          copy="Still deciding? Here is what employers and candidates ask us most often."
-        />
+      <div
+        className="pointer-events-none absolute -left-32 top-1/3 -z-10 h-96 w-96 rounded-full bg-brand/10 blur-[140px]"
+        aria-hidden
+      />
 
-        <div className="flex flex-col gap-3">
+      <div className="shell relative grid gap-12 lg:grid-cols-[0.88fr_1.12fr] lg:gap-16 items-start">
+        {/* Left Column: Sticky Content */}
+        <div className="flex flex-col items-start gap-6 lg:sticky lg:top-28 lg:self-start">
+
+          {/* Main Display Heading */}
+          <h2 className="font-display text-4xl font-bold leading-[1.08] tracking-tight text-foreground sm:text-5xl lg:text-[3.5rem]">
+            Recruitment & hiring questions,{" "}
+            <span className="text-gradient-brand">answered.</span>
+          </h2>
+
+          {/* Subtitle */}
+          <p className="max-w-lg text-base leading-relaxed text-muted-foreground sm:text-lg">
+            Clear answers for teams comparing recruitment partners, shaping a hiring brief, or deciding how to begin.
+          </p>
+
+          {/* Down CTA Link (Capermint Style) */}
+          <a
+            href="https://www.venushiring.ca/contact"
+            className="group mt-2 inline-flex items-center gap-2 text-base font-semibold text-brand underline decoration-brand/30 decoration-2 underline-offset-8 transition-colors duration-300 hover:text-brand hover:decoration-brand"
+          >
+            Ask about your hiring needs
+            <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </a>
+        </div>
+
+        {/* Right Column: Scrollable List of FAQ Accordion Rows */}
+        <div className="flex flex-col border-t border-border/80">
           {FAQS.map((f, i) => {
             const isOpen = open === i;
+            const itemNum = (i + 1).toString().padStart(2, "0");
             return (
               <div
                 key={f.q}
                 className={cn(
-                  "overflow-hidden rounded-2xl glass-panel px-6 transition-[border-color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-105 hover:shadow-lg",
-                  isOpen
-                    ? "border-brand/45 shadow-[0_26px_60px_-40px_rgba(15,23,42,0.55)]"
-                    : "hover:-translate-y-0.5 hover:border-brand/30 hover:shadow-soft",
+                  "border-b border-border/80 transition-colors duration-300",
+                  isOpen ? "bg-card/40" : "hover:bg-card/20",
                 )}
               >
                 <h3>
@@ -342,22 +378,28 @@ export function Faq() {
                     type="button"
                     aria-expanded={isOpen}
                     onClick={() => setOpen(isOpen ? null : i)}
-                    className="flex w-full items-center justify-between gap-6 py-5 text-left"
+                    className="flex w-full items-center justify-between gap-6 py-6 text-left"
                   >
+                    <div className="flex items-start gap-4 min-w-0 pr-4">
+                      <span className="font-display text-xs sm:text-sm font-bold text-muted-foreground/60 tracking-wider pt-1 shrink-0">
+                        {itemNum}
+                      </span>
+                      <span
+                        className={cn(
+                          "text-base sm:text-lg font-bold leading-snug transition-colors duration-300",
+                          isOpen ? "text-brand" : "text-foreground group-hover:text-brand",
+                        )}
+                      >
+                        {f.q}
+                      </span>
+                    </div>
+
                     <span
                       className={cn(
-                        "text-base font-semibold transition-colors duration-300",
-                        isOpen ? "text-brand" : "text-foreground",
-                      )}
-                    >
-                      {f.q}
-                    </span>
-                    <span
-                      className={cn(
-                        "grid h-9 w-9 shrink-0 place-items-center rounded-full border transition-all duration-500 ease-out",
+                        "grid h-10 w-10 shrink-0 place-items-center rounded-full border transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
                         isOpen
-                          ? "rotate-180 border-transparent bg-primary text-primary-foreground"
-                          : "border-border text-muted-foreground",
+                          ? "rotate-180 border-transparent bg-primary text-primary-foreground shadow-brand"
+                          : "border-border/80 bg-card text-muted-foreground hover:border-brand/40 hover:text-foreground",
                       )}
                       aria-hidden
                     >
@@ -365,25 +407,20 @@ export function Faq() {
                     </span>
                   </button>
                 </h3>
+
                 <div
                   className={cn(
-                    "grid transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
-                    isOpen ? "grid-rows-[1fr] pb-6 opacity-100" : "grid-rows-[0fr] opacity-0",
+                    "grid transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
+                    isOpen
+                      ? "grid-rows-[1fr] pb-6 opacity-100"
+                      : "grid-rows-[0fr] opacity-0 pointer-events-none",
                   )}
-                  style={{
-                    transitionProperty: "grid-template-rows, opacity, padding-bottom",
-                  }}
                 >
-                  <p
-                    className="overflow-hidden pr-10 text-sm leading-relaxed text-muted-foreground"
-                    style={{
-                      opacity: isOpen ? 1 : 0,
-                      transform: isOpen ? "translateY(0)" : "translateY(-10px)",
-                      transition: "opacity 0.4s, transform 0.4s",
-                    }}
-                  >
-                    {f.a}
-                  </p>
+                  <div className="overflow-hidden pl-9 sm:pl-10 pr-6 sm:pr-12">
+                    <p className="text-sm sm:text-base leading-relaxed text-muted-foreground">
+                      {f.a}
+                    </p>
+                  </div>
                 </div>
               </div>
             );
@@ -401,7 +438,7 @@ export function CtaBanner() {
 
   return (
     <section
-      className="relative overflow-hidden bg-background py-20 lg:py-28"
+      className="relative overflow-hidden bg-background section-padding"
       aria-label="Get started"
     >
       {/* Background glow graphics */}

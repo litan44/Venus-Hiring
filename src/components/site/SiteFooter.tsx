@@ -50,7 +50,7 @@ export function SiteFooter() {
     <>
       {/* ── Office Locations Section (Website Deep Navy Blue Theme) ── */}
       <section
-        className="relative isolate overflow-hidden bg-ink py-20"
+        className="relative isolate overflow-hidden bg-ink section-padding"
         aria-label="Office locations"
       >
         <div
