@@ -1031,25 +1031,21 @@ export function Process() {
                   aria-hidden
                 />
 
-                {/* 1. Category Tag Badge - Top Left (Absolute Z-20) */}
-                <div className="absolute top-7 left-7 sm:top-9 sm:left-9 z-20">
+                {/* 1. Header (Category Badge on Left + Step Number on Right) - Absolute Z-30 */}
+                <div className="absolute top-6 left-6 right-6 sm:top-8 sm:left-8 sm:right-8 z-30 flex items-center justify-between pointer-events-none">
                   <span
                     className={cn(
-                      "inline-flex items-center rounded-full border px-4 py-1.5 text-xs font-bold uppercase tracking-[0.18em] transition-all duration-500 backdrop-blur-md shadow-sm",
+                      "inline-flex items-center rounded-full border px-3 py-1 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.16em] transition-all duration-500 backdrop-blur-md shadow-sm truncate max-w-[calc(100%-48px)]",
                       isActive
                         ? "border-white bg-white text-brand"
-                        : "border-white/40 bg-black/40 text-white group-hover:border-white group-hover:bg-white group-hover:text-brand",
+                        : "border-white/30 bg-black/50 text-white group-hover:border-white group-hover:bg-white group-hover:text-brand",
                     )}
                   >
                     {s.tag}
                   </span>
-                </div>
-
-                {/* 2. Step Number 01-05 - Top Right (Absolute Z-20) */}
-                <div className="absolute top-7 right-7 sm:top-9 sm:right-9 z-20">
                   <span
                     className={cn(
-                      "font-mono text-3xl sm:text-4xl font-black tracking-tight transition-all duration-500",
+                      "font-mono text-2xl sm:text-3xl font-black tracking-tight transition-all duration-500 shrink-0 ml-2 drop-shadow-md",
                       isActive ? "text-white opacity-100" : "text-white/80 opacity-90 group-hover:opacity-100",
                     )}
                   >
@@ -1057,63 +1053,49 @@ export function Process() {
                   </span>
                 </div>
 
-                {/* 3. Title (Vertical in Closed state / Horizontal in Open state) */}
-                <div className="my-auto py-12 flex items-center justify-center lg:justify-start z-10">
-                  <h3
+                {/* 2. Arrow Button - Absolutely Positioned Bottom Right (Z-30) */}
+                <div className="absolute bottom-6 right-6 sm:bottom-8 sm:right-8 z-30 pointer-events-none">
+                  <span
                     className={cn(
-                      "font-bold leading-tight text-white transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] text-2xl sm:text-3xl",
+                      "inline-flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-full transition-all duration-500 ease-out backdrop-blur-md shadow-lg",
                       isActive
-                        ? "lg:[writing-mode:horizontal-tb] lg:rotate-0 lg:whitespace-normal lg:text-3xl"
-                        : "lg:[writing-mode:vertical-rl] lg:rotate-180 lg:whitespace-nowrap lg:tracking-wide lg:text-2.5xl",
+                        ? "bg-white text-brand scale-110"
+                        : "bg-white/25 text-white group-hover:bg-white group-hover:text-brand group-hover:scale-110",
                     )}
                   >
-                    {s.title}
-                  </h3>
+                    <ArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </span>
                 </div>
 
-                {/* 4. Bottom Content Area */}
-                <div className="relative z-10 w-full pt-4">
-                  {/* Description Copy - ONLY Shown When Open */}
-                  <div
-                    className={cn(
-                      "grid transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
-                      isActive
-                        ? "grid-rows-[1fr] opacity-100 mb-4"
-                        : "grid-rows-[0fr] opacity-0 pointer-events-none",
-                    )}
-                  >
-                    <p className="overflow-hidden text-sm leading-relaxed text-white/95">
-                      {s.copy}
-                    </p>
+                {/* 3. Main Card Body Safe Container (pt-20 pb-20 prevents header/footer collisions) */}
+                <div className="relative z-10 flex h-full flex-col justify-between pt-14 pb-12 sm:pt-16 sm:pb-14">
+                  {/* Vertical Title (Closed) / Horizontal Title (Open) */}
+                  <div className="my-auto flex items-center justify-center lg:justify-start">
+                    <h3
+                      className={cn(
+                        "font-bold leading-tight text-white transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] text-2xl sm:text-3xl drop-shadow-sm",
+                        isActive
+                          ? "lg:[writing-mode:horizontal-tb] lg:rotate-0 lg:whitespace-normal lg:text-3xl"
+                          : "lg:[writing-mode:vertical-rl] lg:rotate-180 lg:whitespace-nowrap lg:tracking-wide lg:text-2.5xl",
+                      )}
+                    >
+                      {s.title}
+                    </h3>
                   </div>
 
-                  {/* Phase Label & Bottom-Right Arrow Container */}
-                  <div className="flex items-center justify-between min-h-[44px]">
-                    {/* Phase Label - ONLY Rendered When Card Is Open */}
-                    {isActive ? (
-                      <div className="flex items-center gap-3 pt-3 border-t border-white/30 w-full transition-all duration-500">
+                  {/* Open State Only Content: Description & Phase Label */}
+                  {isActive && (
+                    <div className="mt-4 transition-all duration-500 pr-12">
+                      <p className="text-sm leading-relaxed text-white/95 mb-4">
+                        {s.copy}
+                      </p>
+                      <div className="pt-3 border-t border-white/30">
                         <span className="text-xs font-bold uppercase tracking-wider text-white">
                           Phase {s.n}
                         </span>
                       </div>
-                    ) : (
-                      <div className="w-full" />
-                    )}
-
-                    {/* 5. Arrow Button - Absolutely Positioned Bottom Right (Z-20) */}
-                    <div className="absolute bottom-0 right-0 z-20">
-                      <span
-                        className={cn(
-                          "inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition-all duration-500 ease-out backdrop-blur-md",
-                          isActive
-                            ? "bg-white text-brand shadow-lg scale-110"
-                            : "bg-white/20 text-white group-hover:bg-white group-hover:text-brand group-hover:scale-110",
-                        )}
-                      >
-                        <ArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                      </span>
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
             );
