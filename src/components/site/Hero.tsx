@@ -137,10 +137,10 @@ export function Hero() {
 
       {/* Scroll indicator */}
       <a
-        href="#why"
+        href="#services"
         onClick={(e) => {
           e.preventDefault();
-          scrollToSection("why", { offset: 70 });
+          scrollToSection("services", { offset: 70 });
         }}
         aria-label="Scroll to content"
         className="absolute bottom-7 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-ink-foreground/60 transition-colors duration-300 hover:text-ink-foreground sm:flex"
