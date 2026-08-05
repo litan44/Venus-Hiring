@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react";
+import { ArrowUpRight, ChevronDown, ChevronRight, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import logo from "@/assets/venus-logo.png";
 import { scrollToSection } from "@/lib/scroll";
 
 const NAV = [
   { label: "Home", href: "#top" },
-  { label: "Services", href: "#services" },
-  { label: "Industries", href: "#industries" },
+  { label: "Services", href: "#services", hasMega: true },
+  { label: "Industries", href: "#industries", hasMega: true },
   { label: "Blog", href: "#insights" },
   { label: "FAQ", href: "#faq" },
   { label: "Contact Us", href: "#contact" },
@@ -16,11 +17,151 @@ const SECTION_IDS = NAV.filter((item) => item.href.startsWith("#")).map((item) =
   item.href.slice(1),
 );
 
+/* ---------------- Mega Menu Data (Capermint Replica) ---------------- */
+
+const SERVICES_MEGA = {
+  categories: [
+    {
+      id: "perm",
+      name: "Permanent Placement",
+      description: "Direct hire & executive search across Canada & US",
+      items: [
+        { title: "Executive Search", desc: "C-Suite & VP search with guaranteed retention", href: "#services" },
+        { title: "Direct Hire Staffing", desc: "Permanent full-time specialized talent", href: "#services" },
+        { title: "Technical Leadership", desc: "Engineering Directors & Product VPs", href: "#services" },
+        { title: "Senior Professionals", desc: "CPAs, Financial Controllers & Senior Devs", href: "#services" },
+        { title: "Skilled Trades & Ops", desc: "Plant Directors & Industrial Specialists", href: "#services" },
+      ],
+    },
+    {
+      id: "contract",
+      name: "Contract & Temporary",
+      description: "Agile staffing and project-based talent solutions",
+      items: [
+        { title: "Project Staffing", desc: "Short or long-term specialized contractors", href: "#services" },
+        { title: "Interim Leadership", desc: "Interim Executives, CFOs & CTOs", href: "#services" },
+        { title: "Turnkey Payroll & EOR", desc: "Full payroll compliance across North America", href: "#services" },
+        { title: "Scaleup Talent Pods", desc: "Dedicated team augmentation for rapid scale", href: "#services" },
+      ],
+    },
+    {
+      id: "advisory",
+      name: "HR & Strategic Advisory",
+      description: "Interim HR leadership & organizational planning",
+      items: [
+        { title: "Compliance Audits", desc: "Canadian & US employment law frameworks", href: "#services" },
+        { title: "Workforce Planning", desc: "Organizational design & headcount forecasting", href: "#services" },
+        { title: "Compensation Benchmarking", desc: "Market rate analysis & incentive plans", href: "#services" },
+        { title: "Retention Programs", desc: "Structured onboarding & 90-day retention checks", href: "#services" },
+      ],
+    },
+    {
+      id: "sow",
+      name: "Statement of Work (SOW)",
+      description: "Outcome-based team delivery with strict SLAs",
+      items: [
+        { title: "Outcome SLAs", desc: "Fixed-budget deliverable commitments", href: "#services" },
+        { title: "Agile Project Pods", desc: "Managed engineering & product pods", href: "#services" },
+        { title: "Fixed Budget Delivery", desc: "Predictable project cost structures", href: "#services" },
+        { title: "Turnkey Execution", desc: "End-to-end milestone accountability", href: "#services" },
+      ],
+    },
+  ],
+  promo: {
+    title: "Hire Top 1% Canadian Talent across Canada & USA",
+    copy: "Calibrated shortlists delivered in under 14 days with our 98.4% retention guarantee.",
+    ctaText: "Book a Call →",
+    href: "#contact",
+    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=800&fit=crop&auto=format",
+  },
+  bottomBanner: {
+    title: "Let's grow together, Partner with us!",
+    ctaText: "REQUEST FREE QUOTE",
+    href: "#contact",
+  },
+};
+
+const INDUSTRIES_MEGA = {
+  categories: [
+    {
+      id: "tech",
+      name: "Technology & Software",
+      description: "AI, Cloud, Engineering & Digital Transformation",
+      items: [
+        { title: "Full Stack & Frontend", desc: "React, Node, Python & Cloud Architects", href: "#industries" },
+        { title: "AI/ML & Data Science", desc: "Machine Learning & AI Infrastructure Leads", href: "#industries" },
+        { title: "DevOps & Cybersecurity", desc: "SREs, Cloud Security & CI/CD Experts", href: "#industries" },
+        { title: "Tech Leadership", desc: "VPs of Tech, CTOs & Product Directors", href: "#industries" },
+      ],
+    },
+    {
+      id: "finance",
+      name: "Finance & Accounting",
+      description: "Corporate Finance, CPAs & Fiscal Management",
+      items: [
+        { title: "Financial Controllers", desc: "Senior Controllers & Corporate Treasurers", href: "#industries" },
+        { title: "CPAs & Audit Leads", desc: "Public & Corporate Chartered Accountants", href: "#industries" },
+        { title: "FP&A & Financial Analysts", desc: "Strategic Financial Planning & Analytics", href: "#industries" },
+        { title: "CFO Executive Search", desc: "Retained search for C-Suite Finance Leaders", href: "#industries" },
+      ],
+    },
+    {
+      id: "auto",
+      name: "Automotive & EV",
+      description: "EV Battery Tech, Plant Ops & Mobility",
+      items: [
+        { title: "EV Battery Architecture", desc: "Cell Design & Battery Management Systems", href: "#industries" },
+        { title: "Plant & Operations Managers", desc: "Automotive Plant Directors & Lean Leads", href: "#industries" },
+        { title: "Autonomous Systems", desc: "ADAS, Sensor Fusion & Vehicle Software", href: "#industries" },
+        { title: "Supply Chain & Quality", desc: "TS16949 Quality & Global Logistics Leads", href: "#industries" },
+      ],
+    },
+    {
+      id: "aerospace",
+      name: "Aerospace & Engineering",
+      description: "Avionics, Flight Systems & Defense",
+      items: [
+        { title: "Avionics & Flight Systems", desc: "Hardware & Firmware Aerospace Engineers", href: "#industries" },
+        { title: "Structural & Stress Analysts", desc: "Structural & FEA Thermal Engineers", href: "#industries" },
+        { title: "Compliance & Regulatory Leads", desc: "FAA & Transport Canada Certified Pros", href: "#industries" },
+        { title: "Flight Test Engineers", desc: "Systems Integration & Flight Testing Leads", href: "#industries" },
+      ],
+    },
+  ],
+  promo: {
+    title: "Specialized Industry Headhunters across Canada & USA",
+    copy: "Deep sector expertise and pre-screened candidate pipelines ready to deploy.",
+    ctaText: "Explore Industries →",
+    href: "#industries",
+    image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=600&h=800&fit=crop&auto=format",
+  },
+  bottomBanner: {
+    title: "Need specialized talent for your sector?",
+    ctaText: "GET CANDIDATE SHORTLIST",
+    href: "#contact",
+  },
+};
+
 export function SiteNav() {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState<string | null>("top");
   const [open, setOpen] = useState(false);
+  const [activeMegaMenu, setActiveMegaMenu] = useState<"services" | "industries" | null>(null);
+  const [activeServiceIdx, setActiveServiceIdx] = useState(0);
+  const [activeIndustryIdx, setActiveIndustryIdx] = useState(0);
   const isNavigatingRef = useRef(false);
+  const leaveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleMenuEnter = (menu: "services" | "industries") => {
+    if (leaveTimeoutRef.current) clearTimeout(leaveTimeoutRef.current);
+    setActiveMegaMenu(menu);
+  };
+
+  const handleMenuLeave = () => {
+    leaveTimeoutRef.current = setTimeout(() => {
+      setActiveMegaMenu(null);
+    }, 200);
+  };
 
   // Throttled scroll state listener (only triggers re-renders on boundary change)
   useEffect(() => {
@@ -104,7 +245,7 @@ export function SiteNav() {
     });
   };
 
-  const light = !scrolled && !open;
+  const light = !scrolled && !open && !activeMegaMenu;
 
   return (
     <>
@@ -115,10 +256,11 @@ export function SiteNav() {
         Skip to main content
       </a>
       <header
+        onMouseLeave={handleMenuLeave}
         className={cn(
           "nav-drop fixed inset-x-0 top-0 z-50 transition-[padding,background-color,box-shadow,backdrop-filter] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
-          scrolled
-            ? "border-b border-border/70 bg-background/75 py-2 shadow-[0_10px_40px_-30px_rgba(15,23,42,0.6)] backdrop-blur-xl"
+          scrolled || activeMegaMenu
+            ? "border-b border-border/70 bg-background/90 py-2 shadow-[0_10px_40px_-30px_rgba(15,23,42,0.6)] backdrop-blur-xl"
             : "border-b border-transparent bg-transparent py-4",
         )}
       >
@@ -166,29 +308,56 @@ export function SiteNav() {
                 {NAV.map((item) => {
                   const targetId = item.href.startsWith("#") ? item.href.slice(1) : "";
                   const isActive = active === targetId;
+                  const isMegaActive =
+                    (item.label === "Services" && activeMegaMenu === "services") ||
+                    (item.label === "Industries" && activeMegaMenu === "industries");
+
                   return (
-                    <li key={item.label}>
+                    <li
+                      key={item.label}
+                      onMouseEnter={() => {
+                        if (item.label === "Services") handleMenuEnter("services");
+                        else if (item.label === "Industries") handleMenuEnter("industries");
+                        else {
+                          if (leaveTimeoutRef.current) clearTimeout(leaveTimeoutRef.current);
+                          setActiveMegaMenu(null);
+                        }
+                      }}
+                    >
                       <a
                         href={item.href}
-                        onClick={(e) => handleNavClick(item.href, e)}
+                        onClick={(e) => {
+                          handleNavClick(item.href, e);
+                          setActiveMegaMenu(null);
+                        }}
                         aria-current={isActive ? "true" : undefined}
                         className={cn(
-                          "group relative inline-block py-1 text-[0.95rem] tracking-[0.005em] transition-colors duration-300 ease-out",
+                          "group relative inline-flex items-center gap-1.5 py-1 text-[0.95rem] tracking-[0.005em] transition-colors duration-300 ease-out",
                           light
                             ? isActive
                               ? "font-semibold text-ink-foreground"
                               : "font-medium text-ink-foreground/70 hover:text-ink-foreground"
-                            : isActive
+                            : isActive || isMegaActive
                               ? "font-semibold text-brand"
                               : "font-medium text-muted-foreground hover:text-brand",
                         )}
                       >
                         {item.label}
+                        {item.hasMega && (
+                          <ChevronDown
+                            className={cn(
+                              "h-3.5 w-3.5 transition-transform duration-300",
+                              isMegaActive
+                                ? "rotate-180 text-brand"
+                                : "text-muted-foreground group-hover:text-brand",
+                            )}
+                          />
+                        )}
                         <span
                           aria-hidden
                           className={cn(
                             "pointer-events-none absolute -bottom-1 left-0 h-[2px] w-full origin-center rounded-full bg-brand transition-transform duration-300 ease-out",
-                            isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100",
+                            isActive || isMegaActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100",
                           )}
                         />
                       </a>
@@ -260,6 +429,160 @@ export function SiteNav() {
           </div>
         </div>
 
+        {/* Capermint Replica Ultra-Premium Mega Menu Dropdown */}
+        {activeMegaMenu && (
+          <div
+            onMouseEnter={() => {
+              if (leaveTimeoutRef.current) clearTimeout(leaveTimeoutRef.current);
+            }}
+            onMouseLeave={handleMenuLeave}
+            className="absolute left-1/2 top-full -translate-x-1/2 w-full max-w-6xl pt-3 px-4 transition-all duration-300 ease-out z-50 hidden lg:block"
+          >
+            <div className="overflow-hidden rounded-[2.25rem] border border-border/80 bg-background/95 backdrop-blur-2xl shadow-[0_30px_90px_-20px_rgba(15,23,42,0.35)] transition-all duration-300 text-foreground">
+              {/* Upper 3-Column Content Grid */}
+              <div className="grid grid-cols-12 p-6 sm:p-8 gap-8 items-stretch">
+                {/* Left Column: Sub-Categories List */}
+                <div className="col-span-4 flex flex-col gap-2 border-r border-border/60 pr-6">
+                  <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-brand mb-2">
+                    {activeMegaMenu === "services" ? "Service Categories" : "Industry Sectors"}
+                  </span>
+                  {(activeMegaMenu === "services" ? SERVICES_MEGA : INDUSTRIES_MEGA).categories.map(
+                    (cat, idx) => {
+                      const selected =
+                        (activeMegaMenu === "services" ? activeServiceIdx : activeIndustryIdx) === idx;
+                      return (
+                        <button
+                          key={cat.id}
+                          type="button"
+                          onMouseEnter={() => {
+                            if (activeMegaMenu === "services") setActiveServiceIdx(idx);
+                            else setActiveIndustryIdx(idx);
+                          }}
+                          onClick={() => {
+                            handleNavClick(
+                              activeMegaMenu === "services" ? "#services" : "#industries"
+                            );
+                            setActiveMegaMenu(null);
+                          }}
+                          className={cn(
+                            "group flex items-center justify-between rounded-2xl p-3.5 text-left transition-all duration-200",
+                            selected
+                              ? "bg-brand/10 text-brand font-bold shadow-sm"
+                              : "text-foreground hover:bg-card hover:text-brand",
+                          )}
+                        >
+                          <div>
+                            <p className="text-sm font-semibold">{cat.name}</p>
+                            <p className="text-[11px] text-muted-foreground line-clamp-1">
+                              {cat.description}
+                            </p>
+                          </div>
+                          <ChevronRight
+                            className={cn(
+                              "h-4 w-4 shrink-0 transition-transform duration-200",
+                              selected
+                                ? "translate-x-1 text-brand"
+                                : "text-muted-foreground group-hover:translate-x-1 group-hover:text-brand",
+                            )}
+                          />
+                        </button>
+                      );
+                    }
+                  )}
+                </div>
+
+                {/* Middle Column: Active Category Specialized Sub-Items */}
+                <div className="col-span-5 flex flex-col gap-3 pr-2">
+                  <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-brand mb-2">
+                    Specialized Offerings & Roles
+                  </span>
+                  <div className="grid grid-cols-1 gap-2.5">
+                    {(
+                      (activeMegaMenu === "services" ? SERVICES_MEGA : INDUSTRIES_MEGA).categories[
+                        activeMegaMenu === "services" ? activeServiceIdx : activeIndustryIdx
+                      ] || (activeMegaMenu === "services" ? SERVICES_MEGA : INDUSTRIES_MEGA).categories[0]
+                    ).items.map((subItem) => (
+                      <a
+                        key={subItem.title}
+                        href={subItem.href}
+                        onClick={(e) => {
+                          handleNavClick(subItem.href, e);
+                          setActiveMegaMenu(null);
+                        }}
+                        className="group flex flex-col rounded-xl p-3 border border-border/50 bg-background/50 hover:border-brand/40 hover:bg-card transition-all duration-200"
+                      >
+                        <div className="flex items-center justify-between">
+                          <p className="text-xs font-bold text-foreground group-hover:text-brand transition-colors">
+                            {subItem.title}
+                          </p>
+                          <ArrowUpRight className="h-3.5 w-3.5 text-muted-foreground opacity-0 group-hover:opacity-100 group-hover:text-brand group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+                        </div>
+                        <p className="text-[11px] text-muted-foreground mt-0.5">{subItem.desc}</p>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Right Column: Featured Promo Graphic Card */}
+                <div className="col-span-3">
+                  {(() => {
+                    const promo = (activeMegaMenu === "services" ? SERVICES_MEGA : INDUSTRIES_MEGA).promo;
+                    return (
+                      <div className="relative h-full flex flex-col justify-between overflow-hidden rounded-2xl border border-border/80 bg-ink p-5 text-white shadow-md">
+                        <img
+                          src={promo.image}
+                          alt={promo.title}
+                          className="pointer-events-none absolute inset-0 -z-20 h-full w-full object-cover opacity-35"
+                        />
+                        <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t from-ink via-ink/80 to-transparent" />
+                        <div>
+                          <span className="inline-flex items-center gap-1.5 rounded-full bg-brand/20 border border-brand/40 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-brand">
+                            <Sparkles className="h-3 w-3" /> Featured
+                          </span>
+                          <h4 className="mt-3 text-sm font-bold leading-snug">{promo.title}</h4>
+                          <p className="mt-2 text-[11px] text-white/80 leading-relaxed">{promo.copy}</p>
+                        </div>
+                        <div className="mt-4 pt-3 border-t border-white/20">
+                          <a
+                            href={promo.href}
+                            onClick={(e) => {
+                              handleNavClick(promo.href, e);
+                              setActiveMegaMenu(null);
+                            }}
+                            className="inline-flex items-center gap-1.5 rounded-xl bg-brand px-4 py-2 text-xs font-bold text-white shadow-brand hover:brightness-110 transition-all"
+                          >
+                            {promo.ctaText}
+                          </a>
+                        </div>
+                      </div>
+                    );
+                  })()}
+                </div>
+              </div>
+
+              {/* Bottom Full-Width Gradient Banner Bar (Capermint Replica) */}
+              <div className="flex items-center justify-between bg-gradient-to-r from-brand via-brand/90 to-brand/70 px-8 py-4 text-white">
+                <p className="font-display text-lg font-bold tracking-tight">
+                  {(activeMegaMenu === "services" ? SERVICES_MEGA : INDUSTRIES_MEGA).bottomBanner.title}
+                </p>
+                <a
+                  href={(activeMegaMenu === "services" ? SERVICES_MEGA : INDUSTRIES_MEGA).bottomBanner.href}
+                  onClick={(e) => {
+                    handleNavClick(
+                      (activeMegaMenu === "services" ? SERVICES_MEGA : INDUSTRIES_MEGA).bottomBanner.href,
+                      e
+                    );
+                    setActiveMegaMenu(null);
+                  }}
+                  className="rounded-full bg-black px-6 py-2.5 text-xs font-extrabold uppercase tracking-wider text-white shadow-xl hover:bg-slate-950 hover:scale-105 transition-all"
+                >
+                  {(activeMegaMenu === "services" ? SERVICES_MEGA : INDUSTRIES_MEGA).bottomBanner.ctaText}
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Mobile fullscreen menu */}
         <div
           id="mobile-nav"
@@ -302,7 +625,7 @@ export function SiteNav() {
               <a
                 href="https://www.venushiring.ca/find-jobs"
                 tabIndex={open ? 0 : -1}
-                className="inline-flex min-h-12 items-center justify-center rounded-full border border-border bg-card px-7 text-[0.95rem] font-semibold text-foreground"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-border bg-card px-7 text-[0.95rem] font-medium text-foreground"
               >
                 Find jobs
               </a>
