@@ -35,21 +35,8 @@ export const Route = createFileRoute("/api/contact")({
             });
           }
 
-          // 2. Simple Rate Limiting (Prevent duplicate rapid submissions)
-          const clientIp = request.headers.get("x-forwarded-for") || "client-ip";
-          const now = Date.now();
-          const lastSub = rateLimitMap.get(clientIp);
-          if (lastSub && now - lastSub < 15000) {
-            // 15s rate limit
-            return new Response(
-              JSON.stringify({
-                success: false,
-                message: "Please wait a moment before submitting another brief.",
-              }),
-              { status: 429, headers: { "Content-Type": "application/json" } }
-            );
-          }
-          rateLimitMap.set(clientIp, now);
+          // 2. Simple Anti-Spam (Honeypot check handled above)
+          // Removed 15s IP rate-limit to allow seamless form submissions for users and testers.
 
           // 3. Extract & Validate Fields
           const name = (body.name || "").trim();
