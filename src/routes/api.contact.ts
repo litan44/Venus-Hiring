@@ -103,13 +103,13 @@ export const Route = createFileRoute("/api/contact")({
           const safeBrief = sanitize(brief).replace(/\n/g, "<br/>");
           const submissionDate = new Date().toUTCString();
 
-          // 5. Environment Variables & Fallback Defaults
-          const host = process.env.SMTP_HOST || "smtp.zoho.com";
+          // 5. Environment Variables & Verified Host Defaults (smtppro.zoho.in)
+          const host = process.env.SMTP_HOST || "smtppro.zoho.in";
           const port = parseInt(process.env.SMTP_PORT || "465", 10);
           const secure = process.env.SMTP_SECURE !== "false";
-          const user = process.env.SMTP_USER || "info@venushiring.ca";
+          const user = process.env.SMTP_USER || "jivan@venushiring.com";
           const pass = process.env.SMTP_PASSWORD || "8pySPQs5G1Gw";
-          const from = process.env.SMTP_FROM || user || "info@venushiring.ca";
+          const from = process.env.SMTP_FROM || user || "jivan@venushiring.com";
           const receiver = process.env.CONTACT_RECEIVER_EMAIL || "jivan@venushiring.com";
 
           // Log server-side record of submission so no lead is ever lost
