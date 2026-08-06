@@ -123,18 +123,18 @@ export const Route = createFileRoute("/api/contact")({
           const user = process.env.SMTP_USER;
           const pass = process.env.SMTP_PASSWORD;
           const from = process.env.SMTP_FROM || user;
-          const receiver = process.env.CONTACT_RECEIVER_EMAIL || user;
+          const receiver = process.env.CONTACT_RECEIVER_EMAIL || "jivan@venushiring.com";
 
           if (!user || !pass) {
-            console.warn(
-              "[Venus SMTP Notice] SMTP_USER or SMTP_PASSWORD environment variables are missing. Submission recorded locally."
+            console.error(
+              "[Venus SMTP Error] SMTP_USER or SMTP_PASSWORD environment variables are missing."
             );
             return new Response(
               JSON.stringify({
-                success: true,
-                message: "Brief Received (Demo Mode - SMTP credentials pending configuration).",
+                success: false,
+                message: "Unable to submit your brief right now. Please try again.",
               }),
-              { status: 200, headers: { "Content-Type": "application/json" } }
+              { status: 500, headers: { "Content-Type": "application/json" } }
             );
           }
 
@@ -149,7 +149,7 @@ export const Route = createFileRoute("/api/contact")({
             },
           });
 
-          // 7. Email #1: Send Notification to Venus Consultancy Team
+          // 7. Email #1: Send Notification to Venus Consultancy Team (Recipient: jivan@venushiring.com)
           const venusMailOptions = {
             from: `"${safeCompany} Inquiry" <${from}>`,
             to: receiver,
@@ -267,29 +267,31 @@ export const Route = createFileRoute("/api/contact")({
             `,
           };
 
-          // Send both emails in parallel
-          await Promise.all([
-            transporter.sendMail(venusMailOptions),
-            transporter.sendMail(confirmationMailOptions),
-          ]);
+          // Send emails over SMTP
+          const venusInfo = await transporter.sendMail(venusMailOptions);
+          await transporter.sendMail(confirmationMailOptions);
+
+          // Verify recipient delivery
+          if (!venusInfo.accepted || !venusInfo.accepted.length) {
+            throw new Error("SMTP server rejected recipient address.");
+          }
 
           return new Response(
             JSON.stringify({
               success: true,
-              message: "Thank you. Your hiring brief has been successfully submitted.",
+              message: "Brief Received",
             }),
             { status: 200, headers: { "Content-Type": "application/json" } }
           );
         } catch (err: unknown) {
           // Log error server-side WITHOUT exposing SMTP password
           const errorMessage = err instanceof Error ? err.message : String(err);
-          console.error("[Venus SMTP Server Error]:", errorMessage);
+          console.error("[Venus SMTP Delivery Error]:", errorMessage);
 
           return new Response(
             JSON.stringify({
               success: false,
-              message:
-                "Something went wrong while submitting your brief. Please try again in a moment.",
+              message: "Unable to submit your brief right now. Please try again.",
             }),
             { status: 500, headers: { "Content-Type": "application/json" } }
           );
