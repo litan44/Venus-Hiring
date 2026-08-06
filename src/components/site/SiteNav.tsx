@@ -512,60 +512,69 @@ export function SiteNav() {
           >
             <div className="overflow-hidden rounded-[2.25rem] border border-border/80 bg-background/95 backdrop-blur-2xl shadow-[0_30px_90px_-20px_rgba(15,23,42,0.35)] transition-all duration-300 text-foreground">
               {/* Upper 3-Column Content Grid */}
-              <div className="grid grid-cols-12 p-6 sm:p-7 gap-6 items-stretch">
-                {/* Left Column: Sub-Categories List */}
-                <div className="col-span-3 flex flex-col gap-1.5 border-r border-border/60 pr-5">
+              <div className="grid grid-cols-12 p-5 sm:p-6 gap-6 items-stretch min-h-[270px]">
+                {/* Left Column: Sub-Categories List (Target ~25-28% Width) */}
+                <div className="col-span-3 flex flex-col justify-start border-r border-border/60 pr-5">
                   <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-brand mb-2">
                     {activeMegaMenu === "services" ? "Service Categories" : "Industry Sectors"}
                   </span>
-                  {(activeMegaMenu === "services" ? SERVICES_MEGA : INDUSTRIES_MEGA).categories.map(
-                    (cat, idx) => {
-                      const selected =
-                        (activeMegaMenu === "services" ? activeServiceIdx : activeIndustryIdx) === idx;
-                      return (
-                        <button
-                          key={cat.id}
-                          type="button"
-                          onMouseEnter={() => {
-                            if (activeMegaMenu === "services") setActiveServiceIdx(idx);
-                            else setActiveIndustryIdx(idx);
-                          }}
-                          onClick={() => {
-                            handleNavClick(
-                              activeMegaMenu === "services" ? "#services" : "#industries"
-                            );
-                            setActiveMegaMenu(null);
-                          }}
-                          className={cn(
-                            "group flex items-center justify-between rounded-xl p-2.5 text-left transition-all duration-200",
-                            selected
-                              ? "bg-brand/10 text-brand font-bold shadow-sm"
-                              : "text-foreground hover:bg-card hover:text-brand",
-                          )}
-                        >
-                          <div className="min-w-0 pr-1">
-                            <p className="text-xs font-semibold truncate">{cat.name}</p>
-                            <p className="text-[10px] text-muted-foreground line-clamp-1">
-                              {cat.description}
-                            </p>
-                          </div>
-                          <ChevronRight
+                  <div className="flex flex-col gap-1 justify-center h-full">
+                    {(activeMegaMenu === "services" ? SERVICES_MEGA : INDUSTRIES_MEGA).categories.map(
+                      (cat, idx) => {
+                        const selected =
+                          (activeMegaMenu === "services" ? activeServiceIdx : activeIndustryIdx) === idx;
+                        const isIndustries = activeMegaMenu === "industries";
+
+                        return (
+                          <button
+                            key={cat.id}
+                            type="button"
+                            onMouseEnter={() => {
+                              if (activeMegaMenu === "services") setActiveServiceIdx(idx);
+                              else setActiveIndustryIdx(idx);
+                            }}
+                            onClick={() => {
+                              handleNavClick(
+                                activeMegaMenu === "services" ? "#services" : "#industries"
+                              );
+                              setActiveMegaMenu(null);
+                            }}
                             className={cn(
-                              "h-3.5 w-3.5 shrink-0 transition-transform duration-200",
+                              "group flex items-center justify-between rounded-xl text-left transition-all duration-200",
+                              isIndustries ? "py-1.5 px-2.5" : "py-2.5 px-3",
                               selected
-                                ? "translate-x-1 text-brand"
-                                : "text-muted-foreground/60 group-hover:translate-x-1 group-hover:text-brand",
+                                ? "bg-brand/10 text-brand font-bold shadow-sm"
+                                : "text-foreground hover:bg-card hover:text-brand",
                             )}
-                          />
-                        </button>
-                      );
-                    }
-                  )}
+                          >
+                            <div className="min-w-0 pr-1">
+                              <p className={cn("font-semibold truncate", isIndustries ? "text-[11.5px]" : "text-xs")}>
+                                {cat.name}
+                              </p>
+                              {!isIndustries && (
+                                <p className="text-[10px] text-muted-foreground line-clamp-1 mt-0.5">
+                                  {cat.description}
+                                </p>
+                              )}
+                            </div>
+                            <ChevronRight
+                              className={cn(
+                                "h-3.5 w-3.5 shrink-0 transition-transform duration-200",
+                                selected
+                                  ? "translate-x-1 text-brand"
+                                  : "text-muted-foreground/50 group-hover:translate-x-1 group-hover:text-brand",
+                              )}
+                            />
+                          </button>
+                        );
+                      }
+                    )}
+                  </div>
                 </div>
 
-                {/* Middle Column: Active Category Specialized Sub-Items (TRUE 2-COLUMN GRID) */}
-                <div className="col-span-6 flex flex-col gap-2.5 px-2">
-                  <div className="flex items-center justify-between mb-1">
+                {/* Middle Column: Active Category Specialized Sub-Items (TRUE 2-COLUMN GRID - Target ~48-50% Width) */}
+                <div className="col-span-6 flex flex-col justify-start px-1">
+                  <div className="flex items-center justify-between mb-2">
                     <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-brand">
                       Specialized Offerings & Roles
                     </span>
@@ -582,7 +591,7 @@ export function SiteNav() {
                   </div>
 
                   {/* TRUE 2-COLUMN GRID */}
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-2 gap-2.5 my-auto">
                     {(
                       (activeMegaMenu === "services" ? SERVICES_MEGA : INDUSTRIES_MEGA).categories[
                         (activeMegaMenu === "services" ? activeServiceIdx : activeIndustryIdx) >=
@@ -600,15 +609,15 @@ export function SiteNav() {
                           handleNavClick(subItem.href, e);
                           setActiveMegaMenu(null);
                         }}
-                        className="group flex flex-col justify-between rounded-xl p-3 border border-border/50 bg-background/60 hover:border-brand/40 hover:bg-card hover:shadow-md transition-all duration-200"
+                        className="group flex flex-col justify-between rounded-xl p-2.5 border border-border/50 bg-background/60 hover:border-brand/40 hover:bg-card hover:shadow-md transition-all duration-200 min-h-[58px]"
                       >
                         <div className="flex items-start justify-between gap-1">
-                          <p className="text-xs font-bold text-foreground group-hover:text-brand transition-colors leading-snug">
+                          <p className="text-[11.5px] font-bold text-foreground group-hover:text-brand transition-colors leading-tight">
                             {subItem.title}
                           </p>
-                          <ArrowUpRight className="h-3.5 w-3.5 text-muted-foreground/60 shrink-0 group-hover:text-brand group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all mt-0.5" />
+                          <ArrowUpRight className="h-3.5 w-3.5 text-muted-foreground/60 shrink-0 group-hover:text-brand group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
                         </div>
-                        <p className="text-[11px] text-muted-foreground mt-1.5 leading-relaxed line-clamp-2">
+                        <p className="text-[10.5px] text-muted-foreground mt-1 leading-snug line-clamp-1">
                           {subItem.desc}
                         </p>
                       </a>
@@ -616,12 +625,12 @@ export function SiteNav() {
                   </div>
                 </div>
 
-                {/* Right Column: Featured Promo Graphic Card */}
+                {/* Right Column: Featured Promo Graphic Card (Target ~20-22% Width, Matched Height) */}
                 <div className="col-span-3 pl-1">
                   {(() => {
                     const promo = (activeMegaMenu === "services" ? SERVICES_MEGA : INDUSTRIES_MEGA).promo;
                     return (
-                      <div className="group relative isolate flex h-full min-h-[260px] flex-col justify-between overflow-hidden rounded-2xl border border-white/20 p-5 text-white shadow-xl">
+                      <div className="group relative isolate flex h-full min-h-[235px] max-h-[255px] flex-col justify-between overflow-hidden rounded-2xl border border-white/20 p-4 sm:p-5 text-white shadow-xl">
                         <img
                           src={promo.image}
                           alt={promo.title}
@@ -629,17 +638,17 @@ export function SiteNav() {
                         />
                         <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t from-slate-950 via-slate-950/75 to-slate-900/50" />
                         <div className="relative z-10">
-                          <h4 className="text-sm font-bold leading-snug text-white drop-shadow-sm">{promo.title}</h4>
-                          <p className="mt-2 text-[11px] text-white/90 leading-relaxed drop-shadow-sm">{promo.copy}</p>
+                          <h4 className="text-xs sm:text-sm font-bold leading-snug text-white drop-shadow-sm">{promo.title}</h4>
+                          <p className="mt-1.5 text-[10.5px] text-white/90 leading-relaxed drop-shadow-sm line-clamp-3">{promo.copy}</p>
                         </div>
-                        <div className="relative z-10 mt-4 pt-3 border-t border-white/20">
+                        <div className="relative z-10 mt-3 pt-2.5 border-t border-white/20">
                           <a
                             href={promo.href}
                             onClick={(e) => {
                               handleNavClick(promo.href, e);
                               setActiveMegaMenu(null);
                             }}
-                            className="inline-flex items-center gap-1.5 rounded-xl bg-brand px-4 py-2 text-xs font-bold text-white shadow-brand hover:brightness-110 transition-all"
+                            className="inline-flex items-center gap-1.5 rounded-xl bg-brand px-3.5 py-1.5 text-[11px] font-bold text-white shadow-brand hover:brightness-110 transition-all"
                           >
                             {promo.ctaText}
                           </a>
@@ -651,8 +660,8 @@ export function SiteNav() {
               </div>
 
               {/* Bottom Full-Width Gradient Banner Bar (Capermint Replica) */}
-              <div className="flex items-center justify-between bg-gradient-to-r from-brand via-brand/90 to-brand/70 px-8 py-3.5 text-white">
-                <p className="font-display text-base sm:text-lg font-bold tracking-tight">
+              <div className="flex items-center justify-between bg-gradient-to-r from-brand via-brand/90 to-brand/70 px-8 py-3 text-white">
+                <p className="font-display text-sm sm:text-base font-bold tracking-tight">
                   {(activeMegaMenu === "services" ? SERVICES_MEGA : INDUSTRIES_MEGA).bottomBanner.title}
                 </p>
                 <a
@@ -664,7 +673,7 @@ export function SiteNav() {
                     );
                     setActiveMegaMenu(null);
                   }}
-                  className="rounded-full bg-black px-6 py-2 text-xs font-extrabold uppercase tracking-wider text-white shadow-xl hover:bg-slate-950 hover:scale-105 transition-all"
+                  className="rounded-full bg-black px-5 py-1.5 text-[11px] font-extrabold uppercase tracking-wider text-white shadow-xl hover:bg-slate-950 hover:scale-105 transition-all"
                 >
                   {(activeMegaMenu === "services" ? SERVICES_MEGA : INDUSTRIES_MEGA).bottomBanner.ctaText}
                 </a>
