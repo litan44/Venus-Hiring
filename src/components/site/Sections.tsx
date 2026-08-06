@@ -324,7 +324,7 @@ const SERVICES_BENTO = [
   {
     id: "contract",
     tag: "Flexible Staffing",
-    metric: "24hr Deployment",
+    metric: "12hr Deployment",
     title: "Contract & Temporary Staffing",
     copy: "Short- or long-term talent that flexes with project demand, fully compliant and payrolled.",
     features: ["Project Staffing", "Turnkey Payroll"],

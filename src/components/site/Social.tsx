@@ -686,7 +686,7 @@ export function ContactSection() {
                 Get Your Hiring Estimate
               </span>
               <h2 className="mt-5 font-display text-4xl font-bold leading-[1.08] tracking-tight text-ink-foreground sm:text-5xl lg:text-[3.5rem]">
-                Tell Us About Your Role. We Reply In 24 Hours With A Custom Proposal.
+                Tell Us About Your Role. We Reply In 12 Hours With A Custom Proposal.
               </h2>
               <p className="mt-5 text-base leading-relaxed text-ink-foreground/80 sm:text-lg">
                 No sales pitch. Just a clear scope, team recommendation, placement model, and itemized timeline so you can evaluate Venus Consultancy against any other vendor on equal terms.
@@ -702,14 +702,14 @@ export function ContactSection() {
                 Workforce Readiness Assessment
               </h3>
               <p className="mt-3 text-sm leading-relaxed text-ink-foreground/75">
-                Submit your brief and receive a free Workforce Readiness Assessment: talent availability breakdown, recommended team shape, estimated timeline, salary benchmarks, and onboarding checklist. Delivered within 24 hours, no obligation.
+                Submit your brief and receive a free Workforce Readiness Assessment: talent availability breakdown, recommended team shape, estimated timeline, salary benchmarks, and onboarding checklist. Delivered within 12 hours, no obligation.
               </p>
             </div>
 
             {/* Checklist items */}
             <div className="flex flex-col gap-3.5 pt-2">
               {[
-                "Custom itemized proposal within 24 hours",
+                "Custom itemized proposal within 12 hours",
                 "Confidentiality & SLA signed before briefing call",
                 "You choose the engagement model and team structure",
                 "Free Workforce Readiness Assessment included",
@@ -746,7 +746,7 @@ export function ContactSection() {
                   </div>
                   <h4 className="mt-5 text-2xl font-bold text-foreground">Brief Submitted!</h4>
                   <p className="mt-2 text-base text-muted-foreground">
-                    Thank you! We have received your hiring brief and will deliver your custom proposal within 24 hours.
+                    Thank you! We have received your hiring brief and will deliver your custom proposal within 12 hours.
                   </p>
                 </div>
               ) : (
@@ -912,7 +912,7 @@ export function ContactSection() {
                       type="submit"
                       className="group inline-flex w-full items-center justify-center gap-2.5 rounded-2xl bg-brand py-4 text-base font-bold text-white shadow-brand transition-all duration-300 hover:brightness-110 hover:shadow-lg active:scale-[0.99]"
                     >
-                      Get Custom Proposal in 24 Hours
+                      Get Custom Proposal in 12 Hours
                     </button>
                     <p className="mt-3 text-center text-[11px] text-muted-foreground">
                       Submission goes via our secure system. 100% confidentiality guaranteed. No obligation.
