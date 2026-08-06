@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteNav } from "@/components/site/SiteNav";
 import { Hero } from "@/components/site/Hero";
@@ -8,9 +9,12 @@ import {
   Industries,
   Process,
   Stats,
+  BlogCarousel,
 } from "@/components/site/Sections";
-import { Testimonials, Insights, Faq, CtaBanner, ContactSection } from "@/components/site/Social";
+import { Testimonials, Faq, CtaBanner, ContactSection } from "@/components/site/Social";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import { BlogAdmin } from "@/components/admin/BlogAdmin";
+import { Settings } from "lucide-react";
 
 const TITLE = "Venus Consultancy | Recruitment & Staffing Across Canada";
 const DESCRIPTION =
@@ -65,13 +69,15 @@ const LOCAL_BUSINESS_SCHEMA = {
 };
 
 function Home() {
+  const [isAdminOpen, setIsAdminOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-background">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(LOCAL_BUSINESS_SCHEMA) }}
       />
-      <SiteNav />
+      <SiteNav onOpenAdmin={() => setIsAdminOpen(true)} />
       <main id="main-content">
         <Hero />
         <TrustedStrip />
@@ -81,12 +87,26 @@ function Home() {
         <Process />
         <Stats />
         <Testimonials />
-        <Insights />
+        <BlogCarousel />
         <Faq />
         <CtaBanner />
         <ContactSection />
       </main>
       <SiteFooter />
+
+      {/* Floating Quick Trigger Button for Blog Admin Panel */}
+      <button
+        type="button"
+        onClick={() => setIsAdminOpen(true)}
+        title="Open Blog Admin Panel"
+        className="fixed bottom-6 right-6 z-40 flex items-center gap-2 rounded-full bg-brand px-5 py-3 text-xs font-bold text-white shadow-2xl hover:scale-105 hover:brightness-110 transition-all border border-white/20"
+      >
+        <Settings className="h-4 w-4" />
+        Blog Admin Panel
+      </button>
+
+      {/* Blog Admin Panel Modal */}
+      <BlogAdmin isOpen={isAdminOpen} onClose={() => setIsAdminOpen(false)} />
     </div>
   );
 }

@@ -1226,3 +1226,5 @@ export function Stats() {
     </section>
   );
 }
+
+export { BlogCarousel } from "./BlogCarousel";
