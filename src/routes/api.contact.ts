@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import nodemailer from "nodemailer";
+import { initDatabase, pool } from "@/lib/db";
 
 // Simple in-memory rate limiting map (IP -> last submission timestamp)
 const rateLimitMap = new Map<string, number>();
@@ -112,7 +113,7 @@ export const Route = createFileRoute("/api/contact")({
           const from = process.env.SMTP_FROM || user || "jivan@venushiring.com";
           const receiver = process.env.CONTACT_RECEIVER_EMAIL || "jivan@venushiring.com";
 
-          // Log server-side record of submission so no lead is ever lost
+          // Log server-side record of submission and save into Railway PostgreSQL
           console.log("[NEW HIRING BRIEF SUBMISSION]", {
             name,
             email,
@@ -125,6 +126,20 @@ export const Route = createFileRoute("/api/contact")({
             receiver,
             date: submissionDate,
           });
+
+          // Insert into Railway PostgreSQL Database contact_briefs table
+          try {
+            await initDatabase();
+            await pool.query(
+              `INSERT INTO contact_briefs (
+                name, email, service_type, phone, company, role, budget, location, brief
+              ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);`,
+              [name, email, serviceType, phone, company, role, budget, location, brief]
+            );
+            console.log("[PostgreSQL] Hiring Brief Saved to Database Successfully.");
+          } catch (dbErr) {
+            console.error("[PostgreSQL Contact Insert Error]:", dbErr);
+          }
 
           // 6. Create Nodemailer Transporter with resilient timeouts & TLS settings
           const transporter = nodemailer.createTransport({

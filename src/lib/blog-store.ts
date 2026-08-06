@@ -197,12 +197,30 @@ export function saveStoredCategories(categories: string[]) {
 }
 
 export function useBlogs() {
-  const [blogs, setBlogs] = useState<BlogPost[]>([]);
-  const [categories, setCategories] = useState<string[]>([]);
+  const [blogs, setBlogs] = useState<BlogPost[]>(getStoredBlogs());
+  const [categories, setCategories] = useState<string[]>(getStoredCategories());
+
+  const fetchFromDb = async () => {
+    try {
+      const res = await fetch("/api/blogs");
+      const data = await res.json();
+      if (data.success) {
+        if (data.blogs && data.blogs.length > 0) {
+          setBlogs(data.blogs);
+          saveStoredBlogs(data.blogs);
+        }
+        if (data.categories && data.categories.length > 0) {
+          setCategories(data.categories);
+          saveStoredCategories(data.categories);
+        }
+      }
+    } catch (err) {
+      console.warn("[PostgreSQL Sync Notice]: Using cached local storage blogs.", err);
+    }
+  };
 
   useEffect(() => {
-    setBlogs(getStoredBlogs());
-    setCategories(getStoredCategories());
+    fetchFromDb();
 
     const handleUpdate = () => {
       setBlogs(getStoredBlogs());
@@ -217,36 +235,108 @@ export function useBlogs() {
     };
   }, []);
 
-  const addBlog = (blog: BlogPost) => {
+  const addBlog = async (blog: BlogPost) => {
     const updated = [blog, ...blogs];
+    setBlogs(updated);
     saveStoredBlogs(updated);
+
+    try {
+      await fetch("/api/blogs", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(blog),
+      });
+      fetchFromDb();
+    } catch (err) {
+      console.error("[PostgreSQL Add Blog Error]:", err);
+    }
   };
 
-  const updateBlog = (id: string, updatedFields: Partial<BlogPost>) => {
+  const updateBlog = async (id: string, updatedFields: Partial<BlogPost>) => {
     const updated = blogs.map((b) => (b.id === id ? { ...b, ...updatedFields } : b));
+    setBlogs(updated);
     saveStoredBlogs(updated);
+
+    try {
+      await fetch("/api/blogs", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, ...updatedFields }),
+      });
+      fetchFromDb();
+    } catch (err) {
+      console.error("[PostgreSQL Update Blog Error]:", err);
+    }
   };
 
-  const deleteBlog = (id: string) => {
+  const deleteBlog = async (id: string) => {
     const updated = blogs.filter((b) => b.id !== id);
+    setBlogs(updated);
     saveStoredBlogs(updated);
+
+    try {
+      await fetch("/api/blogs", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      fetchFromDb();
+    } catch (err) {
+      console.error("[PostgreSQL Delete Blog Error]:", err);
+    }
   };
 
-  const toggleFeatured = (id: string) => {
+  const toggleFeatured = async (id: string) => {
     const updated = blogs.map((b) => (b.id === id ? { ...b, isFeatured: !b.isFeatured } : b));
+    setBlogs(updated);
     saveStoredBlogs(updated);
+
+    try {
+      await fetch("/api/blogs", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, isFeaturedToggle: true }),
+      });
+      fetchFromDb();
+    } catch (err) {
+      console.error("[PostgreSQL Toggle Featured Error]:", err);
+    }
   };
 
-  const addCategory = (categoryName: string) => {
+  const addCategory = async (categoryName: string) => {
     const trimmed = categoryName.trim();
     if (!trimmed || categories.includes(trimmed)) return;
     const updated = [...categories, trimmed];
+    setCategories(updated);
     saveStoredCategories(updated);
+
+    try {
+      await fetch("/api/categories", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: trimmed }),
+      });
+      fetchFromDb();
+    } catch (err) {
+      console.error("[PostgreSQL Add Category Error]:", err);
+    }
   };
 
-  const deleteCategory = (categoryName: string) => {
+  const deleteCategory = async (categoryName: string) => {
     const updated = categories.filter((c) => c !== categoryName);
+    setCategories(updated);
     saveStoredCategories(updated);
+
+    try {
+      await fetch("/api/categories", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: categoryName }),
+      });
+      fetchFromDb();
+    } catch (err) {
+      console.error("[PostgreSQL Delete Category Error]:", err);
+    }
   };
 
   return {

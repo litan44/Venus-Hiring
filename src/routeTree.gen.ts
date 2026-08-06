@@ -11,6 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as ApiBlogsRouteImport } from './routes/api.blogs'
+import { Route as ApiCategoriesRouteImport } from './routes/api.categories'
 import { Route as ApiContactRouteImport } from './routes/api.contact'
 
 const IndexRoute = IndexRouteImport.update({
@@ -23,6 +25,16 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiBlogsRoute = ApiBlogsRouteImport.update({
+  id: '/api/blogs',
+  path: '/api/blogs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCategoriesRoute = ApiCategoriesRouteImport.update({
+  id: '/api/categories',
+  path: '/api/categories',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiContactRoute = ApiContactRouteImport.update({
   id: '/api/contact',
   path: '/api/contact',
@@ -32,30 +44,45 @@ const ApiContactRoute = ApiContactRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/api/blogs': typeof ApiBlogsRoute
+  '/api/categories': typeof ApiCategoriesRoute
   '/api/contact': typeof ApiContactRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/api/blogs': typeof ApiBlogsRoute
+  '/api/categories': typeof ApiCategoriesRoute
   '/api/contact': typeof ApiContactRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/api/blogs': typeof ApiBlogsRoute
+  '/api/categories': typeof ApiCategoriesRoute
   '/api/contact': typeof ApiContactRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/sitemap.xml' | '/api/contact'
+  fullPaths:
+    '/' | '/sitemap.xml' | '/api/blogs' | '/api/categories' | '/api/contact'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/sitemap.xml' | '/api/contact'
-  id: '__root__' | '/' | '/sitemap.xml' | '/api/contact'
+  to: '/' | '/sitemap.xml' | '/api/blogs' | '/api/categories' | '/api/contact'
+  id:
+    | '__root__'
+    | '/'
+    | '/sitemap.xml'
+    | '/api/blogs'
+    | '/api/categories'
+    | '/api/contact'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  ApiBlogsRoute: typeof ApiBlogsRoute
+  ApiCategoriesRoute: typeof ApiCategoriesRoute
   ApiContactRoute: typeof ApiContactRoute
 }
 
@@ -75,6 +102,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/blogs': {
+      id: '/api/blogs'
+      path: '/api/blogs'
+      fullPath: '/api/blogs'
+      preLoaderRoute: typeof ApiBlogsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/categories': {
+      id: '/api/categories'
+      path: '/api/categories'
+      fullPath: '/api/categories'
+      preLoaderRoute: typeof ApiCategoriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/contact': {
       id: '/api/contact'
       path: '/api/contact'
@@ -88,6 +129,8 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  ApiBlogsRoute: ApiBlogsRoute,
+  ApiCategoriesRoute: ApiCategoriesRoute,
   ApiContactRoute: ApiContactRoute,
 }
 export const routeTree = rootRouteImport
