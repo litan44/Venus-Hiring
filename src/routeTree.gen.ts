@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ApiBlogsRouteImport } from './routes/api.blogs'
 import { Route as ApiCategoriesRouteImport } from './routes/api.categories'
@@ -18,6 +19,11 @@ import { Route as ApiContactRouteImport } from './routes/api.contact'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -43,6 +49,7 @@ const ApiContactRoute = ApiContactRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/api/blogs': typeof ApiBlogsRoute
   '/api/categories': typeof ApiCategoriesRoute
@@ -50,6 +57,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/api/blogs': typeof ApiBlogsRoute
   '/api/categories': typeof ApiCategoriesRoute
@@ -58,6 +66,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/api/blogs': typeof ApiBlogsRoute
   '/api/categories': typeof ApiCategoriesRoute
@@ -66,12 +75,24 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/sitemap.xml' | '/api/blogs' | '/api/categories' | '/api/contact'
+    | '/'
+    | '/admin'
+    | '/sitemap.xml'
+    | '/api/blogs'
+    | '/api/categories'
+    | '/api/contact'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/sitemap.xml' | '/api/blogs' | '/api/categories' | '/api/contact'
+  to:
+    | '/'
+    | '/admin'
+    | '/sitemap.xml'
+    | '/api/blogs'
+    | '/api/categories'
+    | '/api/contact'
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/sitemap.xml'
     | '/api/blogs'
     | '/api/categories'
@@ -80,6 +101,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ApiBlogsRoute: typeof ApiBlogsRoute
   ApiCategoriesRoute: typeof ApiCategoriesRoute
@@ -93,6 +115,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap.xml': {
@@ -128,6 +157,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   ApiBlogsRoute: ApiBlogsRoute,
   ApiCategoriesRoute: ApiCategoriesRoute,
