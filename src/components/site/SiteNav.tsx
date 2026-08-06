@@ -28,11 +28,12 @@ const SERVICES_MEGA = {
       name: "Permanent Placement",
       description: "Direct hire & executive search across Canada & US",
       items: [
-        { title: "Executive Search", desc: "C-Suite & VP search with guaranteed retention", href: "#services" },
+        { title: "Executive Search", desc: "C-Suite, VP and senior leadership recruitment", href: "#services" },
         { title: "Direct Hire Staffing", desc: "Permanent full-time specialized talent", href: "#services" },
-        { title: "Technical Leadership", desc: "Engineering Directors & Product VPs", href: "#services" },
-        { title: "Senior Professionals", desc: "CPAs, Financial Controllers & Senior Devs", href: "#services" },
-        { title: "Skilled Trades & Ops", desc: "Plant Directors & Industrial Specialists", href: "#services" },
+        { title: "Technical Leadership", desc: "Engineering Directors, CTOs and Product Leaders", href: "#services" },
+        { title: "Senior Professionals", desc: "CPAs, Financial Controllers and senior specialists", href: "#services" },
+        { title: "Skilled Trades & Operations", desc: "Plant Directors, technicians and industrial specialists", href: "#services" },
+        { title: "IT & Digital Talent", desc: "Software, cloud, data and digital transformation experts", href: "#services" },
       ],
     },
     {
@@ -44,6 +45,8 @@ const SERVICES_MEGA = {
         { title: "Interim Leadership", desc: "Interim Executives, CFOs & CTOs", href: "#services" },
         { title: "Turnkey Payroll & EOR", desc: "Full payroll compliance across North America", href: "#services" },
         { title: "Scaleup Talent Pods", desc: "Dedicated team augmentation for rapid scale", href: "#services" },
+        { title: "Engineering & Project Talent", desc: "Engineering, project management and technical specialists", href: "#services" },
+        { title: "Recruitment Process Outsourcing", desc: "Flexible recruitment support for growing organizations", href: "#services" },
       ],
     },
     {
@@ -51,10 +54,12 @@ const SERVICES_MEGA = {
       name: "HR & Strategic Advisory",
       description: "Interim HR leadership & organizational planning",
       items: [
+        { title: "Talent Acquisition Strategy", desc: "Strategic hiring programs, talent pipelines and workforce planning", href: "#services" },
+        { title: "HR & People Advisory", desc: "Workforce planning, organizational development and HR support", href: "#services" },
         { title: "Compliance Audits", desc: "Canadian & US employment law frameworks", href: "#services" },
-        { title: "Workforce Planning", desc: "Organizational design & headcount forecasting", href: "#services" },
         { title: "Compensation Benchmarking", desc: "Market rate analysis & incentive plans", href: "#services" },
         { title: "Retention Programs", desc: "Structured onboarding & 90-day retention checks", href: "#services" },
+        { title: "Workforce Planning", desc: "Organizational design & headcount forecasting", href: "#services" },
       ],
     },
     {
@@ -66,6 +71,8 @@ const SERVICES_MEGA = {
         { title: "Agile Project Pods", desc: "Managed engineering & product pods", href: "#services" },
         { title: "Fixed Budget Delivery", desc: "Predictable project cost structures", href: "#services" },
         { title: "Turnkey Execution", desc: "End-to-end milestone accountability", href: "#services" },
+        { title: "Milestone Verification", desc: "Quality audits and milestone sign-offs", href: "#services" },
+        { title: "Risk Mitigation Pods", desc: "Guaranteed deliverable outcomes", href: "#services" },
       ],
     },
   ],
@@ -93,7 +100,9 @@ const INDUSTRIES_MEGA = {
         { title: "Full Stack & Frontend", desc: "React, Node, Python & Cloud Architects", href: "#industries" },
         { title: "AI/ML & Data Science", desc: "Machine Learning & AI Infrastructure Leads", href: "#industries" },
         { title: "DevOps & Cybersecurity", desc: "SREs, Cloud Security & CI/CD Experts", href: "#industries" },
-        { title: "Tech Leadership", desc: "VPs of Tech, CTOs & Product Directors", href: "#industries" },
+        { title: "Cloud & Infrastructure", desc: "AWS, Azure & Enterprise Infrastructure Leads", href: "#industries" },
+        { title: "Technical Leadership", desc: "VPs of Technology, CTOs & Product Directors", href: "#industries" },
+        { title: "Product & Engineering", desc: "Product Managers, Engineering Leads & Scrums", href: "#industries" },
       ],
     },
     {
@@ -105,6 +114,8 @@ const INDUSTRIES_MEGA = {
         { title: "CPAs & Audit Leads", desc: "Public & Corporate Chartered Accountants", href: "#industries" },
         { title: "FP&A & Financial Analysts", desc: "Strategic Financial Planning & Analytics", href: "#industries" },
         { title: "CFO Executive Search", desc: "Retained search for C-Suite Finance Leaders", href: "#industries" },
+        { title: "Risk & Compliance", desc: "Regulatory Compliance & Risk Assessment", href: "#industries" },
+        { title: "Corporate Treasury", desc: "Capital Structure & Cash Flow Management", href: "#industries" },
       ],
     },
     {
@@ -113,9 +124,11 @@ const INDUSTRIES_MEGA = {
       description: "EV Battery Tech, Plant Ops & Mobility",
       items: [
         { title: "EV Battery Architecture", desc: "Cell Design & Battery Management Systems", href: "#industries" },
-        { title: "Plant & Operations Managers", desc: "Automotive Plant Directors & Lean Leads", href: "#industries" },
+        { title: "Plant & Ops Managers", desc: "Automotive Plant Directors & Lean Leads", href: "#industries" },
         { title: "Autonomous Systems", desc: "ADAS, Sensor Fusion & Vehicle Software", href: "#industries" },
         { title: "Supply Chain & Quality", desc: "TS16949 Quality & Global Logistics Leads", href: "#industries" },
+        { title: "Manufacturing & Tooling", desc: "Tooling Engineers & Assembly Line Directors", href: "#industries" },
+        { title: "Robotics & Automation", desc: "PLC Programmers & Automated Assembly Leads", href: "#industries" },
       ],
     },
     {
@@ -127,6 +140,60 @@ const INDUSTRIES_MEGA = {
         { title: "Structural & Stress Analysts", desc: "Structural & FEA Thermal Engineers", href: "#industries" },
         { title: "Compliance & Regulatory Leads", desc: "FAA & Transport Canada Certified Pros", href: "#industries" },
         { title: "Flight Test Engineers", desc: "Systems Integration & Flight Testing Leads", href: "#industries" },
+        { title: "Systems Architecture", desc: "Defense & Commercial Aircraft Systems", href: "#industries" },
+        { title: "Propulsion Specialists", desc: "Turbine & Jet Engine Design Engineers", href: "#industries" },
+      ],
+    },
+    {
+      id: "mfg",
+      name: "Manufacturing & Industrial",
+      description: "Plant Operations, Engineering & Production",
+      items: [
+        { title: "Plant Operations Directors", desc: "Multi-site Operations & Facility Management", href: "#industries" },
+        { title: "Production Engineers", desc: "Industrial & Manufacturing Process Leads", href: "#industries" },
+        { title: "Quality Assurance Leads", desc: "ISO Quality Managers & Audit Directors", href: "#industries" },
+        { title: "EHS & Safety Directors", desc: "Environmental Health & Safety Managers", href: "#industries" },
+        { title: "Maintenance Supervisors", desc: "Reliability & Preventive Maintenance Leads", href: "#industries" },
+        { title: "Lean & Six Sigma Black Belts", desc: "Continuous Improvement & Operational Excellence", href: "#industries" },
+      ],
+    },
+    {
+      id: "health",
+      name: "Healthcare & Life Sciences",
+      description: "Healthcare Operations, Life Sciences & Specialized Talent",
+      items: [
+        { title: "Clinical Operations Leads", desc: "Clinical Trial & Healthcare Operations VPs", href: "#industries" },
+        { title: "Life Sciences Researchers", desc: "Pharma R&D & Biotech Specialists", href: "#industries" },
+        { title: "Regulatory Affairs Managers", desc: "Health Canada & FDA Compliance Directors", href: "#industries" },
+        { title: "Biostatisticians & Analysts", desc: "Clinical Data & Bioanalytical Leads", href: "#industries" },
+        { title: "Medical Device Engineers", desc: "ISO 13485 Medical Hardware Specialists", href: "#industries" },
+        { title: "Biotech Project Managers", desc: "Pharma Pipeline & Lab Operations Leads", href: "#industries" },
+      ],
+    },
+    {
+      id: "corp",
+      name: "Professional & Corporate Services",
+      description: "Business Operations, HR, Sales & Corporate Functions",
+      items: [
+        { title: "VPs of Corporate Operations", desc: "Enterprise Operations & Business Strategy", href: "#industries" },
+        { title: "HR Directors & Talent VPs", desc: "Chief Human Resources Officers & HR VPs", href: "#industries" },
+        { title: "Enterprise Sales Leaders", desc: "VPs of Sales, Business Development Directors", href: "#industries" },
+        { title: "Strategy & Transformation Leads", desc: "Management Consultants & Change Leaders", href: "#industries" },
+        { title: "Chief Legal Officers", desc: "General Counsel & Corporate Legal Directors", href: "#industries" },
+        { title: "Marketing & Growth Executives", desc: "CMOs, Brand & Demand Generation Directors", href: "#industries" },
+      ],
+    },
+    {
+      id: "supply",
+      name: "Supply Chain & Logistics",
+      description: "Procurement, Distribution, Operations & Supply Chain",
+      items: [
+        { title: "Global Procurement Leads", desc: "Strategic Sourcing & Vendor Directors", href: "#industries" },
+        { title: "Logistics & Distribution VPs", desc: "Freight, Fleet & Distribution Operations", href: "#industries" },
+        { title: "Warehouse Operations Managers", desc: "Fulfillment & Inventory Management Leads", href: "#industries" },
+        { title: "Supply Chain Analysts", desc: "Demand Planning & Inventory Optimization", href: "#industries" },
+        { title: "Customs & Compliance Leads", desc: "International Trade & Import/Export Compliance", href: "#industries" },
+        { title: "Fleet & Transportation Directors", desc: "Third-Party Logistics & Transport Leads", href: "#industries" },
       ],
     },
   ],
@@ -219,7 +286,10 @@ export function SiteNav() {
   // Escape key handler to close mobile nav
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpen(false);
+      if (event.key === "Escape") {
+        setOpen(false);
+        setActiveMegaMenu(null);
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -442,9 +512,9 @@ export function SiteNav() {
           >
             <div className="overflow-hidden rounded-[2.25rem] border border-border/80 bg-background/95 backdrop-blur-2xl shadow-[0_30px_90px_-20px_rgba(15,23,42,0.35)] transition-all duration-300 text-foreground">
               {/* Upper 3-Column Content Grid */}
-              <div className="grid grid-cols-12 p-6 sm:p-8 gap-8 items-stretch">
+              <div className="grid grid-cols-12 p-6 sm:p-7 gap-6 items-stretch">
                 {/* Left Column: Sub-Categories List */}
-                <div className="col-span-4 flex flex-col gap-2 border-r border-border/60 pr-6">
+                <div className="col-span-3 flex flex-col gap-1.5 border-r border-border/60 pr-5">
                   <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-brand mb-2">
                     {activeMegaMenu === "services" ? "Service Categories" : "Industry Sectors"}
                   </span>
@@ -467,24 +537,24 @@ export function SiteNav() {
                             setActiveMegaMenu(null);
                           }}
                           className={cn(
-                            "group flex items-center justify-between rounded-2xl p-3.5 text-left transition-all duration-200",
+                            "group flex items-center justify-between rounded-xl p-2.5 text-left transition-all duration-200",
                             selected
                               ? "bg-brand/10 text-brand font-bold shadow-sm"
                               : "text-foreground hover:bg-card hover:text-brand",
                           )}
                         >
-                          <div>
-                            <p className="text-sm font-semibold">{cat.name}</p>
-                            <p className="text-[11px] text-muted-foreground line-clamp-1">
+                          <div className="min-w-0 pr-1">
+                            <p className="text-xs font-semibold truncate">{cat.name}</p>
+                            <p className="text-[10px] text-muted-foreground line-clamp-1">
                               {cat.description}
                             </p>
                           </div>
                           <ChevronRight
                             className={cn(
-                              "h-4 w-4 shrink-0 transition-transform duration-200",
+                              "h-3.5 w-3.5 shrink-0 transition-transform duration-200",
                               selected
                                 ? "translate-x-1 text-brand"
-                                : "text-muted-foreground group-hover:translate-x-1 group-hover:text-brand",
+                                : "text-muted-foreground/60 group-hover:translate-x-1 group-hover:text-brand",
                             )}
                           />
                         </button>
@@ -493,15 +563,34 @@ export function SiteNav() {
                   )}
                 </div>
 
-                {/* Middle Column: Active Category Specialized Sub-Items */}
-                <div className="col-span-5 flex flex-col gap-3 pr-2">
-                  <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-brand mb-2">
-                    Specialized Offerings & Roles
-                  </span>
-                  <div className="grid grid-cols-1 gap-2.5">
+                {/* Middle Column: Active Category Specialized Sub-Items (TRUE 2-COLUMN GRID) */}
+                <div className="col-span-6 flex flex-col gap-2.5 px-2">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-brand">
+                      Specialized Offerings & Roles
+                    </span>
+                    <span className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">
+                      {(activeMegaMenu === "services" ? SERVICES_MEGA : INDUSTRIES_MEGA).categories[
+                        (activeMegaMenu === "services" ? activeServiceIdx : activeIndustryIdx) >=
+                        (activeMegaMenu === "services" ? SERVICES_MEGA : INDUSTRIES_MEGA).categories.length
+                          ? 0
+                          : activeMegaMenu === "services"
+                            ? activeServiceIdx
+                            : activeIndustryIdx
+                      ]?.name}
+                    </span>
+                  </div>
+
+                  {/* TRUE 2-COLUMN GRID */}
+                  <div className="grid grid-cols-2 gap-3">
                     {(
                       (activeMegaMenu === "services" ? SERVICES_MEGA : INDUSTRIES_MEGA).categories[
-                        activeMegaMenu === "services" ? activeServiceIdx : activeIndustryIdx
+                        (activeMegaMenu === "services" ? activeServiceIdx : activeIndustryIdx) >=
+                        (activeMegaMenu === "services" ? SERVICES_MEGA : INDUSTRIES_MEGA).categories.length
+                          ? 0
+                          : activeMegaMenu === "services"
+                            ? activeServiceIdx
+                            : activeIndustryIdx
                       ] || (activeMegaMenu === "services" ? SERVICES_MEGA : INDUSTRIES_MEGA).categories[0]
                     ).items.map((subItem) => (
                       <a
@@ -511,22 +600,24 @@ export function SiteNav() {
                           handleNavClick(subItem.href, e);
                           setActiveMegaMenu(null);
                         }}
-                        className="group flex flex-col rounded-xl p-3 border border-border/50 bg-background/50 hover:border-brand/40 hover:bg-card transition-all duration-200"
+                        className="group flex flex-col justify-between rounded-xl p-3 border border-border/50 bg-background/60 hover:border-brand/40 hover:bg-card hover:shadow-md transition-all duration-200"
                       >
-                        <div className="flex items-center justify-between">
-                          <p className="text-xs font-bold text-foreground group-hover:text-brand transition-colors">
+                        <div className="flex items-start justify-between gap-1">
+                          <p className="text-xs font-bold text-foreground group-hover:text-brand transition-colors leading-snug">
                             {subItem.title}
                           </p>
-                          <ArrowUpRight className="h-3.5 w-3.5 text-muted-foreground opacity-0 group-hover:opacity-100 group-hover:text-brand group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+                          <ArrowUpRight className="h-3.5 w-3.5 text-muted-foreground/60 shrink-0 group-hover:text-brand group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all mt-0.5" />
                         </div>
-                        <p className="text-[11px] text-muted-foreground mt-0.5">{subItem.desc}</p>
+                        <p className="text-[11px] text-muted-foreground mt-1.5 leading-relaxed line-clamp-2">
+                          {subItem.desc}
+                        </p>
                       </a>
                     ))}
                   </div>
                 </div>
 
                 {/* Right Column: Featured Promo Graphic Card */}
-                <div className="col-span-3">
+                <div className="col-span-3 pl-1">
                   {(() => {
                     const promo = (activeMegaMenu === "services" ? SERVICES_MEGA : INDUSTRIES_MEGA).promo;
                     return (
@@ -560,8 +651,8 @@ export function SiteNav() {
               </div>
 
               {/* Bottom Full-Width Gradient Banner Bar (Capermint Replica) */}
-              <div className="flex items-center justify-between bg-gradient-to-r from-brand via-brand/90 to-brand/70 px-8 py-4 text-white">
-                <p className="font-display text-lg font-bold tracking-tight">
+              <div className="flex items-center justify-between bg-gradient-to-r from-brand via-brand/90 to-brand/70 px-8 py-3.5 text-white">
+                <p className="font-display text-base sm:text-lg font-bold tracking-tight">
                   {(activeMegaMenu === "services" ? SERVICES_MEGA : INDUSTRIES_MEGA).bottomBanner.title}
                 </p>
                 <a
@@ -573,7 +664,7 @@ export function SiteNav() {
                     );
                     setActiveMegaMenu(null);
                   }}
-                  className="rounded-full bg-black px-6 py-2.5 text-xs font-extrabold uppercase tracking-wider text-white shadow-xl hover:bg-slate-950 hover:scale-105 transition-all"
+                  className="rounded-full bg-black px-6 py-2 text-xs font-extrabold uppercase tracking-wider text-white shadow-xl hover:bg-slate-950 hover:scale-105 transition-all"
                 >
                   {(activeMegaMenu === "services" ? SERVICES_MEGA : INDUSTRIES_MEGA).bottomBanner.ctaText}
                 </a>
