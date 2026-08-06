@@ -10,6 +10,7 @@ import {
   Facebook,
   Instagram,
   Linkedin,
+  Loader2,
   Mail,
   MapPin,
   Minus,
@@ -620,35 +621,74 @@ export function CtaBanner() {
 export function ContactSection() {
   const { ref, shown } = useReveal<HTMLDivElement>();
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    serviceType: "",
+    serviceType: "Permanent Direct Hire",
     phone: "",
     company: "",
-    role: "",
-    budget: "",
+    role: "Hiring Manager",
+    budget: "$50k – $100k",
     country: "",
     brief: "",
+    honeypot: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      setFormData({
-        name: "",
-        email: "",
-        serviceType: "",
-        phone: "",
-        company: "",
-        role: "",
-        budget: "",
-        country: "",
-        brief: "",
+    if (loading) return;
+
+    setErrorMsg(null);
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          serviceType: formData.serviceType || "Permanent Placement",
+          phone: formData.phone,
+          company: formData.company,
+          role: formData.role,
+          budget: formData.budget || "Not Specified",
+          location: formData.country || "Not Specified",
+          brief: formData.brief,
+          honeypot: formData.honeypot || "",
+        }),
       });
-    }, 5000);
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        setSubmitted(true);
+        setFormData({
+          name: "",
+          email: "",
+          serviceType: "Permanent Direct Hire",
+          phone: "",
+          company: "",
+          role: "Hiring Manager",
+          budget: "$50k – $100k",
+          country: "",
+          brief: "",
+          honeypot: "",
+        });
+      } else {
+        setErrorMsg(
+          data.message || "Something went wrong while submitting your brief. Please try again in a moment."
+        );
+      }
+    } catch {
+      setErrorMsg("Something went wrong while submitting your brief. Please try again in a moment.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -740,17 +780,42 @@ export function ContactSection() {
               </div>
 
               {submitted ? (
-                <div className="rounded-3xl border border-emerald-500/30 bg-emerald-500/10 p-10 text-center backdrop-blur-md">
+                <div className="rounded-3xl border border-emerald-500/30 bg-emerald-500/10 p-8 sm:p-10 text-center backdrop-blur-md">
                   <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-500 text-white shadow-lg">
                     <CheckCircle2 className="h-8 w-8" />
                   </div>
-                  <h4 className="mt-5 text-2xl font-bold text-foreground">Brief Submitted!</h4>
-                  <p className="mt-2 text-base text-muted-foreground">
-                    Thank you! We have received your hiring brief and will deliver your custom proposal within 12 hours.
+                  <h4 className="mt-5 text-2xl font-bold text-foreground">Brief Received</h4>
+                  <p className="mt-3 text-sm sm:text-base leading-relaxed text-muted-foreground">
+                    Thank you. Your hiring brief has been successfully submitted. Our team will review your requirements and get back to you within 12 hours.
                   </p>
+                  <button
+                    type="button"
+                    onClick={() => setSubmitted(false)}
+                    className="mt-6 inline-flex items-center justify-center rounded-xl bg-card border border-border px-5 py-2 text-xs font-semibold text-foreground hover:bg-accent transition-colors"
+                  >
+                    Submit Another Brief
+                  </button>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                  {/* Honeypot Spam Protection Field */}
+                  <input
+                    type="text"
+                    name="website"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={formData.honeypot}
+                    onChange={(e) => setFormData({ ...formData, honeypot: e.target.value })}
+                    className="sr-only hidden"
+                    aria-hidden="true"
+                  />
+
+                  {errorMsg && (
+                    <div className="rounded-2xl border border-rose-500/30 bg-rose-500/10 p-4 text-xs font-semibold text-rose-600 dark:text-rose-400">
+                      {errorMsg}
+                    </div>
+                  )}
+
                   {/* Row 1: Name & Work Email */}
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div>
@@ -760,10 +825,11 @@ export function ContactSection() {
                       <input
                         type="text"
                         required
+                        disabled={loading}
                         placeholder="First and Last Name"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full rounded-2xl border border-border/80 bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/70 transition-all focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 shadow-sm"
+                        className="w-full rounded-2xl border border-border/80 bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/70 transition-all focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 shadow-sm disabled:opacity-60"
                       />
                     </div>
 
@@ -774,10 +840,11 @@ export function ContactSection() {
                       <input
                         type="email"
                         required
+                        disabled={loading}
                         placeholder="you@company.com"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full rounded-2xl border border-border/80 bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/70 transition-all focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 shadow-sm"
+                        className="w-full rounded-2xl border border-border/80 bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/70 transition-all focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 shadow-sm disabled:opacity-60"
                       />
                     </div>
                   </div>
@@ -790,17 +857,16 @@ export function ContactSection() {
                       </label>
                       <select
                         required
+                        disabled={loading}
                         value={formData.serviceType}
                         onChange={(e) => setFormData({ ...formData, serviceType: e.target.value })}
-                        className="w-full rounded-2xl border border-border/80 bg-background px-4 py-3 text-sm text-foreground transition-all focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 shadow-sm"
+                        className="w-full rounded-2xl border border-border/80 bg-background px-4 py-3 text-sm text-foreground transition-all focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 shadow-sm disabled:opacity-60"
                       >
-                        <option value="" disabled>
-                          Select Service Type
-                        </option>
-                        <option value="direct">Permanent Direct Hire</option>
-                        <option value="executive">Executive Search</option>
-                        <option value="sow">SOW Project Pods</option>
-                        <option value="hr">Fractional HR Advisory</option>
+                        <option value="Permanent Direct Hire">Permanent Direct Hire</option>
+                        <option value="Executive Search">Executive Search</option>
+                        <option value="Contract & Temporary Staffing">Contract & Temporary Staffing</option>
+                        <option value="Fractional HR & Advisory">Fractional HR & Advisory</option>
+                        <option value="SOW Project Pods">SOW Project Pods</option>
                       </select>
                     </div>
 
@@ -811,10 +877,11 @@ export function ContactSection() {
                       <input
                         type="tel"
                         required
+                        disabled={loading}
                         placeholder="🇨🇦 +1 (647) 000-0000"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        className="w-full rounded-2xl border border-border/80 bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/70 transition-all focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 shadow-sm"
+                        className="w-full rounded-2xl border border-border/80 bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/70 transition-all focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 shadow-sm disabled:opacity-60"
                       />
                     </div>
                   </div>
@@ -828,10 +895,11 @@ export function ContactSection() {
                       <input
                         type="text"
                         required
+                        disabled={loading}
                         placeholder="Your Company Name"
                         value={formData.company}
                         onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                        className="w-full rounded-2xl border border-border/80 bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/70 transition-all focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 shadow-sm"
+                        className="w-full rounded-2xl border border-border/80 bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/70 transition-all focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 shadow-sm disabled:opacity-60"
                       />
                     </div>
 
@@ -839,20 +907,15 @@ export function ContactSection() {
                       <label className="block text-[11px] font-bold uppercase tracking-wider text-foreground mb-1.5">
                         YOUR ROLE <span className="text-brand">*</span>
                       </label>
-                      <select
+                      <input
+                        type="text"
                         required
+                        disabled={loading}
+                        placeholder="VP of HR / CEO / Tech Director"
                         value={formData.role}
                         onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                        className="w-full rounded-2xl border border-border/80 bg-background px-4 py-3 text-sm text-foreground transition-all focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 shadow-sm"
-                      >
-                        <option value="" disabled>
-                          Select Your Role
-                        </option>
-                        <option value="hiring-manager">Hiring Manager</option>
-                        <option value="hr-leader">HR / Talent Leader</option>
-                        <option value="c-suite">C-Suite / Founder</option>
-                        <option value="other">Other Executive</option>
-                      </select>
+                        className="w-full rounded-2xl border border-border/80 bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/70 transition-all focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 shadow-sm disabled:opacity-60"
+                      />
                     </div>
                   </div>
 
@@ -863,17 +926,16 @@ export function ContactSection() {
                         BUDGET RANGE
                       </label>
                       <select
+                        disabled={loading}
                         value={formData.budget}
                         onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                        className="w-full rounded-2xl border border-border/80 bg-background px-4 py-3 text-sm text-foreground transition-all focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 shadow-sm"
+                        className="w-full rounded-2xl border border-border/80 bg-background px-4 py-3 text-sm text-foreground transition-all focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 shadow-sm disabled:opacity-60"
                       >
-                        <option value="" disabled>
-                          Select Your Budget Range
-                        </option>
-                        <option value="under50k">$10k – $50k</option>
-                        <option value="50k-100k">$50k – $100k</option>
-                        <option value="100k-250k">$100k – $250k</option>
-                        <option value="250k+">$250k+</option>
+                        <option value="Under $10k">Under $10,000</option>
+                        <option value="$10k – $50k">$10,000 – $50,000</option>
+                        <option value="$50k – $100k">$50,000 – $100,000</option>
+                        <option value="$100k – $250k">$100,000 – $250,000</option>
+                        <option value="$250k+">$250,000+</option>
                       </select>
                     </div>
 
@@ -883,10 +945,11 @@ export function ContactSection() {
                       </label>
                       <input
                         type="text"
-                        placeholder="Your City or Country"
+                        disabled={loading}
+                        placeholder="Canada / USA / India"
                         value={formData.country}
                         onChange={(e) => setFormData({ ...formData, country: e.target.value })}
-                        className="w-full rounded-2xl border border-border/80 bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/70 transition-all focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 shadow-sm"
+                        className="w-full rounded-2xl border border-border/80 bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/70 transition-all focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 shadow-sm disabled:opacity-60"
                       />
                     </div>
                   </div>
@@ -899,10 +962,11 @@ export function ContactSection() {
                     <textarea
                       rows={4}
                       required
+                      disabled={loading}
                       placeholder="Tell us about your requirements: target roles, key technical skills, expected timeline, and any existing specifications."
                       value={formData.brief}
                       onChange={(e) => setFormData({ ...formData, brief: e.target.value })}
-                      className="w-full rounded-2xl border border-border/80 bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/70 transition-all focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 resize-none shadow-sm"
+                      className="w-full rounded-2xl border border-border/80 bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/70 transition-all focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 resize-none shadow-sm disabled:opacity-60"
                     />
                   </div>
 
@@ -910,9 +974,17 @@ export function ContactSection() {
                   <div className="pt-2">
                     <button
                       type="submit"
-                      className="group inline-flex w-full items-center justify-center gap-2.5 rounded-2xl bg-brand py-4 text-base font-bold text-white shadow-brand transition-all duration-300 hover:brightness-110 hover:shadow-lg active:scale-[0.99]"
+                      disabled={loading}
+                      className="group inline-flex w-full items-center justify-center gap-2.5 rounded-2xl bg-brand py-4 text-base font-bold text-white shadow-brand transition-all duration-300 hover:brightness-110 hover:shadow-lg active:scale-[0.99] disabled:opacity-75 disabled:cursor-not-allowed"
                     >
-                      Get Custom Proposal in 12 Hours
+                      {loading ? (
+                        <>
+                          <Loader2 className="h-5 w-5 animate-spin text-white" />
+                          Sending Hiring Brief...
+                        </>
+                      ) : (
+                        "Get Custom Proposal in 12 Hours"
+                      )}
                     </button>
                     <p className="mt-3 text-center text-[11px] text-muted-foreground">
                       Submission goes via our secure system. 100% confidentiality guaranteed. No obligation.
