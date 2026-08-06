@@ -530,18 +530,18 @@ export function SiteNav() {
                   {(() => {
                     const promo = (activeMegaMenu === "services" ? SERVICES_MEGA : INDUSTRIES_MEGA).promo;
                     return (
-                      <div className="relative h-full flex flex-col justify-between overflow-hidden rounded-2xl border border-white/20 bg-slate-900 p-5 text-white shadow-xl">
+                      <div className="group relative isolate flex h-full min-h-[260px] flex-col justify-between overflow-hidden rounded-2xl border border-white/20 p-5 text-white shadow-xl">
                         <img
                           src={promo.image}
                           alt={promo.title}
-                          className="pointer-events-none absolute inset-0 -z-20 h-full w-full object-cover object-center opacity-80 transition-transform duration-700 hover:scale-105"
+                          className="pointer-events-none absolute inset-0 -z-20 h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
                         />
-                        <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t from-slate-950 via-slate-950/60 to-black/30" />
-                        <div>
-                          <h4 className="text-sm font-bold leading-snug">{promo.title}</h4>
-                          <p className="mt-2 text-[11px] text-white/80 leading-relaxed">{promo.copy}</p>
+                        <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t from-slate-950 via-slate-950/75 to-slate-900/50" />
+                        <div className="relative z-10">
+                          <h4 className="text-sm font-bold leading-snug text-white drop-shadow-sm">{promo.title}</h4>
+                          <p className="mt-2 text-[11px] text-white/90 leading-relaxed drop-shadow-sm">{promo.copy}</p>
                         </div>
-                        <div className="mt-4 pt-3 border-t border-white/20">
+                        <div className="relative z-10 mt-4 pt-3 border-t border-white/20">
                           <a
                             href={promo.href}
                             onClick={(e) => {
