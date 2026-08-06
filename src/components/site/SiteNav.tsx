@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, ChevronDown, ChevronRight, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import logo from "@/assets/venus-logo.png";
+import heroTeam from "@/assets/hero-team.jpg";
+import heroOffice from "@/assets/hero-office.jpg";
 import { scrollToSection } from "@/lib/scroll";
 
 const NAV = [
@@ -72,7 +74,7 @@ const SERVICES_MEGA = {
     copy: "Calibrated shortlists delivered in under 14 days with our 98.4% retention guarantee.",
     ctaText: "Book a Call →",
     href: "#contact",
-    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=800&fit=crop&auto=format",
+    image: heroTeam,
   },
   bottomBanner: {
     title: "Let's grow together, Partner with us!",
@@ -133,7 +135,7 @@ const INDUSTRIES_MEGA = {
     copy: "Deep sector expertise and pre-screened candidate pipelines ready to deploy.",
     ctaText: "Explore Industries →",
     href: "#industries",
-    image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=600&h=800&fit=crop&auto=format",
+    image: heroOffice,
   },
   bottomBanner: {
     title: "Need specialized talent for your sector?",
@@ -528,13 +530,13 @@ export function SiteNav() {
                   {(() => {
                     const promo = (activeMegaMenu === "services" ? SERVICES_MEGA : INDUSTRIES_MEGA).promo;
                     return (
-                      <div className="relative h-full flex flex-col justify-between overflow-hidden rounded-2xl border border-border/80 bg-ink p-5 text-white shadow-md">
+                      <div className="relative h-full flex flex-col justify-between overflow-hidden rounded-2xl border border-white/20 bg-slate-900 p-5 text-white shadow-xl">
                         <img
                           src={promo.image}
                           alt={promo.title}
-                          className="pointer-events-none absolute inset-0 -z-20 h-full w-full object-cover opacity-35"
+                          className="pointer-events-none absolute inset-0 -z-20 h-full w-full object-cover object-center opacity-80 transition-transform duration-700 hover:scale-105"
                         />
-                        <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t from-ink via-ink/80 to-transparent" />
+                        <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t from-slate-950 via-slate-950/60 to-black/30" />
                         <div>
                           <h4 className="text-sm font-bold leading-snug">{promo.title}</h4>
                           <p className="mt-2 text-[11px] text-white/80 leading-relaxed">{promo.copy}</p>
