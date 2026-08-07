@@ -25,6 +25,12 @@ export function BlogCarousel() {
     [featuredBlogs, blogs]
   );
 
+  // Maximum valid slide index to prevent blank whitespace gaps
+  const maxIndex = useMemo(
+    () => Math.max(0, displayBlogs.length - visibleCount),
+    [displayBlogs.length, visibleCount]
+  );
+
   // Responsive items per view listener
   useEffect(() => {
     const handleResize = () => {
@@ -40,6 +46,13 @@ export function BlogCarousel() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  // Clamp index if viewport resize changes maxIndex
+  useEffect(() => {
+    if (index > maxIndex) {
+      setIndex(maxIndex);
+    }
+  }, [maxIndex, index]);
 
   // Track viewport visibility so auto-slide timer ONLY runs when visible
   useEffect(() => {
@@ -57,19 +70,25 @@ export function BlogCarousel() {
     return () => observer.disconnect();
   }, []);
 
-  // Auto-sliding timer: 2 seconds (2000ms) interval
+  // Auto-sliding timer: 4s interval ONLY when there are more blogs than visible on screen
   useEffect(() => {
-    if (isPaused || !isInViewport || displayBlogs.length <= 1) return;
+    if (isPaused || !isInViewport || maxIndex === 0) return;
 
     const timer = setInterval(() => {
-      setIndex((prev) => (prev + 1) % displayBlogs.length);
-    }, 2000);
+      setIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
+    }, 4000);
 
     return () => clearInterval(timer);
-  }, [isPaused, isInViewport, displayBlogs.length]);
+  }, [isPaused, isInViewport, maxIndex]);
 
-  const go = (next: number) => {
-    setIndex((next + displayBlogs.length) % displayBlogs.length);
+  const goNext = () => {
+    if (maxIndex === 0) return;
+    setIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
+  };
+
+  const goPrev = () => {
+    if (maxIndex === 0) return;
+    setIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
   };
 
   return (
@@ -102,24 +121,26 @@ export function BlogCarousel() {
             </div>
 
             {/* Manual Navigation Arrows */}
-            <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={() => go(index - 1)}
-                aria-label="Previous articles"
-                className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-sm transition-all duration-300 hover:scale-105 hover:border-brand hover:bg-brand hover:text-white"
-              >
-                <ArrowLeft className="h-5 w-5" />
-              </button>
-              <button
-                type="button"
-                onClick={() => go(index + 1)}
-                aria-label="Next articles"
-                className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-sm transition-all duration-300 hover:scale-105 hover:border-brand hover:bg-brand hover:text-white"
-              >
-                <ArrowRight className="h-5 w-5" />
-              </button>
-            </div>
+            {maxIndex > 0 && (
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={goPrev}
+                  aria-label="Previous articles"
+                  className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-sm transition-all duration-300 hover:scale-105 hover:border-brand hover:bg-brand hover:text-white"
+                >
+                  <ArrowLeft className="h-5 w-5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={goNext}
+                  aria-label="Next articles"
+                  className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-sm transition-all duration-300 hover:scale-105 hover:border-brand hover:bg-brand hover:text-white"
+                >
+                  <ArrowRight className="h-5 w-5" />
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Sliding Carousel Grid matching exact original card design */}
@@ -189,20 +210,22 @@ export function BlogCarousel() {
           </div>
 
           {/* Indicator Dots */}
-          <div className="mt-8 flex items-center justify-center gap-2">
-            {displayBlogs.map((b, i) => (
-              <button
-                key={b.id}
-                type="button"
-                onClick={() => setIndex(i)}
-                aria-label={`Go to article slide ${i + 1}`}
-                className={cn(
-                  "h-2 rounded-full transition-all duration-500 ease-out",
-                  i === index ? "w-8 bg-brand" : "w-2 bg-border hover:bg-brand/40"
-                )}
-              />
-            ))}
-          </div>
+          {maxIndex > 0 && (
+            <div className="mt-8 flex items-center justify-center gap-2">
+              {Array.from({ length: maxIndex + 1 }).map((_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => setIndex(i)}
+                  aria-label={`Go to article slide ${i + 1}`}
+                  className={cn(
+                    "h-2 rounded-full transition-all duration-500 ease-out",
+                    i === index ? "w-8 bg-brand" : "w-2 bg-border hover:bg-brand/40"
+                  )}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
