@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from "react";
-import { ArrowLeft, ArrowRight, ArrowUpRight, Clock, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, Clock } from "lucide-react";
 import { useBlogs, type BlogPost } from "@/lib/blog-store";
 import { BlogModal } from "./BlogModal";
 import { useReveal } from "@/hooks/use-reveal";
@@ -76,10 +76,7 @@ export function BlogCarousel() {
           {/* Section Header with Navigation Arrows */}
           <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
             <div>
-              <span className="inline-flex items-center gap-2 rounded-full border border-brand/40 bg-brand/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-brand">
-                <Sparkles className="h-3.5 w-3.5" /> Featured Articles & Insights
-              </span>
-              <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+              <h2 className="font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
                 Recruitment Insights & Executive Leadership
               </h2>
               <p className="mt-3 text-base text-muted-foreground sm:text-lg max-w-3xl">
