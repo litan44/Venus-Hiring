@@ -81,7 +81,19 @@ export async function initDatabase() {
         );
       `);
 
-      // 4. Seed initial categories if empty
+      // 4. Create faqs table
+      await client.query(`
+        CREATE TABLE IF NOT EXISTS faqs (
+          id VARCHAR(100) PRIMARY KEY,
+          question TEXT NOT NULL,
+          answer TEXT NOT NULL,
+          category VARCHAR(100) DEFAULT 'General',
+          order_index INT DEFAULT 0,
+          created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+        );
+      `);
+
+      // 5. Seed initial categories if empty
       const catCheck = await client.query("SELECT COUNT(*) FROM categories;");
       if (parseInt(catCheck.rows[0].count, 10) === 0) {
         console.log("[PostgreSQL] Seeding initial categories...");
@@ -219,6 +231,63 @@ export async function initDatabase() {
               b.seo_canonical_url,
               b.seo_og_image,
             ]
+          );
+        }
+      }
+
+      // 7. Seed initial FAQs if empty
+      const faqCheck = await client.query("SELECT COUNT(*) FROM faqs;");
+      if (parseInt(faqCheck.rows[0].count, 10) === 0) {
+        console.log("[PostgreSQL] Seeding initial FAQs...");
+        const initialFaqs = [
+          {
+            id: "faq-1",
+            q: "How quickly can you present qualified candidates?",
+            a: "For most standard and specialized roles, you receive a calibrated shortlist of pre-screened candidates within 5 business days of our initial discovery session. Complex executive or niche technical searches typically take 2 to 3 weeks.",
+            category: "Recruitment",
+            order_index: 0,
+          },
+          {
+            id: "faq-2",
+            q: "Do you support international hiring and Canadian work-permit pathways?",
+            a: "Yes. We regularly source internationally trained professionals and guide employers through LMIA applications, work-permit transitions, and PR-pathway considerations alongside our domestic Canadian talent pools.",
+            category: "Immigration & Legal",
+            order_index: 1,
+          },
+          {
+            id: "faq-3",
+            q: "What placement guarantees do you provide?",
+            a: "All permanent placements carry a written replacement guarantee. If a hire does not work out inside the agreed period, we restart the search at zero additional fee.",
+            category: "Guarantee",
+            order_index: 2,
+          },
+          {
+            id: "faq-4",
+            q: "Which industries and sectors do you specialize in?",
+            a: "We specialize in Finance & Accounting, Technology, Automotive & EV, Aerospace, Advanced Manufacturing, Skilled Trades, and Executive Leadership across Canada and the US Midwest.",
+            category: "Sectors",
+            order_index: 3,
+          },
+          {
+            id: "faq-5",
+            q: "Can Venus Consultancy function as our fractional HR department?",
+            a: "Our fractional HR and advisory practice provides interim HR leadership for workforce planning, compliance frameworks, policy drafting, and team scaling without adding permanent overhead.",
+            category: "Advisory",
+            order_index: 4,
+          },
+          {
+            id: "faq-6",
+            q: "What is the difference between direct placement and SOW project pods?",
+            a: "Direct placement focuses on sourcing full-time employees for your internal payroll. SOW (Statement of Work) pods deploy specialized, managed teams committed to specific project deliverables and milestones under a fixed budget.",
+            category: "Services",
+            order_index: 5,
+          },
+        ];
+
+        for (const f of initialFaqs) {
+          await client.query(
+            "INSERT INTO faqs (id, question, answer, category, order_index) VALUES ($1, $2, $3, $4, $5) ON CONFLICT (id) DO NOTHING;",
+            [f.id, f.q, f.a, f.category, f.order_index]
           );
         }
       }

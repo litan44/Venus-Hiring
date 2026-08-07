@@ -15,6 +15,7 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ApiBlogsRouteImport } from './routes/api.blogs'
 import { Route as ApiCategoriesRouteImport } from './routes/api.categories'
 import { Route as ApiContactRouteImport } from './routes/api.contact'
+import { Route as ApiFaqsRouteImport } from './routes/api.faqs'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -46,6 +47,11 @@ const ApiContactRoute = ApiContactRouteImport.update({
   path: '/api/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiFaqsRoute = ApiFaqsRouteImport.update({
+  id: '/api/faqs',
+  path: '/api/faqs',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -54,6 +60,7 @@ export interface FileRoutesByFullPath {
   '/api/blogs': typeof ApiBlogsRoute
   '/api/categories': typeof ApiCategoriesRoute
   '/api/contact': typeof ApiContactRoute
+  '/api/faqs': typeof ApiFaqsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -62,6 +69,7 @@ export interface FileRoutesByTo {
   '/api/blogs': typeof ApiBlogsRoute
   '/api/categories': typeof ApiCategoriesRoute
   '/api/contact': typeof ApiContactRoute
+  '/api/faqs': typeof ApiFaqsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -71,6 +79,7 @@ export interface FileRoutesById {
   '/api/blogs': typeof ApiBlogsRoute
   '/api/categories': typeof ApiCategoriesRoute
   '/api/contact': typeof ApiContactRoute
+  '/api/faqs': typeof ApiFaqsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -81,6 +90,7 @@ export interface FileRouteTypes {
     | '/api/blogs'
     | '/api/categories'
     | '/api/contact'
+    | '/api/faqs'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -89,6 +99,7 @@ export interface FileRouteTypes {
     | '/api/blogs'
     | '/api/categories'
     | '/api/contact'
+    | '/api/faqs'
   id:
     | '__root__'
     | '/'
@@ -97,6 +108,7 @@ export interface FileRouteTypes {
     | '/api/blogs'
     | '/api/categories'
     | '/api/contact'
+    | '/api/faqs'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -106,6 +118,7 @@ export interface RootRouteChildren {
   ApiBlogsRoute: typeof ApiBlogsRoute
   ApiCategoriesRoute: typeof ApiCategoriesRoute
   ApiContactRoute: typeof ApiContactRoute
+  ApiFaqsRoute: typeof ApiFaqsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -152,6 +165,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/faqs': {
+      id: '/api/faqs'
+      path: '/api/faqs'
+      fullPath: '/api/faqs'
+      preLoaderRoute: typeof ApiFaqsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -162,6 +182,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiBlogsRoute: ApiBlogsRoute,
   ApiCategoriesRoute: ApiCategoriesRoute,
   ApiContactRoute: ApiContactRoute,
+  ApiFaqsRoute: ApiFaqsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

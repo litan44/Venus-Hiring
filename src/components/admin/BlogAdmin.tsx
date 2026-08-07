@@ -29,8 +29,11 @@ import {
   Type,
   FileText,
   Layers,
+  HelpCircle,
+  Save,
 } from "lucide-react";
 import { useBlogs, type BlogPost, type ContentBlock } from "@/lib/blog-store";
+import { useFaqs, type FaqItem } from "@/lib/faq-store";
 import { cn } from "@/lib/utils";
 
 interface BlogAdminProps {
@@ -50,14 +53,25 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
     deleteCategory,
   } = useBlogs();
 
-  const [activeTab, setActiveTab] = useState<"list" | "editor" | "categories">("list");
+  const { faqs, addFaq, updateFaq, deleteFaq, reorderFaqs } = useFaqs();
+
+  const [activeTab, setActiveTab] = useState<"list" | "editor" | "categories" | "faqs">("list");
   const [editingId, setEditingId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState("all");
   const [editorSubTab, setEditorSubTab] = useState<"blocks" | "ckeditor" | "preview" | "seo">("blocks");
   const [newCatInput, setNewCatInput] = useState("");
 
-  // Editor Form State
+  // FAQ Form State
+  const [editingFaqId, setEditingFaqId] = useState<string | null>(null);
+  const [faqForm, setFaqForm] = useState<{ q: string; a: string; category: string }>({
+    q: "",
+    a: "",
+    category: "General",
+  });
+  const [faqSearchQuery, setFaqSearchQuery] = useState("");
+
+  // Blog Editor Form State
   const [formData, setFormData] = useState<Omit<BlogPost, "id">>({
     title: "",
     slug: "",
@@ -324,6 +338,53 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
     setActiveTab("list");
   };
 
+  // FAQ HANDLERS
+  const handleSaveFaq = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!faqForm.q.trim() || !faqForm.a.trim()) {
+      alert("Please enter both question and answer.");
+      return;
+    }
+
+    if (editingFaqId) {
+      updateFaq(editingFaqId, faqForm);
+      setEditingFaqId(null);
+    } else {
+      const newFaq: FaqItem = {
+        id: `faq-${Date.now()}`,
+        q: faqForm.q.trim(),
+        a: faqForm.a.trim(),
+        category: faqForm.category || "General",
+        orderIndex: faqs.length,
+      };
+      addFaq(newFaq);
+    }
+
+    setFaqForm({ q: "", a: "", category: "General" });
+  };
+
+  const handleEditFaq = (faq: FaqItem) => {
+    setEditingFaqId(faq.id);
+    setFaqForm({
+      q: faq.q,
+      a: faq.a,
+      category: faq.category || "General",
+    });
+  };
+
+  const moveFaq = (index: number, direction: "up" | "down") => {
+    const list = [...faqs];
+    const targetIndex = direction === "up" ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= list.length) return;
+
+    const temp = list[index];
+    list[index] = list[targetIndex];
+    list[targetIndex] = temp;
+
+    const reordered = list.map((item, idx) => ({ ...item, orderIndex: idx }));
+    reorderFaqs(reordered);
+  };
+
   if (!isOpen) return null;
 
   const filteredBlogs = blogs.filter((b) => {
@@ -333,6 +394,13 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
     const matchesCat =
       selectedCategoryFilter === "all" || b.category === selectedCategoryFilter;
     return matchesSearch && matchesCat;
+  });
+
+  const filteredFaqs = faqs.filter((f) => {
+    return (
+      f.q.toLowerCase().includes(faqSearchQuery.toLowerCase()) ||
+      f.a.toLowerCase().includes(faqSearchQuery.toLowerCase())
+    );
   });
 
   return (
@@ -346,15 +414,15 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
             </span>
             <div>
               <h2 className="font-display text-lg font-bold text-foreground">
-                Blog Admin & Media Content Manager
+                Blog & FAQ Admin Control Center
               </h2>
               <p className="text-xs text-muted-foreground">
-                Add Headings, Descriptions, Images, Videos, Quotes, and Manage SEO
+                Manage Articles, Media Blocks, SEO Settings, Categories, and Homepage FAQ Section
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <button
               type="button"
               onClick={() => setActiveTab("list")}
@@ -393,8 +461,20 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
             </button>
             <button
               type="button"
+              onClick={() => setActiveTab("faqs")}
+              className={cn(
+                "inline-flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-bold transition-all",
+                activeTab === "faqs"
+                  ? "bg-brand text-white shadow-brand"
+                  : "bg-amber-500/10 border border-amber-500/30 text-amber-600 dark:text-amber-400 hover:bg-amber-500 hover:text-white"
+              )}
+            >
+              <HelpCircle className="h-4 w-4" /> FAQ Manager ({faqs.length})
+            </button>
+            <button
+              type="button"
               onClick={onClose}
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-background text-muted-foreground hover:bg-brand hover:text-white transition-colors"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-background text-muted-foreground hover:bg-brand hover:text-white transition-colors ml-2"
             >
               <X className="h-5 w-5" />
             </button>
@@ -403,7 +483,7 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
 
         {/* Content Body */}
         <div className="flex-1 overflow-y-auto p-6">
-          {/* TAB 1: LIST VIEW */}
+          {/* TAB 1: ARTICLES LIST VIEW */}
           {activeTab === "list" && (
             <div className="space-y-6">
               {/* Search & Filter Bar */}
@@ -520,7 +600,7 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
             </div>
           )}
 
-          {/* TAB 2: EDITOR VIEW */}
+          {/* TAB 2: BLOG EDITOR VIEW */}
           {activeTab === "editor" && (
             <form onSubmit={handleSave} className="space-y-6">
               {/* Sub-Nav Controls */}
@@ -598,7 +678,7 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
                 </div>
               </div>
 
-              {/* ARTICLE BASIC METADATA (TITLE, EXCERPT, CATEGORY, HERO IMAGE) */}
+              {/* ARTICLE BASIC METADATA */}
               <div className="grid gap-4 sm:grid-cols-12 rounded-2xl border border-border bg-card p-4">
                 <div className="sm:col-span-8 space-y-3">
                   <div>
@@ -1273,6 +1353,172 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
                     </button>
                   </div>
                 ))}
+              </div>
+            </div>
+          )}
+
+          {/* TAB 4: FAQ MANAGER */}
+          {activeTab === "faqs" && (
+            <div className="space-y-6">
+              {/* Add / Edit FAQ Form */}
+              <form onSubmit={handleSaveFaq} className="rounded-2xl border border-border bg-card p-6 space-y-4 shadow-sm">
+                <div className="flex items-center justify-between border-b border-border/60 pb-3">
+                  <div className="flex items-center gap-2">
+                    <HelpCircle className="h-5 w-5 text-amber-500" />
+                    <h3 className="font-bold text-sm text-foreground">
+                      {editingFaqId ? "Edit FAQ Item" : "Create New FAQ Item"}
+                    </h3>
+                  </div>
+                  {editingFaqId && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setEditingFaqId(null);
+                        setFaqForm({ q: "", a: "", category: "General" });
+                      }}
+                      className="text-xs text-muted-foreground hover:text-foreground"
+                    >
+                      Cancel Edit
+                    </button>
+                  )}
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-12">
+                  <div className="sm:col-span-8 space-y-1">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                      Question *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g., How quickly can you present qualified candidates?"
+                      value={faqForm.q}
+                      onChange={(e) => setFaqForm((prev) => ({ ...prev, q: e.target.value }))}
+                      className="w-full rounded-xl border border-border bg-background px-4 py-2 text-xs font-bold text-foreground focus:border-brand focus:outline-none"
+                    />
+                  </div>
+
+                  <div className="sm:col-span-4 space-y-1">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                      Category Tag
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g., Recruitment, Guarantee, Advisory"
+                      value={faqForm.category}
+                      onChange={(e) => setFaqForm((prev) => ({ ...prev, category: e.target.value }))}
+                      className="w-full rounded-xl border border-border bg-background px-3 py-2 text-xs font-semibold focus:border-brand focus:outline-none"
+                    />
+                  </div>
+
+                  <div className="sm:col-span-12 space-y-1">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                      Answer Description *
+                    </label>
+                    <textarea
+                      rows={3}
+                      required
+                      placeholder="Enter full detailed answer..."
+                      value={faqForm.a}
+                      onChange={(e) => setFaqForm((prev) => ({ ...prev, a: e.target.value }))}
+                      className="w-full rounded-xl border border-border bg-background p-3 text-xs leading-relaxed text-foreground focus:border-brand focus:outline-none resize-y"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex justify-end pt-2">
+                  <button
+                    type="submit"
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-amber-500 px-6 py-2 text-xs font-bold text-white shadow-md hover:bg-amber-600 transition-all"
+                  >
+                    <Save className="h-4 w-4" />
+                    {editingFaqId ? "Update FAQ Item" : "Save FAQ Item"}
+                  </button>
+                </div>
+              </form>
+
+              {/* FAQ Search Bar */}
+              <div className="relative">
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <input
+                  type="text"
+                  placeholder="Search FAQ questions or answers..."
+                  value={faqSearchQuery}
+                  onChange={(e) => setFaqSearchQuery(e.target.value)}
+                  className="w-full rounded-xl border border-border bg-card pl-10 pr-4 py-2 text-xs text-foreground placeholder:text-muted-foreground/70 focus:border-brand focus:outline-none"
+                />
+              </div>
+
+              {/* FAQ List */}
+              <div className="space-y-3">
+                {filteredFaqs.length === 0 ? (
+                  <div className="rounded-2xl border border-border bg-card p-10 text-center text-muted-foreground text-xs font-semibold">
+                    No FAQ items found. Create your first FAQ item above!
+                  </div>
+                ) : (
+                  filteredFaqs.map((faq, idx) => (
+                    <div
+                      key={faq.id}
+                      className="group flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-2xl border border-border/80 bg-card p-4 hover:border-amber-500/40 transition-all shadow-sm"
+                    >
+                      <div className="space-y-1 min-w-0 flex-1">
+                        <div className="flex items-center gap-2">
+                          <span className="flex h-5 w-5 items-center justify-center rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 text-[10px] font-bold">
+                            #{idx + 1}
+                          </span>
+                          <span className="rounded-full bg-accent px-2.5 py-0.5 text-[10px] font-bold text-muted-foreground uppercase">
+                            {faq.category || "General"}
+                          </span>
+                        </div>
+                        <h4 className="font-bold text-sm text-foreground leading-snug">
+                          {faq.q}
+                        </h4>
+                        <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+                          {faq.a}
+                        </p>
+                      </div>
+
+                      <div className="flex items-center gap-1 shrink-0 self-end sm:self-center">
+                        <button
+                          type="button"
+                          title="Move Up"
+                          disabled={idx === 0}
+                          onClick={() => moveFaq(idx, "up")}
+                          className="rounded-lg p-1.5 hover:bg-accent text-muted-foreground disabled:opacity-30"
+                        >
+                          <ArrowUp className="h-4 w-4" />
+                        </button>
+                        <button
+                          type="button"
+                          title="Move Down"
+                          disabled={idx === filteredFaqs.length - 1}
+                          onClick={() => moveFaq(idx, "down")}
+                          className="rounded-lg p-1.5 hover:bg-accent text-muted-foreground disabled:opacity-30"
+                        >
+                          <ArrowDown className="h-4 w-4" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleEditFaq(faq)}
+                          className="inline-flex items-center gap-1 rounded-xl border border-border bg-background px-3 py-1.5 text-xs font-bold hover:border-amber-500 hover:text-amber-500 transition-colors"
+                        >
+                          <Edit className="h-3.5 w-3.5" /> Edit
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (confirm(`Delete FAQ "${faq.q}"?`)) {
+                              deleteFaq(faq.id);
+                            }
+                          }}
+                          className="inline-flex items-center gap-1 rounded-xl border border-rose-500/30 bg-rose-500/10 px-3 py-1.5 text-xs font-bold text-rose-500 hover:bg-rose-500 hover:text-white transition-colors"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" /> Delete
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
           )}

@@ -359,7 +359,10 @@ const FAQS = [
   },
 ];
 
+import { useFaqs } from "@/lib/faq-store";
+
 export function Faq() {
+  const { faqs } = useFaqs();
   const [open, setOpen] = useState<number | null>(0);
 
   return (
@@ -403,7 +406,7 @@ export function Faq() {
 
         {/* Right Column: Scrollable List of FAQ Accordion Rows */}
         <div className="flex flex-col border-t border-border/80">
-          {FAQS.map((f, i) => {
+          {(faqs.length > 0 ? faqs : FAQS).map((f, i) => {
             const isOpen = open === i;
             const itemNum = (i + 1).toString().padStart(2, "0");
             return (
