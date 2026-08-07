@@ -10,7 +10,7 @@ const NAV = [
   { label: "Home", href: "#top" },
   { label: "Services", href: "#services", hasMega: true },
   { label: "Industries", href: "#industries", hasMega: true },
-  { label: "Blog", href: "#insights" },
+  { label: "Blog", href: "#blog" },
   { label: "FAQ", href: "#faq" },
   { label: "Contact Us", href: "#contact" },
 ];
