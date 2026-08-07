@@ -30,6 +30,7 @@ import {
   FileText,
   Layers,
   HelpCircle,
+  ExternalLink,
 } from "lucide-react";
 import { useBlogs, type BlogPost, type ContentBlock, type BlogFaq } from "@/lib/blog-store";
 import { cn } from "@/lib/utils";
@@ -474,68 +475,92 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
                     No articles found matching your query.
                   </div>
                 ) : (
-                  filteredBlogs.map((b) => (
-                    <div
-                      key={b.id}
-                      className="group flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-2xl border border-border/80 bg-card p-4 hover:border-brand/40 transition-all shadow-sm"
-                    >
-                      {/* Image & Title */}
-                      <div className="flex items-center gap-4 min-w-0">
-                        <img
-                          src={b.featuredImage}
-                          alt={b.title}
-                          className="h-16 w-24 shrink-0 rounded-xl object-cover border border-border"
-                        />
-                        <div className="min-w-0">
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="rounded-full bg-brand/10 border border-brand/30 px-2.5 py-0.5 text-[10px] font-bold text-brand uppercase">
-                              {b.category}
-                            </span>
-                            <span className="text-[11px] text-muted-foreground">
-                              {b.publishDate} &bull; {b.readTime}
-                            </span>
-                            {b.faqs && b.faqs.length > 0 && (
-                              <span className="rounded-full bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 text-[10px] font-bold text-amber-600 dark:text-amber-400">
-                                {b.faqs.length} FAQs
+                  filteredBlogs.map((b) => {
+                    const targetUrl =
+                      b.seo?.canonicalUrl && b.seo.canonicalUrl.startsWith("http")
+                        ? b.seo.canonicalUrl
+                        : b.slug && b.slug.startsWith("http")
+                        ? b.slug
+                        : `https://www.venushiring.ca/blog/${b.slug || ""}`;
+
+                    return (
+                      <div
+                        key={b.id}
+                        className="group flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-2xl border border-border/80 bg-card p-4 hover:border-brand/40 transition-all shadow-sm"
+                      >
+                        {/* Image & Title Link */}
+                        <a
+                          href={targetUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          title="Click to view article on original site"
+                          className="flex items-center gap-4 min-w-0 flex-1 group/link cursor-pointer hover:opacity-90 transition-opacity"
+                        >
+                          <img
+                            src={b.featuredImage}
+                            alt={b.title}
+                            className="h-16 w-24 shrink-0 rounded-xl object-cover border border-border group-hover/link:scale-105 transition-transform"
+                          />
+                          <div className="min-w-0">
+                            <div className="flex items-center gap-2 mb-1">
+                              <span className="rounded-full bg-brand/10 border border-brand/30 px-2.5 py-0.5 text-[10px] font-bold text-brand uppercase">
+                                {b.category}
                               </span>
-                            )}
+                              <span className="text-[11px] text-muted-foreground">
+                                {b.publishDate} &bull; {b.readTime}
+                              </span>
+                              {b.faqs && b.faqs.length > 0 && (
+                                <span className="rounded-full bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 text-[10px] font-bold text-amber-600 dark:text-amber-400">
+                                  {b.faqs.length} FAQs
+                                </span>
+                              )}
+                            </div>
+                            <h4 className="font-bold text-sm text-foreground truncate max-w-md group-hover/link:text-brand transition-colors flex items-center gap-1.5">
+                              {b.title}
+                              <ExternalLink className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                            </h4>
+                            <p className="text-xs text-muted-foreground line-clamp-1">
+                              {b.excerpt}
+                            </p>
                           </div>
-                          <h4 className="font-bold text-sm text-foreground truncate max-w-md">
-                            {b.title}
-                          </h4>
-                          <p className="text-xs text-muted-foreground line-clamp-1">
-                            {b.excerpt}
-                          </p>
-                        </div>
-                      </div>
+                        </a>
 
-                      {/* Featured Checkbox & Action Buttons */}
-                      <div className="flex items-center gap-3 shrink-0 self-end sm:self-center">
-                        <button
-                          type="button"
-                          onClick={() => toggleFeatured(b.id)}
-                          className={cn(
-                            "inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-bold border transition-all",
-                            b.isFeatured
-                              ? "border-emerald-500/50 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
-                              : "border-border bg-background text-muted-foreground hover:border-brand"
-                          )}
-                        >
-                          {b.isFeatured ? (
-                            <CheckSquare className="h-4 w-4 text-emerald-500" />
-                          ) : (
-                            <Square className="h-4 w-4" />
-                          )}
-                          Featured on Home
-                        </button>
+                        {/* Featured Checkbox & Action Buttons */}
+                        <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                          <a
+                            href={targetUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 rounded-xl border border-brand/30 bg-brand/10 px-3 py-1.5 text-xs font-bold text-brand hover:bg-brand hover:text-white transition-all shadow-sm"
+                          >
+                            <ExternalLink className="h-3.5 w-3.5" /> View Article
+                          </a>
 
-                        <button
-                          type="button"
-                          onClick={() => handleEdit(b)}
-                          className="inline-flex items-center gap-1 rounded-xl border border-border bg-background px-3 py-1.5 text-xs font-bold hover:border-brand hover:text-brand transition-colors"
-                        >
-                          <Edit className="h-3.5 w-3.5" /> Edit
-                        </button>
+                          <button
+                            type="button"
+                            onClick={() => toggleFeatured(b.id)}
+                            className={cn(
+                              "inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-bold border transition-all",
+                              b.isFeatured
+                                ? "border-emerald-500/50 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                                : "border-border bg-background text-muted-foreground hover:border-brand"
+                            )}
+                          >
+                            {b.isFeatured ? (
+                              <CheckSquare className="h-4 w-4 text-emerald-500" />
+                            ) : (
+                              <Square className="h-4 w-4" />
+                            )}
+                            Featured
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => handleEdit(b)}
+                            className="inline-flex items-center gap-1 rounded-xl border border-border bg-background px-3 py-1.5 text-xs font-bold hover:border-brand hover:text-brand transition-colors"
+                          >
+                            <Edit className="h-3.5 w-3.5" /> Edit
+                          </button>
 
                         <button
                           type="button"
@@ -550,7 +575,8 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
                         </button>
                       </div>
                     </div>
-                  ))
+                  );
+                })
                 )}
               </div>
             </div>
