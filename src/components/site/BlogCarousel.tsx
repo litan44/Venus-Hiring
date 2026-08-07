@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { ArrowLeft, ArrowRight, ArrowUpRight, CalendarDays } from "lucide-react";
 import { useBlogs, type BlogPost } from "@/lib/blog-store";
-import { BlogModal } from "./BlogModal";
 import { useReveal } from "@/hooks/use-reveal";
 import { cn } from "@/lib/utils";
 
@@ -12,7 +11,6 @@ export function BlogCarousel() {
   const [index, setIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [isInViewport, setIsInViewport] = useState(false);
-  const [selectedBlog, setSelectedBlog] = useState<BlogPost | null>(null);
   const [visibleCount, setVisibleCount] = useState(3);
 
   // Filter ONLY featured blogs selected by Admin
@@ -91,79 +89,92 @@ export function BlogCarousel() {
     setIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
   };
 
+  const getBlogTargetUrl = (b: BlogPost) => {
+    if (b.seo?.canonicalUrl && b.seo.canonicalUrl.startsWith("http")) {
+      return b.seo.canonicalUrl;
+    }
+    if (b.slug && b.slug.startsWith("http")) {
+      return b.slug;
+    }
+    return `https://www.venushiring.ca/blog/${b.slug || ""}`;
+  };
+
   return (
-    <>
-      <section
-        id="blog"
-        ref={containerRef}
-        className="relative overflow-hidden border-b border-border bg-porcelain section-padding"
-        aria-label="Hiring intelligence from our consultants"
-      >
-        <div
-          className="pointer-events-none absolute inset-0 -z-10 mesh-light opacity-80"
-          aria-hidden
-        />
-        <div
-          className="pointer-events-none absolute inset-0 -z-10 dot-grid-light opacity-[0.25]"
-          aria-hidden
-        />
+    <section
+      id="blog"
+      ref={containerRef}
+      className="relative overflow-hidden border-b border-border bg-porcelain section-padding"
+      aria-label="Hiring intelligence from our consultants"
+    >
+      <div
+        className="pointer-events-none absolute inset-0 -z-10 mesh-light opacity-80"
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute inset-0 -z-10 dot-grid-light opacity-[0.25]"
+        aria-hidden
+      />
 
-        <div className="shell relative">
-          {/* Section Header with Navigation Arrows */}
-          <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
-            <div>
-              <h2 className="font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-                Hiring intelligence from our consultants
-              </h2>
-              <p className="mt-3 text-base text-muted-foreground sm:text-lg max-w-3xl">
-                Stay updated with Canadian & US workforce trends, salary benchmarks, and talent acquisition strategies.
-              </p>
-            </div>
-
-            {/* Manual Navigation Arrows */}
-            {maxIndex > 0 && (
-              <div className="flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={goPrev}
-                  aria-label="Previous articles"
-                  className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-sm transition-all duration-300 hover:scale-105 hover:border-brand hover:bg-brand hover:text-white"
-                >
-                  <ArrowLeft className="h-5 w-5" />
-                </button>
-                <button
-                  type="button"
-                  onClick={goNext}
-                  aria-label="Next articles"
-                  className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-sm transition-all duration-300 hover:scale-105 hover:border-brand hover:bg-brand hover:text-white"
-                >
-                  <ArrowRight className="h-5 w-5" />
-                </button>
-              </div>
-            )}
+      <div className="shell relative">
+        {/* Section Header with Navigation Arrows */}
+        <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
+          <div>
+            <h2 className="font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+              Hiring intelligence from our consultants
+            </h2>
+            <p className="mt-3 text-base text-muted-foreground sm:text-lg max-w-3xl">
+              Stay updated with Canadian & US workforce trends, salary benchmarks, and talent acquisition strategies.
+            </p>
           </div>
 
-          {/* Sliding Carousel Grid matching exact original card design */}
+          {/* Manual Navigation Arrows */}
+          {maxIndex > 0 && (
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={goPrev}
+                aria-label="Previous articles"
+                className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-sm transition-all duration-300 hover:scale-105 hover:border-brand hover:bg-brand hover:text-white"
+              >
+                <ArrowLeft className="h-5 w-5" />
+              </button>
+              <button
+                type="button"
+                onClick={goNext}
+                aria-label="Next articles"
+                className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-sm transition-all duration-300 hover:scale-105 hover:border-brand hover:bg-brand hover:text-white"
+              >
+                <ArrowRight className="h-5 w-5" />
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* Sliding Carousel Grid matching exact original card design */}
+        <div
+          ref={ref}
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          className={cn("reveal-item mt-12 overflow-hidden", shown && "is-shown")}
+        >
           <div
-            ref={ref}
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseLeave={() => setIsPaused(false)}
-            className={cn("reveal-item mt-12 overflow-hidden", shown && "is-shown")}
+            className="flex transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform -mx-2.5"
+            style={{
+              transform: `translate3d(-${index * (100 / visibleCount)}%, 0, 0)`,
+            }}
           >
-            <div
-              className="flex transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform -mx-2.5"
-              style={{
-                transform: `translate3d(-${index * (100 / visibleCount)}%, 0, 0)`,
-              }}
-            >
-              {displayBlogs.map((b) => (
+            {displayBlogs.map((b) => {
+              const targetUrl = getBlogTargetUrl(b);
+              return (
                 <div
                   key={b.id}
                   className="w-full sm:w-1/2 lg:w-1/3 shrink-0 px-2.5"
                 >
-                  <div
-                    onClick={() => setSelectedBlog(b)}
-                    className="group relative h-full flex flex-col justify-between cursor-pointer overflow-hidden rounded-[1.75rem] glass-panel p-3 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_28px_70px_-42px_rgba(15,23,42,0.5)] transition-[transform,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-2 hover:ring-brand-soft bg-card border border-border/80"
+                  <a
+                    href={targetUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group relative h-full flex flex-col justify-between cursor-pointer overflow-hidden rounded-[1.75rem] glass-panel p-3 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_28px_70px_-42px_rgba(15,23,42,0.5)] transition-[transform,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-2 hover:ring-brand-soft bg-card border border-border/80 text-foreground"
                   >
                     {/* Top Image with Date Badge */}
                     <div className="sheen relative aspect-[16/10] overflow-hidden rounded-[1.35rem]">
@@ -203,34 +214,31 @@ export function BlogCarousel() {
                         </span>
                       </span>
                     </div>
-                  </div>
+                  </a>
                 </div>
-              ))}
-            </div>
+              );
+            })}
           </div>
-
-          {/* Indicator Dots */}
-          {maxIndex > 0 && (
-            <div className="mt-8 flex items-center justify-center gap-2">
-              {Array.from({ length: maxIndex + 1 }).map((_, i) => (
-                <button
-                  key={i}
-                  type="button"
-                  onClick={() => setIndex(i)}
-                  aria-label={`Go to article slide ${i + 1}`}
-                  className={cn(
-                    "h-2 rounded-full transition-all duration-500 ease-out",
-                    i === index ? "w-8 bg-brand" : "w-2 bg-border hover:bg-brand/40"
-                  )}
-                />
-              ))}
-            </div>
-          )}
         </div>
-      </section>
 
-      {/* Full Article Reader Modal */}
-      <BlogModal blog={selectedBlog} onClose={() => setSelectedBlog(null)} />
-    </>
+        {/* Indicator Dots */}
+        {maxIndex > 0 && (
+          <div className="mt-8 flex items-center justify-center gap-2">
+            {Array.from({ length: maxIndex + 1 }).map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => setIndex(i)}
+                aria-label={`Go to article slide ${i + 1}`}
+                className={cn(
+                  "h-2 rounded-full transition-all duration-500 ease-out",
+                  i === index ? "w-8 bg-brand" : "w-2 bg-border hover:bg-brand/40"
+                )}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
   );
 }
