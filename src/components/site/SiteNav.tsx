@@ -211,7 +211,7 @@ const INDUSTRIES_MEGA = {
   },
 };
 
-export function SiteNav({ onOpenAdmin }: { onOpenAdmin?: () => void }) {
+export function SiteNav() {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState<string | null>("top");
   const [open, setOpen] = useState(false);
@@ -441,20 +441,6 @@ export function SiteNav({ onOpenAdmin }: { onOpenAdmin?: () => void }) {
 
             {/* Actions */}
             <div className="hidden items-center gap-3 lg:flex">
-              {onOpenAdmin && (
-                <button
-                  type="button"
-                  onClick={onOpenAdmin}
-                  className={cn(
-                    "rounded-full border px-4 py-2.5 text-[0.875rem] font-semibold transition-all duration-300 ease-out hover:-translate-y-0.5",
-                    light
-                      ? "border-brand/40 bg-brand/20 text-ink-foreground backdrop-blur hover:bg-brand hover:text-white"
-                      : "border-brand/50 bg-brand/10 text-brand hover:bg-brand hover:text-white",
-                  )}
-                >
-                  Blog Admin
-                </button>
-              )}
               <a
                 href="https://www.venushiring.ca/find-jobs"
                 className={cn(

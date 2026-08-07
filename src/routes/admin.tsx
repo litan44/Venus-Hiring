@@ -21,7 +21,7 @@ function AdminPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <SiteNav onOpenAdmin={() => setIsAdminOpen(true)} />
+      <SiteNav />
       <main className="shell section-padding min-h-[70vh] flex flex-col items-center justify-center text-center">
         <div className="max-w-xl mx-auto space-y-6">
           <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-brand/10 text-brand border border-brand/30">

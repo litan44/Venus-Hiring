@@ -206,12 +206,20 @@ export function useBlogs() {
       const data = await res.json();
       if (data.success) {
         if (data.blogs && data.blogs.length > 0) {
-          setBlogs(data.blogs);
-          saveStoredBlogs(data.blogs);
+          const currentJson = JSON.stringify(blogs);
+          const newJson = JSON.stringify(data.blogs);
+          if (currentJson !== newJson) {
+            setBlogs(data.blogs);
+            saveStoredBlogs(data.blogs);
+          }
         }
         if (data.categories && data.categories.length > 0) {
-          setCategories(data.categories);
-          saveStoredCategories(data.categories);
+          const currentCatJson = JSON.stringify(categories);
+          const newCatJson = JSON.stringify(data.categories);
+          if (currentCatJson !== newCatJson) {
+            setCategories(data.categories);
+            saveStoredCategories(data.categories);
+          }
         }
       }
     } catch (err) {

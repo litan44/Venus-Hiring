@@ -1,31 +1,55 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { ArrowLeft, ArrowRight, ArrowUpRight, Clock, Sparkles } from "lucide-react";
 import { useBlogs, type BlogPost } from "@/lib/blog-store";
 import { BlogModal } from "./BlogModal";
-import { SectionHeading } from "./primitives";
 import { useReveal } from "@/hooks/use-reveal";
 import { cn } from "@/lib/utils";
 
 export function BlogCarousel() {
   const { blogs } = useBlogs();
   const { ref, shown } = useReveal<HTMLDivElement>();
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const [index, setIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [isInViewport, setIsInViewport] = useState(false);
   const [selectedBlog, setSelectedBlog] = useState<BlogPost | null>(null);
 
   // Filter ONLY featured blogs selected by Admin
-  const featuredBlogs = blogs.filter((b) => b.isFeatured);
-  const displayBlogs = featuredBlogs.length > 0 ? featuredBlogs : blogs;
+  const featuredBlogs = useMemo(
+    () => blogs.filter((b) => b.isFeatured),
+    [blogs]
+  );
+  const displayBlogs = useMemo(
+    () => (featuredBlogs.length > 0 ? featuredBlogs : blogs),
+    [featuredBlogs, blogs]
+  );
 
-  // Auto-sliding timer: 2 seconds (2000ms) interval
+  // Track viewport visibility so auto-slide timer ONLY runs when visible
   useEffect(() => {
-    if (isPaused || displayBlogs.length <= 1) return;
+    const el = containerRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInViewport(entry.isIntersecting);
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // Auto-sliding timer: 2 seconds (2000ms) interval ONLY when visible in viewport and not hovered
+  useEffect(() => {
+    if (isPaused || !isInViewport || displayBlogs.length <= 1) return;
+
     const timer = setInterval(() => {
       setIndex((prev) => (prev + 1) % displayBlogs.length);
     }, 2000);
 
     return () => clearInterval(timer);
-  }, [isPaused, displayBlogs.length]);
+  }, [isPaused, isInViewport, displayBlogs.length]);
 
   const go = (next: number) => {
     setIndex((next + displayBlogs.length) % displayBlogs.length);
@@ -35,6 +59,7 @@ export function BlogCarousel() {
     <>
       <section
         id="blog"
+        ref={containerRef}
         className="relative overflow-hidden border-b border-border bg-porcelain section-padding"
         aria-label="Featured Recruitment Insights"
       >
@@ -83,7 +108,7 @@ export function BlogCarousel() {
             </div>
           </div>
 
-          {/* Sliding Carousel Container with 2s Auto-Slide (Pause on Hover) */}
+          {/* Sliding Carousel Container with 2s Auto-Slide (Pause on Hover / Viewport Leave) */}
           <div
             ref={ref}
             onMouseEnter={() => setIsPaused(true)}
@@ -91,7 +116,7 @@ export function BlogCarousel() {
             className={cn("reveal-item mt-12 overflow-hidden rounded-[2.25rem]", shown && "is-shown")}
           >
             <div
-              className="flex transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
+              className="flex transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform"
               style={{ transform: `translate3d(-${index * 100}%, 0, 0)` }}
             >
               {displayBlogs.map((b) => (
@@ -102,6 +127,7 @@ export function BlogCarousel() {
                       <img
                         src={b.featuredImage}
                         alt={b.title}
+                        loading="lazy"
                         className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                       />
                       <div className="absolute top-4 left-4">
@@ -140,6 +166,7 @@ export function BlogCarousel() {
                           <img
                             src={b.author.avatar}
                             alt={b.author.name}
+                            loading="lazy"
                             className="h-10 w-10 rounded-full object-cover border border-brand/30"
                           />
                           <div>
