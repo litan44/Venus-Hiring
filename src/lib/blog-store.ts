@@ -92,6 +92,23 @@ export const INITIAL_BLOGS: BlogPost[] = [
         text: "Speed to shortlist without sacrificing cultural fit is the defining metric for scaling tech startups in 2026.",
       },
     ],
+    faqs: [
+      {
+        id: "faq-b1-1",
+        q: "What technical roles are in highest demand across Toronto and Vancouver in 2026?",
+        a: "Senior AI/ML Data Engineers, Infrastructure & DevOps Directors, Cloud Security Architects, and Full-Stack Tech Leads are currently experiencing the highest talent demand and market competition.",
+      },
+      {
+        id: "faq-b1-2",
+        q: "How quickly can Venus Hiring deliver a calibrated engineering shortlist?",
+        a: "For standard senior technical roles, we deliver a calibrated shortlist of 3-5 pre-screened candidate profiles within 5 to 7 business days.",
+      },
+      {
+        id: "faq-b1-3",
+        q: "What candidate replacement guarantee does Venus Hiring offer for technical placements?",
+        a: "We back every direct placement with a comprehensive 90-day candidate guarantee. If a candidate leaves or fails to meet performance criteria, we replace them at zero additional cost.",
+      },
+    ],
     featuredImage:
       "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=800&fit=crop&auto=format",
     author: {
@@ -131,6 +148,23 @@ export const INITIAL_BLOGS: BlogPost[] = [
 
       <p>Successful executive search requires direct confidential outreach to senior operational leaders currently executing large-scale manufacturing turnarounds.</p>
     `,
+    faqs: [
+      {
+        id: "faq-b2-1",
+        q: "How long does an executive search for a Plant Operations Director typically take?",
+        a: "Executive searches for plant directors and battery architecture leaders typically take between 2 to 4 weeks from initial briefing to offer acceptance.",
+      },
+      {
+        id: "faq-b2-2",
+        q: "Does Venus Hiring handle confidential executive replacement searches?",
+        a: "Yes, we specialize in discreet, unadvertised executive searches to protect client business operations and sensitive organizational transitions.",
+      },
+      {
+        id: "faq-b2-3",
+        q: "What geographic regions do you cover for industrial and automotive recruitment?",
+        a: "We specialize in the cross-border Ontario-Michigan automotive corridor, as well as broader industrial manufacturing hubs across Canada and the US.",
+      },
+    ],
     featuredImage:
       "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1200&h=800&fit=crop&auto=format",
     author: {
@@ -168,6 +202,23 @@ export const INITIAL_BLOGS: BlogPost[] = [
         <li>Rapid 14-day onboarding without local corporate entity setup</li>
       </ul>
     `,
+    faqs: [
+      {
+        id: "faq-b3-1",
+        q: "Can a US company hire Canadian remote workers without creating a Canadian corporate entity?",
+        a: "Yes! Using an Employer of Record (EOR) service allows US enterprises to legally hire, pay, and manage Canadian employees without opening a local legal entity.",
+      },
+      {
+        id: "faq-b3-2",
+        q: "How does Canadian payroll and provincial health compliance work with an EOR?",
+        a: "The EOR acts as the legal employer on paper, handling statutory payroll deductions (CPP, EI, tax withholdings) and health compliance according to each candidate's province.",
+      },
+      {
+        id: "faq-b3-3",
+        q: "How fast can a new Canadian candidate be onboarded via EOR?",
+        a: "Candidates can be fully compliant and onboarded into payroll within 10 to 14 calendar days.",
+      },
+    ],
     featuredImage:
       "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=1200&h=800&fit=crop&auto=format",
     author: {
@@ -189,8 +240,8 @@ export const INITIAL_BLOGS: BlogPost[] = [
   },
 ];
 
-const STORAGE_KEY_BLOGS = "venus_blogs_data_v1";
-const STORAGE_KEY_CATS = "venus_blogs_categories_v1";
+const STORAGE_KEY_BLOGS = "venus_blogs_data_v2";
+const STORAGE_KEY_CATS = "venus_blogs_categories_v2";
 
 export function getStoredBlogs(): BlogPost[] {
   if (typeof window === "undefined") return INITIAL_BLOGS;
@@ -208,8 +259,11 @@ export function getStoredBlogs(): BlogPost[] {
 
 export function saveStoredBlogs(blogs: BlogPost[]) {
   if (typeof window === "undefined") return;
-  localStorage.setItem(STORAGE_KEY_BLOGS, JSON.stringify(blogs));
-  window.dispatchEvent(new Event("venus_blogs_updated"));
+  try {
+    localStorage.setItem(STORAGE_KEY_BLOGS, JSON.stringify(blogs));
+  } catch (err) {
+    console.error("Failed to save blogs to localStorage", err);
+  }
 }
 
 export function getStoredCategories(): string[] {
@@ -228,71 +282,55 @@ export function getStoredCategories(): string[] {
 
 export function saveStoredCategories(categories: string[]) {
   if (typeof window === "undefined") return;
-  localStorage.setItem(STORAGE_KEY_CATS, JSON.stringify(categories));
-  window.dispatchEvent(new Event("venus_categories_updated"));
+  try {
+    localStorage.setItem(STORAGE_KEY_CATS, JSON.stringify(categories));
+  } catch (err) {
+    console.error("Failed to save categories to localStorage", err);
+  }
 }
 
 export function useBlogs() {
   const [blogs, setBlogs] = useState<BlogPost[]>(getStoredBlogs());
   const [categories, setCategories] = useState<string[]>(getStoredCategories());
+  const [loading, setLoading] = useState(false);
 
-  const fetchFromDb = async () => {
-    try {
-      const res = await fetch("/api/blogs");
-      const data = await res.json();
-      if (data.success) {
-        if (data.blogs && data.blogs.length > 0) {
-          const currentJson = JSON.stringify(blogs);
-          const newJson = JSON.stringify(data.blogs);
-          if (currentJson !== newJson) {
+  useEffect(() => {
+    async function fetchFromApi() {
+      try {
+        setLoading(true);
+        const res = await fetch("/api/blogs");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.success && Array.isArray(data.blogs) && data.blogs.length > 0) {
             setBlogs(data.blogs);
             saveStoredBlogs(data.blogs);
           }
-        }
-        if (data.categories && data.categories.length > 0) {
-          const currentCatJson = JSON.stringify(categories);
-          const newCatJson = JSON.stringify(data.categories);
-          if (currentCatJson !== newCatJson) {
+          if (data.success && Array.isArray(data.categories) && data.categories.length > 0) {
             setCategories(data.categories);
             saveStoredCategories(data.categories);
           }
         }
+      } catch (err) {
+        console.warn("Using local cache for blogs", err);
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      console.warn("[PostgreSQL Sync Notice]: Using cached local storage blogs.", err);
     }
-  };
-
-  useEffect(() => {
-    fetchFromDb();
-
-    const handleUpdate = () => {
-      setBlogs(getStoredBlogs());
-      setCategories(getStoredCategories());
-    };
-
-    window.addEventListener("venus_blogs_updated", handleUpdate);
-    window.addEventListener("venus_categories_updated", handleUpdate);
-    return () => {
-      window.removeEventListener("venus_blogs_updated", handleUpdate);
-      window.removeEventListener("venus_categories_updated", handleUpdate);
-    };
+    fetchFromApi();
   }, []);
 
   const addBlog = async (blog: BlogPost) => {
     const updated = [blog, ...blogs];
     setBlogs(updated);
     saveStoredBlogs(updated);
-
     try {
       await fetch("/api/blogs", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(blog),
       });
-      fetchFromDb();
-    } catch (err) {
-      console.error("[PostgreSQL Add Blog Error]:", err);
+    } catch (e) {
+      console.error("API POST /api/blogs failed", e);
     }
   };
 
@@ -300,16 +338,14 @@ export function useBlogs() {
     const updated = blogs.map((b) => (b.id === id ? { ...b, ...updatedFields } : b));
     setBlogs(updated);
     saveStoredBlogs(updated);
-
     try {
       await fetch("/api/blogs", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id, ...updatedFields }),
       });
-      fetchFromDb();
-    } catch (err) {
-      console.error("[PostgreSQL Update Blog Error]:", err);
+    } catch (e) {
+      console.error("API PUT /api/blogs failed", e);
     }
   };
 
@@ -317,75 +353,52 @@ export function useBlogs() {
     const updated = blogs.filter((b) => b.id !== id);
     setBlogs(updated);
     saveStoredBlogs(updated);
-
     try {
       await fetch("/api/blogs", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id }),
       });
-      fetchFromDb();
-    } catch (err) {
-      console.error("[PostgreSQL Delete Blog Error]:", err);
+    } catch (e) {
+      console.error("API DELETE /api/blogs failed", e);
     }
   };
 
   const toggleFeatured = async (id: string) => {
-    const updated = blogs.map((b) => (b.id === id ? { ...b, isFeatured: !b.isFeatured } : b));
+    const updated = blogs.map((b) =>
+      b.id === id ? { ...b, isFeatured: !b.isFeatured } : b
+    );
     setBlogs(updated);
     saveStoredBlogs(updated);
-
     try {
       await fetch("/api/blogs", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id, isFeaturedToggle: true }),
       });
-      fetchFromDb();
-    } catch (err) {
-      console.error("[PostgreSQL Toggle Featured Error]:", err);
+    } catch (e) {
+      console.error("API toggle featured failed", e);
     }
   };
 
-  const addCategory = async (categoryName: string) => {
-    const trimmed = categoryName.trim();
-    if (!trimmed || categories.includes(trimmed)) return;
-    const updated = [...categories, trimmed];
-    setCategories(updated);
-    saveStoredCategories(updated);
-
-    try {
-      await fetch("/api/categories", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: trimmed }),
-      });
-      fetchFromDb();
-    } catch (err) {
-      console.error("[PostgreSQL Add Category Error]:", err);
+  const addCategory = (cat: string) => {
+    if (!categories.includes(cat)) {
+      const updated = [...categories, cat];
+      setCategories(updated);
+      saveStoredCategories(updated);
     }
   };
 
-  const deleteCategory = async (categoryName: string) => {
-    const updated = categories.filter((c) => c !== categoryName);
+  const deleteCategory = (cat: string) => {
+    const updated = categories.filter((c) => c !== cat);
     setCategories(updated);
     saveStoredCategories(updated);
-
-    try {
-      await fetch("/api/categories", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: categoryName }),
-      });
-      fetchFromDb();
-    } catch (err) {
-      console.error("[PostgreSQL Delete Category Error]:", err);
-    }
   };
 
   return {
     blogs,
     categories,
+    loading,
     addBlog,
     updateBlog,
     deleteBlog,

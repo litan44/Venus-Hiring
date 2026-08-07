@@ -336,6 +336,17 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
       return;
     }
 
+    if (!formData.faqs || formData.faqs.length === 0) {
+      if (
+        !confirm(
+          "SEO Recommendation: Every blog article should have between 2 to 10 Frequently Asked Questions for Google FAQPage schema indexing. Do you want to publish without FAQs?"
+        )
+      ) {
+        setEditorSubTab("faqs");
+        return;
+      }
+    }
+
     const compiledHtml = compileBlocksToHtml();
 
     const postPayload = {
