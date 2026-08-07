@@ -118,20 +118,8 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
       slug: "",
       category: categories[0] || "Tech Hiring",
       excerpt: "",
-      content: "<h2>Overview</h2><p>Write your article content here...</p>",
-      contentBlocks: [
-        {
-          id: `block-${Date.now()}-1`,
-          type: "heading",
-          headingLevel: "h2",
-          text: "Executive Overview & Market Trends",
-        },
-        {
-          id: `block-${Date.now()}-2`,
-          type: "paragraph",
-          text: "Enter detailed article description and workforce analysis here...",
-        },
-      ],
+      content: "",
+      contentBlocks: [],
       featuredImage:
         "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=800&fit=crop&auto=format",
       author: {
