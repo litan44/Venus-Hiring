@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from "react";
-import { ArrowLeft, ArrowRight, ArrowUpRight, Clock } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, CalendarDays } from "lucide-react";
 import { useBlogs, type BlogPost } from "@/lib/blog-store";
 import { BlogModal } from "./BlogModal";
 import { useReveal } from "@/hooks/use-reveal";
@@ -13,6 +13,7 @@ export function BlogCarousel() {
   const [isPaused, setIsPaused] = useState(false);
   const [isInViewport, setIsInViewport] = useState(false);
   const [selectedBlog, setSelectedBlog] = useState<BlogPost | null>(null);
+  const [visibleCount, setVisibleCount] = useState(3);
 
   // Filter ONLY featured blogs selected by Admin
   const featuredBlogs = useMemo(
@@ -23,6 +24,22 @@ export function BlogCarousel() {
     () => (featuredBlogs.length > 0 ? featuredBlogs : blogs),
     [featuredBlogs, blogs]
   );
+
+  // Responsive items per view listener
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 640) {
+        setVisibleCount(1);
+      } else if (window.innerWidth < 1024) {
+        setVisibleCount(2);
+      } else {
+        setVisibleCount(3);
+      }
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // Track viewport visibility so auto-slide timer ONLY runs when visible
   useEffect(() => {
@@ -40,7 +57,7 @@ export function BlogCarousel() {
     return () => observer.disconnect();
   }, []);
 
-  // Auto-sliding timer: 2 seconds (2000ms) interval ONLY when visible in viewport and not hovered
+  // Auto-sliding timer: 2 seconds (2000ms) interval
   useEffect(() => {
     if (isPaused || !isInViewport || displayBlogs.length <= 1) return;
 
@@ -61,7 +78,7 @@ export function BlogCarousel() {
         id="blog"
         ref={containerRef}
         className="relative overflow-hidden border-b border-border bg-porcelain section-padding"
-        aria-label="Featured Recruitment Insights"
+        aria-label="Hiring intelligence from our consultants"
       >
         <div
           className="pointer-events-none absolute inset-0 -z-10 mesh-light opacity-80"
@@ -77,7 +94,7 @@ export function BlogCarousel() {
           <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
             <div>
               <h2 className="font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-                Recruitment Insights & Executive Leadership
+                Hiring intelligence from our consultants
               </h2>
               <p className="mt-3 text-base text-muted-foreground sm:text-lg max-w-3xl">
                 Stay updated with Canadian & US workforce trends, salary benchmarks, and talent acquisition strategies.
@@ -89,7 +106,7 @@ export function BlogCarousel() {
               <button
                 type="button"
                 onClick={() => go(index - 1)}
-                aria-label="Previous featured article"
+                aria-label="Previous articles"
                 className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-sm transition-all duration-300 hover:scale-105 hover:border-brand hover:bg-brand hover:text-white"
               >
                 <ArrowLeft className="h-5 w-5" />
@@ -97,7 +114,7 @@ export function BlogCarousel() {
               <button
                 type="button"
                 onClick={() => go(index + 1)}
-                aria-label="Next featured article"
+                aria-label="Next articles"
                 className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-sm transition-all duration-300 hover:scale-105 hover:border-brand hover:bg-brand hover:text-white"
               >
                 <ArrowRight className="h-5 w-5" />
@@ -105,81 +122,65 @@ export function BlogCarousel() {
             </div>
           </div>
 
-          {/* Sliding Carousel Container with 2s Auto-Slide (Pause on Hover / Viewport Leave) */}
+          {/* Sliding Carousel Grid matching exact original card design */}
           <div
             ref={ref}
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
-            className={cn("reveal-item mt-12 overflow-hidden rounded-[2.25rem]", shown && "is-shown")}
+            className={cn("reveal-item mt-12 overflow-hidden", shown && "is-shown")}
           >
             <div
-              className="flex transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform"
-              style={{ transform: `translate3d(-${index * 100}%, 0, 0)` }}
+              className="flex transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform -mx-2.5"
+              style={{
+                transform: `translate3d(-${index * (100 / visibleCount)}%, 0, 0)`,
+              }}
             >
               {displayBlogs.map((b) => (
-                <div key={b.id} className="w-full shrink-0 px-1">
-                  <div className="group relative isolate grid gap-8 overflow-hidden rounded-[2.25rem] border border-border/80 bg-background/90 p-6 sm:p-10 shadow-xl backdrop-blur-xl lg:grid-cols-12 lg:gap-12 items-center">
-                    {/* Left: Article Cover Image */}
-                    <div className="lg:col-span-6 relative overflow-hidden rounded-2xl border border-border/60 aspect-[16/10]">
+                <div
+                  key={b.id}
+                  className="w-full sm:w-1/2 lg:w-1/3 shrink-0 px-2.5"
+                >
+                  <div
+                    onClick={() => setSelectedBlog(b)}
+                    className="group relative h-full flex flex-col justify-between cursor-pointer overflow-hidden rounded-[1.75rem] glass-panel p-3 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_28px_70px_-42px_rgba(15,23,42,0.5)] transition-[transform,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-2 hover:ring-brand-soft bg-card border border-border/80"
+                  >
+                    {/* Top Image with Date Badge */}
+                    <div className="sheen relative aspect-[16/10] overflow-hidden rounded-[1.35rem]">
                       <img
                         src={b.featuredImage}
                         alt={b.title}
                         loading="lazy"
-                        className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                        className="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.09]"
                       />
-                      <div className="absolute top-4 left-4">
-                        <span className="rounded-full bg-brand px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-white shadow-md">
-                          {b.category}
-                        </span>
-                      </div>
+                      <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-background/90 px-3 py-1.5 text-[11px] font-semibold text-foreground backdrop-blur shadow-sm border border-border/40">
+                        <CalendarDays className="h-3.5 w-3.5 text-brand" />
+                        {b.publishDate}
+                      </span>
                     </div>
 
-                    {/* Right: Article Details & CTA */}
-                    <div className="lg:col-span-6 flex flex-col justify-between">
+                    {/* Bottom Details */}
+                    <div className="p-5 pt-6 flex-1 flex flex-col justify-between">
                       <div>
-                        <div className="flex items-center gap-3 text-xs font-bold text-muted-foreground mb-3">
-                          <span className="flex items-center gap-1">
-                            <Clock className="h-3.5 w-3.5 text-brand" /> {b.readTime}
-                          </span>
-                          <span>&bull;</span>
-                          <span>{b.publishDate}</span>
-                        </div>
-
-                        <h3
-                          onClick={() => setSelectedBlog(b)}
-                          className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-foreground hover:text-brand transition-colors cursor-pointer leading-snug"
-                        >
+                        <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-brand">
+                          {b.category}
+                        </p>
+                        <h3 className="mt-3 text-lg font-bold leading-snug transition-colors duration-300 group-hover:text-brand text-foreground line-clamp-2">
                           {b.title}
                         </h3>
-
-                        <p className="mt-4 text-sm sm:text-base leading-relaxed text-muted-foreground line-clamp-3">
+                        <p className="mt-3 text-sm leading-relaxed text-muted-foreground line-clamp-3">
                           {b.excerpt}
                         </p>
                       </div>
 
-                      {/* Author Info & Read Article Action */}
-                      <div className="mt-8 flex items-center justify-between pt-6 border-t border-border/80">
-                        <div className="flex items-center gap-3">
-                          <img
-                            src={b.author.avatar}
-                            alt={b.author.name}
-                            loading="lazy"
-                            className="h-10 w-10 rounded-full object-cover border border-brand/30"
-                          />
-                          <div>
-                            <p className="text-xs font-bold text-foreground">{b.author.name}</p>
-                            <p className="text-[11px] text-muted-foreground">{b.author.role}</p>
-                          </div>
-                        </div>
-
-                        <button
-                          type="button"
-                          onClick={() => setSelectedBlog(b)}
-                          className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-xs font-bold text-primary-foreground shadow-brand hover:scale-105 transition-all"
-                        >
-                          Read Article <ArrowUpRight className="h-4 w-4" />
-                        </button>
-                      </div>
+                      <span className="mt-6 flex items-center justify-between gap-3 border-t border-border/80 pt-5 text-sm font-semibold text-foreground">
+                        <span className="relative">
+                          Read article
+                          <span className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-brand transition-transform duration-500 ease-out group-hover:scale-x-100" />
+                        </span>
+                        <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-all duration-300 ease-out group-hover:rotate-45 group-hover:border-transparent group-hover:bg-primary group-hover:text-primary-foreground">
+                          <ArrowUpRight className="h-4 w-4" />
+                        </span>
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -188,16 +189,16 @@ export function BlogCarousel() {
           </div>
 
           {/* Indicator Dots */}
-          <div className="mt-7 flex items-center justify-center gap-2">
+          <div className="mt-8 flex items-center justify-center gap-2">
             {displayBlogs.map((b, i) => (
               <button
                 key={b.id}
                 type="button"
                 onClick={() => setIndex(i)}
-                aria-label={`Go to slide ${i + 1}`}
+                aria-label={`Go to article slide ${i + 1}`}
                 className={cn(
                   "h-2 rounded-full transition-all duration-500 ease-out",
-                  i === index ? "w-10 bg-brand" : "w-4 bg-border hover:bg-brand/40"
+                  i === index ? "w-8 bg-brand" : "w-2 bg-border hover:bg-brand/40"
                 )}
               />
             ))}
