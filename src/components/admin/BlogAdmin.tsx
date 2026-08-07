@@ -9,6 +9,7 @@ import {
   Eye,
   Settings,
   Image as ImageIcon,
+  Video as VideoIcon,
   Globe,
   Bold,
   Italic,
@@ -22,8 +23,14 @@ import {
   Sparkles,
   CheckSquare,
   Square,
+  ArrowUp,
+  ArrowDown,
+  Upload,
+  Type,
+  FileText,
+  Layers,
 } from "lucide-react";
-import { useBlogs, type BlogPost } from "@/lib/blog-store";
+import { useBlogs, type BlogPost, type ContentBlock } from "@/lib/blog-store";
 import { cn } from "@/lib/utils";
 
 interface BlogAdminProps {
@@ -47,7 +54,7 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState("all");
-  const [editorTab, setEditorTab] = useState<"edit" | "preview" | "seo">("edit");
+  const [editorSubTab, setEditorSubTab] = useState<"blocks" | "ckeditor" | "preview" | "seo">("blocks");
   const [newCatInput, setNewCatInput] = useState("");
 
   // Editor Form State
@@ -57,6 +64,7 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
     category: "Tech Hiring",
     excerpt: "",
     content: "",
+    contentBlocks: [],
     featuredImage: "",
     author: {
       name: "Subhram Nayak",
@@ -97,6 +105,19 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
       category: categories[0] || "Tech Hiring",
       excerpt: "",
       content: "<h2>Overview</h2><p>Write your article content here...</p>",
+      contentBlocks: [
+        {
+          id: `block-${Date.now()}-1`,
+          type: "heading",
+          headingLevel: "h2",
+          text: "Executive Overview & Market Trends",
+        },
+        {
+          id: `block-${Date.now()}-2`,
+          type: "paragraph",
+          text: "Enter detailed article description and workforce analysis here...",
+        },
+      ],
       featuredImage:
         "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=800&fit=crop&auto=format",
       author: {
@@ -120,7 +141,7 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
       },
     });
     setActiveTab("editor");
-    setEditorTab("edit");
+    setEditorSubTab("blocks");
   };
 
   // Populate form for editing existing post
@@ -132,6 +153,7 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
       category: blog.category,
       excerpt: blog.excerpt,
       content: blog.content,
+      contentBlocks: blog.contentBlocks ? [...blog.contentBlocks] : [],
       featuredImage: blog.featuredImage,
       author: { ...blog.author },
       readTime: blog.readTime,
@@ -140,7 +162,7 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
       seo: { ...blog.seo },
     });
     setActiveTab("editor");
-    setEditorTab("edit");
+    setEditorSubTab("blocks");
   };
 
   // Auto-generate slug & meta title when title changes
@@ -162,8 +184,113 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
     }));
   };
 
-  // Rich Text CKEditor Formatting Action Helper
-  const insertFormatting = (tagStart: string, tagEnd: string = "") => {
+  // DYNAMIC BLOCK BUILDER ACTIONS
+  const addBlock = (type: ContentBlock["type"]) => {
+    const newBlock: ContentBlock = {
+      id: `block-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+      type,
+      headingLevel: type === "heading" ? "h2" : undefined,
+      text: type === "heading" ? "New Heading Title" : type === "paragraph" ? "Enter section description..." : type === "quote" ? "Enter quote or takeaway..." : "",
+      mediaUrl: "",
+      mediaType: "url",
+    };
+
+    setFormData((prev) => ({
+      ...prev,
+      contentBlocks: [...(prev.contentBlocks || []), newBlock],
+    }));
+  };
+
+  const updateBlock = (id: string, updated: Partial<ContentBlock>) => {
+    setFormData((prev) => ({
+      ...prev,
+      contentBlocks: (prev.contentBlocks || []).map((b) => (b.id === id ? { ...b, ...updated } : b)),
+    }));
+  };
+
+  const deleteBlock = (id: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      contentBlocks: (prev.contentBlocks || []).filter((b) => b.id !== id),
+    }));
+  };
+
+  const moveBlock = (index: number, direction: "up" | "down") => {
+    const blocks = [...(formData.contentBlocks || [])];
+    const targetIndex = direction === "up" ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= blocks.length) return;
+
+    const temp = blocks[index];
+    blocks[index] = blocks[targetIndex];
+    blocks[targetIndex] = temp;
+
+    setFormData((prev) => ({ ...prev, contentBlocks: blocks }));
+  };
+
+  // File Upload Handlers (Converts local files to base64 Data URLs for local persistence)
+  const handleFileUpload = (blockId: string, file: File) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      if (e.target?.result) {
+        updateBlock(blockId, { mediaUrl: e.target.result as string, mediaType: "upload" });
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // Compile Dynamic Blocks into HTML content for rendering and saving
+  const compileBlocksToHtml = (): string => {
+    if (!formData.contentBlocks || formData.contentBlocks.length === 0) {
+      return formData.content;
+    }
+
+    const htmlParts = formData.contentBlocks.map((b) => {
+      switch (b.type) {
+        case "heading":
+          return `<${b.headingLevel || "h2"}>${b.text || ""}</${b.headingLevel || "h2"}>`;
+        case "paragraph":
+          return `<p>${(b.text || "").replace(/\n/g, "<br/>")}</p>`;
+        case "quote":
+          return `<blockquote>"${b.text || ""}"</blockquote>`;
+        case "image":
+          if (!b.mediaUrl) return "";
+          return `
+            <figure class="my-6">
+              <img src="${b.mediaUrl}" alt="${b.caption || "Blog Image"}" class="w-full rounded-2xl border border-border max-h-[480px] object-cover" />
+              ${b.caption ? `<figcaption class="mt-2 text-center text-xs text-muted-foreground">${b.caption}</figcaption>` : ""}
+            </figure>
+          `;
+        case "video":
+          if (!b.mediaUrl) return "";
+          if (b.mediaUrl.includes("youtube.com") || b.mediaUrl.includes("youtu.be")) {
+            let embedUrl = b.mediaUrl;
+            if (b.mediaUrl.includes("watch?v=")) {
+              embedUrl = b.mediaUrl.replace("watch?v=", "embed/");
+            } else if (b.mediaUrl.includes("youtu.be/")) {
+              embedUrl = b.mediaUrl.replace("youtu.be/", "youtube.com/embed/");
+            }
+            return `
+              <div class="my-6 aspect-video overflow-hidden rounded-2xl border border-border">
+                <iframe src="${embedUrl}" title="Video player" class="w-full h-full" allowfullscreen></iframe>
+              </div>
+            `;
+          }
+          return `
+            <div class="my-6 overflow-hidden rounded-2xl border border-border">
+              <video src="${b.mediaUrl}" controls class="w-full max-h-[480px] bg-black"></video>
+              ${b.caption ? `<p class="mt-2 text-center text-xs text-muted-foreground">${b.caption}</p>` : ""}
+            </div>
+          `;
+        default:
+          return "";
+      }
+    });
+
+    return htmlParts.join("\n");
+  };
+
+  // CKEditor Rich Text Formatting Helper
+  const insertCkFormatting = (tagStart: string, tagEnd: string = "") => {
     const content = formData.content;
     const newContent = content + `\n${tagStart}Your text here${tagEnd}\n`;
     setFormData((prev) => ({ ...prev, content: newContent }));
@@ -177,12 +304,19 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
       return;
     }
 
+    const compiledHtml = compileBlocksToHtml();
+
+    const postPayload = {
+      ...formData,
+      content: compiledHtml || formData.content,
+    };
+
     if (editingId) {
-      updateBlog(editingId, formData);
+      updateBlog(editingId, postPayload);
     } else {
       const newPost: BlogPost = {
         id: `blog-${Date.now()}`,
-        ...formData,
+        ...postPayload,
       };
       addBlog(newPost);
     }
@@ -212,10 +346,10 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
             </span>
             <div>
               <h2 className="font-display text-lg font-bold text-foreground">
-                Blog Admin & Content Manager
+                Blog Admin & Media Content Manager
               </h2>
               <p className="text-xs text-muted-foreground">
-                Create, edit, manage SEO, and feature articles on the Homepage
+                Add Headings, Descriptions, Images, Videos, Quotes, and Manage SEO
               </p>
             </div>
           </div>
@@ -302,7 +436,7 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
                 </div>
               </div>
 
-              {/* Articles Grid/Table */}
+              {/* Articles Grid */}
               <div className="grid gap-4">
                 {filteredBlogs.length === 0 ? (
                   <div className="rounded-2xl border border-border bg-card p-12 text-center text-muted-foreground">
@@ -341,7 +475,6 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
 
                       {/* Featured Checkbox & Action Buttons */}
                       <div className="flex items-center gap-3 shrink-0 self-end sm:self-center">
-                        {/* Checkbox for Homepage Slider */}
                         <button
                           type="button"
                           onClick={() => toggleFeatured(b.id)}
@@ -387,31 +520,43 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
             </div>
           )}
 
-          {/* TAB 2: EDITOR & PREVIEW VIEW */}
+          {/* TAB 2: EDITOR VIEW */}
           {activeTab === "editor" && (
             <form onSubmit={handleSave} className="space-y-6">
-              {/* Sub-Tabs: Edit / Split Preview / SEO Settings */}
-              <div className="flex items-center justify-between border-b border-border pb-3">
+              {/* Sub-Nav Controls */}
+              <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-3">
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
-                    onClick={() => setEditorTab("edit")}
+                    onClick={() => setEditorSubTab("blocks")}
                     className={cn(
                       "flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-bold transition-all",
-                      editorTab === "edit"
-                        ? "bg-brand text-white"
+                      editorSubTab === "blocks"
+                        ? "bg-brand text-white shadow-brand"
                         : "bg-card border border-border text-foreground hover:bg-accent"
                     )}
                   >
-                    <Edit className="h-3.5 w-3.5" /> Editor
+                    <Layers className="h-3.5 w-3.5" /> Content Block Builder
                   </button>
                   <button
                     type="button"
-                    onClick={() => setEditorTab("preview")}
+                    onClick={() => setEditorSubTab("ckeditor")}
                     className={cn(
                       "flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-bold transition-all",
-                      editorTab === "preview"
-                        ? "bg-brand text-white"
+                      editorSubTab === "ckeditor"
+                        ? "bg-brand text-white shadow-brand"
+                        : "bg-card border border-border text-foreground hover:bg-accent"
+                    )}
+                  >
+                    <Code className="h-3.5 w-3.5" /> CKEditor HTML Mode
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setEditorSubTab("preview")}
+                    className={cn(
+                      "flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-bold transition-all",
+                      editorSubTab === "preview"
+                        ? "bg-brand text-white shadow-brand"
                         : "bg-card border border-border text-foreground hover:bg-accent"
                     )}
                   >
@@ -419,11 +564,11 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
                   </button>
                   <button
                     type="button"
-                    onClick={() => setEditorTab("seo")}
+                    onClick={() => setEditorSubTab("seo")}
                     className={cn(
                       "flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-bold transition-all",
-                      editorTab === "seo"
-                        ? "bg-brand text-white"
+                      editorSubTab === "seo"
+                        ? "bg-brand text-white shadow-brand"
                         : "bg-card border border-border text-foreground hover:bg-accent"
                     )}
                   >
@@ -453,245 +598,506 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
                 </div>
               </div>
 
-              {/* EDITOR TAB CONTENT */}
-              {editorTab === "edit" && (
-                <div className="grid gap-6 lg:grid-cols-12">
-                  <div className="lg:col-span-8 space-y-4">
-                    {/* Title */}
-                    <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1">
-                        Article Title *
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        placeholder="e.g., 2026 Canadian Tech Hiring Trends"
-                        value={formData.title}
-                        onChange={(e) => handleTitleChange(e.target.value)}
-                        className="w-full rounded-xl border border-border bg-card px-4 py-2.5 text-sm font-bold text-foreground placeholder:font-normal focus:border-brand focus:outline-none"
-                      />
-                    </div>
-
-                    {/* Excerpt */}
-                    <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1">
-                        Short Excerpt / Subtitle
-                      </label>
-                      <textarea
-                        rows={2}
-                        placeholder="Brief 1-2 sentence summary of the article..."
-                        value={formData.excerpt}
-                        onChange={(e) =>
-                          setFormData((prev) => ({ ...prev, excerpt: e.target.value }))
-                        }
-                        className="w-full rounded-xl border border-border bg-card px-4 py-2 text-xs text-foreground placeholder:text-muted-foreground/70 focus:border-brand focus:outline-none resize-none"
-                      />
-                    </div>
-
-                    {/* CKEditor Rich Text Toolbar & Content */}
-                    <div>
-                      <div className="flex flex-wrap items-center gap-1.5 rounded-t-xl border border-border bg-card p-2 border-b-0">
-                        <button
-                          type="button"
-                          title="Heading 2"
-                          onClick={() => insertFormatting("<h2>", "</h2>")}
-                          className="rounded-lg p-1.5 hover:bg-accent text-foreground text-xs font-bold flex items-center gap-1"
-                        >
-                          <Heading2 className="h-4 w-4" /> H2
-                        </button>
-                        <button
-                          type="button"
-                          title="Heading 3"
-                          onClick={() => insertFormatting("<h3>", "3>")}
-                          className="rounded-lg p-1.5 hover:bg-accent text-foreground text-xs font-bold flex items-center gap-1"
-                        >
-                          <Heading3 className="h-4 w-4" /> H3
-                        </button>
-                        <div className="h-4 w-px bg-border my-auto mx-1" />
-                        <button
-                          type="button"
-                          title="Bold"
-                          onClick={() => insertFormatting("<strong>", "</strong>")}
-                          className="rounded-lg p-1.5 hover:bg-accent text-foreground"
-                        >
-                          <Bold className="h-4 w-4" />
-                        </button>
-                        <button
-                          type="button"
-                          title="Italic"
-                          onClick={() => insertFormatting("<em>", "</em>")}
-                          className="rounded-lg p-1.5 hover:bg-accent text-foreground"
-                        >
-                          <Italic className="h-4 w-4" />
-                        </button>
-                        <div className="h-4 w-px bg-border my-auto mx-1" />
-                        <button
-                          type="button"
-                          title="Bullet List"
-                          onClick={() =>
-                            insertFormatting("<ul>\n  <li>", "</li>\n  <li>Item 2</li>\n</ul>")
-                          }
-                          className="rounded-lg p-1.5 hover:bg-accent text-foreground"
-                        >
-                          <List className="h-4 w-4" />
-                        </button>
-                        <button
-                          type="button"
-                          title="Numbered List"
-                          onClick={() =>
-                            insertFormatting("<ol>\n  <li>", "</li>\n  <li>Step 2</li>\n</ol>")
-                          }
-                          className="rounded-lg p-1.5 hover:bg-accent text-foreground"
-                        >
-                          <ListOrdered className="h-4 w-4" />
-                        </button>
-                        <button
-                          type="button"
-                          title="Blockquote"
-                          onClick={() => insertFormatting("<blockquote>", "</blockquote>")}
-                          className="rounded-lg p-1.5 hover:bg-accent text-foreground"
-                        >
-                          <Quote className="h-4 w-4" />
-                        </button>
-                        <button
-                          type="button"
-                          title="Insert Code"
-                          onClick={() => insertFormatting("<code>", "</code>")}
-                          className="rounded-lg p-1.5 hover:bg-accent text-foreground"
-                        >
-                          <Code className="h-4 w-4" />
-                        </button>
-                        <button
-                          type="button"
-                          title="Insert Link"
-                          onClick={() =>
-                            insertFormatting('<a href="https://www.venushiring.ca">', "</a>")
-                          }
-                          className="rounded-lg p-1.5 hover:bg-accent text-foreground"
-                        >
-                          <LinkIcon className="h-4 w-4" />
-                        </button>
-                        <button
-                          type="button"
-                          title="Insert Image"
-                          onClick={() => {
-                            const url = prompt(
-                              "Enter image URL:",
-                              "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=800&fit=crop"
-                            );
-                            if (url)
-                              insertFormatting(
-                                `<img src="${url}" alt="Article Image" class="rounded-xl border border-border my-4" />`
-                              );
-                          }}
-                          className="rounded-lg p-1.5 hover:bg-accent text-foreground flex items-center gap-1 text-xs font-semibold"
-                        >
-                          <ImageIcon className="h-4 w-4" /> Add Image
-                        </button>
-                      </div>
-
-                      <textarea
-                        rows={12}
-                        required
-                        placeholder="Write article HTML content..."
-                        value={formData.content}
-                        onChange={(e) =>
-                          setFormData((prev) => ({ ...prev, content: e.target.value }))
-                        }
-                        className="w-full rounded-b-xl border border-border bg-card p-4 text-xs font-mono text-foreground placeholder:text-muted-foreground/70 focus:border-brand focus:outline-none"
-                      />
-                    </div>
+              {/* ARTICLE BASIC METADATA (TITLE, EXCERPT, CATEGORY, HERO IMAGE) */}
+              <div className="grid gap-4 sm:grid-cols-12 rounded-2xl border border-border bg-card p-4">
+                <div className="sm:col-span-8 space-y-3">
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1">
+                      Article Title *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g., 2026 Canadian Tech Hiring Trends"
+                      value={formData.title}
+                      onChange={(e) => handleTitleChange(e.target.value)}
+                      className="w-full rounded-xl border border-border bg-background px-4 py-2 text-sm font-bold text-foreground focus:border-brand focus:outline-none"
+                    />
                   </div>
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1">
+                      Short Excerpt / Subtitle
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Brief 1-2 sentence summary..."
+                      value={formData.excerpt}
+                      onChange={(e) =>
+                        setFormData((prev) => ({ ...prev, excerpt: e.target.value }))
+                      }
+                      className="w-full rounded-xl border border-border bg-background px-4 py-2 text-xs text-foreground focus:border-brand focus:outline-none"
+                    />
+                  </div>
+                </div>
 
-                  {/* Right Metadata Sidebar */}
-                  <div className="lg:col-span-4 space-y-4">
-                    {/* Category Select */}
-                    <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1">
-                        Category
-                      </label>
-                      <select
-                        value={formData.category}
-                        onChange={(e) =>
-                          setFormData((prev) => ({ ...prev, category: e.target.value }))
-                        }
-                        className="w-full rounded-xl border border-border bg-card px-3 py-2 text-xs font-semibold text-foreground focus:border-brand focus:outline-none"
+                <div className="sm:col-span-4 space-y-3">
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1">
+                      Category
+                    </label>
+                    <select
+                      value={formData.category}
+                      onChange={(e) =>
+                        setFormData((prev) => ({ ...prev, category: e.target.value }))
+                      }
+                      className="w-full rounded-xl border border-border bg-background px-3 py-2 text-xs font-semibold text-foreground focus:border-brand focus:outline-none"
+                    >
+                      {categories.map((c) => (
+                        <option key={c} value={c}>
+                          {c}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1">
+                      Featured Cover Image URL
+                    </label>
+                    <input
+                      type="url"
+                      placeholder="https://images.unsplash.com/..."
+                      value={formData.featuredImage}
+                      onChange={(e) =>
+                        setFormData((prev) => ({ ...prev, featuredImage: e.target.value }))
+                      }
+                      className="w-full rounded-xl border border-border bg-background px-3 py-2 text-xs focus:border-brand focus:outline-none"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* SUB-TAB 1: DYNAMIC CONTENT BLOCK BUILDER */}
+              {editorSubTab === "blocks" && (
+                <div className="space-y-6">
+                  {/* Add Field Toolbar */}
+                  <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-brand/30 bg-brand/5 p-4">
+                    <span className="text-xs font-bold text-brand uppercase tracking-wider">
+                      Add Content Fields to Article:
+                    </span>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => addBlock("heading")}
+                        className="inline-flex items-center gap-1 rounded-xl bg-card border border-border px-3 py-1.5 text-xs font-bold text-foreground hover:border-brand hover:text-brand transition-colors shadow-sm"
                       >
-                        {categories.map((c) => (
-                          <option key={c} value={c}>
-                            {c}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    {/* Featured Image URL & Preview */}
-                    <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1">
-                        Featured Image URL
-                      </label>
-                      <input
-                        type="url"
-                        placeholder="https://images.unsplash.com/..."
-                        value={formData.featuredImage}
-                        onChange={(e) =>
-                          setFormData((prev) => ({ ...prev, featuredImage: e.target.value }))
-                        }
-                        className="w-full rounded-xl border border-border bg-card px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground/70 focus:border-brand focus:outline-none"
-                      />
-                      {formData.featuredImage && (
-                        <div className="mt-2 overflow-hidden rounded-xl border border-border aspect-video">
-                          <img
-                            src={formData.featuredImage}
-                            alt="Preview"
-                            className="h-full w-full object-cover"
-                          />
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Author & Read Time */}
-                    <div className="grid grid-cols-2 gap-2">
-                      <div>
-                        <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">
-                          Author Name
-                        </label>
-                        <input
-                          type="text"
-                          value={formData.author.name}
-                          onChange={(e) =>
-                            setFormData((prev) => ({
-                              ...prev,
-                              author: { ...prev.author, name: e.target.value },
-                            }))
-                          }
-                          className="w-full rounded-xl border border-border bg-card px-3 py-1.5 text-xs font-semibold focus:border-brand focus:outline-none"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">
-                          Read Time
-                        </label>
-                        <input
-                          type="text"
-                          value={formData.readTime}
-                          onChange={(e) =>
-                            setFormData((prev) => ({ ...prev, readTime: e.target.value }))
-                          }
-                          className="w-full rounded-xl border border-border bg-card px-3 py-1.5 text-xs font-semibold focus:border-brand focus:outline-none"
-                        />
-                      </div>
+                        <Type className="h-3.5 w-3.5 text-brand" /> + Heading Field
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => addBlock("paragraph")}
+                        className="inline-flex items-center gap-1 rounded-xl bg-card border border-border px-3 py-1.5 text-xs font-bold text-foreground hover:border-brand hover:text-brand transition-colors shadow-sm"
+                      >
+                        <FileText className="h-3.5 w-3.5 text-blue-500" /> + Description Field
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => addBlock("image")}
+                        className="inline-flex items-center gap-1 rounded-xl bg-card border border-border px-3 py-1.5 text-xs font-bold text-foreground hover:border-brand hover:text-brand transition-colors shadow-sm"
+                      >
+                        <ImageIcon className="h-3.5 w-3.5 text-emerald-500" /> + Image (URL / Upload)
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => addBlock("video")}
+                        className="inline-flex items-center gap-1 rounded-xl bg-card border border-border px-3 py-1.5 text-xs font-bold text-foreground hover:border-brand hover:text-brand transition-colors shadow-sm"
+                      >
+                        <VideoIcon className="h-3.5 w-3.5 text-purple-500" /> + Video (URL / Upload)
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => addBlock("quote")}
+                        className="inline-flex items-center gap-1 rounded-xl bg-card border border-border px-3 py-1.5 text-xs font-bold text-foreground hover:border-brand hover:text-brand transition-colors shadow-sm"
+                      >
+                        <Quote className="h-3.5 w-3.5 text-amber-500" /> + Quote / Callout
+                      </button>
                     </div>
                   </div>
+
+                  {/* Rendered Block List */}
+                  {(!formData.contentBlocks || formData.contentBlocks.length === 0) ? (
+                    <div className="rounded-2xl border border-dashed border-border bg-card/50 p-10 text-center space-y-3">
+                      <Layers className="h-8 w-8 text-muted-foreground mx-auto" />
+                      <p className="text-xs font-semibold text-muted-foreground">
+                        No custom fields added yet. Click the buttons above to add Headings, Descriptions, Images, or Videos!
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      {formData.contentBlocks.map((block, idx) => (
+                        <div
+                          key={block.id}
+                          className="group relative rounded-2xl border border-border bg-card p-4 sm:p-5 shadow-sm space-y-3 transition-all hover:border-brand/50"
+                        >
+                          {/* Block Header & Reorder/Delete Actions */}
+                          <div className="flex items-center justify-between border-b border-border/60 pb-2">
+                            <div className="flex items-center gap-2">
+                              <span className="flex h-6 w-6 items-center justify-center rounded-md bg-brand/10 text-brand text-[11px] font-bold">
+                                #{idx + 1}
+                              </span>
+                              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                                {block.type} Field
+                              </span>
+                            </div>
+
+                            <div className="flex items-center gap-1">
+                              <button
+                                type="button"
+                                title="Move Up"
+                                disabled={idx === 0}
+                                onClick={() => moveBlock(idx, "up")}
+                                className="rounded-lg p-1 hover:bg-accent text-muted-foreground disabled:opacity-30"
+                              >
+                                <ArrowUp className="h-4 w-4" />
+                              </button>
+                              <button
+                                type="button"
+                                title="Move Down"
+                                disabled={idx === (formData.contentBlocks?.length || 0) - 1}
+                                onClick={() => moveBlock(idx, "down")}
+                                className="rounded-lg p-1 hover:bg-accent text-muted-foreground disabled:opacity-30"
+                              >
+                                <ArrowDown className="h-4 w-4" />
+                              </button>
+                              <button
+                                type="button"
+                                title="Delete Field"
+                                onClick={() => deleteBlock(block.id)}
+                                className="rounded-lg p-1 text-rose-500 hover:bg-rose-500/10"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </button>
+                            </div>
+                          </div>
+
+                          {/* FIELD TYPE: HEADING */}
+                          {block.type === "heading" && (
+                            <div className="flex items-center gap-3">
+                              <select
+                                value={block.headingLevel || "h2"}
+                                onChange={(e) =>
+                                  updateBlock(block.id, {
+                                    headingLevel: e.target.value as "h2" | "h3",
+                                  })
+                                }
+                                className="rounded-xl border border-border bg-background px-3 py-2 text-xs font-bold text-brand focus:border-brand focus:outline-none shrink-0"
+                              >
+                                <option value="h2">H2 Heading</option>
+                                <option value="h3">H3 Subheading</option>
+                              </select>
+                              <input
+                                type="text"
+                                placeholder="Enter Heading Text..."
+                                value={block.text || ""}
+                                onChange={(e) => updateBlock(block.id, { text: e.target.value })}
+                                className="w-full rounded-xl border border-border bg-background px-4 py-2 text-sm font-bold text-foreground focus:border-brand focus:outline-none"
+                              />
+                            </div>
+                          )}
+
+                          {/* FIELD TYPE: PARAGRAPH / DESCRIPTION */}
+                          {block.type === "paragraph" && (
+                            <div>
+                              <textarea
+                                rows={3}
+                                placeholder="Enter article description paragraph..."
+                                value={block.text || ""}
+                                onChange={(e) => updateBlock(block.id, { text: e.target.value })}
+                                className="w-full rounded-xl border border-border bg-background p-3 text-xs leading-relaxed text-foreground focus:border-brand focus:outline-none resize-y"
+                              />
+                            </div>
+                          )}
+
+                          {/* FIELD TYPE: QUOTE */}
+                          {block.type === "quote" && (
+                            <div>
+                              <input
+                                type="text"
+                                placeholder="Enter executive quote or highlighted callout..."
+                                value={block.text || ""}
+                                onChange={(e) => updateBlock(block.id, { text: e.target.value })}
+                                className="w-full rounded-xl border border-amber-500/40 bg-amber-500/5 px-4 py-2.5 text-xs font-medium italic text-foreground focus:border-amber-500 focus:outline-none"
+                              />
+                            </div>
+                          )}
+
+                          {/* FIELD TYPE: IMAGE (URL OR FILE UPLOAD) */}
+                          {block.type === "image" && (
+                            <div className="space-y-3">
+                              <div className="flex items-center gap-3">
+                                <div className="flex rounded-xl border border-border bg-background p-0.5 text-xs font-semibold">
+                                  <button
+                                    type="button"
+                                    onClick={() => updateBlock(block.id, { mediaType: "url" })}
+                                    className={cn(
+                                      "rounded-lg px-3 py-1 transition-all",
+                                      block.mediaType !== "upload"
+                                        ? "bg-brand text-white"
+                                        : "text-muted-foreground hover:text-foreground"
+                                    )}
+                                  >
+                                    Image URL
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => updateBlock(block.id, { mediaType: "upload" })}
+                                    className={cn(
+                                      "rounded-lg px-3 py-1 transition-all",
+                                      block.mediaType === "upload"
+                                        ? "bg-brand text-white"
+                                        : "text-muted-foreground hover:text-foreground"
+                                    )}
+                                  >
+                                    Upload File
+                                  </button>
+                                </div>
+
+                                {block.mediaType === "upload" ? (
+                                  <label className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border border-dashed border-brand/50 bg-brand/5 px-4 py-2 text-xs font-bold text-brand cursor-pointer hover:bg-brand/10 transition-colors">
+                                    <Upload className="h-4 w-4" /> Choose Image File from Device
+                                    <input
+                                      type="file"
+                                      accept="image/*"
+                                      onChange={(e) => {
+                                        if (e.target.files?.[0]) {
+                                          handleFileUpload(block.id, e.target.files[0]);
+                                        }
+                                      }}
+                                      className="hidden"
+                                    />
+                                  </label>
+                                ) : (
+                                  <input
+                                    type="url"
+                                    placeholder="Paste Image URL (https://...)"
+                                    value={block.mediaUrl || ""}
+                                    onChange={(e) =>
+                                      updateBlock(block.id, { mediaUrl: e.target.value })
+                                    }
+                                    className="flex-1 rounded-xl border border-border bg-background px-3 py-2 text-xs focus:border-brand focus:outline-none"
+                                  />
+                                )}
+                              </div>
+
+                              <input
+                                type="text"
+                                placeholder="Optional image caption..."
+                                value={block.caption || ""}
+                                onChange={(e) =>
+                                  updateBlock(block.id, { caption: e.target.value })
+                                }
+                                className="w-full rounded-xl border border-border bg-background px-3 py-1.5 text-xs text-muted-foreground focus:border-brand focus:outline-none"
+                              />
+
+                              {block.mediaUrl && (
+                                <div className="mt-2 overflow-hidden rounded-xl border border-border max-h-48">
+                                  <img
+                                    src={block.mediaUrl}
+                                    alt="Preview"
+                                    className="h-full w-full object-cover"
+                                  />
+                                </div>
+                              )}
+                            </div>
+                          )}
+
+                          {/* FIELD TYPE: VIDEO (URL OR FILE UPLOAD) */}
+                          {block.type === "video" && (
+                            <div className="space-y-3">
+                              <div className="flex items-center gap-3">
+                                <div className="flex rounded-xl border border-border bg-background p-0.5 text-xs font-semibold">
+                                  <button
+                                    type="button"
+                                    onClick={() => updateBlock(block.id, { mediaType: "url" })}
+                                    className={cn(
+                                      "rounded-lg px-3 py-1 transition-all",
+                                      block.mediaType !== "upload"
+                                        ? "bg-purple-600 text-white"
+                                        : "text-muted-foreground hover:text-foreground"
+                                    )}
+                                  >
+                                    Video URL
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => updateBlock(block.id, { mediaType: "upload" })}
+                                    className={cn(
+                                      "rounded-lg px-3 py-1 transition-all",
+                                      block.mediaType === "upload"
+                                        ? "bg-purple-600 text-white"
+                                        : "text-muted-foreground hover:text-foreground"
+                                    )}
+                                  >
+                                    Upload Video
+                                  </button>
+                                </div>
+
+                                {block.mediaType === "upload" ? (
+                                  <label className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border border-dashed border-purple-500/50 bg-purple-500/5 px-4 py-2 text-xs font-bold text-purple-600 dark:text-purple-400 cursor-pointer hover:bg-purple-500/10 transition-colors">
+                                    <Upload className="h-4 w-4" /> Choose Video File from Device
+                                    <input
+                                      type="file"
+                                      accept="video/*"
+                                      onChange={(e) => {
+                                        if (e.target.files?.[0]) {
+                                          handleFileUpload(block.id, e.target.files[0]);
+                                        }
+                                      }}
+                                      className="hidden"
+                                    />
+                                  </label>
+                                ) : (
+                                  <input
+                                    type="url"
+                                    placeholder="Paste Video URL (YouTube, Vimeo, MP4 link)"
+                                    value={block.mediaUrl || ""}
+                                    onChange={(e) =>
+                                      updateBlock(block.id, { mediaUrl: e.target.value })
+                                    }
+                                    className="flex-1 rounded-xl border border-border bg-background px-3 py-2 text-xs focus:border-brand focus:outline-none"
+                                  />
+                                )}
+                              </div>
+
+                              <input
+                                type="text"
+                                placeholder="Optional video caption..."
+                                value={block.caption || ""}
+                                onChange={(e) =>
+                                  updateBlock(block.id, { caption: e.target.value })
+                                }
+                                className="w-full rounded-xl border border-border bg-background px-3 py-1.5 text-xs text-muted-foreground focus:border-brand focus:outline-none"
+                              />
+
+                              {block.mediaUrl && (
+                                <div className="mt-2 overflow-hidden rounded-xl border border-border aspect-video bg-black max-h-48 flex items-center justify-center">
+                                  {block.mediaUrl.includes("youtube.com") || block.mediaUrl.includes("youtu.be") ? (
+                                    <iframe
+                                      src={
+                                        block.mediaUrl.includes("watch?v=")
+                                          ? block.mediaUrl.replace("watch?v=", "embed/")
+                                          : block.mediaUrl.replace("youtu.be/", "youtube.com/embed/")
+                                      }
+                                      title="Video preview"
+                                      className="w-full h-full"
+                                    />
+                                  ) : (
+                                    <video src={block.mediaUrl} controls className="w-full h-full" />
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
 
-              {/* LIVE PREVIEW BOX TAB */}
-              {editorTab === "preview" && (
+              {/* SUB-TAB 2: CKEDITOR HTML MODE */}
+              {editorSubTab === "ckeditor" && (
+                <div className="space-y-4">
+                  <div className="flex flex-wrap items-center gap-1.5 rounded-t-xl border border-border bg-card p-2 border-b-0">
+                    <button
+                      type="button"
+                      title="Heading 2"
+                      onClick={() => insertCkFormatting("<h2>", "</h2>")}
+                      className="rounded-lg p-1.5 hover:bg-accent text-foreground text-xs font-bold flex items-center gap-1"
+                    >
+                      <Heading2 className="h-4 w-4" /> H2
+                    </button>
+                    <button
+                      type="button"
+                      title="Heading 3"
+                      onClick={() => insertCkFormatting("<h3>", "</h3>")}
+                      className="rounded-lg p-1.5 hover:bg-accent text-foreground text-xs font-bold flex items-center gap-1"
+                    >
+                      <Heading3 className="h-4 w-4" /> H3
+                    </button>
+                    <div className="h-4 w-px bg-border my-auto mx-1" />
+                    <button
+                      type="button"
+                      title="Bold"
+                      onClick={() => insertCkFormatting("<strong>", "</strong>")}
+                      className="rounded-lg p-1.5 hover:bg-accent text-foreground"
+                    >
+                      <Bold className="h-4 w-4" />
+                    </button>
+                    <button
+                      type="button"
+                      title="Italic"
+                      onClick={() => insertCkFormatting("<em>", "</em>")}
+                      className="rounded-lg p-1.5 hover:bg-accent text-foreground"
+                    >
+                      <Italic className="h-4 w-4" />
+                    </button>
+                    <div className="h-4 w-px bg-border my-auto mx-1" />
+                    <button
+                      type="button"
+                      title="Bullet List"
+                      onClick={() =>
+                        insertCkFormatting("<ul>\n  <li>", "</li>\n  <li>Item 2</li>\n</ul>")
+                      }
+                      className="rounded-lg p-1.5 hover:bg-accent text-foreground"
+                    >
+                      <List className="h-4 w-4" />
+                    </button>
+                    <button
+                      type="button"
+                      title="Numbered List"
+                      onClick={() =>
+                        insertCkFormatting("<ol>\n  <li>", "</li>\n  <li>Step 2</li>\n</ol>")
+                      }
+                      className="rounded-lg p-1.5 hover:bg-accent text-foreground"
+                    >
+                      <ListOrdered className="h-4 w-4" />
+                    </button>
+                    <button
+                      type="button"
+                      title="Blockquote"
+                      onClick={() => insertCkFormatting("<blockquote>", "</blockquote>")}
+                      className="rounded-lg p-1.5 hover:bg-accent text-foreground"
+                    >
+                      <Quote className="h-4 w-4" />
+                    </button>
+                    <button
+                      type="button"
+                      title="Insert Code"
+                      onClick={() => insertCkFormatting("<code>", "</code>")}
+                      className="rounded-lg p-1.5 hover:bg-accent text-foreground"
+                    >
+                      <Code className="h-4 w-4" />
+                    </button>
+                    <button
+                      type="button"
+                      title="Insert Link"
+                      onClick={() =>
+                        insertCkFormatting('<a href="https://www.venushiring.ca">', "</a>")
+                      }
+                      className="rounded-lg p-1.5 hover:bg-accent text-foreground"
+                    >
+                      <LinkIcon className="h-4 w-4" />
+                    </button>
+                  </div>
+
+                  <textarea
+                    rows={14}
+                    placeholder="Write article HTML content..."
+                    value={formData.content}
+                    onChange={(e) =>
+                      setFormData((prev) => ({ ...prev, content: e.target.value }))
+                    }
+                    className="w-full rounded-b-xl border border-border bg-card p-4 text-xs font-mono text-foreground placeholder:text-muted-foreground/70 focus:border-brand focus:outline-none"
+                  />
+                </div>
+              )}
+
+              {/* SUB-TAB 3: LIVE PREVIEW BOX */}
+              {editorSubTab === "preview" && (
                 <div className="rounded-2xl border border-border bg-card p-6 sm:p-8 space-y-6">
                   <div className="flex items-center justify-between border-b border-border/80 pb-3">
                     <span className="text-xs font-bold uppercase tracking-wider text-brand">
-                      Real-time Generated Article Preview
+                      Real-time Article Preview Box
                     </span>
                     <span className="text-xs text-muted-foreground">{formData.readTime}</span>
                   </div>
@@ -717,14 +1123,16 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
 
                     <div
                       className="prose prose-slate dark:prose-invert max-w-none prose-h2:text-2xl prose-p:leading-relaxed"
-                      dangerouslySetInnerHTML={{ __html: formData.content }}
+                      dangerouslySetInnerHTML={{
+                        __html: compileBlocksToHtml() || formData.content,
+                      }}
                     />
                   </div>
                 </div>
               )}
 
-              {/* SEO SETTINGS & SNIPPET PREVIEW TAB */}
-              {editorTab === "seo" && (
+              {/* SUB-TAB 4: SEO SETTINGS & SNIPPET PREVIEW */}
+              {editorSubTab === "seo" && (
                 <div className="space-y-6">
                   {/* Google Search Snippet Preview Box */}
                   <div className="rounded-2xl border border-border bg-card p-6 space-y-3">

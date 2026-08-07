@@ -1,5 +1,15 @@
 import { useState, useEffect } from "react";
 
+export interface ContentBlock {
+  id: string;
+  type: "heading" | "paragraph" | "image" | "video" | "quote";
+  headingLevel?: "h2" | "h3";
+  text?: string;
+  mediaUrl?: string;
+  mediaType?: "url" | "upload";
+  caption?: string;
+}
+
 export interface BlogPost {
   id: string;
   title: string;
@@ -7,6 +17,7 @@ export interface BlogPost {
   category: string;
   excerpt: string;
   content: string;
+  contentBlocks?: ContentBlock[];
   featuredImage: string;
   author: {
     name: string;
@@ -56,6 +67,24 @@ export const INITIAL_BLOGS: BlogPost[] = [
 
       <p>Partnering with specialized recruitment consultants allows technology leaders to access calibrated passive candidate pools before profiles hit public job boards.</p>
     `,
+    contentBlocks: [
+      {
+        id: "b-1",
+        type: "heading",
+        headingLevel: "h2",
+        text: "The Shift Towards Specialized Technical Leadership",
+      },
+      {
+        id: "b-2",
+        type: "paragraph",
+        text: "As Canadian tech ecosystems mature across Toronto, Vancouver, and Montreal, engineering organizations face unprecedented competition for senior software architects, AI/ML leads, and DevOps directors.",
+      },
+      {
+        id: "b-3",
+        type: "quote",
+        text: "Speed to shortlist without sacrificing cultural fit is the defining metric for scaling tech startups in 2026.",
+      },
+    ],
     featuredImage:
       "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=800&fit=crop&auto=format",
     author: {

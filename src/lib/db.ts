@@ -42,6 +42,7 @@ export async function initDatabase() {
           category VARCHAR(100) NOT NULL,
           excerpt TEXT NOT NULL,
           content TEXT NOT NULL,
+          content_blocks TEXT,
           featured_image TEXT NOT NULL,
           author_name VARCHAR(100) NOT NULL,
           author_role VARCHAR(100) NOT NULL,
@@ -56,6 +57,11 @@ export async function initDatabase() {
           seo_og_image TEXT,
           created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
         );
+      `);
+
+      // Ensure content_blocks column exists if table was created previously
+      await client.query(`
+        ALTER TABLE blogs ADD COLUMN IF NOT EXISTS content_blocks TEXT;
       `);
 
       // 3. Create contact_briefs table
