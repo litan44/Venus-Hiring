@@ -10,6 +10,12 @@ export interface ContentBlock {
   caption?: string;
 }
 
+export interface BlogFaq {
+  id: string;
+  q: string;
+  a: string;
+}
+
 export interface BlogPost {
   id: string;
   title: string;
@@ -18,6 +24,7 @@ export interface BlogPost {
   excerpt: string;
   content: string;
   contentBlocks?: ContentBlock[];
+  faqs?: BlogFaq[];
   featuredImage: string;
   author: {
     name: string;

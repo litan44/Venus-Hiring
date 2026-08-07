@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { X, Calendar, Clock, Share2, Tag, ArrowLeft } from "lucide-react";
+import { useState, useEffect } from "react";
+import { X, Calendar, Clock, Share2, Tag, ArrowLeft, HelpCircle, Plus, Minus } from "lucide-react";
 import type { BlogPost } from "@/lib/blog-store";
 
 interface BlogModalProps {
@@ -8,6 +8,8 @@ interface BlogModalProps {
 }
 
 export function BlogModal({ blog, onClose }: BlogModalProps) {
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+
   useEffect(() => {
     if (!blog) return;
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -97,6 +99,53 @@ export function BlogModal({ blog, onClose }: BlogModalProps) {
             className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-display prose-headings:font-bold prose-h2:text-2xl prose-h3:text-xl prose-p:leading-relaxed prose-li:leading-relaxed prose-blockquote:border-l-4 prose-blockquote:border-brand prose-blockquote:pl-4 prose-blockquote:italic"
             dangerouslySetInnerHTML={{ __html: blog.content }}
           />
+
+          {/* Render Custom Article FAQs if specified for this blog post */}
+          {blog.faqs && blog.faqs.length > 0 && (
+            <div className="mt-12 pt-10 border-t border-border/80 space-y-6">
+              <div className="flex items-center gap-2.5">
+                <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30">
+                  <HelpCircle className="h-5 w-5" />
+                </span>
+                <div>
+                  <h3 className="font-display text-2xl font-bold text-foreground">
+                    Article FAQs & Insights
+                  </h3>
+                  <p className="text-xs text-muted-foreground">
+                    Frequently asked questions specific to this topic.
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                {blog.faqs.map((f, i) => {
+                  const isOpen = openFaqIndex === i;
+                  return (
+                    <div
+                      key={f.id || f.q}
+                      className="overflow-hidden rounded-2xl border border-border/80 bg-card/60 transition-all"
+                    >
+                      <button
+                        type="button"
+                        onClick={() => setOpenFaqIndex(isOpen ? null : i)}
+                        className="flex w-full items-center justify-between gap-4 p-4 text-left font-bold text-sm text-foreground hover:text-brand transition-colors"
+                      >
+                        <span className="leading-snug">{f.q}</span>
+                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border bg-background text-muted-foreground">
+                          {isOpen ? <Minus className="h-3.5 w-3.5" /> : <Plus className="h-3.5 w-3.5" />}
+                        </span>
+                      </button>
+                      {isOpen && (
+                        <div className="px-4 pb-4 pt-1 text-xs leading-relaxed text-muted-foreground border-t border-border/40">
+                          {f.a}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
           {/* Share & Call to Action Footer */}
           <div className="mt-12 pt-6 border-t border-border/80 flex flex-wrap items-center justify-between gap-4">

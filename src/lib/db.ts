@@ -59,9 +59,10 @@ export async function initDatabase() {
         );
       `);
 
-      // Ensure content_blocks column exists if table was created previously
+      // Ensure content_blocks and faqs columns exist if table was created previously
       await client.query(`
         ALTER TABLE blogs ADD COLUMN IF NOT EXISTS content_blocks TEXT;
+        ALTER TABLE blogs ADD COLUMN IF NOT EXISTS faqs TEXT;
       `);
 
       // 3. Create contact_briefs table

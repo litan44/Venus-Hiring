@@ -30,10 +30,8 @@ import {
   FileText,
   Layers,
   HelpCircle,
-  Save,
 } from "lucide-react";
-import { useBlogs, type BlogPost, type ContentBlock } from "@/lib/blog-store";
-import { useFaqs, type FaqItem } from "@/lib/faq-store";
+import { useBlogs, type BlogPost, type ContentBlock, type BlogFaq } from "@/lib/blog-store";
 import { cn } from "@/lib/utils";
 
 interface BlogAdminProps {
@@ -53,23 +51,12 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
     deleteCategory,
   } = useBlogs();
 
-  const { faqs, addFaq, updateFaq, deleteFaq, reorderFaqs } = useFaqs();
-
-  const [activeTab, setActiveTab] = useState<"list" | "editor" | "categories" | "faqs">("list");
+  const [activeTab, setActiveTab] = useState<"list" | "editor" | "categories">("list");
   const [editingId, setEditingId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState("all");
-  const [editorSubTab, setEditorSubTab] = useState<"blocks" | "ckeditor" | "preview" | "seo">("blocks");
+  const [editorSubTab, setEditorSubTab] = useState<"blocks" | "ckeditor" | "faqs" | "preview" | "seo">("blocks");
   const [newCatInput, setNewCatInput] = useState("");
-
-  // FAQ Form State
-  const [editingFaqId, setEditingFaqId] = useState<string | null>(null);
-  const [faqForm, setFaqForm] = useState<{ q: string; a: string; category: string }>({
-    q: "",
-    a: "",
-    category: "General",
-  });
-  const [faqSearchQuery, setFaqSearchQuery] = useState("");
 
   // Blog Editor Form State
   const [formData, setFormData] = useState<Omit<BlogPost, "id">>({
@@ -79,6 +66,7 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
     excerpt: "",
     content: "",
     contentBlocks: [],
+    faqs: [],
     featuredImage: "",
     author: {
       name: "Subhram Nayak",
@@ -120,6 +108,7 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
       excerpt: "",
       content: "",
       contentBlocks: [],
+      faqs: [],
       featuredImage:
         "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=800&fit=crop&auto=format",
       author: {
@@ -156,6 +145,7 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
       excerpt: blog.excerpt,
       content: blog.content,
       contentBlocks: blog.contentBlocks ? [...blog.contentBlocks] : [],
+      faqs: blog.faqs ? [...blog.faqs] : [],
       featuredImage: blog.featuredImage,
       author: { ...blog.author },
       readTime: blog.readTime,
@@ -227,6 +217,45 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
     blocks[targetIndex] = temp;
 
     setFormData((prev) => ({ ...prev, contentBlocks: blocks }));
+  };
+
+  // ARTICLE-SPECIFIC FAQ ACTIONS
+  const addBlogFaq = () => {
+    const newFaq: BlogFaq = {
+      id: `faq-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+      q: "Enter Question...",
+      a: "Enter Answer description...",
+    };
+    setFormData((prev) => ({
+      ...prev,
+      faqs: [...(prev.faqs || []), newFaq],
+    }));
+  };
+
+  const updateBlogFaq = (id: string, updated: Partial<BlogFaq>) => {
+    setFormData((prev) => ({
+      ...prev,
+      faqs: (prev.faqs || []).map((f) => (f.id === id ? { ...f, ...updated } : f)),
+    }));
+  };
+
+  const deleteBlogFaq = (id: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      faqs: (prev.faqs || []).filter((f) => f.id !== id),
+    }));
+  };
+
+  const moveBlogFaq = (index: number, direction: "up" | "down") => {
+    const list = [...(formData.faqs || [])];
+    const targetIndex = direction === "up" ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= list.length) return;
+
+    const temp = list[index];
+    list[index] = list[targetIndex];
+    list[targetIndex] = temp;
+
+    setFormData((prev) => ({ ...prev, faqs: list }));
   };
 
   // File Upload Handlers (Converts local files to base64 Data URLs for local persistence)
@@ -326,53 +355,6 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
     setActiveTab("list");
   };
 
-  // FAQ HANDLERS
-  const handleSaveFaq = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!faqForm.q.trim() || !faqForm.a.trim()) {
-      alert("Please enter both question and answer.");
-      return;
-    }
-
-    if (editingFaqId) {
-      updateFaq(editingFaqId, faqForm);
-      setEditingFaqId(null);
-    } else {
-      const newFaq: FaqItem = {
-        id: `faq-${Date.now()}`,
-        q: faqForm.q.trim(),
-        a: faqForm.a.trim(),
-        category: faqForm.category || "General",
-        orderIndex: faqs.length,
-      };
-      addFaq(newFaq);
-    }
-
-    setFaqForm({ q: "", a: "", category: "General" });
-  };
-
-  const handleEditFaq = (faq: FaqItem) => {
-    setEditingFaqId(faq.id);
-    setFaqForm({
-      q: faq.q,
-      a: faq.a,
-      category: faq.category || "General",
-    });
-  };
-
-  const moveFaq = (index: number, direction: "up" | "down") => {
-    const list = [...faqs];
-    const targetIndex = direction === "up" ? index - 1 : index + 1;
-    if (targetIndex < 0 || targetIndex >= list.length) return;
-
-    const temp = list[index];
-    list[index] = list[targetIndex];
-    list[targetIndex] = temp;
-
-    const reordered = list.map((item, idx) => ({ ...item, orderIndex: idx }));
-    reorderFaqs(reordered);
-  };
-
   if (!isOpen) return null;
 
   const filteredBlogs = blogs.filter((b) => {
@@ -382,13 +364,6 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
     const matchesCat =
       selectedCategoryFilter === "all" || b.category === selectedCategoryFilter;
     return matchesSearch && matchesCat;
-  });
-
-  const filteredFaqs = faqs.filter((f) => {
-    return (
-      f.q.toLowerCase().includes(faqSearchQuery.toLowerCase()) ||
-      f.a.toLowerCase().includes(faqSearchQuery.toLowerCase())
-    );
   });
 
   return (
@@ -402,10 +377,10 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
             </span>
             <div>
               <h2 className="font-display text-lg font-bold text-foreground">
-                Blog & FAQ Admin Control Center
+                Blog Admin & Content Control Center
               </h2>
               <p className="text-xs text-muted-foreground">
-                Manage Articles, Media Blocks, SEO Settings, Categories, and Homepage FAQ Section
+                Manage Articles, Media Blocks, Article FAQs, Categories, and SEO
               </p>
             </div>
           </div>
@@ -446,18 +421,6 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
               )}
             >
               Categories ({categories.length})
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveTab("faqs")}
-              className={cn(
-                "inline-flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-bold transition-all",
-                activeTab === "faqs"
-                  ? "bg-brand text-white shadow-brand"
-                  : "bg-amber-500/10 border border-amber-500/30 text-amber-600 dark:text-amber-400 hover:bg-amber-500 hover:text-white"
-              )}
-            >
-              <HelpCircle className="h-4 w-4" /> FAQ Manager ({faqs.length})
             </button>
             <button
               type="button"
@@ -531,6 +494,11 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
                             <span className="text-[11px] text-muted-foreground">
                               {b.publishDate} &bull; {b.readTime}
                             </span>
+                            {b.faqs && b.faqs.length > 0 && (
+                              <span className="rounded-full bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 text-[10px] font-bold text-amber-600 dark:text-amber-400">
+                                {b.faqs.length} FAQs
+                              </span>
+                            )}
                           </div>
                           <h4 className="font-bold text-sm text-foreground truncate max-w-md">
                             {b.title}
@@ -617,6 +585,18 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
                     )}
                   >
                     <Code className="h-3.5 w-3.5" /> CKEditor HTML Mode
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setEditorSubTab("faqs")}
+                    className={cn(
+                      "flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-bold transition-all",
+                      editorSubTab === "faqs"
+                        ? "bg-amber-500 text-white shadow-md"
+                        : "bg-amber-500/10 border border-amber-500/30 text-amber-600 dark:text-amber-400 hover:bg-amber-500 hover:text-white"
+                    )}
+                  >
+                    <HelpCircle className="h-3.5 w-3.5" /> Article FAQs ({formData.faqs?.length || 0})
                   </button>
                   <button
                     type="button"
@@ -1160,7 +1140,114 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
                 </div>
               )}
 
-              {/* SUB-TAB 3: LIVE PREVIEW BOX */}
+              {/* SUB-TAB 3: ARTICLE-SPECIFIC FAQS BUILDER */}
+              {editorSubTab === "faqs" && (
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between rounded-2xl border border-amber-500/30 bg-amber-500/5 p-4">
+                    <div>
+                      <h4 className="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">
+                        Article Specific FAQs:
+                      </h4>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        Add custom Questions & Answers for this specific blog post.
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={addBlogFaq}
+                      className="inline-flex items-center gap-1.5 rounded-xl bg-amber-500 px-4 py-2 text-xs font-bold text-white shadow-md hover:bg-amber-600 transition-all"
+                    >
+                      <Plus className="h-4 w-4" /> Add FAQ Question to Article
+                    </button>
+                  </div>
+
+                  {(!formData.faqs || formData.faqs.length === 0) ? (
+                    <div className="rounded-2xl border border-dashed border-border bg-card/50 p-10 text-center space-y-2">
+                      <HelpCircle className="h-8 w-8 text-amber-500 mx-auto" />
+                      <p className="text-xs font-semibold text-muted-foreground">
+                        No custom FAQs added to this article yet. Click the button above to add questions!
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      {formData.faqs.map((faq, idx) => (
+                        <div
+                          key={faq.id}
+                          className="group relative rounded-2xl border border-border bg-card p-4 space-y-3 shadow-sm hover:border-amber-500/40 transition-all"
+                        >
+                          <div className="flex items-center justify-between border-b border-border/60 pb-2">
+                            <span className="flex h-6 w-6 items-center justify-center rounded-md bg-amber-500/10 text-amber-600 dark:text-amber-400 text-[11px] font-bold">
+                              FAQ #{idx + 1}
+                            </span>
+
+                            <div className="flex items-center gap-1">
+                              <button
+                                type="button"
+                                title="Move Up"
+                                disabled={idx === 0}
+                                onClick={() => moveBlogFaq(idx, "up")}
+                                className="rounded-lg p-1 hover:bg-accent text-muted-foreground disabled:opacity-30"
+                              >
+                                <ArrowUp className="h-4 w-4" />
+                              </button>
+                              <button
+                                type="button"
+                                title="Move Down"
+                                disabled={idx === (formData.faqs?.length || 0) - 1}
+                                onClick={() => moveBlogFaq(idx, "down")}
+                                className="rounded-lg p-1 hover:bg-accent text-muted-foreground disabled:opacity-30"
+                              >
+                                <ArrowDown className="h-4 w-4" />
+                              </button>
+                              <button
+                                type="button"
+                                title="Delete FAQ"
+                                onClick={() => deleteBlogFaq(faq.id)}
+                                className="rounded-lg p-1 text-rose-500 hover:bg-rose-500/10"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </button>
+                            </div>
+                          </div>
+
+                          <div className="space-y-2">
+                            <div>
+                              <label className="block text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-1">
+                                Question *
+                              </label>
+                              <input
+                                type="text"
+                                placeholder="Enter Question..."
+                                value={faq.q}
+                                onChange={(e) =>
+                                  updateBlogFaq(faq.id, { q: e.target.value })
+                                }
+                                className="w-full rounded-xl border border-border bg-background px-3 py-2 text-xs font-bold text-foreground focus:border-amber-500 focus:outline-none"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-1">
+                                Answer Description *
+                              </label>
+                              <textarea
+                                rows={3}
+                                placeholder="Enter detailed answer..."
+                                value={faq.a}
+                                onChange={(e) =>
+                                  updateBlogFaq(faq.id, { a: e.target.value })
+                                }
+                                className="w-full rounded-xl border border-border bg-background p-3 text-xs leading-relaxed text-foreground focus:border-amber-500 focus:outline-none resize-y"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* SUB-TAB 4: LIVE PREVIEW BOX */}
               {editorSubTab === "preview" && (
                 <div className="rounded-2xl border border-border bg-card p-6 sm:p-8 space-y-6">
                   <div className="flex items-center justify-between border-b border-border/80 pb-3">
@@ -1195,11 +1282,25 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
                         __html: compileBlocksToHtml() || formData.content,
                       }}
                     />
+
+                    {formData.faqs && formData.faqs.length > 0 && (
+                      <div className="mt-8 pt-6 border-t border-border space-y-3">
+                        <h4 className="font-bold text-sm text-foreground flex items-center gap-2">
+                          <HelpCircle className="h-4 w-4 text-amber-500" /> Article FAQs ({formData.faqs.length})
+                        </h4>
+                        {formData.faqs.map((f) => (
+                          <div key={f.id} className="rounded-xl border border-border p-3 bg-background/50 space-y-1">
+                            <p className="text-xs font-bold text-foreground">{f.q}</p>
+                            <p className="text-xs text-muted-foreground">{f.a}</p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
 
-              {/* SUB-TAB 4: SEO SETTINGS & SNIPPET PREVIEW */}
+              {/* SUB-TAB 5: SEO SETTINGS & SNIPPET PREVIEW */}
               {editorSubTab === "seo" && (
                 <div className="space-y-6">
                   {/* Google Search Snippet Preview Box */}
@@ -1341,172 +1442,6 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
                     </button>
                   </div>
                 ))}
-              </div>
-            </div>
-          )}
-
-          {/* TAB 4: FAQ MANAGER */}
-          {activeTab === "faqs" && (
-            <div className="space-y-6">
-              {/* Add / Edit FAQ Form */}
-              <form onSubmit={handleSaveFaq} className="rounded-2xl border border-border bg-card p-6 space-y-4 shadow-sm">
-                <div className="flex items-center justify-between border-b border-border/60 pb-3">
-                  <div className="flex items-center gap-2">
-                    <HelpCircle className="h-5 w-5 text-amber-500" />
-                    <h3 className="font-bold text-sm text-foreground">
-                      {editingFaqId ? "Edit FAQ Item" : "Create New FAQ Item"}
-                    </h3>
-                  </div>
-                  {editingFaqId && (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setEditingFaqId(null);
-                        setFaqForm({ q: "", a: "", category: "General" });
-                      }}
-                      className="text-xs text-muted-foreground hover:text-foreground"
-                    >
-                      Cancel Edit
-                    </button>
-                  )}
-                </div>
-
-                <div className="grid gap-4 sm:grid-cols-12">
-                  <div className="sm:col-span-8 space-y-1">
-                    <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                      Question *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="e.g., How quickly can you present qualified candidates?"
-                      value={faqForm.q}
-                      onChange={(e) => setFaqForm((prev) => ({ ...prev, q: e.target.value }))}
-                      className="w-full rounded-xl border border-border bg-background px-4 py-2 text-xs font-bold text-foreground focus:border-brand focus:outline-none"
-                    />
-                  </div>
-
-                  <div className="sm:col-span-4 space-y-1">
-                    <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                      Category Tag
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="e.g., Recruitment, Guarantee, Advisory"
-                      value={faqForm.category}
-                      onChange={(e) => setFaqForm((prev) => ({ ...prev, category: e.target.value }))}
-                      className="w-full rounded-xl border border-border bg-background px-3 py-2 text-xs font-semibold focus:border-brand focus:outline-none"
-                    />
-                  </div>
-
-                  <div className="sm:col-span-12 space-y-1">
-                    <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                      Answer Description *
-                    </label>
-                    <textarea
-                      rows={3}
-                      required
-                      placeholder="Enter full detailed answer..."
-                      value={faqForm.a}
-                      onChange={(e) => setFaqForm((prev) => ({ ...prev, a: e.target.value }))}
-                      className="w-full rounded-xl border border-border bg-background p-3 text-xs leading-relaxed text-foreground focus:border-brand focus:outline-none resize-y"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex justify-end pt-2">
-                  <button
-                    type="submit"
-                    className="inline-flex items-center gap-1.5 rounded-xl bg-amber-500 px-6 py-2 text-xs font-bold text-white shadow-md hover:bg-amber-600 transition-all"
-                  >
-                    <Save className="h-4 w-4" />
-                    {editingFaqId ? "Update FAQ Item" : "Save FAQ Item"}
-                  </button>
-                </div>
-              </form>
-
-              {/* FAQ Search Bar */}
-              <div className="relative">
-                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <input
-                  type="text"
-                  placeholder="Search FAQ questions or answers..."
-                  value={faqSearchQuery}
-                  onChange={(e) => setFaqSearchQuery(e.target.value)}
-                  className="w-full rounded-xl border border-border bg-card pl-10 pr-4 py-2 text-xs text-foreground placeholder:text-muted-foreground/70 focus:border-brand focus:outline-none"
-                />
-              </div>
-
-              {/* FAQ List */}
-              <div className="space-y-3">
-                {filteredFaqs.length === 0 ? (
-                  <div className="rounded-2xl border border-border bg-card p-10 text-center text-muted-foreground text-xs font-semibold">
-                    No FAQ items found. Create your first FAQ item above!
-                  </div>
-                ) : (
-                  filteredFaqs.map((faq, idx) => (
-                    <div
-                      key={faq.id}
-                      className="group flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-2xl border border-border/80 bg-card p-4 hover:border-amber-500/40 transition-all shadow-sm"
-                    >
-                      <div className="space-y-1 min-w-0 flex-1">
-                        <div className="flex items-center gap-2">
-                          <span className="flex h-5 w-5 items-center justify-center rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 text-[10px] font-bold">
-                            #{idx + 1}
-                          </span>
-                          <span className="rounded-full bg-accent px-2.5 py-0.5 text-[10px] font-bold text-muted-foreground uppercase">
-                            {faq.category || "General"}
-                          </span>
-                        </div>
-                        <h4 className="font-bold text-sm text-foreground leading-snug">
-                          {faq.q}
-                        </h4>
-                        <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
-                          {faq.a}
-                        </p>
-                      </div>
-
-                      <div className="flex items-center gap-1 shrink-0 self-end sm:self-center">
-                        <button
-                          type="button"
-                          title="Move Up"
-                          disabled={idx === 0}
-                          onClick={() => moveFaq(idx, "up")}
-                          className="rounded-lg p-1.5 hover:bg-accent text-muted-foreground disabled:opacity-30"
-                        >
-                          <ArrowUp className="h-4 w-4" />
-                        </button>
-                        <button
-                          type="button"
-                          title="Move Down"
-                          disabled={idx === filteredFaqs.length - 1}
-                          onClick={() => moveFaq(idx, "down")}
-                          className="rounded-lg p-1.5 hover:bg-accent text-muted-foreground disabled:opacity-30"
-                        >
-                          <ArrowDown className="h-4 w-4" />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => handleEditFaq(faq)}
-                          className="inline-flex items-center gap-1 rounded-xl border border-border bg-background px-3 py-1.5 text-xs font-bold hover:border-amber-500 hover:text-amber-500 transition-colors"
-                        >
-                          <Edit className="h-3.5 w-3.5" /> Edit
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            if (confirm(`Delete FAQ "${faq.q}"?`)) {
-                              deleteFaq(faq.id);
-                            }
-                          }}
-                          className="inline-flex items-center gap-1 rounded-xl border border-rose-500/30 bg-rose-500/10 px-3 py-1.5 text-xs font-bold text-rose-500 hover:bg-rose-500 hover:text-white transition-colors"
-                        >
-                          <Trash2 className="h-3.5 w-3.5" /> Delete
-                        </button>
-                      </div>
-                    </div>
-                  ))
-                )}
               </div>
             </div>
           )}

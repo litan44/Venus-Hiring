@@ -11,7 +11,7 @@ export const Route = createFileRoute("/api/blogs")({
           // Fetch blogs sorted by creation timestamp
           const blogsRes = await pool.query(
             `SELECT 
-              id, title, slug, category, excerpt, content, content_blocks AS "contentBlocks",
+              id, title, slug, category, excerpt, content, content_blocks AS "contentBlocks", faqs,
               featured_image AS "featuredImage",
               author_name AS "authorName", author_role AS "authorRole", author_avatar AS "authorAvatar",
               read_time AS "readTime", publish_date AS "publishDate", is_featured AS "isFeatured",
@@ -33,6 +33,15 @@ export const Route = createFileRoute("/api/blogs")({
               }
             }
 
+            let parsedFaqs = undefined;
+            if (row.faqs) {
+              try {
+                parsedFaqs = typeof row.faqs === "string" ? JSON.parse(row.faqs) : row.faqs;
+              } catch {
+                parsedFaqs = undefined;
+              }
+            }
+
             return {
               id: row.id,
               title: row.title,
@@ -41,6 +50,7 @@ export const Route = createFileRoute("/api/blogs")({
               excerpt: row.excerpt,
               content: row.content,
               contentBlocks: parsedBlocks,
+              faqs: parsedFaqs,
               featuredImage: row.featuredImage,
               author: {
                 name: row.authorName,
@@ -93,6 +103,7 @@ export const Route = createFileRoute("/api/blogs")({
             excerpt,
             content,
             contentBlocks,
+            faqs,
             featuredImage,
             author,
             readTime,
@@ -103,12 +114,12 @@ export const Route = createFileRoute("/api/blogs")({
 
           const query = `
             INSERT INTO blogs (
-              id, title, slug, category, excerpt, content, content_blocks, featured_image,
+              id, title, slug, category, excerpt, content, content_blocks, faqs, featured_image,
               author_name, author_role, author_avatar, read_time, publish_date,
               is_featured, seo_meta_title, seo_meta_description, seo_keywords,
               seo_canonical_url, seo_og_image
             ) VALUES (
-              $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19
+              $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20
             ) RETURNING *;
           `;
 
@@ -120,6 +131,7 @@ export const Route = createFileRoute("/api/blogs")({
             excerpt,
             content,
             contentBlocks ? JSON.stringify(contentBlocks) : null,
+            faqs ? JSON.stringify(faqs) : null,
             featuredImage,
             author?.name || "Subhram Nayak",
             author?.role || "Head of Placement",
@@ -174,18 +186,19 @@ export const Route = createFileRoute("/api/blogs")({
                 excerpt = COALESCE($5, excerpt),
                 content = COALESCE($6, content),
                 content_blocks = COALESCE($7, content_blocks),
-                featured_image = COALESCE($8, featured_image),
-                author_name = COALESCE($9, author_name),
-                author_role = COALESCE($10, author_role),
-                author_avatar = COALESCE($11, author_avatar),
-                read_time = COALESCE($12, read_time),
-                publish_date = COALESCE($13, publish_date),
-                is_featured = COALESCE($14, is_featured),
-                seo_meta_title = COALESCE($15, seo_meta_title),
-                seo_meta_description = COALESCE($16, seo_meta_description),
-                seo_keywords = COALESCE($17, seo_keywords),
-                seo_canonical_url = COALESCE($18, seo_canonical_url),
-                seo_og_image = COALESCE($19, seo_og_image)
+                faqs = COALESCE($8, faqs),
+                featured_image = COALESCE($9, featured_image),
+                author_name = COALESCE($10, author_name),
+                author_role = COALESCE($11, author_role),
+                author_avatar = COALESCE($12, author_avatar),
+                read_time = COALESCE($13, read_time),
+                publish_date = COALESCE($14, publish_date),
+                is_featured = COALESCE($15, is_featured),
+                seo_meta_title = COALESCE($16, seo_meta_title),
+                seo_meta_description = COALESCE($17, seo_meta_description),
+                seo_keywords = COALESCE($18, seo_keywords),
+                seo_canonical_url = COALESCE($19, seo_canonical_url),
+                seo_og_image = COALESCE($20, seo_og_image)
               WHERE id = $1 RETURNING *;
             `;
 
@@ -197,6 +210,7 @@ export const Route = createFileRoute("/api/blogs")({
               fields.excerpt,
               fields.content,
               fields.contentBlocks ? JSON.stringify(fields.contentBlocks) : null,
+              fields.faqs ? JSON.stringify(fields.faqs) : null,
               fields.featuredImage,
               fields.author?.name,
               fields.author?.role,
