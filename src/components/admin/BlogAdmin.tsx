@@ -172,7 +172,7 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
       seo: {
         ...prev.seo,
         metaTitle: prev.seo.metaTitle || `${val} | Venus Consultancy`,
-        canonicalUrl: prev.seo.canonicalUrl || `https://www.venushiring.ca/blog/${slugified}`,
+        canonicalUrl: prev.seo.canonicalUrl || `https://venus-hiring.vercel.app/`,
       },
     }));
   };
@@ -488,11 +488,9 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
                 ) : (
                   filteredBlogs.map((b) => {
                     const targetUrl =
-                      b.seo?.canonicalUrl && b.seo.canonicalUrl.startsWith("http")
+                      b.seo?.canonicalUrl && b.seo.canonicalUrl.startsWith("http") && !b.seo.canonicalUrl.includes("venushiring.ca")
                         ? b.seo.canonicalUrl
-                        : b.slug && b.slug.startsWith("http")
-                        ? b.slug
-                        : `https://www.venushiring.ca/blog/${b.slug || ""}`;
+                        : "https://venus-hiring.vercel.app/";
 
                     return (
                       <div

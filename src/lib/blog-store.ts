@@ -124,7 +124,7 @@ export const INITIAL_BLOGS: BlogPost[] = [
       metaDescription:
         "Discover essential 2026 recruitment insights for engineering leaders and founders hiring top 1% software talent across Canada and the US.",
       keywords: "Canadian Tech Hiring, Software Recruitment Toronto, Executive Search Canada, Tech Salary Benchmarks 2026",
-      canonicalUrl: "https://www.venushiring.ca/blog/2026-canadian-tech-hiring-trends",
+      canonicalUrl: "https://venus-hiring.vercel.app/",
       ogImage: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=800&fit=crop&auto=format",
     },
   },
@@ -180,7 +180,7 @@ export const INITIAL_BLOGS: BlogPost[] = [
       metaDescription:
         "Learn how industrial leaders recruit plant directors and EV battery engineers across Ontario & Michigan gigafactories.",
       keywords: "EV Recruitment, Automotive Executive Search, Plant Operations Hiring, Manufacturing Leadership",
-      canonicalUrl: "https://www.venushiring.ca/blog/executive-search-ev-automotive-plant-ops",
+      canonicalUrl: "https://venus-hiring.vercel.app/",
       ogImage: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1200&h=800&fit=crop&auto=format",
     },
   },
@@ -234,7 +234,7 @@ export const INITIAL_BLOGS: BlogPost[] = [
       metaDescription:
         "Comprehensive guide to hiring Canadian tech and finance talent legally with Employer of Record (EOR) solutions.",
       keywords: "Cross border hiring, EOR Canada, US Canada Remote Staffing, Canadian Payroll Compliance",
-      canonicalUrl: "https://www.venushiring.ca/blog/navigating-us-canada-remote-workforce-compliance",
+      canonicalUrl: "https://venus-hiring.vercel.app/",
       ogImage: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=1200&h=800&fit=crop&auto=format",
     },
   },
