@@ -295,6 +295,8 @@ export function SiteNav() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
+  const isHomePage = typeof window !== "undefined" ? window.location.pathname === "/" : true;
+
   // Fast, lag-free navigation handler
   const handleNavClick = (href: string, e?: React.MouseEvent) => {
     if (href.startsWith("http")) {
@@ -303,6 +305,12 @@ export function SiteNav() {
     }
     if (e) e.preventDefault();
     const targetId = href.startsWith("#") ? href.slice(1) : href;
+
+    if (!isHomePage) {
+      window.location.href = targetId === "top" ? "/" : `/#${targetId}`;
+      return;
+    }
+
     setActive(targetId === "top" ? "top" : targetId);
     isNavigatingRef.current = true;
     if (open) setOpen(false);
@@ -317,7 +325,7 @@ export function SiteNav() {
     });
   };
 
-  const light = !scrolled && !open && !activeMegaMenu;
+  const light = isHomePage && !scrolled && !open && !activeMegaMenu;
 
   return (
     <>
@@ -331,8 +339,8 @@ export function SiteNav() {
         onMouseLeave={handleMenuLeave}
         className={cn(
           "nav-drop fixed inset-x-0 top-0 z-50 transition-[padding,background-color,box-shadow,backdrop-filter] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
-          scrolled || activeMegaMenu
-            ? "border-b border-border/70 bg-background/90 py-2 shadow-[0_10px_40px_-30px_rgba(15,23,42,0.6)] backdrop-blur-xl"
+          scrolled || activeMegaMenu || !isHomePage
+            ? "border-b border-border/70 bg-background/95 text-foreground py-2.5 shadow-[0_10px_40px_-30px_rgba(15,23,42,0.6)] backdrop-blur-xl"
             : "border-b border-transparent bg-transparent py-4",
         )}
       >

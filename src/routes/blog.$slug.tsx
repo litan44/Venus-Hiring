@@ -338,7 +338,7 @@ function BlogDetailPage() {
       {/* Global Navbar */}
       <SiteNav />
 
-      <main className="flex-1">
+      <main className="flex-1 pt-20 sm:pt-24">
         {/* Clickable Breadcrumb Bar */}
         <div className="border-b border-border/80 bg-card/60 backdrop-blur-md">
           <div className="shell py-3.5 flex flex-wrap items-center justify-between gap-4">
