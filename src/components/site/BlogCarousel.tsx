@@ -54,6 +54,25 @@ export function BlogCarousel() {
     }
   }, [maxIndex, index]);
 
+  // Auto-open requested blog article from URL query parameter ?blog={id_or_slug}
+  useEffect(() => {
+    if (typeof window === "undefined" || !blogs || blogs.length === 0) return;
+    const params = new URLSearchParams(window.location.search);
+    const blogParam = params.get("blog");
+    if (blogParam) {
+      const targetBlog = blogs.find(
+        (b) => b.id === blogParam || b.slug === blogParam
+      );
+      if (targetBlog) {
+        setSelectedBlog(targetBlog);
+        setTimeout(() => {
+          const el = document.getElementById("blog");
+          if (el) el.scrollIntoView({ behavior: "smooth" });
+        }, 350);
+      }
+    }
+  }, [blogs]);
+
   // Track viewport visibility so auto-slide timer ONLY runs when visible
   useEffect(() => {
     const el = containerRef.current;

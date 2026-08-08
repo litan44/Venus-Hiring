@@ -487,10 +487,7 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
                   </div>
                 ) : (
                   filteredBlogs.map((b) => {
-                    const targetUrl =
-                      b.seo?.canonicalUrl && b.seo.canonicalUrl.startsWith("http") && !b.seo.canonicalUrl.includes("venushiring.ca")
-                        ? b.seo.canonicalUrl
-                        : "https://venus-hiring.vercel.app/";
+                    const targetUrl = `https://venus-hiring.vercel.app/?blog=${encodeURIComponent(b.id || b.slug)}#blog`;
 
                     return (
                       <div
