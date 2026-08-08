@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { ArrowUpRight, CalendarDays, Search, Clock, Tag, Sparkles, BookOpen } from "lucide-react";
+import { ArrowUpRight, CalendarDays, Search, Clock, BookOpen } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { useBlogs, type BlogPost, calculateReadingTime, DEFAULT_FALLBACK_IMAGE } from "@/lib/blog-store";
 import { useReveal } from "@/hooks/use-reveal";
@@ -30,17 +30,6 @@ export function BlogCarousel() {
     });
   }, [blogs, selectedCategory, searchQuery]);
 
-  // Featured spotlight post (first featured post or first post in filtered list)
-  const featuredSpotlight = useMemo(() => {
-    return filteredBlogs.find((b) => b.isFeatured) || filteredBlogs[0] || null;
-  }, [filteredBlogs]);
-
-  // Grid items excluding featured spotlight
-  const gridBlogs = useMemo(() => {
-    if (!featuredSpotlight) return filteredBlogs;
-    return filteredBlogs.filter((b) => b.id !== featuredSpotlight.id);
-  }, [filteredBlogs, featuredSpotlight]);
-
   return (
     <section
       id="blog"
@@ -56,9 +45,9 @@ export function BlogCarousel() {
         aria-hidden
       />
 
-      <div className="shell relative space-y-12">
+      <div className="shell relative space-y-10">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto space-y-4">
+        <div className="text-center max-w-3xl mx-auto space-y-3">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-brand/10 border border-brand/30 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-brand">
             <BookOpen className="h-3.5 w-3.5" /> Recruitment Intelligence
           </span>
@@ -147,129 +136,68 @@ export function BlogCarousel() {
             </button>
           </div>
         ) : (
-          <div ref={ref} className={cn("reveal-item space-y-10", shown && "is-shown")}>
-            {/* FEATURED SPOTLIGHT ARTICLE */}
-            {featuredSpotlight && (
-              <Link
-                to="/blog/$slug"
-                params={{ slug: featuredSpotlight.slug || featuredSpotlight.id }}
-                className="group relative grid gap-8 lg:grid-cols-12 overflow-hidden rounded-[2rem] border border-border/80 bg-card p-4 sm:p-6 shadow-xl transition-all duration-500 hover:-translate-y-1 hover:border-brand/40"
-              >
-                {/* Image */}
-                <div className="lg:col-span-7 aspect-[16/10] overflow-hidden rounded-[1.5rem] sheen">
-                  <img
-                    src={featuredSpotlight.featuredImage || DEFAULT_FALLBACK_IMAGE}
-                    alt={featuredSpotlight.title}
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                </div>
+          <div ref={ref} className={cn("reveal-item", shown && "is-shown")}>
+            {/* UNIFORM 3-COLUMN ARTICLES GRID - ALL CARDS SAME SIZE AND POSITION */}
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {filteredBlogs.map((b) => {
+                const readTime = calculateReadingTime(b.content, b.contentBlocks);
 
-                {/* Details */}
-                <div className="lg:col-span-5 flex flex-col justify-between py-2 space-y-4">
-                  <div className="space-y-3">
-                    <div className="flex flex-wrap items-center gap-2.5">
-                      <span className="inline-flex items-center gap-1 rounded-full bg-brand/10 border border-brand/30 px-3 py-1 text-[11px] font-bold text-brand uppercase">
-                        <Sparkles className="h-3 w-3" /> Featured Article
-                      </span>
-                      <span className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground">
-                        <Clock className="h-3.5 w-3.5 text-brand" />{" "}
-                        {calculateReadingTime(featuredSpotlight.content, featuredSpotlight.contentBlocks)}
-                      </span>
-                    </div>
-
-                    <h3 className="font-display text-2xl sm:text-3xl font-bold leading-tight text-foreground group-hover:text-brand transition-colors">
-                      {featuredSpotlight.title}
-                    </h3>
-
-                    <p className="text-sm leading-relaxed text-muted-foreground line-clamp-3">
-                      {featuredSpotlight.excerpt}
-                    </p>
-                  </div>
-
-                  <div className="pt-4 border-t border-border/80 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <img
-                        src={featuredSpotlight.author.avatar}
-                        alt={featuredSpotlight.author.name}
-                        className="h-9 w-9 rounded-full object-cover border border-brand/30"
-                      />
-                      <div>
-                        <p className="text-xs font-bold text-foreground">{featuredSpotlight.author.name}</p>
-                        <p className="text-[10px] text-muted-foreground">{featuredSpotlight.publishDate}</p>
-                      </div>
-                    </div>
-
-                    <span className="inline-flex items-center gap-1.5 text-xs font-bold text-brand group-hover:translate-x-1 transition-transform">
-                      Read Full Article <ArrowUpRight className="h-4 w-4" />
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            )}
-
-            {/* 3-COLUMN ARTICLES GRID */}
-            {gridBlogs.length > 0 && (
-              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {gridBlogs.map((b) => {
-                  const readTime = calculateReadingTime(b.content, b.contentBlocks);
-
-                  return (
-                    <Link
-                      key={b.id}
-                      to="/blog/$slug"
-                      params={{ slug: b.slug || b.id }}
-                      className="group relative flex flex-col justify-between overflow-hidden rounded-[1.75rem] glass-panel p-3 shadow-sm transition-all duration-500 hover:-translate-y-2 hover:border-brand/40 bg-card border border-border/80 text-foreground"
-                    >
-                      <div>
-                        {/* Image */}
-                        <div className="sheen relative aspect-[16/10] overflow-hidden rounded-[1.35rem]">
-                          <img
-                            src={b.featuredImage || DEFAULT_FALLBACK_IMAGE}
-                            alt={b.title}
-                            loading="lazy"
-                            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                          />
-                          <span className="absolute left-3.5 top-3.5 inline-flex items-center gap-1.5 rounded-full bg-background/90 px-3 py-1 text-[11px] font-semibold text-foreground backdrop-blur shadow-sm border border-border/40">
-                            <CalendarDays className="h-3.5 w-3.5 text-brand" />
-                            {b.publishDate}
-                          </span>
-                        </div>
-
-                        {/* Details */}
-                        <div className="p-4 pt-5 space-y-2.5">
-                          <div className="flex items-center justify-between text-[11px] font-bold text-brand uppercase tracking-wider">
-                            <span>{b.category}</span>
-                            <span className="text-muted-foreground font-semibold flex items-center gap-1">
-                              <Clock className="h-3 w-3 text-brand" /> {readTime}
-                            </span>
-                          </div>
-
-                          <h3 className="text-base font-bold leading-snug transition-colors duration-300 group-hover:text-brand text-foreground line-clamp-2">
-                            {b.title}
-                          </h3>
-
-                          <p className="text-xs leading-relaxed text-muted-foreground line-clamp-3">
-                            {b.excerpt}
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Card Footer Action */}
-                      <div className="p-4 pt-0">
-                        <span className="flex items-center justify-between gap-3 border-t border-border/80 pt-4 text-xs font-semibold text-foreground">
-                          <span className="relative group-hover:text-brand transition-colors">
-                            Read article
-                          </span>
-                          <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border text-muted-foreground transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:rotate-45">
-                            <ArrowUpRight className="h-4 w-4" />
-                          </span>
+                return (
+                  <Link
+                    key={b.id}
+                    to="/blog/$slug"
+                    params={{ slug: b.slug || b.id }}
+                    className="group relative flex flex-col justify-between overflow-hidden rounded-[1.75rem] glass-panel p-3 shadow-sm transition-all duration-500 hover:-translate-y-2 hover:border-brand/40 bg-card border border-border/80 text-foreground"
+                  >
+                    <div>
+                      {/* Top Image with Date Badge */}
+                      <div className="sheen relative aspect-[16/10] overflow-hidden rounded-[1.35rem]">
+                        <img
+                          src={b.featuredImage || DEFAULT_FALLBACK_IMAGE}
+                          alt={b.title}
+                          loading="lazy"
+                          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        />
+                        <span className="absolute left-3.5 top-3.5 inline-flex items-center gap-1.5 rounded-full bg-background/90 px-3 py-1 text-[11px] font-semibold text-foreground backdrop-blur shadow-sm border border-border/40">
+                          <CalendarDays className="h-3.5 w-3.5 text-brand" />
+                          {b.publishDate}
                         </span>
                       </div>
-                    </Link>
-                  );
-                })}
-              </div>
-            )}
+
+                      {/* Details */}
+                      <div className="p-4 pt-5 space-y-2.5">
+                        <div className="flex items-center justify-between text-[11px] font-bold text-brand uppercase tracking-wider">
+                          <span>{b.category}</span>
+                          <span className="text-muted-foreground font-semibold flex items-center gap-1">
+                            <Clock className="h-3 w-3 text-brand" /> {readTime}
+                          </span>
+                        </div>
+
+                        <h3 className="text-base sm:text-lg font-bold leading-snug transition-colors duration-300 group-hover:text-brand text-foreground line-clamp-2">
+                          {b.title}
+                        </h3>
+
+                        <p className="text-xs sm:text-sm leading-relaxed text-muted-foreground line-clamp-3">
+                          {b.excerpt}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Card Footer Action */}
+                    <div className="p-4 pt-0">
+                      <span className="flex items-center justify-between gap-3 border-t border-border/80 pt-4 text-xs font-semibold text-foreground">
+                        <span className="relative group-hover:text-brand transition-colors font-bold">
+                          Read full article
+                        </span>
+                        <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border text-muted-foreground transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:rotate-45">
+                          <ArrowUpRight className="h-4 w-4" />
+                        </span>
+                      </span>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
           </div>
         )}
       </div>
