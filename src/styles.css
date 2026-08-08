@@ -173,6 +173,35 @@
     text-wrap: balance;
   }
 
+  /* Scoped Article Prose Typography Overrides */
+  .prose h2 {
+    font-family: var(--font-sans) !important;
+    font-size: clamp(1.35rem, 2.2vw, 1.75rem) !important;
+    line-height: 1.3 !important;
+    letter-spacing: -0.015em !important;
+    font-weight: 700 !important;
+    margin-top: 2rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  .prose h3 {
+    font-family: var(--font-sans) !important;
+    font-size: clamp(1.15rem, 1.6vw, 1.35rem) !important;
+    line-height: 1.35 !important;
+    letter-spacing: -0.01em !important;
+    font-weight: 600 !important;
+    margin-top: 1.5rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  .prose h4 {
+    font-family: var(--font-sans) !important;
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    margin-top: 1.25rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+
   :focus-visible {
     outline: 2px solid var(--color-brand);
     outline-offset: 3px;
