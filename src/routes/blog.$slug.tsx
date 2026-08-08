@@ -390,7 +390,7 @@ function BlogDetailPage() {
 
               {/* H1 Main Heading with controlled max-width and fluid typography */}
               <div className="max-w-4xl lg:max-w-5xl">
-                <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground leading-[1.18]">
+                <h1 className="font-sans text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground leading-[1.18]">
                   {blog.title}
                 </h1>
               </div>
@@ -529,7 +529,7 @@ function BlogDetailPage() {
                 {/* Render Complete Article HTML Body */}
                 <div
                   ref={articleContentRef}
-                  className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-display prose-headings:font-bold prose-h2:text-xl sm:prose-h2:text-2xl prose-h2:tracking-tight prose-h2:text-foreground prose-h2:mt-8 prose-h2:mb-3 prose-h3:text-lg sm:prose-h3:text-xl prose-h3:font-bold prose-h3:text-foreground prose-h3:mt-6 prose-h3:mb-2 prose-h4:text-base sm:prose-h4:text-lg prose-h4:font-bold prose-h4:text-foreground prose-h4:mt-4 prose-h4:mb-2 prose-p:text-[16px] sm:prose-p:text-[17px] prose-p:leading-[1.75] prose-li:text-[16px] prose-li:leading-relaxed prose-blockquote:border-l-4 prose-blockquote:border-brand prose-blockquote:pl-5 prose-blockquote:italic prose-blockquote:my-6"
+                  className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-sans prose-headings:font-bold prose-h2:text-2xl sm:prose-h2:text-3xl prose-h2:tracking-tight prose-h2:text-foreground prose-h2:mt-10 prose-h2:mb-4 prose-h3:text-xl sm:prose-h3:text-2xl prose-h3:font-bold prose-h3:text-foreground prose-h3:mt-8 prose-h3:mb-3 prose-h4:text-lg sm:prose-h4:text-xl prose-h4:font-bold prose-h4:text-foreground prose-h4:mt-6 prose-h4:mb-2 prose-p:text-[16px] sm:prose-p:text-[17px] prose-p:leading-[1.8] prose-p:text-foreground/90 prose-li:text-[16px] prose-li:leading-relaxed prose-blockquote:border-l-4 prose-blockquote:border-brand prose-blockquote:pl-5 prose-blockquote:italic prose-blockquote:my-6"
                   dangerouslySetInnerHTML={{ __html: blog.content }}
                 />
 
