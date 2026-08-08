@@ -21,6 +21,7 @@ export interface BlogPost {
   title: string;
   slug: string;
   category: string;
+  tags?: string[];
   excerpt: string;
   content: string;
   contentBlocks?: ContentBlock[];
@@ -43,6 +44,9 @@ export interface BlogPost {
   };
 }
 
+export const DEFAULT_FALLBACK_IMAGE =
+  "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=800&fit=crop&auto=format";
+
 export const INITIAL_CATEGORIES = [
   "Tech Hiring",
   "Executive Search",
@@ -57,6 +61,7 @@ export const INITIAL_BLOGS: BlogPost[] = [
     title: "2026 Canadian Tech Hiring Trends: Scaling Engineering Teams in Toronto & Vancouver",
     slug: "2026-canadian-tech-hiring-trends",
     category: "Tech Hiring",
+    tags: ["Tech Hiring", "Engineering", "Toronto", "Vancouver", "Salary Benchmarks"],
     excerpt:
       "An in-depth analysis of compensation benchmarks, remote workforce retention, and critical skill demands across Canadian software engineering hubs.",
     content: `
@@ -124,7 +129,7 @@ export const INITIAL_BLOGS: BlogPost[] = [
       metaDescription:
         "Discover essential 2026 recruitment insights for engineering leaders and founders hiring top 1% software talent across Canada and the US.",
       keywords: "Canadian Tech Hiring, Software Recruitment Toronto, Executive Search Canada, Tech Salary Benchmarks 2026",
-      canonicalUrl: "https://venus-hiring.vercel.app/",
+      canonicalUrl: "https://venus-hiring.vercel.app/blog/2026-canadian-tech-hiring-trends",
       ogImage: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=800&fit=crop&auto=format",
     },
   },
@@ -133,6 +138,7 @@ export const INITIAL_BLOGS: BlogPost[] = [
     title: "Executive Search Strategies for EV & Automotive Plant Operations",
     slug: "executive-search-ev-automotive-plant-ops",
     category: "Executive Search",
+    tags: ["Executive Search", "Automotive", "EV Battery", "Plant Leadership", "Ontario"],
     excerpt:
       "How automotive manufacturers in Ontario and Michigan are securing plant directors and battery architects for next-gen EV gigafactories.",
     content: `
@@ -180,7 +186,7 @@ export const INITIAL_BLOGS: BlogPost[] = [
       metaDescription:
         "Learn how industrial leaders recruit plant directors and EV battery engineers across Ontario & Michigan gigafactories.",
       keywords: "EV Recruitment, Automotive Executive Search, Plant Operations Hiring, Manufacturing Leadership",
-      canonicalUrl: "https://venus-hiring.vercel.app/",
+      canonicalUrl: "https://venus-hiring.vercel.app/blog/executive-search-ev-automotive-plant-ops",
       ogImage: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1200&h=800&fit=crop&auto=format",
     },
   },
@@ -189,6 +195,7 @@ export const INITIAL_BLOGS: BlogPost[] = [
     title: "Navigating US-Canada Remote Workforce Compliance & EOR Solutions",
     slug: "navigating-us-canada-remote-workforce-compliance",
     category: "HR & Compliance",
+    tags: ["EOR", "Compliance", "Remote Work", "Cross Border", "HR Advisory"],
     excerpt:
       "A practical guide for US companies hiring Canadian software engineers and financial analysts without setting up local entities.",
     content: `
@@ -234,14 +241,52 @@ export const INITIAL_BLOGS: BlogPost[] = [
       metaDescription:
         "Comprehensive guide to hiring Canadian tech and finance talent legally with Employer of Record (EOR) solutions.",
       keywords: "Cross border hiring, EOR Canada, US Canada Remote Staffing, Canadian Payroll Compliance",
-      canonicalUrl: "https://venus-hiring.vercel.app/",
+      canonicalUrl: "https://venus-hiring.vercel.app/blog/navigating-us-canada-remote-workforce-compliance",
       ogImage: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=1200&h=800&fit=crop&auto=format",
     },
   },
 ];
 
-const STORAGE_KEY_BLOGS = "venus_blogs_data_v2";
-const STORAGE_KEY_CATS = "venus_blogs_categories_v2";
+// Helper: Calculate Reading Time from article content
+export function calculateReadingTime(content: string, contentBlocks?: ContentBlock[]): string {
+  let text = content ? content.replace(/<[^>]+>/g, " ") : "";
+  if (contentBlocks && contentBlocks.length > 0) {
+    text += " " + contentBlocks.map((b) => b.text || b.caption || "").join(" ");
+  }
+  const words = text.trim().split(/\s+/).filter(Boolean).length;
+  const minutes = Math.max(1, Math.ceil(words / 225));
+  return `${minutes} min read`;
+}
+
+// Helper: Get Related Articles using category match & recency fallback
+export function getRelatedArticles(
+  currentBlog: BlogPost,
+  allBlogs: BlogPost[],
+  limit: number = 3
+): BlogPost[] {
+  const candidates = allBlogs.filter((b) => b.id !== currentBlog.id && b.slug !== currentBlog.slug);
+
+  // Match same category first
+  const categoryMatches = candidates.filter((b) => b.category === currentBlog.category);
+  const otherMatches = candidates.filter((b) => b.category !== currentBlog.category);
+
+  const combined = [...categoryMatches, ...otherMatches];
+  return combined.slice(0, limit);
+}
+
+// Helper: Get Previous and Next Articles
+export function getAdjacentArticles(currentBlog: BlogPost, allBlogs: BlogPost[]) {
+  const index = allBlogs.findIndex((b) => b.id === currentBlog.id || b.slug === currentBlog.slug);
+  if (index === -1) return { prevBlog: null, nextBlog: null };
+
+  const prevBlog = index > 0 ? allBlogs[index - 1] : null;
+  const nextBlog = index < allBlogs.length - 1 ? allBlogs[index + 1] : null;
+
+  return { prevBlog, nextBlog };
+}
+
+const STORAGE_KEY_BLOGS = "venus_blogs_data_v3";
+const STORAGE_KEY_CATS = "venus_blogs_categories_v3";
 
 export function getStoredBlogs(): BlogPost[] {
   if (typeof window === "undefined") return INITIAL_BLOGS;

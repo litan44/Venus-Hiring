@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import {
   ArrowLeft,
@@ -18,37 +18,128 @@ import {
   Facebook,
   ArrowUpRight,
   BookOpen,
+  ArrowRight,
+  Check,
+  User,
+  MessageSquare,
 } from "lucide-react";
-import { useBlogs, type BlogPost } from "@/lib/blog-store";
+import {
+  useBlogs,
+  type BlogPost,
+  calculateReadingTime,
+  getRelatedArticles,
+  getAdjacentArticles,
+  DEFAULT_FALLBACK_IMAGE,
+} from "@/lib/blog-store";
 import { SiteNav } from "@/components/site/SiteNav";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import { GlobalPresence } from "@/components/site/GlobalPresence";
 
 export const Route = createFileRoute("/blog/$slug")({
   head: ({ params }) => ({
     meta: [
-      { title: `Blog Article | Venus Consultancy` },
-      { name: "description", content: "Read hiring intelligence and workforce insights from Venus Consultancy." },
+      { title: "Enterprise Technology Blog | Venus Consultancy" },
+      {
+        name: "description",
+        content:
+          "Insights, workforce trends, executive search strategies, and technology recruitment intelligence from Venus Consultancy.",
+      },
     ],
   }),
   component: BlogDetailPage,
 });
 
+interface TocItem {
+  id: string;
+  text: string;
+  level: "h2" | "h3";
+}
+
 function BlogDetailPage() {
   const { slug } = Route.useParams();
   const navigate = useNavigate();
   const { blogs, loading } = useBlogs();
+
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const [copied, setCopied] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [activeTocId, setActiveTocId] = useState<string>("");
+  const [tocItems, setTocItems] = useState<TocItem[]>([]);
+  const [isMobileTocOpen, setIsMobileTocOpen] = useState(false);
+
+  const articleContentRef = useRef<HTMLDivElement | null>(null);
 
   // Find matching blog by slug or ID
   const blog = blogs.find(
     (b) => b.slug === slug || b.id === slug || encodeURIComponent(b.slug) === slug
   );
 
-  // Filter related articles (excluding current blog)
-  const relatedArticles = blogs
-    .filter((b) => b.id !== blog?.id)
-    .slice(0, 3);
+  // Compute Related Articles & Adjacent Previous/Next Posts
+  const relatedArticles = blog ? getRelatedArticles(blog, blogs, 3) : [];
+  const { prevBlog, nextBlog } = blog ? getAdjacentArticles(blog, blogs) : { prevBlog: null, nextBlog: null };
+
+  // Calculate Reading Time dynamically if missing or default
+  const readingTime = blog
+    ? blog.readTime && blog.readTime !== "0 min read"
+      ? blog.readTime
+      : calculateReadingTime(blog.content, blog.contentBlocks)
+    : "5 min read";
+
+  // Scroll Progress Bar Indicator listener
+  useEffect(() => {
+    const handleScroll = () => {
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalHeight > 0) {
+        const currentProgress = (window.scrollY / totalHeight) * 100;
+        setScrollProgress(Math.min(100, Math.max(0, currentProgress)));
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Dynamically extract H2 / H3 headings for Table of Contents & setup IntersectionObserver for active highlighting
+  useEffect(() => {
+    if (!blog || !articleContentRef.current) return;
+
+    const headingEls = articleContentRef.current.querySelectorAll("h2, h3");
+    const extracted: TocItem[] = [];
+
+    headingEls.forEach((el, index) => {
+      const tag = el.tagName.toLowerCase() as "h2" | "h3";
+      let headingId = el.id;
+      if (!headingId) {
+        headingId = `section-${index + 1}-${el.textContent
+          ?.toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/(^-|-$)+/g, "")}`;
+        el.id = headingId;
+      }
+      extracted.push({
+        id: headingId,
+        text: el.textContent || `Section ${index + 1}`,
+        level: tag,
+      });
+    });
+
+    setTocItems(extracted);
+
+    // Setup active TOC heading observer
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveTocId(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: "-80px 0px -60% 0px" }
+    );
+
+    headingEls.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [blog]);
 
   // Smooth scroll to #faq container if hash is present
   useEffect(() => {
@@ -77,11 +168,11 @@ function BlogDetailPage() {
       return (
         <div className="min-h-screen bg-background flex flex-col justify-between">
           <SiteNav />
-          <div className="shell section-padding text-center py-20">
-            <div className="animate-pulse space-y-4 max-w-2xl mx-auto">
-              <div className="h-8 bg-muted rounded-xl w-3/4 mx-auto" />
+          <div className="shell section-padding text-center py-24">
+            <div className="animate-pulse space-y-6 max-w-3xl mx-auto">
+              <div className="h-10 bg-muted rounded-xl w-3/4 mx-auto" />
               <div className="h-4 bg-muted rounded-xl w-1/2 mx-auto" />
-              <div className="h-64 bg-muted rounded-2xl w-full" />
+              <div className="h-72 bg-muted rounded-3xl w-full" />
             </div>
           </div>
           <SiteFooter />
@@ -98,10 +189,10 @@ function BlogDetailPage() {
               <BookOpen className="h-8 w-8" />
             </span>
             <h1 className="font-display text-3xl font-bold text-foreground">
-              Blog Article Not Found
+              Article Not Found
             </h1>
             <p className="text-sm text-muted-foreground">
-              The recruitment article you are looking for does not exist or may have been updated.
+              The article you are looking for does not exist or may have been updated.
             </p>
             <Link
               to="/"
@@ -116,7 +207,61 @@ function BlogDetailPage() {
     );
   }
 
-  // Generate FAQPage JSON-LD Structured Data Schema for Search Engines (SEO)
+  // SEO & OpenGraph Data
+  const pageTitle = blog.seo?.metaTitle || `${blog.title} | Venus Consultancy`;
+  const pageDescription = blog.seo?.metaDescription || blog.excerpt;
+  const canonicalUrl = blog.seo?.canonicalUrl || currentUrl;
+  const featuredImg = blog.featuredImage || DEFAULT_FALLBACK_IMAGE;
+
+  // JSON-LD Structured Schemas
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: blog.title,
+    description: blog.excerpt,
+    image: [featuredImg],
+    author: {
+      "@type": "Person",
+      name: blog.author.name,
+      jobTitle: blog.author.role,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Venus Consultancy",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://www.venushiring.ca/favicon.ico",
+      },
+    },
+    datePublished: blog.publishDate,
+    mainEntityOfPage: canonicalUrl,
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://venus-hiring.vercel.app/",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Blog",
+        item: "https://venus-hiring.vercel.app/#blog",
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: blog.title,
+        item: currentUrl,
+      },
+    ],
+  };
+
   const faqSchema =
     blog.faqs && blog.faqs.length > 0
       ? {
@@ -134,8 +279,33 @@ function BlogDetailPage() {
       : null;
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col justify-between">
-      {/* Inject FAQPage Structured Data Schema into Head for Search Engines */}
+    <div className="min-h-screen bg-background text-foreground flex flex-col justify-between selection:bg-brand selection:text-white">
+      {/* Dynamic SEO Meta & Head Tags */}
+      <head>
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDescription} />
+        {blog.seo?.keywords && <meta name="keywords" content={blog.seo.keywords} />}
+        <link rel="canonical" href={canonicalUrl} />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDescription} />
+        <meta property="og:image" content={featuredImg} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:type" content="article" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" content={pageDescription} />
+        <meta name="twitter:image" content={featuredImg} />
+      </head>
+
+      {/* JSON-LD Schemas Injected for Search Engines */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       {faqSchema && (
         <script
           type="application/ld+json"
@@ -143,92 +313,110 @@ function BlogDetailPage() {
         />
       )}
 
-      {/* Main Website Navigation Header */}
+      {/* Top Unobtrusive Reading Progress Bar */}
+      <div
+        className="fixed top-0 left-0 z-50 h-1 bg-brand transition-all duration-150 ease-out"
+        style={{ width: `${scrollProgress}%` }}
+        aria-hidden
+      />
+
+      {/* Main Global Website Header */}
       <SiteNav />
 
       <main className="flex-1">
-        {/* Top Breadcrumbs & Back Navigation Bar */}
+        {/* Breadcrumb Navigation Bar */}
         <div className="border-b border-border/80 bg-card/60 backdrop-blur-md">
-          <div className="shell py-4 flex flex-wrap items-center justify-between gap-4">
-            <nav className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
-              <Link to="/" className="hover:text-brand transition-colors">
+          <div className="shell py-3.5 flex flex-wrap items-center justify-between gap-4">
+            <nav
+              aria-label="Breadcrumb navigation"
+              className="flex items-center gap-2 text-xs font-medium text-muted-foreground overflow-x-auto scrollbar-none"
+            >
+              <Link to="/" className="hover:text-brand transition-colors shrink-0">
                 Home
               </Link>
-              <ChevronRight className="h-3.5 w-3.5 opacity-50" />
-              <Link to="/" className="hover:text-brand transition-colors">
-                Blog
+              <ChevronRight className="h-3.5 w-3.5 opacity-40 shrink-0" />
+              <Link to="/" className="hover:text-brand transition-colors shrink-0">
+                Blogs
               </Link>
-              <ChevronRight className="h-3.5 w-3.5 opacity-50" />
-              <span className="text-brand font-semibold">{blog.category}</span>
+              <ChevronRight className="h-3.5 w-3.5 opacity-40 shrink-0" />
+              <span className="text-brand font-semibold shrink-0">{blog.category}</span>
+              <ChevronRight className="h-3.5 w-3.5 opacity-40 shrink-0 hidden sm:inline" />
+              <span className="text-foreground font-medium truncate max-w-[200px] sm:max-w-[320px] hidden sm:inline">
+                {blog.title}
+              </span>
             </nav>
 
             <button
               type="button"
               onClick={() => navigate({ to: "/" })}
-              className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2 text-xs font-bold text-foreground hover:bg-brand hover:text-white transition-colors"
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-4 py-1.5 text-xs font-bold text-foreground hover:bg-brand hover:text-white transition-all shadow-sm shrink-0"
             >
-              <ArrowLeft className="h-4 w-4" /> Back to All Articles
+              <ArrowLeft className="h-4 w-4" /> Back to Articles
             </button>
           </div>
         </div>
 
-        {/* Article Header Container */}
+        {/* Article Container */}
         <article className="shell section-padding py-10 lg:py-14">
-          <div className="max-w-4xl mx-auto space-y-6">
-            {/* Category Tag & Read Time */}
-            <div className="flex flex-wrap items-center gap-3">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-brand/10 border border-brand/30 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-brand">
-                <Tag className="h-3.5 w-3.5" /> {blog.category}
-              </span>
-              <span className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground">
-                <Clock className="h-3.5 w-3.5" /> {blog.readTime}
-              </span>
-            </div>
-
-            {/* H1 Article Title */}
-            <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground leading-[1.15]">
-              {blog.title}
-            </h1>
-
-            {/* Subtitle Excerpt */}
-            <p className="text-lg sm:text-xl leading-relaxed text-muted-foreground font-medium">
-              {blog.excerpt}
-            </p>
-
-            {/* Author Profile Card & Publication Date */}
-            <div className="flex flex-wrap items-center justify-between gap-6 py-5 border-y border-border/80">
-              <div className="flex items-center gap-3.5">
-                <img
-                  src={blog.author.avatar}
-                  alt={blog.author.name}
-                  className="h-12 w-12 rounded-full object-cover border-2 border-brand/40 shadow-sm"
-                />
-                <div>
-                  <p className="text-sm font-bold text-foreground">{blog.author.name}</p>
-                  <p className="text-xs text-muted-foreground">{blog.author.role}</p>
-                </div>
+          <div className="max-w-5xl mx-auto space-y-8">
+            {/* ARTICLE HERO / HEADER */}
+            <header className="space-y-6">
+              {/* Category, Date & Read Time */}
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-brand/10 border border-brand/30 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-brand">
+                  <Tag className="h-3.5 w-3.5" /> {blog.category}
+                </span>
+                <span className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground">
+                  <Clock className="h-3.5 w-3.5" /> {readingTime}
+                </span>
+                <span className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground">
+                  <Calendar className="h-3.5 w-3.5 text-brand" /> {blog.publishDate}
+                </span>
               </div>
 
-              <div className="flex flex-wrap items-center gap-4">
-                <div className="flex items-center gap-2 text-xs text-muted-foreground font-semibold">
-                  <Calendar className="h-4 w-4 text-brand" /> Published {blog.publishDate}
+              {/* Main Heading H1 */}
+              <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground leading-[1.14]">
+                {blog.title}
+              </h1>
+
+              {/* Excerpt Subtitle */}
+              <p className="text-lg sm:text-xl leading-relaxed text-muted-foreground font-medium max-w-4xl">
+                {blog.excerpt}
+              </p>
+
+              {/* Author & Share Bar Header */}
+              <div className="flex flex-wrap items-center justify-between gap-6 py-5 border-y border-border/80">
+                <div className="flex items-center gap-3.5">
+                  <img
+                    src={blog.author.avatar}
+                    alt={blog.author.name}
+                    className="h-12 w-12 rounded-full object-cover border-2 border-brand/40 shadow-sm"
+                  />
+                  <div>
+                    <p className="text-sm font-bold text-foreground">{blog.author.name}</p>
+                    <p className="text-xs text-muted-foreground">{blog.author.role}</p>
+                  </div>
                 </div>
 
-                {/* Social Share Action Buttons */}
-                <div className="flex items-center gap-2 pl-4 border-l border-border/80">
+                {/* Share Toolbar */}
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground hidden sm:inline mr-1">
+                    Share:
+                  </span>
                   <button
                     type="button"
                     onClick={handleCopyLink}
                     title="Copy Article Link"
                     className="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card text-muted-foreground hover:border-brand hover:text-brand transition-colors"
                   >
-                    <Link2 className="h-4 w-4" />
+                    {copied ? <Check className="h-4 w-4 text-emerald-500" /> : <Link2 className="h-4 w-4" />}
                   </button>
                   <a
                     href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(currentUrl)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     title="Share on LinkedIn"
+                    aria-label="Share on LinkedIn"
                     className="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card text-muted-foreground hover:border-blue-600 hover:text-blue-600 transition-colors"
                   >
                     <Linkedin className="h-4 w-4" />
@@ -238,6 +426,7 @@ function BlogDetailPage() {
                     target="_blank"
                     rel="noopener noreferrer"
                     title="Share on Twitter/X"
+                    aria-label="Share on Twitter/X"
                     className="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card text-muted-foreground hover:border-sky-500 hover:text-sky-500 transition-colors"
                   >
                     <Twitter className="h-4 w-4" />
@@ -247,66 +436,161 @@ function BlogDetailPage() {
                     target="_blank"
                     rel="noopener noreferrer"
                     title="Share on Facebook"
+                    aria-label="Share on Facebook"
                     className="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card text-muted-foreground hover:border-blue-700 hover:text-blue-700 transition-colors"
                   >
                     <Facebook className="h-4 w-4" />
                   </a>
                 </div>
               </div>
-            </div>
 
-            {/* Featured Hero Banner Image */}
-            {blog.featuredImage && (
-              <div className="my-8 overflow-hidden rounded-3xl border border-border shadow-xl">
+              {/* FEATURED HERO IMAGE */}
+              <div className="my-8 overflow-hidden rounded-3xl border border-border shadow-xl aspect-[16/9] max-h-[520px]">
                 <img
-                  src={blog.featuredImage}
+                  src={featuredImg}
                   alt={blog.title}
-                  className="w-full max-h-[500px] object-cover"
+                  loading="eager"
+                  className="h-full w-full object-cover transition-transform duration-700 hover:scale-[1.02]"
                 />
               </div>
-            )}
+            </header>
 
-            {/* 2-Column Desktop Grid (Main Article Body + Sticky Table of Contents Sidebar) */}
-            <div className="grid gap-12 lg:grid-cols-[1fr_280px] lg:items-start pt-4">
-              {/* Main Body Content Column */}
-              <div className="space-y-10 min-w-0">
-                {/* Quick Table of Contents Card */}
-                <div className="rounded-2xl border border-border/80 bg-card p-6 space-y-3 shadow-sm">
+            {/* MAIN ARTICLE LAYOUT (Desktop: Left TOC / Center Content / Right Sidebar) */}
+            <div className="grid gap-10 lg:grid-cols-[240px_1fr_260px] lg:items-start pt-2">
+              {/* LEFT DESKTOP COLUMN: STICKY TABLE OF CONTENTS */}
+              <aside className="hidden lg:block sticky top-24 space-y-4">
+                <div className="rounded-2xl border border-border/80 bg-card p-4 space-y-3 shadow-sm">
                   <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-brand">
-                    <List className="h-4 w-4" /> Table of Contents
+                    <List className="h-4 w-4" /> Contents
                   </div>
-                  <ul className="text-xs space-y-2 pl-5 list-disc text-muted-foreground font-medium">
-                    <li>
-                      <a href="#article-analysis" className="hover:text-brand transition-colors">
-                        Article Content & Analysis
+                  <nav className="text-xs space-y-1.5">
+                    {tocItems.map((item) => (
+                      <a
+                        key={item.id}
+                        href={`#${item.id}`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          const el = document.getElementById(item.id);
+                          if (el) el.scrollIntoView({ behavior: "smooth" });
+                        }}
+                        className={`block py-1 leading-snug transition-colors truncate ${
+                          item.level === "h3" ? "pl-3 text-[11px]" : "font-semibold"
+                        } ${
+                          activeTocId === item.id
+                            ? "text-brand font-bold border-l-2 border-brand pl-2"
+                            : "text-muted-foreground hover:text-foreground"
+                        }`}
+                      >
+                        {item.text}
                       </a>
-                    </li>
+                    ))}
                     {blog.faqs && blog.faqs.length > 0 && (
-                      <li>
-                        <a
-                          href="#faq"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            const faqEl = document.getElementById("faq");
-                            if (faqEl) faqEl.scrollIntoView({ behavior: "smooth" });
-                          }}
-                          className="hover:text-brand transition-colors font-bold text-amber-600 dark:text-amber-400"
-                        >
-                          Frequently Asked Questions ({blog.faqs.length})
-                        </a>
-                      </li>
+                      <a
+                        href="#faq"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          const faqEl = document.getElementById("faq");
+                          if (faqEl) faqEl.scrollIntoView({ behavior: "smooth" });
+                        }}
+                        className={`block py-1 leading-snug font-bold transition-colors ${
+                          activeTocId === "faq"
+                            ? "text-amber-500 border-l-2 border-amber-500 pl-2"
+                            : "text-amber-600 dark:text-amber-400 hover:text-brand"
+                        }`}
+                      >
+                        FAQs ({blog.faqs.length})
+                      </a>
                     )}
-                  </ul>
+                  </nav>
                 </div>
+              </aside>
 
-                {/* Article HTML Body Content */}
+              {/* CENTER COLUMN: MAIN ARTICLE BODY CONTENT */}
+              <div className="min-w-0 space-y-10">
+                {/* Mobile Collapsible TOC */}
+                {tocItems.length > 0 && (
+                  <div className="lg:hidden rounded-2xl border border-border/80 bg-card p-4 space-y-2">
+                    <button
+                      type="button"
+                      onClick={() => setIsMobileTocOpen(!isMobileTocOpen)}
+                      className="flex w-full items-center justify-between font-bold text-xs uppercase tracking-wider text-brand"
+                    >
+                      <span className="flex items-center gap-2">
+                        <List className="h-4 w-4" /> Table of Contents
+                      </span>
+                      <span>{isMobileTocOpen ? "▲ Hide" : "▼ Show"}</span>
+                    </button>
+                    {isMobileTocOpen && (
+                      <div className="pt-2 border-t border-border/60 space-y-1.5 text-xs">
+                        {tocItems.map((item) => (
+                          <a
+                            key={item.id}
+                            href={`#${item.id}`}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setIsMobileTocOpen(false);
+                              const el = document.getElementById(item.id);
+                              if (el) el.scrollIntoView({ behavior: "smooth" });
+                            }}
+                            className="block py-1 text-muted-foreground hover:text-brand truncate"
+                          >
+                            {item.text}
+                          </a>
+                        ))}
+                        {blog.faqs && blog.faqs.length > 0 && (
+                          <a
+                            href="#faq"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setIsMobileTocOpen(false);
+                              const faqEl = document.getElementById("faq");
+                              if (faqEl) faqEl.scrollIntoView({ behavior: "smooth" });
+                            }}
+                            className="block py-1 font-bold text-amber-600 dark:text-amber-400 hover:text-brand"
+                          >
+                            Frequently Asked Questions ({blog.faqs.length})
+                          </a>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Main Rendered HTML / Block Content */}
                 <div
-                  id="article-analysis"
-                  className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-display prose-headings:font-bold prose-h2:text-2xl prose-h3:text-xl prose-p:leading-relaxed prose-li:leading-relaxed prose-blockquote:border-l-4 prose-blockquote:border-brand prose-blockquote:pl-4 prose-blockquote:italic"
+                  ref={articleContentRef}
+                  className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-display prose-headings:font-bold prose-h2:text-2xl sm:prose-h2:text-3xl prose-h2:mt-10 prose-h2:mb-4 prose-h3:text-xl prose-p:leading-relaxed prose-p:text-base prose-li:leading-relaxed prose-blockquote:border-l-4 prose-blockquote:border-brand prose-blockquote:pl-5 prose-blockquote:italic prose-blockquote:my-6"
                   dangerouslySetInnerHTML={{ __html: blog.content }}
                 />
 
-                {/* Article FAQs Accordion Section (#faq) */}
+                {/* MID-ARTICLE CTA CONVERSION BANNER */}
+                <div className="my-12 rounded-3xl border border-brand/30 bg-gradient-to-br from-brand/10 via-card to-card p-6 sm:p-8 space-y-4 shadow-sm">
+                  <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-brand">
+                    <Sparkles className="h-4 w-4 text-brand" /> Enterprise Talent Solution
+                  </div>
+                  <h3 className="font-display text-2xl font-bold text-foreground">
+                    Ready to Scale Your Technical & Leadership Teams?
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Venus Consultancy delivers calibrated executive and engineering talent across Canada and the US within 5 business days.
+                  </p>
+                  <div className="flex flex-wrap items-center gap-3 pt-2">
+                    <a
+                      href="#contact"
+                      className="inline-flex items-center gap-2 rounded-full bg-brand px-6 py-2.5 text-xs font-bold text-white shadow-brand hover:brightness-110 transition-all"
+                    >
+                      Get Free Consultation →
+                    </a>
+                    <a
+                      href="tel:+16477220837"
+                      className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-5 py-2.5 text-xs font-bold text-foreground hover:bg-accent transition-colors"
+                    >
+                      Call +1 (647) 722-0837
+                    </a>
+                  </div>
+                </div>
+
+                {/* ARTICLE FAQS ACCORDION SECTION (#faq) */}
                 {blog.faqs && blog.faqs.length > 0 && (
                   <div id="faq" className="mt-14 pt-10 border-t border-border/80 space-y-6 scroll-mt-24">
                     <div className="flex items-center gap-3">
@@ -314,9 +598,9 @@ function BlogDetailPage() {
                         <HelpCircle className="h-5 w-5" />
                       </span>
                       <div>
-                        <h3 className="font-display text-2xl font-bold text-foreground">
+                        <h2 className="font-display text-2xl font-bold text-foreground">
                           Frequently Asked Questions
-                        </h3>
+                        </h2>
                         <p className="text-xs text-muted-foreground">
                           Key answers and insights regarding this article's topic.
                         </p>
@@ -335,6 +619,7 @@ function BlogDetailPage() {
                             <button
                               type="button"
                               onClick={() => setOpenFaqIndex(isOpen ? null : i)}
+                              aria-expanded={isOpen}
                               className="flex w-full items-center justify-between gap-4 p-4 sm:p-5 text-left font-bold text-sm text-foreground hover:text-brand transition-colors"
                             >
                               <span className="leading-snug">▼ {f.q}</span>
@@ -354,7 +639,7 @@ function BlogDetailPage() {
                   </div>
                 )}
 
-                {/* Share Article Bottom Toolbar */}
+                {/* SHARE THIS ARTICLE FOOTER BAR */}
                 <div className="pt-8 border-t border-border/80 flex flex-wrap items-center justify-between gap-4">
                   <div className="flex items-center gap-3">
                     <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
@@ -373,14 +658,14 @@ function BlogDetailPage() {
                     href="#contact"
                     className="inline-flex items-center gap-2 rounded-full bg-brand px-6 py-2.5 text-xs font-bold text-white shadow-brand hover:brightness-110 transition-all"
                   >
-                    Consult With Our Recruitment Team →
+                    Book a Call With Us →
                   </a>
                 </div>
               </div>
 
-              {/* Sticky Sidebar Widget Column */}
+              {/* RIGHT DESKTOP COLUMN: STICKY SIDEBAR */}
               <aside className="space-y-6 lg:sticky lg:top-24">
-                {/* Author Profile Box */}
+                {/* Author Card Box */}
                 <div className="rounded-2xl border border-border bg-card p-5 space-y-4 shadow-sm">
                   <span className="text-[11px] font-bold uppercase tracking-wider text-brand">
                     Article Author
@@ -397,28 +682,28 @@ function BlogDetailPage() {
                     </div>
                   </div>
                   <p className="text-xs text-muted-foreground leading-relaxed">
-                    Specializing in executive search, technical recruitment, and cross-border US-Canada workforce strategy.
+                    Specializing in executive placement, engineering hiring, and cross-border US-Canada workforce solutions.
                   </p>
                   <a
                     href="#contact"
                     className="inline-flex w-full items-center justify-center gap-1.5 rounded-xl border border-border bg-background py-2 text-xs font-bold text-foreground hover:bg-brand hover:text-white transition-colors"
                   >
-                    Contact Author
+                    <MessageSquare className="h-3.5 w-3.5" /> Contact Author
                   </a>
                 </div>
 
-                {/* Share Sidebar Box */}
+                {/* Share Sidebar Widget */}
                 <div className="rounded-2xl border border-border bg-card p-5 space-y-3 shadow-sm">
                   <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
                     Share Insight
                   </span>
-                  <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
                     <button
                       type="button"
                       onClick={handleCopyLink}
                       className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-border bg-background py-2 text-xs font-bold hover:border-brand hover:text-brand transition-colors"
                     >
-                      <Link2 className="h-3.5 w-3.5" /> {copied ? "Copied" : "Copy"}
+                      <Link2 className="h-3.5 w-3.5" /> {copied ? "Copied" : "Copy Link"}
                     </button>
                     <a
                       href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(currentUrl)}`}
@@ -435,7 +720,7 @@ function BlogDetailPage() {
                 <div className="rounded-2xl border border-brand/30 bg-brand/5 p-5 space-y-3">
                   <Sparkles className="h-5 w-5 text-brand" />
                   <h4 className="font-bold text-sm text-foreground leading-snug">
-                    Hiring Top 1% Tech & Executive Talent?
+                    Hiring Top 1% Tech Talent?
                   </h4>
                   <p className="text-xs text-muted-foreground leading-relaxed">
                     Receive a calibrated shortlist of pre-screened candidates within 5 business days.
@@ -450,16 +735,53 @@ function BlogDetailPage() {
               </aside>
             </div>
 
-            {/* Related Articles Section */}
+            {/* PREVIOUS / NEXT ARTICLE NAVIGATION */}
+            {(prevBlog || nextBlog) && (
+              <div className="mt-16 pt-10 border-t border-border/80 grid gap-4 sm:grid-cols-2">
+                {prevBlog ? (
+                  <Link
+                    to="/blog/$slug"
+                    params={{ slug: prevBlog.slug || prevBlog.id }}
+                    className="group rounded-2xl border border-border/80 bg-card p-5 space-y-2 hover:border-brand/40 transition-all"
+                  >
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1">
+                      <ArrowLeft className="h-3.5 w-3.5 text-brand" /> Previous Article
+                    </span>
+                    <h4 className="font-bold text-sm text-foreground group-hover:text-brand transition-colors line-clamp-1">
+                      {prevBlog.title}
+                    </h4>
+                  </Link>
+                ) : (
+                  <div />
+                )}
+
+                {nextBlog && (
+                  <Link
+                    to="/blog/$slug"
+                    params={{ slug: nextBlog.slug || nextBlog.id }}
+                    className="group rounded-2xl border border-border/80 bg-card p-5 space-y-2 hover:border-brand/40 transition-all text-right sm:text-right"
+                  >
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center justify-end gap-1">
+                      Next Article <ArrowRight className="h-3.5 w-3.5 text-brand" />
+                    </span>
+                    <h4 className="font-bold text-sm text-foreground group-hover:text-brand transition-colors line-clamp-1">
+                      {nextBlog.title}
+                    </h4>
+                  </Link>
+                )}
+              </div>
+            )}
+
+            {/* RELATED ARTICLES RECOMMENDATION SYSTEM */}
             {relatedArticles.length > 0 && (
               <div className="mt-20 pt-12 border-t border-border/80 space-y-8">
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="font-display text-2xl font-bold text-foreground">
-                      Related Articles & Insights
+                      Related Articles & Knowledge Hub
                     </h3>
                     <p className="text-xs text-muted-foreground mt-1">
-                      More intelligence from our recruitment consultants.
+                      Explore similar hiring trends and executive recruitment intelligence.
                     </p>
                   </div>
                   <Link
@@ -475,13 +797,13 @@ function BlogDetailPage() {
                     <Link
                       key={rel.id}
                       to="/blog/$slug"
-                      params={{ slug: rel.slug }}
+                      params={{ slug: rel.slug || rel.id }}
                       className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-border bg-card p-3 shadow-sm hover:-translate-y-1 hover:border-brand/40 transition-all"
                     >
                       <div>
                         <div className="aspect-[16/10] overflow-hidden rounded-xl">
                           <img
-                            src={rel.featuredImage}
+                            src={rel.featuredImage || DEFAULT_FALLBACK_IMAGE}
                             alt={rel.title}
                             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                           />
@@ -510,9 +832,12 @@ function BlogDetailPage() {
             )}
           </div>
         </article>
+
+        {/* VENUS GLOBAL TECHNOLOGY GLOBAL PRESENCE SECTION */}
+        <GlobalPresence />
       </main>
 
-      {/* Main Website Footer */}
+      {/* Main Global Website Footer */}
       <SiteFooter />
     </div>
   );
