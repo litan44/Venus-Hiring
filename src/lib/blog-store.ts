@@ -594,14 +594,23 @@ export function getAdjacentArticles(currentBlog: BlogPost, allBlogs: BlogPost[])
   return { prevBlog, nextBlog };
 }
 
-const STORAGE_KEY_BLOGS = "venus_blogs_data_v10";
-const STORAGE_KEY_CATS = "venus_blogs_categories_v10";
+const STORAGE_KEY_BLOGS = "venus_blogs_data_v20";
+const STORAGE_KEY_CATS = "venus_blogs_categories_v20";
 
 export function getStoredBlogs(): BlogPost[] {
   if (typeof window === "undefined") return INITIAL_BLOGS;
   try {
+    // Clear legacy keys if present
+    for (let i = 1; i <= 15; i++) {
+      localStorage.removeItem(`venus_blogs_data_v${i}`);
+    }
+
     const raw = localStorage.getItem(STORAGE_KEY_BLOGS);
-    if (!raw || !raw.includes("Understanding US-Canada Remote Hiring")) {
+    if (
+      !raw ||
+      !raw.includes("Understanding US-Canada Remote Hiring") ||
+      raw.includes("Cross-Border Hiring Made Simple")
+    ) {
       localStorage.setItem(STORAGE_KEY_BLOGS, JSON.stringify(INITIAL_BLOGS));
       return INITIAL_BLOGS;
     }
@@ -656,8 +665,16 @@ export function useBlogs() {
         if (res.ok) {
           const data = await res.json();
           if (data.success && Array.isArray(data.blogs) && data.blogs.length > 0) {
-            setBlogs(data.blogs);
-            saveStoredBlogs(data.blogs);
+            const cleanBlogs = data.blogs.filter(
+              (b: BlogPost) =>
+                b.content &&
+                !b.content.includes("Cross-Border Hiring Made Simple") &&
+                !b.excerpt?.includes("A practical guide for US companies hiring Canadian software engineers")
+            );
+            if (cleanBlogs.length > 0) {
+              setBlogs(cleanBlogs);
+              saveStoredBlogs(cleanBlogs);
+            }
           }
           if (data.success && Array.isArray(data.categories) && data.categories.length > 0) {
             setCategories(data.categories);

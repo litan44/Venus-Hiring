@@ -111,6 +111,11 @@ export async function initDatabase() {
         );
       }
 
+      // Purge legacy database entries if present
+      await client.query(`
+        DELETE FROM blogs WHERE content LIKE '%Cross-Border Hiring Made Simple%' OR excerpt LIKE '%A practical guide for US companies hiring Canadian software engineers%';
+      `);
+
       // 6. UPSERT initial recruitment blogs so PostgreSQL database matches current user-provided articles
       for (const b of INITIAL_BLOGS) {
         await client.query(
