@@ -1,50 +1,100 @@
-import { useState, useMemo } from "react";
-import { ArrowUpRight, CalendarDays, Search, Clock, Tag, Sparkles, BookOpen } from "lucide-react";
+import { useState, useEffect, useRef, useMemo } from "react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, CalendarDays } from "lucide-react";
 import { Link } from "@tanstack/react-router";
-import { useBlogs, type BlogPost, calculateReadingTime, DEFAULT_FALLBACK_IMAGE } from "@/lib/blog-store";
+import { useBlogs } from "@/lib/blog-store";
 import { useReveal } from "@/hooks/use-reveal";
 import { cn } from "@/lib/utils";
 
 export function BlogCarousel() {
-  const { blogs, categories } = useBlogs();
+  const { blogs } = useBlogs();
   const { ref, shown } = useReveal<HTMLDivElement>();
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [index, setIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [isInViewport, setIsInViewport] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(3);
 
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  // Filter ONLY featured blogs selected by Admin
+  const featuredBlogs = useMemo(
+    () => blogs.filter((b) => b.isFeatured),
+    [blogs]
+  );
+  const displayBlogs = useMemo(
+    () => (featuredBlogs.length > 0 ? featuredBlogs : blogs),
+    [featuredBlogs, blogs]
+  );
 
-  // Filtered blogs matching search query & category selection
-  const filteredBlogs = useMemo(() => {
-    return blogs.filter((b) => {
-      const matchesCategory =
-        selectedCategory === "all" || b.category === selectedCategory;
+  // Maximum valid slide index to prevent blank whitespace gaps
+  const maxIndex = useMemo(
+    () => Math.max(0, displayBlogs.length - visibleCount),
+    [displayBlogs.length, visibleCount]
+  );
 
-      const q = searchQuery.toLowerCase().trim();
-      const matchesSearch =
-        !q ||
-        b.title.toLowerCase().includes(q) ||
-        b.excerpt.toLowerCase().includes(q) ||
-        b.category.toLowerCase().includes(q) ||
-        (b.tags && b.tags.some((t) => t.toLowerCase().includes(q)));
+  // Responsive items per view listener
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 640) {
+        setVisibleCount(1);
+      } else if (window.innerWidth < 1024) {
+        setVisibleCount(2);
+      } else {
+        setVisibleCount(3);
+      }
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
-      return matchesCategory && matchesSearch;
-    });
-  }, [blogs, selectedCategory, searchQuery]);
+  // Clamp index if viewport resize changes maxIndex
+  useEffect(() => {
+    if (index > maxIndex) {
+      setIndex(maxIndex);
+    }
+  }, [maxIndex, index]);
 
-  // Featured spotlight post (first featured post or first post in filtered list)
-  const featuredSpotlight = useMemo(() => {
-    return filteredBlogs.find((b) => b.isFeatured) || filteredBlogs[0] || null;
-  }, [filteredBlogs]);
+  // Track viewport visibility so auto-slide timer ONLY runs when visible
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
 
-  // Grid items excluding featured spotlight
-  const gridBlogs = useMemo(() => {
-    if (!featuredSpotlight) return filteredBlogs;
-    return filteredBlogs.filter((b) => b.id !== featuredSpotlight.id);
-  }, [filteredBlogs, featuredSpotlight]);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInViewport(entry.isIntersecting);
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // Auto-sliding timer: 4s interval ONLY when there are more blogs than visible on screen
+  useEffect(() => {
+    if (isPaused || !isInViewport || maxIndex === 0) return;
+
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
+    }, 4000);
+
+    return () => clearInterval(timer);
+  }, [isPaused, isInViewport, maxIndex]);
+
+  const goNext = () => {
+    if (maxIndex === 0) return;
+    setIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
+  };
+
+  const goPrev = () => {
+    if (maxIndex === 0) return;
+    setIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
+  };
 
   return (
     <section
       id="blog"
-      className="relative overflow-hidden border-b border-border bg-porcelain section-padding py-20 lg:py-28"
+      ref={containerRef}
+      className="relative overflow-hidden border-b border-border bg-porcelain section-padding"
       aria-label="Hiring intelligence from our consultants"
     >
       <div
@@ -56,220 +106,123 @@ export function BlogCarousel() {
         aria-hidden
       />
 
-      <div className="shell relative space-y-12">
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto space-y-4">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-brand/10 border border-brand/30 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-brand">
-            <BookOpen className="h-3.5 w-3.5" /> Insights & Intelligence
-          </span>
-          <h2 className="font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-            Hiring intelligence from our consultants
-          </h2>
-          <p className="text-base text-muted-foreground sm:text-lg">
-            Stay updated with Canadian & US workforce trends, executive search strategies, salary benchmarks, and tech talent recruitment.
-          </p>
-        </div>
+      <div className="shell relative">
+        {/* Section Header with Navigation Arrows */}
+        <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
+          <div>
+            <h2 className="font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+              Hiring intelligence from our consultants
+            </h2>
+            <p className="mt-3 text-base text-muted-foreground sm:text-lg max-w-3xl">
+              Stay updated with Canadian & US workforce trends, salary benchmarks, and talent acquisition strategies.
+            </p>
+          </div>
 
-        {/* Search & Category Filter Toolbar */}
-        <div className="space-y-4">
-          <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-border/80 bg-card p-4 shadow-sm">
-            {/* Live Search Input */}
-            <div className="relative flex-1 min-w-[260px]">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <input
-                type="text"
-                placeholder="Search articles by title, keyword, or topic..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full rounded-xl border border-border bg-background pl-10 pr-4 py-2.5 text-xs text-foreground placeholder:text-muted-foreground/70 focus:border-brand focus:outline-none"
-              />
-              {searchQuery && (
-                <button
-                  type="button"
-                  onClick={() => setSearchQuery("")}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-muted-foreground hover:text-foreground"
-                >
-                  Clear
-                </button>
-              )}
-            </div>
-
-            {/* Category Filter Pills */}
-            <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-1">
+          {/* Manual Navigation Arrows */}
+          {maxIndex > 0 && (
+            <div className="flex items-center gap-3">
               <button
                 type="button"
-                onClick={() => setSelectedCategory("all")}
-                className={cn(
-                  "rounded-xl px-3.5 py-1.5 text-xs font-bold transition-all shrink-0",
-                  selectedCategory === "all"
-                    ? "bg-brand text-white shadow-brand"
-                    : "bg-background border border-border text-foreground hover:bg-accent"
-                )}
+                onClick={goPrev}
+                aria-label="Previous articles"
+                className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-sm transition-all duration-300 hover:scale-105 hover:border-brand hover:bg-brand hover:text-white"
               >
-                All Categories ({blogs.length})
+                <ArrowLeft className="h-5 w-5" />
               </button>
-              {categories.map((c) => (
-                <button
-                  key={c}
-                  type="button"
-                  onClick={() => setSelectedCategory(c)}
-                  className={cn(
-                    "rounded-xl px-3.5 py-1.5 text-xs font-bold transition-all shrink-0",
-                    selectedCategory === c
-                      ? "bg-brand text-white shadow-brand"
-                      : "bg-background border border-border text-foreground hover:bg-accent"
-                  )}
-                >
-                  {c}
-                </button>
-              ))}
+              <button
+                type="button"
+                onClick={goNext}
+                aria-label="Next articles"
+                className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-sm transition-all duration-300 hover:scale-105 hover:border-brand hover:bg-brand hover:text-white"
+              >
+                <ArrowRight className="h-5 w-5" />
+              </button>
             </div>
+          )}
+        </div>
+
+        {/* Sliding Carousel Grid matching exact original card design */}
+        <div
+          ref={ref}
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          className={cn("reveal-item mt-12 overflow-hidden", shown && "is-shown")}
+        >
+          <div
+            className="flex transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform -mx-2.5"
+            style={{
+              transform: `translate3d(-${index * (100 / visibleCount)}%, 0, 0)`,
+            }}
+          >
+            {displayBlogs.map((b) => (
+              <div
+                key={b.id}
+                className="w-full sm:w-1/2 lg:w-1/3 shrink-0 px-2.5"
+              >
+                <Link
+                  to="/blog/$slug"
+                  params={{ slug: b.slug || b.id }}
+                  className="group relative h-full flex flex-col justify-between cursor-pointer overflow-hidden rounded-[1.75rem] glass-panel p-3 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_28px_70px_-42px_rgba(15,23,42,0.5)] transition-[transform,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-2 hover:ring-brand-soft bg-card border border-border/80 text-foreground"
+                >
+                  {/* Top Image with Date Badge */}
+                  <div className="sheen relative aspect-[16/10] overflow-hidden rounded-[1.35rem]">
+                    <img
+                      src={b.featuredImage}
+                      alt={b.title}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.09]"
+                    />
+                    <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-background/90 px-3 py-1.5 text-[11px] font-semibold text-foreground backdrop-blur shadow-sm border border-border/40">
+                      <CalendarDays className="h-3.5 w-3.5 text-brand" />
+                      {b.publishDate}
+                    </span>
+                  </div>
+
+                  {/* Bottom Details */}
+                  <div className="p-5 pt-6 flex-1 flex flex-col justify-between">
+                    <div>
+                      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-brand">
+                        {b.category}
+                      </p>
+                      <h3 className="mt-3 text-lg font-bold leading-snug transition-colors duration-300 group-hover:text-brand text-foreground line-clamp-2">
+                        {b.title}
+                      </h3>
+                      <p className="mt-3 text-sm leading-relaxed text-muted-foreground line-clamp-3">
+                        {b.excerpt}
+                      </p>
+                    </div>
+
+                    <span className="mt-6 flex items-center justify-between gap-3 border-t border-border/80 pt-5 text-sm font-semibold text-foreground">
+                      <span className="relative">
+                        Read full article
+                        <span className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-brand transition-transform duration-500 ease-out group-hover:scale-x-100" />
+                      </span>
+                      <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-all duration-300 ease-out group-hover:rotate-45 group-hover:border-transparent group-hover:bg-primary group-hover:text-primary-foreground">
+                        <ArrowUpRight className="h-4 w-4" />
+                      </span>
+                    </span>
+                  </div>
+                </Link>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Content Container */}
-        {filteredBlogs.length === 0 ? (
-          <div className="rounded-3xl border border-dashed border-border bg-card p-12 text-center space-y-4">
-            <Search className="h-10 w-10 text-muted-foreground mx-auto" />
-            <h3 className="font-bold text-lg text-foreground">No articles found matching your query</h3>
-            <p className="text-xs text-muted-foreground max-w-md mx-auto">
-              Try searching with another keyword or select a different category from above.
-            </p>
-            <button
-              type="button"
-              onClick={() => {
-                setSearchQuery("");
-                setSelectedCategory("all");
-              }}
-              className="inline-flex items-center gap-2 rounded-full bg-brand px-5 py-2 text-xs font-bold text-white shadow-brand"
-            >
-              Reset Search & Filters
-            </button>
-          </div>
-        ) : (
-          <div ref={ref} className={cn("reveal-item space-y-10", shown && "is-shown")}>
-            {/* FEATURED SPOTLIGHT ARTICLE (First/Top Article) */}
-            {featuredSpotlight && (
-              <Link
-                to="/blog/$slug"
-                params={{ slug: featuredSpotlight.slug || featuredSpotlight.id }}
-                className="group relative grid gap-8 lg:grid-cols-12 overflow-hidden rounded-[2rem] border border-border/80 bg-card p-4 sm:p-6 shadow-xl transition-all duration-500 hover:-translate-y-1 hover:border-brand/40"
-              >
-                {/* Image */}
-                <div className="lg:col-span-7 aspect-[16/10] overflow-hidden rounded-[1.5rem] sheen">
-                  <img
-                    src={featuredSpotlight.featuredImage || DEFAULT_FALLBACK_IMAGE}
-                    alt={featuredSpotlight.title}
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                </div>
-
-                {/* Details */}
-                <div className="lg:col-span-5 flex flex-col justify-between py-2 space-y-4">
-                  <div className="space-y-3">
-                    <div className="flex flex-wrap items-center gap-2.5">
-                      <span className="inline-flex items-center gap-1 rounded-full bg-brand/10 border border-brand/30 px-3 py-1 text-[11px] font-bold text-brand uppercase">
-                        <Sparkles className="h-3 w-3" /> Featured Insight
-                      </span>
-                      <span className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground">
-                        <Clock className="h-3.5 w-3.5" />{" "}
-                        {calculateReadingTime(featuredSpotlight.content, featuredSpotlight.contentBlocks)}
-                      </span>
-                    </div>
-
-                    <h3 className="font-display text-2xl sm:text-3xl font-bold leading-tight text-foreground group-hover:text-brand transition-colors">
-                      {featuredSpotlight.title}
-                    </h3>
-
-                    <p className="text-sm leading-relaxed text-muted-foreground line-clamp-3">
-                      {featuredSpotlight.excerpt}
-                    </p>
-                  </div>
-
-                  <div className="pt-4 border-t border-border/80 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <img
-                        src={featuredSpotlight.author.avatar}
-                        alt={featuredSpotlight.author.name}
-                        className="h-9 w-9 rounded-full object-cover border border-brand/30"
-                      />
-                      <div>
-                        <p className="text-xs font-bold text-foreground">{featuredSpotlight.author.name}</p>
-                        <p className="text-[10px] text-muted-foreground">{featuredSpotlight.publishDate}</p>
-                      </div>
-                    </div>
-
-                    <span className="inline-flex items-center gap-1.5 text-xs font-bold text-brand group-hover:translate-x-1 transition-transform">
-                      Read Full Article <ArrowUpRight className="h-4 w-4" />
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            )}
-
-            {/* 3-COLUMN RESPONSIVE ARTICLES GRID */}
-            {gridBlogs.length > 0 && (
-              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {gridBlogs.map((b) => {
-                  const readTime = calculateReadingTime(b.content, b.contentBlocks);
-
-                  return (
-                    <Link
-                      key={b.id}
-                      to="/blog/$slug"
-                      params={{ slug: b.slug || b.id }}
-                      className="group relative flex flex-col justify-between overflow-hidden rounded-[1.75rem] glass-panel p-3 shadow-sm transition-all duration-500 hover:-translate-y-2 hover:border-brand/40 bg-card border border-border/80 text-foreground"
-                    >
-                      <div>
-                        {/* Image */}
-                        <div className="sheen relative aspect-[16/10] overflow-hidden rounded-[1.35rem]">
-                          <img
-                            src={b.featuredImage || DEFAULT_FALLBACK_IMAGE}
-                            alt={b.title}
-                            loading="lazy"
-                            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                          />
-                          <span className="absolute left-3.5 top-3.5 inline-flex items-center gap-1.5 rounded-full bg-background/90 px-3 py-1 text-[11px] font-semibold text-foreground backdrop-blur shadow-sm border border-border/40">
-                            <CalendarDays className="h-3.5 w-3.5 text-brand" />
-                            {b.publishDate}
-                          </span>
-                        </div>
-
-                        {/* Details */}
-                        <div className="p-4 pt-5 space-y-2.5">
-                          <div className="flex items-center justify-between text-[11px] font-bold text-brand uppercase tracking-wider">
-                            <span>{b.category}</span>
-                            <span className="text-muted-foreground font-semibold flex items-center gap-1">
-                              <Clock className="h-3 w-3" /> {readTime}
-                            </span>
-                          </div>
-
-                          <h3 className="text-base font-bold leading-snug transition-colors duration-300 group-hover:text-brand text-foreground line-clamp-2">
-                            {b.title}
-                          </h3>
-
-                          <p className="text-xs leading-relaxed text-muted-foreground line-clamp-3">
-                            {b.excerpt}
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Card Footer Action */}
-                      <div className="p-4 pt-0">
-                        <span className="flex items-center justify-between gap-3 border-t border-border/80 pt-4 text-xs font-semibold text-foreground">
-                          <span className="relative group-hover:text-brand transition-colors">
-                            Read article
-                          </span>
-                          <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border text-muted-foreground transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:rotate-45">
-                            <ArrowUpRight className="h-4 w-4" />
-                          </span>
-                        </span>
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-            )}
+        {/* Indicator Dots */}
+        {maxIndex > 0 && (
+          <div className="mt-8 flex items-center justify-center gap-2">
+            {Array.from({ length: maxIndex + 1 }).map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => setIndex(i)}
+                aria-label={`Go to article slide ${i + 1}`}
+                className={cn(
+                  "h-2 rounded-full transition-all duration-500 ease-out",
+                  i === index ? "w-8 bg-brand" : "w-2 bg-border hover:bg-brand/40"
+                )}
+              />
+            ))}
           </div>
         )}
       </div>
