@@ -606,18 +606,7 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
                   >
                     <Layers className="h-3.5 w-3.5" /> Content Block Builder
                   </button>
-                  <button
-                    type="button"
-                    onClick={() => setEditorSubTab("ckeditor")}
-                    className={cn(
-                      "flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-bold transition-all",
-                      editorSubTab === "ckeditor"
-                        ? "bg-brand text-white shadow-brand"
-                        : "bg-card border border-border text-foreground hover:bg-accent"
-                    )}
-                  >
-                    <Code className="h-3.5 w-3.5" /> CKEditor HTML Mode
-                  </button>
+
                   <button
                     type="button"
                     onClick={() => setEditorSubTab("faqs")}
@@ -682,9 +671,33 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
               <div className="grid gap-4 sm:grid-cols-12 rounded-2xl border border-border bg-card p-4">
                 <div className="sm:col-span-8 space-y-3">
                   <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1">
-                      Article Title *
-                    </label>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                        Article Title *
+                      </label>
+                      <div className="flex items-center gap-1">
+                        <button
+                          type="button"
+                          title="Bold Title Tag"
+                          onClick={() =>
+                            setFormData((prev) => ({ ...prev, title: `<strong>${prev.title}</strong>` }))
+                          }
+                          className="rounded px-1.5 py-0.5 text-[10px] font-bold border border-border bg-background hover:bg-accent text-foreground"
+                        >
+                          B
+                        </button>
+                        <button
+                          type="button"
+                          title="Italic Title Tag"
+                          onClick={() =>
+                            setFormData((prev) => ({ ...prev, title: `<em>${prev.title}</em>` }))
+                          }
+                          className="rounded px-1.5 py-0.5 text-[10px] italic font-bold border border-border bg-background hover:bg-accent text-foreground"
+                        >
+                          I
+                        </button>
+                      </div>
+                    </div>
                     <input
                       type="text"
                       required
@@ -695,9 +708,33 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1">
-                      Short Excerpt / Subtitle
-                    </label>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                        Short Excerpt / Subtitle
+                      </label>
+                      <div className="flex items-center gap-1">
+                        <button
+                          type="button"
+                          title="Bold Excerpt"
+                          onClick={() =>
+                            setFormData((prev) => ({ ...prev, excerpt: `<strong>${prev.excerpt}</strong>` }))
+                          }
+                          className="rounded px-1.5 py-0.5 text-[10px] font-bold border border-border bg-background hover:bg-accent text-foreground"
+                        >
+                          B
+                        </button>
+                        <button
+                          type="button"
+                          title="Italic Excerpt"
+                          onClick={() =>
+                            setFormData((prev) => ({ ...prev, excerpt: `<em>${prev.excerpt}</em>` }))
+                          }
+                          className="rounded px-1.5 py-0.5 text-[10px] italic font-bold border border-border bg-background hover:bg-accent text-foreground"
+                        >
+                          I
+                        </button>
+                      </div>
+                    </div>
                     <input
                       type="text"
                       placeholder="Brief 1-2 sentence summary..."
@@ -746,13 +783,118 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
                 </div>
               </div>
 
-              {/* SUB-TAB 1: DYNAMIC CONTENT BLOCK BUILDER */}
+              {/* SUB-TAB 1: DYNAMIC CONTENT BLOCK BUILDER & RICH CONTENT EDITOR */}
               {editorSubTab === "blocks" && (
                 <div className="space-y-6">
+                  {/* MAIN ARTICLE RICH HTML CONTENT EDITOR */}
+                  <div className="space-y-2 rounded-2xl border border-border bg-card p-4">
+                    <div className="flex items-center justify-between">
+                      <label className="block text-xs font-bold uppercase tracking-wider text-brand">
+                        Main Article HTML Body & Content
+                      </label>
+                      <span className="text-[11px] text-muted-foreground font-semibold">
+                        Formatting Toolbar: Headings, Lists, Links, Quotes & Code
+                      </span>
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-1.5 rounded-t-xl border border-border bg-background p-2 border-b-0">
+                      <button
+                        type="button"
+                        title="Heading 2"
+                        onClick={() => insertCkFormatting("<h2>", "</h2>")}
+                        className="rounded-lg p-1.5 hover:bg-accent text-foreground text-xs font-bold flex items-center gap-1"
+                      >
+                        <Heading2 className="h-4 w-4" /> H2
+                      </button>
+                      <button
+                        type="button"
+                        title="Heading 3"
+                        onClick={() => insertCkFormatting("<h3>", "</h3>")}
+                        className="rounded-lg p-1.5 hover:bg-accent text-foreground text-xs font-bold flex items-center gap-1"
+                      >
+                        <Heading3 className="h-4 w-4" /> H3
+                      </button>
+                      <div className="h-4 w-px bg-border my-auto mx-1" />
+                      <button
+                        type="button"
+                        title="Bold"
+                        onClick={() => insertCkFormatting("<strong>", "</strong>")}
+                        className="rounded-lg p-1.5 hover:bg-accent text-foreground"
+                      >
+                        <Bold className="h-4 w-4" />
+                      </button>
+                      <button
+                        type="button"
+                        title="Italic"
+                        onClick={() => insertCkFormatting("<em>", "</em>")}
+                        className="rounded-lg p-1.5 hover:bg-accent text-foreground"
+                      >
+                        <Italic className="h-4 w-4" />
+                      </button>
+                      <div className="h-4 w-px bg-border my-auto mx-1" />
+                      <button
+                        type="button"
+                        title="Bullet List"
+                        onClick={() =>
+                          insertCkFormatting("<ul>\n  <li>", "</li>\n  <li>Item 2</li>\n</ul>")
+                        }
+                        className="rounded-lg p-1.5 hover:bg-accent text-foreground"
+                      >
+                        <List className="h-4 w-4" />
+                      </button>
+                      <button
+                        type="button"
+                        title="Numbered List"
+                        onClick={() =>
+                          insertCkFormatting("<ol>\n  <li>", "</li>\n  <li>Step 2</li>\n</ol>")
+                        }
+                        className="rounded-lg p-1.5 hover:bg-accent text-foreground"
+                      >
+                        <ListOrdered className="h-4 w-4" />
+                      </button>
+                      <button
+                        type="button"
+                        title="Blockquote"
+                        onClick={() => insertCkFormatting("<blockquote>", "</blockquote>")}
+                        className="rounded-lg p-1.5 hover:bg-accent text-foreground"
+                      >
+                        <Quote className="h-4 w-4" />
+                      </button>
+                      <button
+                        type="button"
+                        title="Insert Code"
+                        onClick={() => insertCkFormatting("<code>", "</code>")}
+                        className="rounded-lg p-1.5 hover:bg-accent text-foreground"
+                      >
+                        <Code className="h-4 w-4" />
+                      </button>
+                      <button
+                        type="button"
+                        title="Insert Link"
+                        onClick={() =>
+                          insertCkFormatting('<a href="https://www.venushiring.ca">', "</a>")
+                        }
+                        className="rounded-lg p-1.5 hover:bg-accent text-foreground"
+                      >
+                        <LinkIcon className="h-4 w-4" />
+                      </button>
+                    </div>
+
+                    <textarea
+                      rows={12}
+                      placeholder="Write article HTML content..."
+                      value={formData.content}
+                      onChange={(e) =>
+                        setFormData((prev) => ({ ...prev, content: e.target.value }))
+                      }
+                      className="w-full rounded-b-xl border border-border bg-background p-4 text-xs font-mono text-foreground placeholder:text-muted-foreground/70 focus:border-brand focus:outline-none"
+                    />
+                  </div>
+
                   {/* Add Field Toolbar */}
                   <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-brand/30 bg-brand/5 p-4">
                     <span className="text-xs font-bold text-brand uppercase tracking-wider">
-                      Add Content Fields to Article:
+                      Add Custom Content Fields:
                     </span>
                     <div className="flex flex-wrap items-center gap-2">
                       <button
@@ -1074,103 +1216,7 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
                 </div>
               )}
 
-              {/* SUB-TAB 2: CKEDITOR HTML MODE */}
-              {editorSubTab === "ckeditor" && (
-                <div className="space-y-4">
-                  <div className="flex flex-wrap items-center gap-1.5 rounded-t-xl border border-border bg-card p-2 border-b-0">
-                    <button
-                      type="button"
-                      title="Heading 2"
-                      onClick={() => insertCkFormatting("<h2>", "</h2>")}
-                      className="rounded-lg p-1.5 hover:bg-accent text-foreground text-xs font-bold flex items-center gap-1"
-                    >
-                      <Heading2 className="h-4 w-4" /> H2
-                    </button>
-                    <button
-                      type="button"
-                      title="Heading 3"
-                      onClick={() => insertCkFormatting("<h3>", "</h3>")}
-                      className="rounded-lg p-1.5 hover:bg-accent text-foreground text-xs font-bold flex items-center gap-1"
-                    >
-                      <Heading3 className="h-4 w-4" /> H3
-                    </button>
-                    <div className="h-4 w-px bg-border my-auto mx-1" />
-                    <button
-                      type="button"
-                      title="Bold"
-                      onClick={() => insertCkFormatting("<strong>", "</strong>")}
-                      className="rounded-lg p-1.5 hover:bg-accent text-foreground"
-                    >
-                      <Bold className="h-4 w-4" />
-                    </button>
-                    <button
-                      type="button"
-                      title="Italic"
-                      onClick={() => insertCkFormatting("<em>", "</em>")}
-                      className="rounded-lg p-1.5 hover:bg-accent text-foreground"
-                    >
-                      <Italic className="h-4 w-4" />
-                    </button>
-                    <div className="h-4 w-px bg-border my-auto mx-1" />
-                    <button
-                      type="button"
-                      title="Bullet List"
-                      onClick={() =>
-                        insertCkFormatting("<ul>\n  <li>", "</li>\n  <li>Item 2</li>\n</ul>")
-                      }
-                      className="rounded-lg p-1.5 hover:bg-accent text-foreground"
-                    >
-                      <List className="h-4 w-4" />
-                    </button>
-                    <button
-                      type="button"
-                      title="Numbered List"
-                      onClick={() =>
-                        insertCkFormatting("<ol>\n  <li>", "</li>\n  <li>Step 2</li>\n</ol>")
-                      }
-                      className="rounded-lg p-1.5 hover:bg-accent text-foreground"
-                    >
-                      <ListOrdered className="h-4 w-4" />
-                    </button>
-                    <button
-                      type="button"
-                      title="Blockquote"
-                      onClick={() => insertCkFormatting("<blockquote>", "</blockquote>")}
-                      className="rounded-lg p-1.5 hover:bg-accent text-foreground"
-                    >
-                      <Quote className="h-4 w-4" />
-                    </button>
-                    <button
-                      type="button"
-                      title="Insert Code"
-                      onClick={() => insertCkFormatting("<code>", "</code>")}
-                      className="rounded-lg p-1.5 hover:bg-accent text-foreground"
-                    >
-                      <Code className="h-4 w-4" />
-                    </button>
-                    <button
-                      type="button"
-                      title="Insert Link"
-                      onClick={() =>
-                        insertCkFormatting('<a href="https://www.venushiring.ca">', "</a>")
-                      }
-                      className="rounded-lg p-1.5 hover:bg-accent text-foreground"
-                    >
-                      <LinkIcon className="h-4 w-4" />
-                    </button>
-                  </div>
 
-                  <textarea
-                    rows={14}
-                    placeholder="Write article HTML content..."
-                    value={formData.content}
-                    onChange={(e) =>
-                      setFormData((prev) => ({ ...prev, content: e.target.value }))
-                    }
-                    className="w-full rounded-b-xl border border-border bg-card p-4 text-xs font-mono text-foreground placeholder:text-muted-foreground/70 focus:border-brand focus:outline-none"
-                  />
-                </div>
-              )}
 
               {/* SUB-TAB 3: ARTICLE-SPECIFIC FAQS BUILDER */}
               {editorSubTab === "faqs" && (
