@@ -383,8 +383,8 @@ export function getAdjacentArticles(currentBlog: BlogPost, allBlogs: BlogPost[])
   return { prevBlog, nextBlog };
 }
 
-const STORAGE_KEY_BLOGS = "venus_blogs_data_v5";
-const STORAGE_KEY_CATS = "venus_blogs_categories_v5";
+const STORAGE_KEY_BLOGS = "venus_blogs_data_v6";
+const STORAGE_KEY_CATS = "venus_blogs_categories_v6";
 
 export function getStoredBlogs(): BlogPost[] {
   if (typeof window === "undefined") return INITIAL_BLOGS;
