@@ -31,6 +31,7 @@ export interface BlogPost {
     name: string;
     role: string;
     avatar: string;
+    bio?: string;
   };
   readTime: string;
   publishDate: string;
@@ -67,17 +68,17 @@ export const INITIAL_BLOGS: BlogPost[] = [
     content: `
       <h2>Understanding Canadian Software Talent Ecosystems in 2026</h2>
       <p>As Canadian tech hubs in Toronto, Vancouver, and Montreal continue to mature, enterprise engineering organizations face unprecedented competition for senior software architects, AI/ML leads, and DevOps directors.</p>
-      
+
       <h2>Key Recruitment Trends Shaping Canadian Tech Hiring</h2>
       <p>Technological advancement and hybrid remote work structures have fundamentally altered candidate expectations across North America.</p>
 
-      <h3>1. Surging Demand for AI & Data Infrastructure Engineers</h3>
+      <h3>Surging Demand for AI & Data Infrastructure Engineers</h3>
       <p>Over 64% of high-growth technology scale-ups are actively building dedicated AI data engineering pods to deploy generative models and predictive analytics into core enterprise software.</p>
 
-      <h3>2. Calibrated Compensation & Equity Benchmarks</h3>
+      <h3>Calibrated Compensation & Equity Benchmarks</h3>
       <p>Offering competitive base salaries aligned with real-time Canadian tech benchmarks paired with performance equity is mandatory for achieving high candidate offer acceptance and 90-day retention.</p>
 
-      <h3>3. Rapid Cross-Border US-Canada Talent Mobility</h3>
+      <h3>Rapid Cross-Border US-Canada Talent Mobility</h3>
       <p>Leveraging Employer of Record (EOR) and TN-Visa compliance frameworks allows US technology enterprises to quickly hire top 1% Canadian software engineers without friction.</p>
 
       <h2>How Venus Hiring Accelerates Engineering Recruitment</h2>
@@ -89,11 +90,6 @@ export const INITIAL_BLOGS: BlogPost[] = [
         type: "heading",
         headingLevel: "h2",
         text: "Understanding Canadian Software Talent Ecosystems in 2026",
-      },
-      {
-        id: "b-2",
-        type: "paragraph",
-        text: "As Canadian tech hubs in Toronto, Vancouver, and Montreal continue to mature, enterprise engineering organizations face unprecedented competition for senior software architects, AI/ML leads, and DevOps directors.",
       },
     ],
     faqs: [
@@ -119,6 +115,7 @@ export const INITIAL_BLOGS: BlogPost[] = [
       name: "Subhram Nayak",
       role: "Head of Executive Placement",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop",
+      bio: "Specializing in technical leadership placement, scale-up staffing, and executive recruitment across North American tech hubs.",
     },
     readTime: "5 min read",
     publishDate: "August 5, 2026",
@@ -147,13 +144,13 @@ export const INITIAL_BLOGS: BlogPost[] = [
       <h2>Critical Industrial Leadership Profiles Needed</h2>
       <p>Securing executive leadership requires deep sector knowledge and proactive headhunting across major North American manufacturing corridors.</p>
 
-      <h3>1. Plant Operations Directors & General Managers</h3>
+      <h3>Plant Operations Directors & General Managers</h3>
       <p>Leaders capable of overseeing multi-million dollar capital expenditure facilities while maintaining zero-defect safety and quality standards.</p>
 
-      <h3>2. EV Battery Architecture & Cell Engineers</h3>
+      <h3>EV Battery Architecture & Cell Engineers</h3>
       <p>Specialized chemical and mechanical engineering leaders pioneering solid-state and lithium-ion battery cell assembly.</p>
 
-      <h3>3. Quality & Supply Chain Directors</h3>
+      <h3>Quality & Supply Chain Directors</h3>
       <p>Executives skilled in IATF 16949 auditing, global component sourcing, and supply chain resilience.</p>
 
       <h2>Confidential Recruitment Strategies for Enterprise Manufacturers</h2>
@@ -182,6 +179,7 @@ export const INITIAL_BLOGS: BlogPost[] = [
       name: "Sarah Jenkins",
       role: "Director of Industrial Search",
       avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop",
+      bio: "Leading executive search engagements for automotive gigafactories and advanced industrial plants across Ontario and Michigan.",
     },
     readTime: "4 min read",
     publishDate: "July 28, 2026",
@@ -204,30 +202,49 @@ export const INITIAL_BLOGS: BlogPost[] = [
     excerpt:
       "Hiring Canadian talent from the US comes with more than just finding the right candidate. From employment standards and payroll requirements to work permits and cross-border compliance, businesses need the right structure to hire confidently.",
     content: `
-      <h2>Understanding US-Canada Remote Workforce Compliance</h2>
-      <p>Hiring Canadian talent from the US comes with more than just finding the right candidate. From employment standards and payroll requirements to provincial health benefits, US enterprises expanding their remote workforce into Canada must navigate a complex regulatory environment.</p>
+      <h2>Understanding Cross-Border Hiring</h2>
+      <p>Hiring Canadian talent from the US comes with more than just finding the right candidate. From employment standards and payroll requirements to provincial health benefits, US enterprises expanding their remote workforce into Canada must navigate a complex regulatory environment with precision.</p>
 
-      <h2>Why Cross-Border Hiring Creates Compliance Challenges</h2>
+      <h2>Why US Companies Hire Canadian Talent</h2>
+      <p>Canada offers a world-class talent pool of bilingual software engineers, financial analysts, and operational executives trained at top institutions in Toronto, Waterloo, Vancouver, and Montreal. Furthermore, favorable exchange rates and overlapping time zones make Canadian professionals an exceptionally attractive addition to US teams.</p>
+
+      <h2>The Challenges of Hiring Across the US-Canada Border</h2>
       <p>Canada consists of ten provinces and three territories, each with independent employment standards acts, statutory holiday rules, mandatory severance pay, and public health contribution models. Treating Canadian workers as 1099 independent contractors when they perform full-time employee duties carries severe misclassification tax penalties from the Canada Revenue Agency (CRA).</p>
 
-      <h2>What Is an Employer of Record (EOR)?</h2>
+      <h2>Employer of Record (EOR): What It Means</h2>
       <p>An Employer of Record (EOR) is a specialized corporate solution that acts as the legal employer of your Canadian staff on paper. The EOR handles turnkey Canadian payroll, tax withholdings (CPP and EI), statutory benefits, and provincial compliance while the employee reports directly to your management team.</p>
 
-      <h2>When Should a Company Consider an EOR?</h2>
+      <h2>Key Benefits of Using an EOR</h2>
+      <p>By leveraging an Employer of Record, US employers gain immediate access to Canadian talent without spending months establishing legal entities or managing complex international payroll software.</p>
       <ul>
-        <li><strong>Rapid Hiring:</strong> Onboard Canadian engineers or analysts in 10-14 business days without waiting months for corporate entity registration.</li>
-        <li><strong>Cost Efficiency:</strong> Avoid thousands of dollars in corporate legal fees, entity maintenance, and localized HR infrastructure.</li>
-        <li><strong>Risk Mitigation:</strong> Ensure 100% compliance with Canadian labour laws and prevent worker misclassification liability.</li>
+        <li><strong>14-Day Rapid Onboarding:</strong> Onboard Canadian engineers or analysts in 10-14 business days without waiting months for corporate entity registration.</li>
+        <li><strong>Significant Cost Savings:</strong> Avoid thousands of dollars in corporate legal fees, entity maintenance, and localized HR infrastructure.</li>
+        <li><strong>100% Risk Mitigation:</strong> Ensure total compliance with Canadian provincial labour laws and prevent worker misclassification liability.</li>
       </ul>
 
-      <h2>Key Differences Between Hiring in the US and Canada</h2>
-      <p>Unlike the US "at-will" employment model, Canadian employment relationships are governed by statutory notice periods and severance requirements. Furthermore, Canadian employees enjoy provincial healthcare coverage (e.g., OHIP in Ontario, RAMQ in Quebec), which requires localized employer health tax (EHT) contributions.</p>
+      <h2>Canadian Payroll and Tax Compliance</h2>
+      <p>Proper payroll management involves monthly remittances to the CRA for Canada Pension Plan (CPP), Employment Insurance (EI), and Income Tax withholdings. Failing to remit these withholdings on time triggers heavy statutory penalties and interest charges.</p>
 
-      <h2>Payroll, Tax and Employment Compliance Considerations</h2>
-      <p>Proper payroll management involves monthly remittances to the CRA for Canada Pension Plan (CPP), Employment Insurance (EI), and Income Tax withholdings. Failing to remit these withholdings on time triggers heavy statutory penalties.</p>
+      <h2>Provincial Employment Standards</h2>
+      <p>Unlike the US "at-will" employment model, Canadian employment relationships are governed by statutory notice periods and severance requirements. Every province establishes strict guidelines regarding termination notice, overtime calculations, and mandatory vacation pay (typically 4% to 6% of gross earnings).</p>
 
-      <h2>How Venus Hiring Supports US-Canada Workforce Expansion</h2>
+      <h2>Healthcare and Employee Benefits</h2>
+      <p>Canadian employees enjoy provincial healthcare coverage (e.g., OHIP in Ontario, RAMQ in Quebec), which requires localized employer health tax (EHT) contributions. EOR solutions provide turnkey access to supplemental health, dental, and vision insurance packages expected by top Canadian candidates.</p>
+
+      <h2>Work Permits and Employee Eligibility</h2>
+      <p>When hiring non-Canadian citizens residing in Canada or relocating talent across borders, verifying work permits (such as PGWP or open work permits) and navigating CUSMA (formerly NAFTA) professional work visas requires specialized immigration compliance.</p>
+
+      <h2>EOR vs. Establishing a Canadian Entity</h2>
+      <p>Opening a legal subsidiary in Canada makes financial sense only if you plan to employ 25+ local staff long-term and establish permanent physical offices. For remote or mid-sized teams (1–20 employees), an EOR provides a faster, vastly more cost-effective alternative.</p>
+
+      <h2>Common Cross-Border Hiring Mistakes</h2>
+      <p>The most common pitfalls include misclassifying employees as independent contractors, using US employment contracts that violate Canadian provincial court precedents, and ignoring provincial healthcare taxes.</p>
+
+      <h2>How Venus Hiring Supports US-Canada Recruitment</h2>
       <p>At Venus Hiring, we provide turnkey recruitment and EOR advisory services. We source top-tier Canadian software engineers, financial managers, and operations experts, then seamlessly integrate them into compliant payroll structures so US organizations can scale fearlessly.</p>
+
+      <h2>Conclusion & Next Steps</h2>
+      <p>Expanding your workforce into Canada provides a competitive edge when backed by the right recruitment and compliance partner. Contact Venus Hiring today to discuss your cross-border talent strategy.</p>
     `,
     faqs: [
       {
@@ -242,33 +259,68 @@ export const INITIAL_BLOGS: BlogPost[] = [
       },
       {
         id: "faq-b3-3",
-        q: "When should a company use an EOR instead of opening a Canadian entity?",
-        a: "An EOR is ideal when hiring small to mid-sized remote teams (1-20 employees) quickly without spending time and capital on legal entity incorporation and localized tax filings.",
+        q: "Why do US companies hire Canadian talent?",
+        a: "US companies hire Canadian talent to access world-class technical and executive skills in overlapping time zones with favorable currency exchange rates and high retention rates.",
       },
       {
         id: "faq-b3-4",
-        q: "What are the biggest challenges of hiring Canadian employees from the US?",
+        q: "What are the biggest challenges of cross-border hiring?",
         a: "The primary challenges include navigating provincial employment standards, CRA payroll tax withholdings, statutory severance rules, and avoiding independent contractor misclassification.",
       },
       {
         id: "faq-b3-5",
-        q: "Does Canadian employment law differ by province?",
+        q: "Does Canadian employment law vary by province?",
         a: "Yes! Each province (e.g., Ontario, British Columbia, Quebec) has its own Employment Standards Act governing overtime, vacation pay, statutory holidays, and termination notice.",
       },
       {
-        id: "faq-b3-[#6]",
-        q: "Can an EOR handle payroll and employee benefits?",
-        a: "Yes. The EOR manages 100% of local payroll deductions, CRA tax remittances, provincial health compliance, and optional supplemental health benefits.",
+        id: "faq-b3-6",
+        q: "What payroll requirements apply when hiring employees in Canada?",
+        a: "Employers must withhold and remit Canada Pension Plan (CPP), Employment Insurance (EI), and provincial income tax to the CRA on a strict monthly schedule.",
       },
       {
         id: "faq-b3-7",
-        q: "Can Venus Hiring help US companies find Canadian talent?",
-        a: "Absolutely. Venus Hiring specializes in recruiting qualified Canadian software engineers, executive leaders, and finance professionals for US employers.",
+        q: "Can an EOR manage Canadian payroll and employee benefits?",
+        a: "Yes. The EOR manages 100% of local payroll deductions, CRA tax remittances, provincial health compliance, and optional supplemental health benefits.",
       },
       {
         id: "faq-b3-8",
-        q: "How quickly can a company hire Canadian employees through an EOR?",
-        a: "With Venus Hiring and our EOR partners, new Canadian hires can be fully compliant and onboarded into payroll within 10 to 14 calendar days.",
+        q: "Does an EOR help with employment compliance?",
+        a: "Absoltely. An EOR ensures all job offers, employment agreements, and termination clauses fully comply with provincial labour standards and Canadian court precedents.",
+      },
+      {
+        id: "faq-b3-9",
+        q: "When should a company use an EOR instead of opening a Canadian entity?",
+        a: "An EOR is ideal when hiring small to mid-sized remote teams (1-20 employees) quickly without spending time and capital on legal entity incorporation and localized tax filings.",
+      },
+      {
+        id: "faq-b3-10",
+        q: "What is the difference between an EOR and a recruitment agency?",
+        a: "A recruitment agency sources and screens candidates for your open roles, whereas an EOR acts as the legal employer on paper to manage payroll and HR compliance after candidate selection.",
+      },
+      {
+        id: "faq-b3-11",
+        q: "Can Venus Hiring help US companies recruit Canadian employees?",
+        a: "Yes! Venus Hiring provides end-to-end recruitment services, finding top-tier Canadian technical and executive talent and pairing them with turnkey EOR solutions.",
+      },
+      {
+        id: "faq-b3-12",
+        q: "How long does it typically take to hire Canadian talent?",
+        a: "Venus Hiring delivers calibrated candidate shortlists within 5 business days, and hires can be onboarded into compliant EOR payroll within 10 to 14 days.",
+      },
+      {
+        id: "faq-b3-13",
+        q: "What should companies consider before hiring remote Canadian employees?",
+        a: "Companies should evaluate provincial employment standards, currency exchange handling, intellectual property assignment under Canadian law, and healthcare tax obligations.",
+      },
+      {
+        id: "faq-b3-14",
+        q: "What are common mistakes companies make when hiring across borders?",
+        a: "Common mistakes include misclassifying employees as 1099 contractors, using US employment contract templates that violate Canadian law, and failing to remit CRA taxes.",
+      },
+      {
+        id: "faq-b3-15",
+        q: "Can Venus Hiring support executive and technical recruitment in Canada?",
+        a: "Yes, Venus Hiring specializes in executive search, senior software engineering recruitment, finance placement, and cross-border US-Canada staffing.",
       },
     ],
     featuredImage:
@@ -277,6 +329,7 @@ export const INITIAL_BLOGS: BlogPost[] = [
       name: "Marcus Vance",
       role: "HR & Advisory Lead",
       avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop",
+      bio: "Specializing in executive search, technical recruitment, and cross-border US-Canada workforce strategy.",
     },
     readTime: "6 min read",
     publishDate: "July 15, 2026",
@@ -330,8 +383,8 @@ export function getAdjacentArticles(currentBlog: BlogPost, allBlogs: BlogPost[])
   return { prevBlog, nextBlog };
 }
 
-const STORAGE_KEY_BLOGS = "venus_blogs_data_v4";
-const STORAGE_KEY_CATS = "venus_blogs_categories_v4";
+const STORAGE_KEY_BLOGS = "venus_blogs_data_v5";
+const STORAGE_KEY_CATS = "venus_blogs_categories_v5";
 
 export function getStoredBlogs(): BlogPost[] {
   if (typeof window === "undefined") return INITIAL_BLOGS;
