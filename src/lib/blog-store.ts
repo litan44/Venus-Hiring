@@ -59,301 +59,182 @@ export const INITIAL_CATEGORIES = [
 export const INITIAL_BLOGS: BlogPost[] = [
   {
     id: "blog-1",
-    title: "2026 Canadian Tech Recruitment & Engineering Compensation Guide",
-    slug: "2026-canadian-tech-recruitment-compensation-guide",
-    category: "Tech Hiring",
-    tags: ["Tech Hiring", "Engineering Leadership", "Toronto", "Vancouver", "Salary Benchmarks"],
-    excerpt:
-      "A definitive analysis of senior software engineering compensation benchmarks, AI architecture skill demand, and executive retention strategies across Toronto, Vancouver, and Montreal.",
-    content: `
-      <h2>1. The Evolution of Canadian Tech Talent Ecosystems</h2>
-      <p>As Canadian technology hubs in Toronto, Vancouver, and Montreal continue to mature into global innovation centers, enterprise software organizations face intense competition for senior software architects, AI/ML engineering directors, and cloud infrastructure leaders. Companies expanding across North America must adopt data-driven recruitment strategies to secure top-tier talent.</p>
-
-      <h2>2. High-Demand Engineering Roles in 2026</h2>
-      <p>Rapid advancements in artificial intelligence, distributed cloud architecture, and cybersecurity have reshaped key engineering hiring priorities across enterprise and scale-up technology sectors.</p>
-
-      <h3>AI & Machine Learning Infrastructure Engineers</h3>
-      <p>Over 68% of technology organizations are building dedicated AI data pipelines and MLOps pods. Demand for engineers specializing in model deployment, Python architectures, and vector databases continues to outpace available market supply.</p>
-
-      <h3>Cloud Architecture & DevOps Directors</h3>
-      <p>With cloud infrastructure optimization becoming a major enterprise cost driver, cloud architects skilled in AWS, Azure, Terraform, and Kubernetes remain essential for resilient business operations.</p>
-
-      <h3>Full-Stack & Distributed Systems Leads</h3>
-      <p>Senior full-stack developers proficient in React, Node.js, Next.js, and Microservices architecture are highly sought after to accelerate core product delivery and maintain high customer adoption.</p>
-
-      <h2>3. Calibrated Compensation Benchmarks Across Toronto & Vancouver</h2>
-      <p>Offering competitive compensation packages aligned with real-time market data is mandatory to achieve high candidate offer acceptance rates. Compensation strategies must balance base salaries, equity incentive structures, and performance bonuses.</p>
-
-      <h2>4. Retaining Senior Engineering Leaders in Hybrid Environments</h2>
-      <p>High candidate retention requires structured onboarding programs, continuous professional development, clear career progression pathways, and flexible hybrid work models that respect work-life balance.</p>
-
-      <h2>5. Cross-Border Talent Mobility & US Enterprise Hiring</h2>
-      <p>US tech companies seeking qualified Canadian software engineers can streamline hiring through Employer of Record (EOR) models and CUSMA TN-Visa work permit pathways without local corporate entity delays.</p>
-
-      <h2>6. How Venus Hiring Delivers Calibrated Technical Shortlists</h2>
-      <p>Pairing industry-specialized technical recruiters with an extensive passive candidate network, Venus Hiring delivers calibrated shortlists of 3–5 pre-screened technical leaders within 5 business days.</p>
-
-      <h2>Conclusion & Strategic Hiring Next Steps</h2>
-      <p>Building high-performing engineering teams requires market intelligence, proactive recruitment strategies, and localized compliance. Partner with Venus Hiring today to discuss your technical hiring goals.</p>
-    `,
-    faqs: [
-      {
-        id: "faq-b1-1",
-        q: "What engineering roles are in highest demand across Canadian tech hubs?",
-        a: "Senior AI/ML Data Engineers, Infrastructure & Cloud Architects, Full-Stack Tech Leads, and Engineering Directors are currently experiencing the highest talent demand across Toronto and Vancouver.",
-      },
-      {
-        id: "faq-b1-2",
-        q: "How fast can Venus Hiring deliver a calibrated engineering shortlist?",
-        a: "For specialized technical roles, Venus Hiring delivers a calibrated shortlist of 3 to 5 pre-screened candidate profiles within 5 to 7 business days.",
-      },
-      {
-        id: "faq-b1-3",
-        q: "What candidate replacement guarantee does Venus Hiring offer?",
-        a: "We back every direct technical placement with a comprehensive 90-day replacement guarantee. If a candidate leaves or fails to meet performance criteria, we replace them at no extra charge.",
-      },
-      {
-        id: "faq-b1-4",
-        q: "Can US technology companies legally hire remote Canadian software engineers?",
-        a: "Yes! US organizations can hire Canadian engineers seamlessly using turnkey Employer of Record (EOR) solutions or compliant cross-border employment contracts.",
-      },
-      {
-        id: "faq-b1-5",
-        q: "How does Venus Hiring evaluate passive software candidates?",
-        a: "Our recruitment team conducts thorough technical assessments, executive career interviews, salary expectation calibrations, and formal reference checks before candidate submission.",
-      },
-    ],
-    featuredImage:
-      "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=800&fit=crop&auto=format",
-    author: {
-      name: "Subhram Nayak",
-      role: "Head of Technical Recruitment",
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop",
-      bio: "Specializing in technical leadership placement, engineering team augmentation, and cross-border tech recruitment across North America.",
-    },
-    readTime: "5 min read",
-    publishDate: "August 5, 2026",
-    isFeatured: true,
-    seo: {
-      metaTitle: "2026 Canadian Tech Recruitment & Compensation Guide | Venus Hiring",
-      metaDescription:
-        "Comprehensive 2026 recruitment analysis for software engineering leaders hiring top technical talent across Canada and the US.",
-      keywords: "Canadian Tech Hiring, Software Recruitment Toronto, Engineering Salary Benchmarks 2026",
-      canonicalUrl: "https://venus-hiring.vercel.app/blog/2026-canadian-tech-recruitment-compensation-guide",
-      ogImage: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=800&fit=crop&auto=format",
-    },
-  },
-  {
-    id: "blog-2",
-    title: "Executive Search Strategies for Advanced Manufacturing & EV Plants",
-    slug: "executive-search-advanced-manufacturing-ev-plants",
-    category: "Executive Search",
-    tags: ["Executive Search", "Automotive", "EV Battery", "Plant Operations", "Ontario-Michigan Corridor"],
-    excerpt:
-      "How industrial enterprises across Ontario and Michigan secure plant operations directors, battery architects, and supply chain leaders for next-generation manufacturing facilities.",
-    content: `
-      <h2>1. The Industrial Leadership Shortage Across North America</h2>
-      <p>With multi-billion dollar capital investments accelerating across Ontario's EV battery corridor and Michigan's automotive manufacturing hubs, experienced plant directors and lean manufacturing executives face unprecedented market demand.</p>
-
-      <h2>2. Critical Leadership Profiles for Industrial Scale-Ups</h2>
-      <p>Securing specialized industrial leadership requires deep sector knowledge, confidential recruitment methodologies, and proactive headhunting across manufacturing hubs.</p>
-
-      <h3>Plant Operations Directors & General Managers</h3>
-      <p>Executive leaders capable of overseeing major capital expenditure facilities while maintaining strict safety, zero-defect quality, and operational efficiency standards.</p>
-
-      <h3>EV Battery Cell Architecture & Chemical Specialists</h3>
-      <p>Specialized engineering executives pioneering solid-state technology, lithium-ion cell manufacturing, and high-volume battery pack assembly.</p>
-
-      <h3>Quality Assurance & IATF 16949 Supply Chain Directors</h3>
-      <p>Executives expert in automotive quality compliance, international component procurement, and resilient supply chain logistics.</p>
-
-      <h2>3. Confidential Executive Search Best Practices</h2>
-      <p>Partnering with Venus Hiring guarantees complete discretion and confidentiality during sensitive executive leadership transitions, protecting organizational continuity and market position.</p>
-
-      <h2>4. Navigating Cross-Border Ontario-Michigan Manufacturing Corridors</h2>
-      <p>Connecting automotive and industrial talent between Canada and the US requires specialized knowledge of regional employment laws, cross-border visas, and executive relocation packages.</p>
-
-      <h2>5. Structuring Executive Compensation & Retention Packages</h2>
-      <p>Attracting top manufacturing executives involves designing calibrated compensation models incorporating base salaries, long-term incentive plans (LTIPs), performance bonuses, and relocation support.</p>
-
-      <h2>6. How Venus Hiring Executes Confidential Headhunting</h2>
-      <p>Our dedicated executive search recruiters leverage targeted candidate networks to deliver discreet, pre-screened executive shortlists within 2 to 4 weeks.</p>
-
-      <h2>Conclusion & Partnering with Venus Search</h2>
-      <p>Achieving operational excellence begins with exemplary leadership. Contact Venus Hiring today to discuss confidential executive search engagements.</p>
-    `,
-    faqs: [
-      {
-        id: "faq-b2-1",
-        q: "How long does an executive search engagement for a Plant Operations Director take?",
-        a: "Confidential executive searches for plant directors and manufacturing executives typically take between 2 to 4 weeks from initial engagement to offer acceptance.",
-      },
-      {
-        id: "faq-b2-2",
-        q: "Does Venus Hiring handle confidential unadvertised executive searches?",
-        a: "Yes, we specialize in discreet, unadvertised executive headhunting to protect client operations and sensitive leadership changes.",
-      },
-      {
-        id: "faq-b2-3",
-        q: "What manufacturing sectors does Venus Hiring cover?",
-        a: "We specialize in EV battery manufacturing, automotive assembly, industrial equipment, aerospace components, and advanced automation facilities.",
-      },
-      {
-        id: "faq-b2-4",
-        q: "What geographic regions do you serve for industrial executive search?",
-        a: "We actively serve the Ontario-Michigan industrial corridor, as well as major manufacturing regions across Canada and the United States.",
-      },
-      {
-        id: "faq-b2-5",
-        q: "How does Venus Hiring handle candidate relocation across the US-Canada border?",
-        a: "We assist clients with CUSMA work permit compliance, executive relocation logistics, and localized compensation adjustments for seamless transitions.",
-      },
-    ],
-    featuredImage:
-      "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1200&h=800&fit=crop&auto=format",
-    author: {
-      name: "Sarah Jenkins",
-      role: "Director of Industrial Executive Search",
-      avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop",
-      bio: "Leading executive search engagements for automotive gigafactories and advanced industrial plants across Ontario and Michigan.",
-    },
-    readTime: "4 min read",
-    publishDate: "July 28, 2026",
-    isFeatured: true,
-    seo: {
-      metaTitle: "EV & Industrial Executive Search Strategies | Venus Hiring",
-      metaDescription:
-        "Learn how manufacturing leaders recruit plant directors and EV battery engineers across Ontario & Michigan gigafactories.",
-      keywords: "EV Recruitment, Automotive Executive Search, Plant Operations Hiring",
-      canonicalUrl: "https://venus-hiring.vercel.app/blog/executive-search-advanced-manufacturing-ev-plants",
-      ogImage: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1200&h=800&fit=crop&auto=format",
-    },
-  },
-  {
-    id: "blog-3",
     title: "Navigating US-Canada Remote Workforce Compliance & EOR Solutions",
     slug: "navigating-us-canada-remote-workforce-compliance",
     category: "HR & Compliance",
     tags: ["EOR", "Compliance", "Remote Work", "Cross Border", "HR Advisory"],
     excerpt:
-      "A comprehensive compliance framework for US companies recruiting Canadian software talent, managing provincial payroll taxes, statutory benefits, and Employer of Record (EOR) solutions.",
+      "Hiring Canadian talent from the United States can open access to highly skilled professionals, but cross-border employment introduces important considerations around payroll, employment standards, benefits, worker classification, and compliance. This guide explains how US companies can build Canadian teams while choosing the right employment structure for long-term growth.",
     content: `
-      <h2>1. Understanding Cross-Border Hiring Dynamics</h2>
-      <p>Hiring Canadian talent from the US involves more than identifying qualified candidates. From employment standards acts and payroll tax withholdings to provincial health contributions, US enterprises expanding their remote workforce into Canada must establish compliant structures.</p>
+      <h2>Understanding US-Canada Remote Hiring</h2>
+      <p>For US companies, Canada can be an attractive talent market for expanding engineering, technology, finance, automotive, and professional teams. Shared business hours across many regions, strong professional networks, and established economic ties make cross-border collaboration practical.</p>
+      <p>But hiring someone who lives and works in Canada is not simply a matter of issuing the same employment agreement used in the United States. The employment arrangement needs to account for Canadian payroll, applicable provincial employment standards, benefits, tax deductions, and the employee's actual work location.</p>
+      <p>The Canada Revenue Agency notes that an employee's province or territory of employment affects payroll deductions, making location an important consideration when setting up Canadian employees.</p>
 
-      <h2>2. Why US Enterprises Scale Remote Teams in Canada</h2>
-      <p>Canada offers a exceptional talent pool of bilingual software engineers, financial analysts, and operations leaders trained at leading institutions in Toronto, Waterloo, Vancouver, and Montreal. Favorable exchange rates and aligned time zones make Canadian talent highly attractive for US organizations.</p>
-
-      <h2>3. Key Compliance Challenges in Cross-Border Staffing</h2>
-      <p>Canada consists of ten provinces and three territories, each maintaining distinct labour standards, mandatory severance requirements, statutory holidays, and healthcare contribution models.</p>
-
-      <h3>Provincial Labour Standards & Severance Rules</h3>
-      <p>Unlike US "at-will" employment, Canadian workers are entitled to statutory notice periods and severance pay upon termination. Written employment agreements must conform to provincial court precedents.</p>
-
-      <h3>Canada Revenue Agency (CRA) Payroll Remittances</h3>
-      <p>Employers must calculate and remit Canada Pension Plan (CPP), Employment Insurance (EI), and provincial income tax withholdings to the CRA on strict monthly schedules.</p>
-
-      <h3>Avoiding Contractor Misclassification Liabilities</h3>
-      <p>Classifying full-time Canadian workers as 1099 independent contractors carries severe penalty assessments, retroactive tax interest, and benefit audit liabilities from the CRA.</p>
-
-      <h2>4. What Is an Employer of Record (EOR) Solution?</h2>
-      <p>An Employer of Record (EOR) is a corporate solution that legally employs workers in Canada on paper. The EOR manages turnkey payroll, CRA tax remittances, statutory benefits, and provincial compliance while the employee reports directly to your management.</p>
-
-      <h2>5. Key Benefits of Partnering with an EOR</h2>
-      <p>Leveraging an EOR allows foreign employers to hire Canadian staff quickly without establishing legal subsidiaries or building local HR infrastructure.</p>
+      <h2>Why Cross-Border Hiring Is Different</h2>
+      <p>A US company hiring a Canadian employee needs to think beyond recruitment.</p>
+      <p>The key questions include:</p>
       <ul>
-        <li><strong>Rapid 14-Day Onboarding:</strong> Onboard Canadian engineers or financial analysts within 10 to 14 days without corporate registration delays.</li>
-        <li><strong>Substantial Cost Efficiency:</strong> Save thousands in corporate incorporation fees, ongoing audit costs, and localized legal overhead.</li>
-        <li><strong>Complete Legal Protection:</strong> Ensure full compliance with Canadian provincial labour standards and eliminate misclassification risk.</li>
+        <li>Where will the employee physically perform their work?</li>
+        <li>Is the person an employee or independent contractor?</li>
+        <li>Which provincial employment standards apply?</li>
+        <li>How will payroll deductions be handled?</li>
+        <li>What benefits and statutory requirements apply?</li>
+        <li>Does the company need a Canadian entity?</li>
+        <li>How will employment documentation be managed?</li>
+      </ul>
+      <p>Getting these questions right before the first hire can prevent expensive administrative problems later.</p>
+
+      <h2>What Is an Employer of Record (EOR)?</h2>
+      <p>An Employer of Record is a local employment structure that allows a business to employ workers in another jurisdiction without immediately establishing its own local legal entity.</p>
+      <p>An EOR can support areas such as:</p>
+      <ul>
+        <li>Employment documentation</li>
+        <li>Payroll administration</li>
+        <li>Tax deductions</li>
+        <li>Benefits administration</li>
+        <li>Local employment compliance</li>
+        <li>Employee onboarding</li>
+      </ul>
+      <p>For companies testing the Canadian market or building an initial team, an EOR can provide a practical alternative to immediately establishing a local entity.</p>
+
+      <h2>When Should a US Company Consider an EOR?</h2>
+      <p>An EOR can be particularly useful when:</p>
+      <p><strong>You are hiring your first Canadian employee:</strong> Establishing an entire local employment infrastructure for one or two hires may not be practical.</p>
+      <p><strong>You want to hire quickly:</strong> An existing local employment structure can simplify administrative setup.</p>
+      <p><strong>You are testing the Canadian market:</strong> An EOR can allow an organization to build an initial team while evaluating its longer-term Canadian presence.</p>
+      <p><strong>You don't have Canadian HR expertise:</strong> Local employment rules and payroll processes can be unfamiliar to US-based teams.</p>
+
+      <h2>Canadian Payroll and Tax Considerations</h2>
+      <p>Canadian payroll is different from simply paying a Canadian employee through a US payroll system.</p>
+      <p>Employers need to consider applicable deductions and payroll obligations, including federal requirements and the employee's province of employment.</p>
+      <p>The CRA specifically requires employers to determine the appropriate province of employment when calculating payroll deductions.</p>
+      <p>This is one reason companies should establish the employment structure before the employee's first day rather than trying to correct payroll processes afterward.</p>
+
+      <h2>Provincial Employment Standards Matter</h2>
+      <p>Canada doesn't operate as one completely uniform employment jurisdiction.</p>
+      <p>Employment standards can differ between provinces and territories.</p>
+      <p>That can affect areas such as:</p>
+      <ul>
+        <li>Employment contracts</li>
+        <li>Vacation requirements</li>
+        <li>Statutory holidays</li>
+        <li>Termination requirements</li>
+        <li>Leave entitlements</li>
+        <li>Working conditions</li>
+      </ul>
+      <p>A recruitment strategy should therefore consider <strong>where the employee will actually work</strong>, not simply where the company's headquarters are located.</p>
+
+      <h2>Employee Benefits and Workplace Requirements</h2>
+      <p>Benefits are another important part of the employment experience.</p>
+      <p>Companies should consider:</p>
+      <ul>
+        <li>Health and wellness benefits</li>
+        <li>Retirement-related programs</li>
+        <li>Statutory requirements</li>
+        <li>Paid leave</li>
+        <li>Insurance coverage</li>
+        <li>Employee support</li>
+      </ul>
+      <p>A competitive benefits package also matters from a recruitment perspective. Compliance is the baseline; competitive benefits can be part of what makes a company attractive to high-quality candidates.</p>
+
+      <h2>Worker Classification and Contractor Risks</h2>
+      <p>Some companies consider hiring Canadian professionals as independent contractors because it appears simpler.</p>
+      <p>But classification should not be based purely on what is easiest administratively.</p>
+      <p>The actual relationship between the worker and company matters.</p>
+      <p>Factors such as control, independence, working arrangements, responsibilities, and the nature of the engagement can affect classification.</p>
+      <p>If a relationship functions like employment, simply calling someone a contractor does not automatically eliminate employment obligations.</p>
+
+      <h2>EOR vs. Establishing a Canadian Entity</h2>
+      <p>The right structure depends on the company's long-term plans.</p>
+      <p><strong>EOR may make sense when:</strong></p>
+      <ul>
+        <li>You have a small initial team</li>
+        <li>You are testing the Canadian market</li>
+        <li>You need a faster hiring setup</li>
+        <li>You don't yet need a Canadian entity</li>
+      </ul>
+      <p><strong>A Canadian entity may make more sense when:</strong></p>
+      <ul>
+        <li>You plan significant long-term operations</li>
+        <li>You are building a large local workforce</li>
+        <li>You need a permanent Canadian business presence</li>
+        <li>Local operations justify the additional infrastructure</li>
       </ul>
 
-      <h2>6. EOR vs. Opening a Canadian Corporate Entity</h2>
-      <p>Opening a Canadian legal subsidiary is cost-effective primarily for companies employing 25+ local staff long-term with physical offices. For remote or growing teams (1–20 employees), an EOR provides a faster, vastly more flexible solution.</p>
+      <h2>How EOR Solutions Simplify Workforce Expansion</h2>
+      <p>The biggest advantage of an EOR structure is administrative simplicity.</p>
+      <p>Instead of building every local employment process from scratch, companies can work through an established employment framework while focusing their internal resources on recruitment, onboarding, performance, and business growth.</p>
+      <p>That doesn't eliminate the need for professional advice or proper compliance review, but it can significantly simplify the operational side of cross-border hiring.</p>
 
-      <h2>7. Work Permits, CUSMA Visas, and Immigration Compliance</h2>
-      <p>When hiring non-Canadian citizens residing in Canada or transferring specialized staff across borders, navigating Post-Graduation Work Permits (PGWP) and CUSMA professional work visas requires expert guidance.</p>
+      <h2>Common Mistakes US Companies Make When Hiring in Canada</h2>
+      <ol>
+        <li>Using US employment documents without reviewing Canadian requirements.</li>
+        <li>Treating all Canadian provinces as having identical employment rules.</li>
+        <li>Misclassifying employees as contractors.</li>
+        <li>Ignoring payroll requirements until after hiring.</li>
+        <li>Assuming remote work eliminates local employment obligations.</li>
+        <li>Offering benefits without considering the expectations of Canadian candidates.</li>
+        <li>Hiring before deciding on the appropriate employment structure.</li>
+      </ol>
+      <p>Planning the employment model before making an offer is usually much easier than correcting a poorly structured arrangement later.</p>
 
-      <h2>8. How Venus Hiring Supports US-Canada Remote Expansion</h2>
-      <p>Venus Hiring delivers integrated recruitment and EOR advisory services. We source qualified Canadian technical and corporate talent, then onboard them into turnkey compliant payroll structures so foreign organizations can scale with complete confidence.</p>
-
-      <h2>Conclusion & Strategic Guidance</h2>
-      <p>Expanding your remote team into Canada unlocks top talent when supported by the right recruitment and compliance partner. Contact Venus Hiring today to discuss your cross-border hiring plan.</p>
+      <h2>How Venus Hiring Supports Cross-Border Recruitment</h2>
+      <p>Finding the right candidate is only part of building a successful cross-border workforce.</p>
+      <p>Venus Hiring helps organizations identify qualified Canadian professionals across technical, executive, automotive, financial, and specialized business functions.</p>
+      <p>Our recruitment approach focuses on understanding the role, company requirements, market conditions, and candidate fit before presenting a shortlist.</p>
+      <p>For organizations expanding from the US into Canada, that means recruitment can be approached as part of a broader workforce strategy rather than as a simple resume-matching exercise.</p>
     `,
     faqs: [
       {
-        id: "faq-b3-1",
+        id: "faq-b1-1",
         q: "What is an Employer of Record (EOR)?",
-        a: "An Employer of Record (EOR) is a corporate solution that legally employs staff in Canada on behalf of a foreign company, handling payroll, CRA tax withholdings, statutory benefits, and provincial employment compliance.",
+        a: "An EOR is an employment service structure that can employ workers locally on behalf of another company. It can support employment documentation, payroll, benefits, and local compliance.",
       },
       {
-        id: "faq-b3-2",
-        q: "Can a US company legally hire remote employees in Canada?",
-        a: "Yes! A US company can hire Canadian residents legally using an EOR solution, or by establishing a legal Canadian subsidiary.",
+        id: "faq-b1-2",
+        q: "Can a US company hire employees who live and work in Canada?",
+        a: "Yes. US companies can hire Canadian-based employees, but the employment arrangement needs to account for applicable Canadian payroll and employment requirements.",
       },
       {
-        id: "faq-b3-3",
-        q: "Why do US companies recruit Canadian talent?",
-        a: "US companies recruit Canadian talent to access world-class technical and executive skills in aligned time zones with favorable currency exchange rates and high employee retention.",
+        id: "faq-b1-3",
+        q: "Why do US companies hire Canadian talent?",
+        a: "Canada provides access to established technology, engineering, finance, automotive, and professional talent markets, making it an attractive option for organizations expanding their workforce.",
       },
       {
-        id: "faq-b3-4",
-        q: "What are the primary challenges of hiring across the US-Canada border?",
-        a: "Key challenges include navigating provincial employment standards, CRA payroll tax remittances, statutory severance rules, and avoiding worker misclassification risks.",
+        id: "faq-b1-4",
+        q: "Does Canadian employment law vary by province?",
+        a: "Yes. Employment standards can differ by province and territory, so the employee's actual work location matters.",
       },
       {
-        id: "faq-b3-5",
-        q: "Does Canadian employment law differ by province?",
-        a: "Yes! Each province (e.g., Ontario, British Columbia, Quebec) maintains its own Employment Standards Act governing overtime, vacation pay, statutory holidays, and termination notice.",
+        id: "faq-b1-5",
+        q: "Can an EOR manage Canadian payroll?",
+        a: "Depending on the provider and agreement, an EOR can support local payroll administration and related employment processes.",
       },
       {
-        id: "faq-b3-6",
-        q: "What CRA payroll remittances apply to Canadian employees?",
-        a: "Employers must withhold and remit Canada Pension Plan (CPP), Employment Insurance (EI), and provincial income tax to the CRA on strict monthly schedules.",
+        id: "faq-b1-6",
+        q: "Is an EOR the same as a recruitment agency?",
+        a: "No. A recruitment agency helps companies identify and hire talent. An EOR provides an employment structure and can manage local employment administration.",
       },
       {
-        id: "faq-b3-7",
-        q: "Can an EOR manage Canadian employee benefits and health coverage?",
-        a: "Yes! The EOR manages 100% of local payroll deductions, CRA remittances, provincial health compliance, and optional group health, dental, and vision benefits.",
+        id: "faq-b1-7",
+        q: "When should a company establish a Canadian entity instead?",
+        a: "A Canadian entity may become more appropriate when an organization plans substantial long-term operations and a larger local workforce.",
       },
       {
-        id: "faq-b3-8",
-        q: "How does an EOR protect companies from legal liabilities?",
-        a: "An EOR ensures employment contracts, notice clauses, and termination terms comply fully with provincial labour standards and Canadian court precedents.",
+        id: "faq-b1-8",
+        q: "Can a company hire Canadian contractors instead of employees?",
+        a: "It may be possible depending on the circumstances, but worker classification should reflect the actual relationship rather than simply the preferred label.",
       },
       {
-        id: "faq-b3-9",
-        q: "When should a company use an EOR instead of opening a Canadian entity?",
-        a: "An EOR is ideal when hiring remote or mid-sized teams (1–20 employees) quickly without spending capital on incorporation, legal retainers, and local corporate tax returns.",
+        id: "faq-b1-9",
+        q: "How does Venus Hiring help US companies?",
+        a: "Venus Hiring helps organizations identify and recruit qualified Canadian professionals for technical, executive, automotive, and specialized roles.",
       },
       {
-        id: "faq-b3-10",
-        q: "What is the difference between a recruitment agency and an EOR?",
-        a: "A recruitment agency sources and screens talent for your open roles, whereas an EOR acts as the legal employer on paper to manage payroll and HR compliance after candidate selection.",
-      },
-      {
-        id: "faq-b3-11",
-        q: "Can Venus Hiring assist US companies with recruiting Canadian talent?",
-        a: "Yes! Venus Hiring provides end-to-end recruitment services, finding top-tier Canadian technical and executive talent and pairing them with turnkey EOR solutions.",
-      },
-      {
-        id: "faq-b3-12",
-        q: "How long does it take to recruit and onboard Canadian talent?",
-        a: "Venus Hiring delivers calibrated candidate shortlists within 5 business days, and candidates can be onboarded into compliant EOR payroll within 10 to 14 days.",
-      },
-      {
-        id: "faq-b3-13",
-        q: "What key factors should companies evaluate before hiring remote Canadian talent?",
-        a: "Companies should review provincial employment standards, foreign exchange handling, intellectual property assignment under Canadian law, and provincial healthcare taxes.",
-      },
-      {
-        id: "faq-b3-14",
-        q: "What are common mistakes companies make when hiring cross-border?",
-        a: "Common mistakes include misclassifying employees as 1099 contractors, using US contract templates that violate Canadian law, and missing mandatory CRA payroll withholdings.",
-      },
-      {
-        id: "faq-b3-15",
-        q: "Can Venus Hiring support executive and technical recruitment in Canada?",
-        a: "Yes, Venus Hiring specializes in technical recruitment, executive search, finance placement, and cross-border US-Canada staffing advisory.",
+        id: "faq-b1-10",
+        q: "How can I start hiring Canadian talent?",
+        a: "Start by defining the role, location, employment structure, compensation expectations, and hiring timeline. A recruitment partner can then help build and qualify the candidate pipeline.",
       },
     ],
     featuredImage:
@@ -364,16 +245,313 @@ export const INITIAL_BLOGS: BlogPost[] = [
       avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop",
       bio: "Specializing in executive search, technical recruitment, and cross-border US-Canada workforce compliance strategy.",
     },
-    readTime: "6 min read",
+    readTime: "8 min read",
     publishDate: "July 15, 2026",
     isFeatured: true,
     seo: {
-      metaTitle: "US-Canada Remote Workforce & EOR Compliance Guide | Venus Hiring",
+      metaTitle: "US-Canada Remote Workforce Compliance & EOR Guide | Venus Hiring",
       metaDescription:
-        "Comprehensive compliance guide for US companies hiring Canadian software talent with Employer of Record (EOR) solutions.",
+        "Comprehensive guide explaining how US companies can build Canadian teams with Employer of Record (EOR) solutions and compliance clarity.",
       keywords: "Cross border hiring, EOR Canada, US Canada Remote Staffing, Canadian Payroll Compliance",
       canonicalUrl: "https://venus-hiring.vercel.app/blog/navigating-us-canada-remote-workforce-compliance",
       ogImage: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=1200&h=800&fit=crop&auto=format",
+    },
+  },
+  {
+    id: "blog-2",
+    title: "Executive Search Strategies for EV & Automotive Plant Operations",
+    slug: "executive-search-ev-automotive-plant-ops",
+    category: "Executive Search",
+    tags: ["Executive Search", "Automotive", "EV Battery", "Plant Operations", "Ontario-Michigan Corridor"],
+    excerpt:
+      "As automotive manufacturing evolves toward electrification, connected vehicles, advanced automation, and more complex supply chains, plant leadership requires more than traditional manufacturing experience. This guide explores how organizations can identify and attract executive talent capable of leading modern EV and automotive operations.",
+    content: `
+      <h2>Why Automotive Leadership Is Changing</h2>
+      <p>Automotive manufacturing is undergoing a major operational transformation.</p>
+      <p>Electrification, automation, advanced manufacturing technologies, supply-chain restructuring, and changing customer expectations are altering what modern plants need from their leadership teams.</p>
+      <p>Plant leaders are increasingly expected to manage both <strong>today's operational performance and tomorrow's transformation agenda</strong>.</p>
+
+      <h2>The New Leadership Requirements of EV Manufacturing</h2>
+      <p>Modern EV and automotive operations can require leadership experience across:</p>
+      <ul>
+        <li>Advanced manufacturing</li>
+        <li>Battery and electrification programs</li>
+        <li>Quality systems</li>
+        <li>Automation</li>
+        <li>Lean manufacturing</li>
+        <li>Supply-chain management</li>
+        <li>Safety</li>
+        <li>Cost optimization</li>
+        <li>Workforce planning</li>
+        <li>Continuous improvement</li>
+      </ul>
+      <p>The strongest candidates aren't necessarily those with the longest resumes. They're the leaders who can connect operational discipline with strategic transformation.</p>
+
+      <h2>What Makes a Strong Plant Operations Executive?</h2>
+      <p>A strong plant leader should be evaluated across several dimensions:</p>
+      <p><strong>Operational leadership:</strong> Can they consistently improve throughput, quality, cost, and delivery?</p>
+      <p><strong>People leadership:</strong> Can they build high-performing teams across multiple functions and shifts?</p>
+      <p><strong>Transformation capability:</strong> Can they introduce new technology without disrupting production?</p>
+      <p><strong>Commercial awareness:</strong> Do they understand the relationship between manufacturing decisions and business performance?</p>
+      <p><strong>Crisis management:</strong> Can they make clear decisions when production, quality, supply, or workforce issues emerge?</p>
+
+      <h2>Manufacturing Expertise vs. Transformation Leadership</h2>
+      <p>Experience in traditional manufacturing remains valuable. But EV operations introduce additional complexity.</p>
+      <p>Candidates may need to understand newer production environments, automation, data-driven manufacturing, battery systems, advanced quality processes, and rapidly changing supply chains.</p>
+      <p>The best executive search strategy therefore looks beyond job titles.</p>
+
+      <h2>The Importance of Technical and Commercial Fluency</h2>
+      <p>Plant leadership is increasingly cross-functional. A candidate may need to work with Engineering, Procurement, Finance, Quality, HR, Supply Chain, Sales, and Corporate Leadership.</p>
+      <p>That means executive candidates need enough technical understanding to work with engineers while also being able to communicate business outcomes to senior leadership.</p>
+
+      <h2>Finding Leaders in a Competitive Talent Market</h2>
+      <p>The best automotive executives are often already employed and may not be actively applying for jobs. That's why executive search requires a proactive approach:</p>
+      <ol>
+        <li>Define the leadership profile.</li>
+        <li>Map relevant talent markets.</li>
+        <li>Identify passive candidates.</li>
+        <li>Evaluate career progression.</li>
+        <li>Conduct discreet outreach.</li>
+        <li>Assess leadership style.</li>
+        <li>Validate technical and operational experience.</li>
+        <li>Present a focused shortlist.</li>
+      </ol>
+      <p>This is fundamentally different from posting a job and waiting for applications.</p>
+
+      <h2>Why Traditional Recruitment Often Falls Short</h2>
+      <p>High-level manufacturing positions often require a very specific combination of experience. A candidate might have excellent manufacturing experience but lack EV exposure. Another might understand EV technology but have limited plant leadership experience. Another might have strong operations credentials but struggle with large-scale transformation.</p>
+      <p>Executive search needs to evaluate the <strong>combination</strong>, not just individual qualifications.</p>
+
+      <h2>Building an Effective Executive Search Strategy</h2>
+      <p>A strong search begins before candidate outreach. Define business objectives, plant size, production environment, technology stack, leadership structure, required technical expertise, geographic requirements, compensation expectations, transformation priorities, and success metrics.</p>
+
+      <h2>Evaluating Candidates Beyond the Resume</h2>
+      <p>Resumes show experience; they don't always show leadership impact. During evaluation, ask what operational problems the candidate inherited, what changed under their leadership, how large the workforce was, what measurable improvements were achieved, and how they handled transformation.</p>
+
+      <h2>Common Executive Hiring Mistakes</h2>
+      <ul>
+        <li><strong>Hiring only for industry experience:</strong> Relevant experience matters, but leadership adaptability matters too.</li>
+        <li><strong>Overlooking transformation capability:</strong> A leader who can operate today's plant may not be the right person to transform tomorrow's.</li>
+        <li><strong>Focusing only on technical credentials:</strong> Leadership, communication, and stakeholder management can be equally important.</li>
+        <li><strong>Creating an unrealistic candidate profile:</strong> Requiring every possible skill can eliminate excellent candidates before the search even starts.</li>
+      </ul>
+
+      <h2>How Venus Hiring Supports Automotive Executive Search</h2>
+      <p>Venus Hiring works with organizations seeking specialized and executive talent across automotive and technical environments. Our approach combines targeted sourcing, structured candidate evaluation, market understanding, and focused shortlists.</p>
+    `,
+    faqs: [
+      {
+        id: "faq-b2-1",
+        q: "What is executive search?",
+        a: "Executive search is a specialized recruitment methodology focused on identifying, attracting, and evaluating senior leadership and executive talent, often targeting passive candidates who are not actively seeking employment.",
+      },
+      {
+        id: "faq-b2-2",
+        q: "How is executive search different from traditional recruitment?",
+        a: "Traditional recruitment often relies on job postings and active applicant pools. Executive search uses proactive market mapping, confidential headhunting, and rigorous competency assessments tailored to high-level strategic roles.",
+      },
+      {
+        id: "faq-b2-3",
+        q: "What should companies look for in an EV plant leader?",
+        a: "EV plant leaders should possess strong operational discipline, experience with advanced automation and battery systems, proven change management capability, and the business acumen to align manufacturing with commercial goals.",
+      },
+      {
+        id: "faq-b2-4",
+        q: "Why is automotive executive hiring becoming more specialized?",
+        a: "The automotive industry's shift toward electrification, software-defined vehicles, and real-time supply chain integration requires leaders who understand both complex technical manufacturing and rapid operational transformation.",
+      },
+      {
+        id: "faq-b2-5",
+        q: "How long does an executive search typically take?",
+        a: "An executive search engagement typically takes between 2 to 4 weeks to present a pre-screened, calibrated shortlist, with total placement timelines depending on executive notice periods and final negotiations.",
+      },
+      {
+        id: "faq-b2-6",
+        q: "Should automotive companies consider passive candidates?",
+        a: "Yes. The top-performing plant operations executives are frequently employed and delivering results elsewhere. Proactive outreach is often the only way to engage this caliber of leadership talent.",
+      },
+      {
+        id: "faq-b2-7",
+        q: "How do you evaluate plant leadership experience?",
+        a: "Evaluation focuses on measurable operational outcomes, safety records, quality metrics (e.g., IATF 16949), team building capabilities, throughput improvements, and how the leader navigated plant expansion or technology upgrades.",
+      },
+      {
+        id: "faq-b2-8",
+        q: "What skills are becoming important in EV manufacturing leadership?",
+        a: "Key emerging skills include battery chemistry understanding, lean manufacturing for high-automation environments, digital twin and smart factory integration, and sustainable supply chain management.",
+      },
+      {
+        id: "faq-b2-9",
+        q: "Can executive search firms recruit internationally?",
+        a: "Yes. Specialized executive search firms like Venus Hiring possess global candidate networks, allowing organizations to recruit executive talent across North America, Europe, and Asia.",
+      },
+      {
+        id: "faq-b2-10",
+        q: "How does Venus Hiring support automotive executive recruitment?",
+        a: "Venus Hiring provides discreet headhunting, specialized industry assessment, market compensation benchmarking, and end-to-end recruitment advisory for automotive and industrial leaders.",
+      },
+    ],
+    featuredImage:
+      "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1200&h=800&fit=crop&auto=format",
+    author: {
+      name: "Sarah Jenkins",
+      role: "Director of Industrial Executive Search",
+      avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop",
+      bio: "Leading executive search engagements for automotive gigafactories and advanced industrial plants across Ontario and Michigan.",
+    },
+    readTime: "8 min read",
+    publishDate: "July 28, 2026",
+    isFeatured: true,
+    seo: {
+      metaTitle: "Executive Search Strategies for EV & Automotive Plants | Venus Hiring",
+      metaDescription:
+        "Guide to identifying and attracting plant operations directors and executive leaders for modern EV and automotive manufacturing.",
+      keywords: "EV Recruitment, Automotive Executive Search, Plant Operations Hiring",
+      canonicalUrl: "https://venus-hiring.vercel.app/blog/executive-search-ev-automotive-plant-ops",
+      ogImage: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1200&h=800&fit=crop&auto=format",
+    },
+  },
+  {
+    id: "blog-3",
+    title: "2026 Canadian Tech Hiring Trends: Scaling Engineering Teams in Toronto & Vancouver",
+    slug: "2026-canadian-tech-hiring-trends",
+    category: "Tech Hiring",
+    tags: ["Tech Hiring", "Engineering Leadership", "Toronto", "Vancouver", "Salary Benchmarks"],
+    excerpt:
+      "Canada's technology hiring market is becoming more specialized as companies build teams around AI, cloud infrastructure, cybersecurity, data, software engineering, and digital products. Explore the hiring trends shaping Toronto and Vancouver and learn how companies can compete for specialized engineering talent in 2026.",
+    content: `
+      <h2>The Canadian Tech Hiring Market in 2026</h2>
+      <p>Technology hiring has become more selective.</p>
+      <p>Rather than simply expanding engineering headcount, companies increasingly want specialized professionals who can contribute to specific technical and business priorities.</p>
+      <p>Recent Canadian tech hiring coverage points toward a more targeted hiring environment, with demand concentrated around specialized capabilities rather than broad-based hiring alone.</p>
+      <p>For employers, that changes the recruitment strategy. The question is no longer simply: <strong>"How many engineers do we need?"</strong> It becomes: <strong>"Which capabilities do we need to build next?"</strong></p>
+
+      <h2>Why Specialized Talent Matters More Than Ever</h2>
+      <p>Modern technology organizations may need expertise across AI, machine learning, cloud infrastructure, DevOps, cybersecurity, data engineering, software architecture, platform engineering, product engineering, and automation.</p>
+      <p>A single generic engineering job description may not be enough to attract the right candidates. The more specialized the requirement, the more important targeted sourcing becomes.</p>
+
+      <h2>Toronto's Engineering and Technology Talent Market</h2>
+      <p>Toronto remains one of Canada's major technology and business centers. Its ecosystem spans financial technology, enterprise software, AI, SaaS, professional services, cybersecurity, data, and digital products.</p>
+      <p>For employers, Toronto offers a deep talent market but also intense competition for experienced technical professionals. A strong employer proposition therefore needs to communicate more than salary.</p>
+
+      <h2>Vancouver's Technology Talent Ecosystem</h2>
+      <p>Vancouver offers a distinct technology ecosystem with strong connections across software, digital products, gaming, AI, and global technology businesses.</p>
+      <p>Its international workforce and Pacific time zone can also be valuable for companies building distributed teams across North America. Companies hiring in Vancouver should understand the local market rather than simply replicating a Toronto hiring strategy.</p>
+
+      <h2>AI and Machine Learning Skills in Demand</h2>
+      <p>AI is changing technical hiring in two ways. First, companies need specialists who can build and deploy AI systems. Second, many organizations increasingly expect software engineers and technical leaders to understand how AI tools affect development workflows.</p>
+      <p>This means companies should distinguish between AI research expertise, applied AI engineering, and AI-enabled software development. These are different capabilities and should not be treated as interchangeable.</p>
+
+      <h2>Cloud and Platform Engineering</h2>
+      <p>As applications become more distributed, cloud infrastructure and platform engineering remain important areas of technical hiring.</p>
+      <p>Organizations may look for experience with cloud architecture, Infrastructure as Code, Kubernetes, CI/CD, observability, site reliability engineering, cloud security, and distributed systems. Candidates should also be evaluated on the scale, complexity, and business impact of the systems they've operated.</p>
+
+      <h2>Cybersecurity and Data Engineering</h2>
+      <p>Data and security have become core business functions rather than isolated technical concerns. Companies may need specialists in data platforms, data pipelines, analytics engineering, identity and access, application security, cloud security, and governance.</p>
+
+      <h2>The Rise of AI-Native Engineering Teams</h2>
+      <p>AI tools are changing how software teams work. That doesn't simply mean replacing engineers. It changes how organizations think about productivity, architecture, quality assurance, testing, and engineering workflows.</p>
+
+      <h2>Compensation Is Only One Part of the Offer</h2>
+      <p>Compensation remains important, but experienced technology professionals often evaluate the full opportunity: technical challenges, leadership quality, product impact, career progression, flexibility, remote/hybrid arrangements, benefits, learning opportunities, and engineering culture.</p>
+
+      <h2>Remote and Hybrid Hiring Strategies</h2>
+      <p>Remote hiring expands the potential talent pool, but it also increases competition. Companies can improve their results by clearly defining which roles are remote, required time zones, collaboration expectations, office requirements, and communication practices.</p>
+
+      <h2>How Companies Can Build Stronger Engineering Teams</h2>
+      <ol>
+        <li><strong>Define capabilities first:</strong> Identify what the team needs to accomplish.</li>
+        <li><strong>Separate must-have skills from learnable skills:</strong> Avoid eliminating good candidates through unnecessarily long requirements.</li>
+        <li><strong>Benchmark the market:</strong> Understand what qualified candidates expect.</li>
+        <li><strong>Build a compelling employer proposition:</strong> Technical professionals want to know what they will actually build.</li>
+        <li><strong>Use targeted sourcing:</strong> Specialized roles often require proactive candidate identification.</li>
+        <li><strong>Evaluate real-world impact:</strong> Ask what candidates actually built, improved, scaled, or solved.</li>
+      </ol>
+
+      <h2>Common Technology Hiring Mistakes</h2>
+      <ul>
+        <li>Overloading job descriptions with technologies</li>
+        <li>Searching only active applicants</li>
+        <li>Ignoring candidate experience</li>
+        <li>Using one compensation range for unrelated roles</li>
+        <li>Taking too long to make decisions</li>
+        <li>Treating every software engineer as interchangeable</li>
+        <li>Failing to explain the technical challenge</li>
+      </ul>
+
+      <h2>How Venus Hiring Supports Canadian Tech Recruitment</h2>
+      <p>Venus Hiring helps companies identify technical professionals across Canada's technology ecosystem. Our recruitment approach focuses on understanding technical requirements, business objectives, team structure, candidate experience, market availability, and role seniority.</p>
+    `,
+    faqs: [
+      {
+        id: "faq-b3-1",
+        q: "What are the biggest technology hiring trends in Canada in 2026?",
+        a: "Specialized hiring around AI, cloud, cybersecurity, data, and advanced software engineering continues to shape the market.",
+      },
+      {
+        id: "faq-b3-2",
+        q: "Is Toronto still a strong market for technology recruitment?",
+        a: "Yes. Toronto remains one of Canada's major technology hubs, with strong ecosystems across enterprise software, fintech, AI, and digital businesses.",
+      },
+      {
+        id: "faq-b3-3",
+        q: "Is Vancouver a good location for engineering recruitment?",
+        a: "Vancouver has a strong technology ecosystem and can be especially attractive for organizations recruiting across software, digital products, gaming, and AI-related roles.",
+      },
+      {
+        id: "faq-b3-4",
+        q: "Which technical skills are in demand?",
+        a: "Demand varies by company and sector, but AI, cloud, cybersecurity, data engineering, platform engineering, and software development remain important areas.",
+      },
+      {
+        id: "faq-b3-5",
+        q: "Are Canadian technology professionals open to remote work?",
+        a: "Remote and hybrid expectations vary by candidate and role. Companies should define their working model clearly during recruitment.",
+      },
+      {
+        id: "faq-b3-6",
+        q: "Should companies hire AI specialists or AI-capable software engineers?",
+        a: "It depends on the problem. AI research, applied AI engineering, and AI-enabled software development require different skill sets.",
+      },
+      {
+        id: "faq-b3-7",
+        q: "How can companies compete for senior engineering talent?",
+        a: "Clear technical challenges, strong leadership, competitive compensation, career opportunities, flexibility, and a compelling product or mission can all influence candidate decisions.",
+      },
+      {
+        id: "faq-b3-8",
+        q: "Why is specialized recruitment important for engineering roles?",
+        a: "Experienced technical professionals are often selective about opportunities and may not actively apply to every job. Targeted sourcing can help companies reach relevant passive candidates.",
+      },
+      {
+        id: "faq-b3-9",
+        q: "How long does technology recruitment take?",
+        a: "The timeline depends on role complexity, seniority, location, compensation, and market availability. Highly specialized positions generally require more targeted sourcing.",
+      },
+      {
+        id: "faq-b3-10",
+        q: "Can Venus Hiring help companies recruit engineers in Toronto and Vancouver?",
+        a: "Yes. Venus Hiring can support organizations looking for technical and engineering professionals across Canadian markets.",
+      },
+    ],
+    featuredImage:
+      "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=800&fit=crop&auto=format",
+    author: {
+      name: "Subhram Nayak",
+      role: "Head of Technical Recruitment",
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop",
+      bio: "Specializing in technical leadership placement, engineering team augmentation, and cross-border tech recruitment across North America.",
+    },
+    readTime: "8 min read",
+    publishDate: "August 5, 2026",
+    isFeatured: true,
+    seo: {
+      metaTitle: "2026 Canadian Tech Hiring Trends: Toronto & Vancouver | Venus Hiring",
+      metaDescription:
+        "Explore 2026 technology hiring trends shaping Toronto and Vancouver engineering teams and learn how companies compete for specialized talent.",
+      keywords: "Canadian Tech Hiring, Software Recruitment Toronto, Engineering Salary Benchmarks 2026",
+      canonicalUrl: "https://venus-hiring.vercel.app/blog/2026-canadian-tech-hiring-trends",
+      ogImage: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=800&fit=crop&auto=format",
     },
   },
 ];
@@ -416,8 +594,8 @@ export function getAdjacentArticles(currentBlog: BlogPost, allBlogs: BlogPost[])
   return { prevBlog, nextBlog };
 }
 
-const STORAGE_KEY_BLOGS = "venus_blogs_data_v7";
-const STORAGE_KEY_CATS = "venus_blogs_categories_v7";
+const STORAGE_KEY_BLOGS = "venus_blogs_data_v8";
+const STORAGE_KEY_CATS = "venus_blogs_categories_v8";
 
 export function getStoredBlogs(): BlogPost[] {
   if (typeof window === "undefined") return INITIAL_BLOGS;
