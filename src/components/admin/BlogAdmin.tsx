@@ -487,7 +487,7 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
                   </div>
                 ) : (
                   filteredBlogs.map((b) => {
-                    const targetUrl = `https://venus-hiring.vercel.app/?blog=${encodeURIComponent(b.id || b.slug)}#blog`;
+                    const targetUrl = `/blog/${b.slug || b.id}`;
 
                     return (
                       <div
