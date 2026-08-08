@@ -594,14 +594,14 @@ export function getAdjacentArticles(currentBlog: BlogPost, allBlogs: BlogPost[])
   return { prevBlog, nextBlog };
 }
 
-const STORAGE_KEY_BLOGS = "venus_blogs_data_v8";
-const STORAGE_KEY_CATS = "venus_blogs_categories_v8";
+const STORAGE_KEY_BLOGS = "venus_blogs_data_v10";
+const STORAGE_KEY_CATS = "venus_blogs_categories_v10";
 
 export function getStoredBlogs(): BlogPost[] {
   if (typeof window === "undefined") return INITIAL_BLOGS;
   try {
     const raw = localStorage.getItem(STORAGE_KEY_BLOGS);
-    if (!raw) {
+    if (!raw || !raw.includes("Understanding US-Canada Remote Hiring")) {
       localStorage.setItem(STORAGE_KEY_BLOGS, JSON.stringify(INITIAL_BLOGS));
       return INITIAL_BLOGS;
     }
