@@ -1,7 +1,11 @@
 import nodemailer from "nodemailer";
 import type { CareerApplication } from "./applications";
 
-const TARGET_RECIPIENT = process.env.CAREER_NOTIFICATION_EMAIL || process.env.CONTACT_RECEIVER_EMAIL || "jivan@venushiring.com";
+const DEFAULT_RECIPIENTS = ["jivan@venushiring.com", "subham@venushiring.ca"];
+
+const TARGET_RECIPIENTS = process.env.CAREER_NOTIFICATION_EMAIL
+  ? process.env.CAREER_NOTIFICATION_EMAIL.split(",").map((s) => s.trim())
+  : DEFAULT_RECIPIENTS;
 
 export async function sendApplicationNotificationEmail(app: Partial<CareerApplication>): Promise<boolean> {
   const host = process.env.SMTP_HOST || process.env.EMAIL_SERVER_HOST;
@@ -55,7 +59,7 @@ Submission Time: ${app.submittedAt ? new Date(app.submittedAt).toLocaleTimeStrin
 
 ==================================================
 This is an automated notification from Venus Hiring CMS.
-Recipients: ${TARGET_RECIPIENT}
+Recipients: ${TARGET_RECIPIENTS.join(", ")}
 `;
 
   const htmlBody = `
@@ -135,7 +139,7 @@ Recipients: ${TARGET_RECIPIENT}
       </div>` : ""}
 
       <div style="border-top: 1px solid #e2e8f0; padding-top: 16px; margin-top: 24px; font-size: 11px; color: #94a3b8; text-align: center;">
-        Submitted on ${app.submittedAt ? new Date(app.submittedAt).toLocaleString() : new Date().toLocaleString()} • Recipient: ${TARGET_RECIPIENT}
+        Submitted on ${app.submittedAt ? new Date(app.submittedAt).toLocaleString() : new Date().toLocaleString()} • Recipients: ${TARGET_RECIPIENTS.join(", ")}
       </div>
 
     </div>
@@ -166,21 +170,21 @@ Recipients: ${TARGET_RECIPIENT}
 
       await transporter.sendMail({
         from: `"Venus Hiring Careers" <${user}>`,
-        to: TARGET_RECIPIENT,
+        to: TARGET_RECIPIENTS.join(", "),
         subject,
         text: textBody,
         html: htmlBody,
         attachments,
       });
 
-      console.log(`[Email Service] Career application notification email successfully sent to ${TARGET_RECIPIENT}`);
+      console.log(`[Email Service] Career application notification email successfully sent to ${TARGET_RECIPIENTS.join(", ")}`);
       return true;
     } else {
-      console.log(`[Email Service Notice] SMTP credentials not configured in environment (SMTP_HOST/SMTP_USER/SMTP_PASS). Email content generated for recipient ${TARGET_RECIPIENT}: Subject="${subject}"`);
+      console.log(`[Email Service Notice] SMTP credentials not configured in environment (SMTP_HOST/SMTP_USER/SMTP_PASS). Email content generated for recipients ${TARGET_RECIPIENTS.join(", ")}: Subject="${subject}"`);
       return false;
     }
   } catch (err) {
-    console.error(`[Email Service Error] Failed to send email to ${TARGET_RECIPIENT}:`, err);
+    console.error(`[Email Service Error] Failed to send email to ${TARGET_RECIPIENTS.join(", ")}:`, err);
     return false;
   }
 }
