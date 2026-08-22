@@ -207,52 +207,52 @@ export function CareerAdmin() {
   );
 
   return (
-    <div className="space-y-8 text-left">
+    <div className="space-y-10 text-left">
       {/* Overview Stat Cards */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-soft">
+      <div className="grid grid-cols-2 gap-5 sm:grid-cols-4 sm:gap-6">
+        <div className="rounded-2xl border border-border/80 bg-card p-6 shadow-soft transition-all duration-300 hover:border-brand/30 hover:shadow-lift">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Total Jobs</span>
-            <div className="h-9 w-9 rounded-xl bg-brand/10 text-brand flex items-center justify-center">
+            <div className="h-10 w-10 rounded-xl bg-brand/10 text-brand flex items-center justify-center">
               <Briefcase className="h-5 w-5" />
             </div>
           </div>
-          <p className="mt-3 font-display text-3xl font-bold text-foreground">{totalJobs}</p>
+          <p className="mt-4 font-display text-3xl font-bold text-foreground">{totalJobs}</p>
         </div>
 
-        <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-soft">
+        <div className="rounded-2xl border border-border/80 bg-card p-6 shadow-soft transition-all duration-300 hover:border-emerald-500/30 hover:shadow-lift">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Published</span>
-            <div className="h-9 w-9 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center">
+            <div className="h-10 w-10 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center">
               <CheckCircle className="h-5 w-5" />
             </div>
           </div>
-          <p className="mt-3 font-display text-3xl font-bold text-emerald-600">{activeJobs}</p>
+          <p className="mt-4 font-display text-3xl font-bold text-emerald-600">{activeJobs}</p>
         </div>
 
-        <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-soft">
+        <div className="rounded-2xl border border-border/80 bg-card p-6 shadow-soft transition-all duration-300 hover:border-slate-500/30 hover:shadow-lift">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Closed</span>
-            <div className="h-9 w-9 rounded-xl bg-slate-500/10 text-slate-600 flex items-center justify-center">
+            <div className="h-10 w-10 rounded-xl bg-slate-500/10 text-slate-600 flex items-center justify-center">
               <XCircle className="h-5 w-5" />
             </div>
           </div>
-          <p className="mt-3 font-display text-3xl font-bold text-slate-600">{closedJobs}</p>
+          <p className="mt-4 font-display text-3xl font-bold text-slate-600">{closedJobs}</p>
         </div>
 
-        <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-soft">
+        <div className="rounded-2xl border border-border/80 bg-card p-6 shadow-soft transition-all duration-300 hover:border-brand/30 hover:shadow-lift">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Applicants</span>
-            <div className="h-9 w-9 rounded-xl bg-brand/10 text-brand flex items-center justify-center">
+            <div className="h-10 w-10 rounded-xl bg-brand/10 text-brand flex items-center justify-center">
               <Users className="h-5 w-5" />
             </div>
           </div>
-          <p className="mt-3 font-display text-3xl font-bold text-brand">{totalApps}</p>
+          <p className="mt-4 font-display text-3xl font-bold text-brand">{totalApps}</p>
         </div>
       </div>
 
       {/* Main Admin Content Container */}
-      <div className="rounded-2xl border border-border/80 bg-card p-6 shadow-soft space-y-6">
+      <div className="rounded-2xl border border-border/80 bg-card p-6 sm:p-8 shadow-soft space-y-6">
         {/* Navigation Tabs & Search */}
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border/60 pb-5">
           <div className="flex items-center gap-2">

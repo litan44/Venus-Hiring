@@ -33,8 +33,8 @@ function AdminPage() {
       <SiteNav />
 
       {/* Main Admin Page Container */}
-      <main className="shell section-padding min-h-[75vh] py-12">
-        <div className="mx-auto max-w-6xl space-y-8">
+      <main className="shell min-h-[80vh] pt-32 pb-16">
+        <div className="mx-auto max-w-6xl space-y-10">
           {/* Header */}
           <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border/80 pb-6">
             <div>
