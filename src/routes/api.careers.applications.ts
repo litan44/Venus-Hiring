@@ -78,10 +78,10 @@ export const Route = createFileRoute("/api/careers/applications")({
             ]
           );
 
-          // Await automated email notification to ensure Vercel Serverless Function completes SMTP handoff
+          // Await automated email notification with explicit [CAREER API] production logging
           try {
-            console.log(`[POST /api/careers/applications] Database insert successful. Triggering email dispatch for application ${id}...`);
-            await sendApplicationNotificationEmail({
+            console.log("[CAREER API] About to send notification email", { id, jobTitle: body.jobTitle, candidateEmail: body.email });
+            const emailSuccess = await sendApplicationNotificationEmail({
               id,
               jobId: body.jobId,
               jobTitle: body.jobTitle,
@@ -102,8 +102,14 @@ export const Route = createFileRoute("/api/careers/applications")({
               coverLetter: body.coverLetter,
               submittedAt,
             });
-          } catch (emailErr) {
-            console.error("[POST /api/careers/applications Notification Warning]:", emailErr);
+
+            if (emailSuccess) {
+              console.log("[CAREER API] Notification email completed");
+            } else {
+              console.error("[CAREER API] Email failed: sendApplicationNotificationEmail returned false (check SMTP credentials or transport configuration)");
+            }
+          } catch (emailErr: any) {
+            console.error("[CAREER API] Email failed:", emailErr?.message || emailErr);
           }
 
           return new Response(JSON.stringify({ success: true, id }), {
