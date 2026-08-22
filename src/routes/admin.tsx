@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Outlet, useMatchRoute } from "@tanstack/react-router";
 import { BlogAdmin } from "@/components/admin/BlogAdmin";
 import { CareerAdmin } from "@/components/careers/CareerAdmin";
 import { SiteNav } from "@/components/site/SiteNav";
@@ -17,9 +17,16 @@ export const Route = createFileRoute("/admin")({
 });
 
 function AdminPage() {
+  const matchRoute = useMatchRoute();
+  const isCareersSubRoute = matchRoute({ to: "/admin/careers" });
   const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [adminTab, setAdminTab] = useState<"blog" | "careers">("careers");
   const navigate = useNavigate();
+
+  // If visiting /admin/careers subroute, delegate rendering to child route component
+  if (isCareersSubRoute) {
+    return <Outlet />;
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -110,8 +117,10 @@ function AdminPage() {
 
       <SiteFooter />
 
-      {/* Existing Blog Admin Modal */}
-      <BlogAdmin isOpen={isAdminOpen && adminTab === "blog"} onClose={() => setIsAdminOpen(false)} />
+      {/* Existing Blog Admin Modal - Only rendered when on blog tab and explicitly opened */}
+      {adminTab === "blog" && isAdminOpen && (
+        <BlogAdmin isOpen={true} onClose={() => setIsAdminOpen(false)} />
+      )}
     </div>
   );
 }
