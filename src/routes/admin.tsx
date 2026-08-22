@@ -17,7 +17,8 @@ export const Route = createFileRoute("/admin")({
 });
 
 function AdminPage() {
-  const [isAdminOpen, setIsAdminOpen] = useState(true);
+  const [isAdminOpen, setIsAdminOpen] = useState(false);
+  const [adminTab, setAdminTab] = useState<"blog" | "careers">("careers");
   const navigate = useNavigate();
 
   return (
@@ -35,52 +36,82 @@ function AdminPage() {
                 VENUS EXECUTIVE ADMIN
               </div>
               <h1 className="font-display text-3xl font-bold text-foreground sm:text-4xl tracking-tight">
-                Blog CMS Control Panel
+                Control & Management System
               </h1>
             </div>
 
-            <div className="flex items-center gap-3">
-              <a
-                href="/admin/careers"
-                className="inline-flex items-center gap-2 rounded-full bg-brand px-5 py-2.5 text-xs font-bold text-white shadow-brand hover:brightness-110 transition-all"
-              >
-                <Briefcase className="h-4 w-4" /> Career Admin Panel →
-              </a>
-
-              <button
-                type="button"
-                onClick={() => navigate({ to: "/" })}
-                className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-xs font-bold text-foreground hover:bg-accent transition-colors shadow-soft"
-              >
-                <ArrowLeft className="h-4 w-4" /> Back to Website
-              </button>
-            </div>
-          </div>
-
-          {/* Blog CMS Management Content */}
-          <div className="rounded-2xl border border-border/80 bg-card p-8 shadow-soft text-center space-y-4 py-16">
-            <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-brand/10 text-brand border border-brand/20">
-              <BookOpen className="h-7 w-7" />
-            </div>
-            <h2 className="font-display text-2xl font-bold text-foreground">Blog & Content Management System</h2>
-            <p className="text-sm text-muted-foreground max-w-md mx-auto">
-              Create, edit, delete recruitment articles, manage SEO meta tags, and configure categories.
-            </p>
             <button
               type="button"
-              onClick={() => setIsAdminOpen(true)}
-              className="rounded-full bg-brand px-6 py-3 text-xs font-bold text-white shadow-brand hover:brightness-110 transition-all"
+              onClick={() => navigate({ to: "/" })}
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-xs font-bold text-foreground hover:bg-accent transition-colors shadow-soft"
             >
-              Open Blog Admin Panel →
+              <ArrowLeft className="h-4 w-4" /> Back to Website
             </button>
           </div>
+
+          {/* Module Selector Tabs */}
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => {
+                setAdminTab("careers");
+                setIsAdminOpen(false);
+              }}
+              className={`inline-flex items-center gap-2 rounded-xl px-6 py-3 text-xs font-bold transition-all cursor-pointer ${
+                adminTab === "careers"
+                  ? "bg-brand text-white shadow-brand"
+                  : "bg-porcelain text-foreground hover:bg-accent border border-border/60"
+              }`}
+            >
+              <Briefcase className="h-4 w-4" />
+              Career Panel Management
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                setAdminTab("blog");
+                setIsAdminOpen(true);
+              }}
+              className={`inline-flex items-center gap-2 rounded-xl px-6 py-3 text-xs font-bold transition-all cursor-pointer ${
+                adminTab === "blog"
+                  ? "bg-brand text-white shadow-brand"
+                  : "bg-porcelain text-foreground hover:bg-accent border border-border/60"
+              }`}
+            >
+              <BookOpen className="h-4 w-4" />
+              Blog CMS Management
+            </button>
+          </div>
+
+          {/* Module Content */}
+          {adminTab === "careers" && <CareerAdmin />}
+
+          {adminTab === "blog" && (
+            <div className="rounded-2xl border border-border/80 bg-card p-8 shadow-soft text-center space-y-4 py-16">
+              <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-brand/10 text-brand border border-brand/20">
+                <BookOpen className="h-7 w-7" />
+              </div>
+              <h2 className="font-display text-2xl font-bold text-foreground">Blog & Content Management System</h2>
+              <p className="text-sm text-muted-foreground max-w-md mx-auto">
+                Create, edit, delete recruitment articles, manage SEO meta tags, and configure categories.
+              </p>
+              <button
+                type="button"
+                onClick={() => setIsAdminOpen(true)}
+                className="rounded-full bg-brand px-6 py-3 text-xs font-bold text-white shadow-brand hover:brightness-110 transition-all"
+              >
+                Open Blog Admin Panel →
+              </button>
+            </div>
+          )}
         </div>
       </main>
 
       <SiteFooter />
 
       {/* Existing Blog Admin Modal */}
-      <BlogAdmin isOpen={isAdminOpen} onClose={() => setIsAdminOpen(false)} />
+      <BlogAdmin isOpen={isAdminOpen && adminTab === "blog"} onClose={() => setIsAdminOpen(false)} />
     </div>
   );
 }
