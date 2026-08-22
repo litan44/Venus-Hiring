@@ -14,7 +14,7 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as AdminCareersRouteImport } from './routes/admin.careers'
+import { Route as AdminCareersRouteImport } from './routes/admin_.careers'
 import { Route as ApiBlogsRouteImport } from './routes/api.blogs'
 import { Route as ApiCategoriesRouteImport } from './routes/api.categories'
 import { Route as ApiContactRouteImport } from './routes/api.contact'
@@ -58,9 +58,9 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminCareersRoute = AdminCareersRouteImport.update({
-  id: '/careers',
-  path: '/careers',
-  getParentRoute: () => AdminRoute,
+  id: '/admin_/careers',
+  path: '/admin/careers',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ApiBlogsRoute = ApiBlogsRouteImport.update({
   id: '/api/blogs',
@@ -145,7 +145,7 @@ const CareersSlugApplyRoute = CareersSlugApplyRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteWithChildren
+  '/admin': typeof AdminRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -169,7 +169,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteWithChildren
+  '/admin': typeof AdminRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -194,11 +194,11 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteWithChildren
+  '/admin': typeof AdminRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/admin/careers': typeof AdminCareersRoute
+  '/admin_/careers': typeof AdminCareersRoute
   '/api/blogs': typeof ApiBlogsRoute
   '/api/categories': typeof ApiCategoriesRoute
   '/api/contact': typeof ApiContactRoute
@@ -272,7 +272,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/faq'
     | '/sitemap.xml'
-    | '/admin/careers'
+    | '/admin_/careers'
     | '/api/blogs'
     | '/api/categories'
     | '/api/contact'
@@ -293,10 +293,11 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminRoute: typeof AdminRouteWithChildren
+  AdminRoute: typeof AdminRoute
   ContactRoute: typeof ContactRoute
   FaqRoute: typeof FaqRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  AdminCareersRoute: typeof AdminCareersRoute
   ApiBlogsRoute: typeof ApiBlogsRoute
   ApiCategoriesRoute: typeof ApiCategoriesRoute
   ApiContactRoute: typeof ApiContactRoute
@@ -351,12 +352,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/careers': {
-      id: '/admin/careers'
-      path: '/careers'
+    '/admin_/careers': {
+      id: '/admin_/careers'
+      path: '/admin/careers'
       fullPath: '/admin/careers'
       preLoaderRoute: typeof AdminCareersRouteImport
-      parentRoute: typeof AdminRoute
+      parentRoute: typeof rootRouteImport
     }
     '/api/blogs': {
       id: '/api/blogs'
@@ -473,16 +474,6 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface AdminRouteChildren {
-  AdminCareersRoute: typeof AdminCareersRoute
-}
-
-const AdminRouteChildren: AdminRouteChildren = {
-  AdminCareersRoute: AdminCareersRoute,
-}
-
-const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
-
 interface CareersSlugRouteChildren {
   CareersSlugApplyRoute: typeof CareersSlugApplyRoute
 }
@@ -497,10 +488,11 @@ const CareersSlugRouteWithChildren = CareersSlugRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminRoute: AdminRouteWithChildren,
+  AdminRoute: AdminRoute,
   ContactRoute: ContactRoute,
   FaqRoute: FaqRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  AdminCareersRoute: AdminCareersRoute,
   ApiBlogsRoute: ApiBlogsRoute,
   ApiCategoriesRoute: ApiCategoriesRoute,
   ApiContactRoute: ApiContactRoute,
