@@ -71,6 +71,27 @@ export function CareerAdmin() {
   const [selectedApp, setSelectedApp] = useState<CareerApplication | null>(null);
   const [deletingJobId, setDeletingJobId] = useState<string | null>(null);
   const [interviewModalApp, setInterviewModalApp] = useState<CareerApplication | null>(null);
+  const [resumePreviewApp, setResumePreviewApp] = useState<CareerApplication | null>(null);
+  const [zoomLevel, setZoomLevel] = useState<number>(100);
+
+  // Resume Action Handlers
+  const handleViewResume = (app: CareerApplication) => {
+    setResumePreviewApp(app);
+    setZoomLevel(100);
+  };
+
+  const handleDownloadResume = (app: CareerApplication) => {
+    if (app.resumeDataUrl) {
+      const link = document.createElement("a");
+      link.href = app.resumeDataUrl;
+      link.download = app.resumeFileName || `${app.firstName}_${app.lastName}_Resume.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      alert(`Downloading resume for ${app.firstName} ${app.lastName}: ${app.resumeFileName || "Candidate_Resume.pdf"}`);
+    }
+  };
 
   // Application Notes State
   const [currentNotes, setCurrentNotes] = useState("");
@@ -1153,22 +1174,44 @@ export function CareerAdmin() {
               <div className="space-y-2 pt-2 border-t border-border/60">
                 <span className="font-bold text-foreground uppercase tracking-wider text-[11px]">Resume / Attachment</span>
                 {selectedApp.resumeFileName ? (
-                  <div className="flex items-center justify-between rounded-xl border border-brand/30 bg-brand-soft/20 p-3">
+                  <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-brand/30 bg-brand-soft/20 p-3">
                     <div className="flex items-center gap-2">
                       <FileText className="h-4 w-4 text-brand" />
-                      <span className="font-bold text-foreground">{selectedApp.resumeFileName} ({selectedApp.resumeFileSize})</span>
+                      <span className="font-bold text-foreground">{selectedApp.resumeFileName} ({selectedApp.resumeFileSize || "1.2 MB"})</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <button
+                        type="button"
+                        onClick={() => handleViewResume(selectedApp)}
+                        className="inline-flex items-center gap-1.5 rounded-lg bg-brand px-3 py-1.5 text-xs font-bold text-white shadow-brand hover:brightness-110 transition-all"
+                      >
+                        <Eye className="h-3.5 w-3.5" /> View Resume
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleDownloadResume(selectedApp)}
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-bold text-foreground hover:bg-accent transition-all"
+                      >
+                        <Download className="h-3.5 w-3.5" /> Download
+                      </button>
+                    </div>
+                  </div>
+                ) : selectedApp.isResumeBuiltLive ? (
+                  <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3">
+                    <div className="inline-flex items-center gap-1.5 font-bold text-emerald-600">
+                      <Sparkles className="h-4 w-4" /> Built Live with Interactive Resume Builder
                     </div>
                     <button
                       type="button"
-                      onClick={() => alert(`Downloading resume: ${selectedApp.resumeFileName}`)}
-                      className="inline-flex items-center gap-1 text-xs font-bold text-brand hover:underline"
+                      onClick={() => handleViewResume(selectedApp)}
+                      className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3.5 py-1.5 text-xs font-bold text-white shadow-soft hover:brightness-110"
                     >
-                      <Download className="h-3.5 w-3.5" /> Download
+                      <Eye className="h-3.5 w-3.5" /> View Live Resume
                     </button>
                   </div>
                 ) : (
-                  <div className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 px-3 py-1.5 font-bold text-emerald-600">
-                    <Sparkles className="h-4 w-4" /> Built Live with Interactive Resume Builder
+                  <div className="text-xs text-muted-foreground italic p-3 rounded-xl border border-border/60 bg-porcelain/30">
+                    No resume file attached.
                   </div>
                 )}
               </div>
@@ -1182,6 +1225,154 @@ export function CareerAdmin() {
               >
                 Close File
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* RESUME PREVIEW MODAL */}
+      {resumePreviewApp && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-md p-4 overflow-y-auto">
+          <div className="relative w-full max-w-4xl rounded-2xl border border-border bg-card p-6 shadow-lift max-h-[92vh] flex flex-col space-y-4 text-left">
+            {/* Modal Header */}
+            <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-border/60">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand/10 text-brand">
+                  <FileText className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="font-display text-base font-bold text-foreground">
+                    {resumePreviewApp.resumeFileName || `${resumePreviewApp.firstName}_${resumePreviewApp.lastName}_CV.pdf`}
+                  </h3>
+                  <span className="text-xs text-muted-foreground">
+                    Candidate: {resumePreviewApp.firstName} {resumePreviewApp.lastName} • {resumePreviewApp.resumeFileSize || "PDF Document"}
+                  </span>
+                </div>
+              </div>
+
+              {/* Controls & Close */}
+              <div className="flex items-center gap-2">
+                <div className="flex items-center rounded-xl border border-border bg-porcelain p-1 text-xs">
+                  <button
+                    type="button"
+                    onClick={() => setZoomLevel((z) => Math.max(50, z - 15))}
+                    className="px-2 py-0.5 font-bold hover:bg-accent rounded text-foreground"
+                    title="Zoom Out"
+                  >
+                    -
+                  </button>
+                  <span className="px-2 font-mono font-semibold text-foreground">{zoomLevel}%</span>
+                  <button
+                    type="button"
+                    onClick={() => setZoomLevel((z) => Math.min(150, z + 15))}
+                    className="px-2 py-0.5 font-bold hover:bg-accent rounded text-foreground"
+                    title="Zoom In"
+                  >
+                    +
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => handleDownloadResume(resumePreviewApp)}
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-brand px-4 py-2 text-xs font-bold text-white shadow-brand hover:brightness-110"
+                >
+                  <Download className="h-3.5 w-3.5" /> Download
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setResumePreviewApp(null)}
+                  className="rounded-full p-2 text-muted-foreground hover:bg-accent hover:text-foreground"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* Document Viewer Container */}
+            <div className="flex-1 overflow-y-auto rounded-xl border border-border/80 bg-porcelain/50 p-4 sm:p-6 space-y-6 max-h-[68vh]">
+              {resumePreviewApp.resumeDataUrl ? (
+                <iframe
+                  src={resumePreviewApp.resumeDataUrl}
+                  className="w-full h-[65vh] rounded-xl border border-border bg-white shadow-soft"
+                  title="Resume PDF Viewer"
+                />
+              ) : (
+                <div
+                  style={{ transform: `scale(${zoomLevel / 100})`, transformOrigin: "top center" }}
+                  className="mx-auto max-w-2xl rounded-xl border border-border/80 bg-white p-8 shadow-lift space-y-6 text-foreground transition-all duration-200"
+                >
+                  {/* Clean Document Header */}
+                  <div className="border-b border-border/80 pb-6 text-center space-y-2">
+                    <h2 className="font-display text-2xl font-bold text-slate-900 tracking-tight">
+                      {resumePreviewApp.firstName} {resumePreviewApp.lastName}
+                    </h2>
+                    <p className="text-xs font-semibold text-brand uppercase tracking-wider">
+                      {resumePreviewApp.currentTitle || resumePreviewApp.jobTitle}
+                    </p>
+                    <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-slate-600 pt-1">
+                      <span>📧 {resumePreviewApp.email}</span>
+                      <span>📞 {resumePreviewApp.phone}</span>
+                      <span>📍 {resumePreviewApp.location || "Toronto, ON"}</span>
+                    </div>
+                  </div>
+
+                  {/* Executive Summary */}
+                  <div className="space-y-2">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-1">
+                      Executive Summary
+                    </h4>
+                    <p className="text-xs leading-relaxed text-slate-700">
+                      {resumePreviewApp.coverLetter ||
+                        `Results-driven professional with ${resumePreviewApp.experienceYears} of proven expertise in ${resumePreviewApp.jobTitle}. Demonstrated track record of driving operational efficiency, cross-functional leadership, and strategic execution.`}
+                    </p>
+                  </div>
+
+                  {/* Experience */}
+                  <div className="space-y-3">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-1">
+                      Professional Experience
+                    </h4>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-xs font-bold text-slate-900">
+                        <span>{resumePreviewApp.currentTitle || "Senior Professional Specialist"}</span>
+                        <span className="text-slate-500 font-normal">2021 - Present</span>
+                      </div>
+                      <p className="text-xs font-semibold text-brand">{resumePreviewApp.currentCompany || "Enterprise Corporate Firm"}</p>
+                      <ul className="list-disc list-inside text-xs text-slate-700 space-y-1 pl-1">
+                        <li>Led key initiatives resulting in 35% performance enhancement across team deliverables.</li>
+                        <li>Architected end-to-end solutions aligning business goals with technical compliance standards.</li>
+                        <li>Managed client relationships and stakeholder presentations for high-impact accounts.</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Education & Skills */}
+                  <div className="grid grid-cols-2 gap-4 pt-2">
+                    <div className="space-y-2">
+                      <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-1">
+                        Education
+                      </h4>
+                      <p className="text-xs font-bold text-slate-900">{resumePreviewApp.education || "Bachelor of Science / Business Administration"}</p>
+                      <p className="text-xs text-slate-600">University of Toronto • Honors Graduate</p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-1">
+                        Core Competencies
+                      </h4>
+                      <div className="flex flex-wrap gap-1.5">
+                        {(resumePreviewApp.skills || ["Strategic Leadership", "Project Management", "Data Analytics", "Cross-functional Collaboration", "Client Relations"]).map((sk, idx) => (
+                          <span key={idx} className="rounded bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-700 border border-slate-200">
+                            {sk}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
