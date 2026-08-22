@@ -415,7 +415,7 @@ export function CareerAdmin() {
 
       {/* Overview Analytics Cards (9 Cards Grid) */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-        <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-soft hover:border-brand/30 transition-all">
+        <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-soft hover:border-brand/40 transition-all">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Total Jobs</span>
             <div className="h-9 w-9 rounded-xl bg-brand/10 text-brand flex items-center justify-center">
@@ -425,37 +425,37 @@ export function CareerAdmin() {
           <p className="mt-3 font-display text-2xl font-bold text-foreground">{totalJobs}</p>
         </div>
 
-        <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-soft hover:border-emerald-500/30 transition-all">
+        <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-soft hover:border-brand/40 transition-all">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Active Jobs</span>
-            <div className="h-9 w-9 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center">
+            <div className="h-9 w-9 rounded-xl bg-brand/10 text-brand flex items-center justify-center">
               <CheckCircle className="h-4 w-4" />
             </div>
           </div>
-          <p className="mt-3 font-display text-2xl font-bold text-emerald-600">{activeJobs}</p>
+          <p className="mt-3 font-display text-2xl font-bold text-brand">{activeJobs}</p>
         </div>
 
-        <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-soft hover:border-amber-500/30 transition-all">
+        <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-soft hover:border-brand/40 transition-all">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Draft Jobs</span>
-            <div className="h-9 w-9 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center">
+            <div className="h-9 w-9 rounded-xl bg-brand/10 text-brand flex items-center justify-center">
               <Clock className="h-4 w-4" />
             </div>
           </div>
-          <p className="mt-3 font-display text-2xl font-bold text-amber-600">{draftJobs}</p>
+          <p className="mt-3 font-display text-2xl font-bold text-foreground">{draftJobs}</p>
         </div>
 
-        <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-soft hover:border-slate-500/30 transition-all">
+        <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-soft hover:border-brand/40 transition-all">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Closed / Paused</span>
-            <div className="h-9 w-9 rounded-xl bg-slate-500/10 text-slate-600 flex items-center justify-center">
+            <div className="h-9 w-9 rounded-xl bg-brand/10 text-brand flex items-center justify-center">
               <XCircle className="h-4 w-4" />
             </div>
           </div>
-          <p className="mt-3 font-display text-2xl font-bold text-slate-600">{closedJobs}</p>
+          <p className="mt-3 font-display text-2xl font-bold text-foreground">{closedJobs}</p>
         </div>
 
-        <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-soft hover:border-brand/30 transition-all">
+        <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-soft hover:border-brand/40 transition-all">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Total Apps</span>
             <div className="h-9 w-9 rounded-xl bg-brand/10 text-brand flex items-center justify-center">
@@ -465,44 +465,44 @@ export function CareerAdmin() {
           <p className="mt-3 font-display text-2xl font-bold text-brand">{totalApps}</p>
         </div>
 
-        <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-soft hover:border-blue-500/30 transition-all">
+        <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-soft hover:border-brand/40 transition-all">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">New Apps</span>
-            <div className="h-9 w-9 rounded-xl bg-blue-500/10 text-blue-600 flex items-center justify-center">
+            <div className="h-9 w-9 rounded-xl bg-brand/10 text-brand flex items-center justify-center">
               <Sparkles className="h-4 w-4" />
             </div>
           </div>
-          <p className="mt-3 font-display text-2xl font-bold text-blue-600">{newApps}</p>
+          <p className="mt-3 font-display text-2xl font-bold text-foreground">{newApps}</p>
         </div>
 
-        <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-soft hover:border-indigo-500/30 transition-all">
+        <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-soft hover:border-brand/40 transition-all">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Shortlisted</span>
-            <div className="h-9 w-9 rounded-xl bg-indigo-500/10 text-indigo-600 flex items-center justify-center">
+            <div className="h-9 w-9 rounded-xl bg-brand/10 text-brand flex items-center justify-center">
               <UserCheck className="h-4 w-4" />
             </div>
           </div>
-          <p className="mt-3 font-display text-2xl font-bold text-indigo-600">{shortlistedApps}</p>
+          <p className="mt-3 font-display text-2xl font-bold text-foreground">{shortlistedApps}</p>
         </div>
 
-        <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-soft hover:border-purple-500/30 transition-all">
+        <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-soft hover:border-brand/40 transition-all">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Interviews</span>
-            <div className="h-9 w-9 rounded-xl bg-purple-500/10 text-purple-600 flex items-center justify-center">
+            <div className="h-9 w-9 rounded-xl bg-brand/10 text-brand flex items-center justify-center">
               <Calendar className="h-4 w-4" />
             </div>
           </div>
-          <p className="mt-3 font-display text-2xl font-bold text-purple-600">{interviewApps}</p>
+          <p className="mt-3 font-display text-2xl font-bold text-foreground">{interviewApps}</p>
         </div>
 
-        <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-soft hover:border-emerald-600/30 transition-all col-span-2 sm:col-span-1">
+        <div className="rounded-2xl border border-brand/30 bg-brand-soft/20 p-5 shadow-soft hover:border-brand transition-all col-span-2 sm:col-span-1">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Hired</span>
-            <div className="h-9 w-9 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center">
+            <span className="text-[11px] font-bold text-brand uppercase tracking-wider">Hired</span>
+            <div className="h-9 w-9 rounded-xl bg-brand text-white flex items-center justify-center shadow-soft">
               <Award className="h-4 w-4" />
             </div>
           </div>
-          <p className="mt-3 font-display text-2xl font-bold text-emerald-600">{hiredApps}</p>
+          <p className="mt-3 font-display text-2xl font-bold text-brand">{hiredApps}</p>
         </div>
       </div>
 
@@ -761,22 +761,22 @@ export function CareerAdmin() {
                             Pipeline Summary
                           </span>
                           <div className="flex flex-wrap items-center gap-2 text-xs">
-                            <span className="inline-flex items-center gap-1 rounded-lg bg-blue-500/10 border border-blue-500/20 px-2.5 py-1 font-bold text-blue-600">
+                            <span className="inline-flex items-center gap-1 rounded-lg bg-card border border-brand/40 px-2.5 py-1 font-bold text-foreground">
                               New: {stats.newCount}
                             </span>
-                            <span className="inline-flex items-center gap-1 rounded-lg bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 font-bold text-amber-600">
+                            <span className="inline-flex items-center gap-1 rounded-lg bg-card border border-brand/40 px-2.5 py-1 font-bold text-foreground">
                               Under Review: {stats.reviewingCount}
                             </span>
-                            <span className="inline-flex items-center gap-1 rounded-lg bg-indigo-500/10 border border-indigo-500/20 px-2.5 py-1 font-bold text-indigo-600">
+                            <span className="inline-flex items-center gap-1 rounded-lg bg-card border border-brand/40 px-2.5 py-1 font-bold text-foreground">
                               Shortlisted: {stats.shortlistedCount}
                             </span>
-                            <span className="inline-flex items-center gap-1 rounded-lg bg-purple-500/10 border border-purple-500/20 px-2.5 py-1 font-bold text-purple-600">
+                            <span className="inline-flex items-center gap-1 rounded-lg bg-card border border-brand/40 px-2.5 py-1 font-bold text-foreground">
                               Interview: {stats.interviewCount}
                             </span>
-                            <span className="inline-flex items-center gap-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 font-bold text-emerald-600">
+                            <span className="inline-flex items-center gap-1 rounded-lg bg-brand border border-brand px-2.5 py-1 font-bold text-white shadow-soft">
                               Hired: {stats.hiredCount}
                             </span>
-                            <span className="inline-flex items-center gap-1 rounded-lg bg-slate-500/10 border border-slate-500/20 px-2.5 py-1 font-bold text-slate-600">
+                            <span className="inline-flex items-center gap-1 rounded-lg bg-card border border-brand/40 px-2.5 py-1 font-bold text-foreground">
                               Rejected: {stats.rejectedCount}
                             </span>
                           </div>
@@ -1269,7 +1269,15 @@ export function CareerAdmin() {
                 </div>
                 <div>
                   <span className="text-muted-foreground block mb-0.5">Pipeline Status</span>
-                  <span className="font-bold text-brand">{selectedApp.status}</span>
+                  {selectedApp.status === "Hired" ? (
+                    <span className="inline-flex rounded-md bg-brand px-2.5 py-0.5 text-xs font-bold text-white shadow-soft">
+                      Hired
+                    </span>
+                  ) : (
+                    <span className="inline-flex rounded-md bg-card border border-brand/40 px-2.5 py-0.5 text-xs font-bold text-foreground">
+                      {selectedApp.status}
+                    </span>
+                  )}
                 </div>
                 <div>
                   <span className="text-muted-foreground block mb-0.5">Applied Date</span>
