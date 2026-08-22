@@ -78,10 +78,11 @@ export const Route = createFileRoute("/api/careers/applications")({
             ]
           );
 
-          // Await automated email notification with explicit [CAREER API] production logging
+          // Await automated email notification with guaranteed server execution (no background promises)
           let emailDetails: { success: boolean; messageId?: string; response?: string; error?: string } = { success: false };
           try {
-            console.log("[CAREER API] About to send notification email", { id, jobTitle: body.jobTitle, candidateEmail: body.email });
+            console.log(`[CAREER EMAIL]\nApplication ID: ${id}\nCandidate: ${body.firstName} ${body.lastName} <${body.email}>\nTimestamp: ${submittedAt}\nStarting email dispatch...`);
+            
             emailDetails = await sendApplicationNotificationEmail({
               id,
               jobId: body.jobId,
@@ -105,24 +106,27 @@ export const Route = createFileRoute("/api/careers/applications")({
             });
 
             if (emailDetails.success) {
-              console.log(`[CAREER API] Notification email completed | Message ID: ${emailDetails.messageId} | Response: ${emailDetails.response}`);
+              console.log(`[CAREER EMAIL SUCCESS]\nApplication ID: ${id}\nMessage ID: ${emailDetails.messageId}\nSMTP Response: ${emailDetails.response}`);
             } else {
-              console.error("[CAREER API] Email failed:", emailDetails.error);
+              console.error(`[CAREER EMAIL ERROR]\nApplication ID: ${id}\nError: ${emailDetails.error}`);
             }
           } catch (emailErr: any) {
-            console.error("[CAREER API] Email failed:", emailErr?.message || emailErr);
-            emailDetails = { success: false, error: emailErr?.message || String(emailErr) };
+            const errStr = emailErr?.message || String(emailErr);
+            console.error(`[CAREER EMAIL EXCEPTION]\nApplication ID: ${id}\nError: ${errStr}`);
+            emailDetails = { success: false, error: errStr };
           }
 
           return new Response(
             JSON.stringify({
               success: true,
+              applicationSaved: true,
+              emailSent: emailDetails.success,
+              messageId: emailDetails.messageId || null,
+              smtpResponse: emailDetails.response || null,
               id,
               submittedAt,
-              emailStatus: emailDetails.success ? "DELIVERED" : "FAILED",
-              emailMessageId: emailDetails.messageId || null,
-              emailSmtpResponse: emailDetails.response || null,
               recipients: ["jivan@venushiring.com", "subham@venushiring.ca"],
+              error: emailDetails.error || null,
             }),
             {
               status: 201,

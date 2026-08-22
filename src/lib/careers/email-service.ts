@@ -157,7 +157,7 @@ Recipients: ${TARGET_RECIPIENTS.join(", ")}
 
   try {
     if (host && user && pass) {
-      console.log(`[Email Service START] Initiating SMTP connection to ${host}:${port} for recipients: ${TARGET_RECIPIENTS.join(", ")}`);
+      console.log(`[CAREER EMAIL]\nApplication ID: ${app.id || "N/A"}\nCandidate: ${app.firstName || ""} ${app.lastName || ""} <${app.email || "N/A"}>\nTimestamp: ${app.submittedAt || new Date().toISOString()}\nStarting email dispatch...`);
 
       const transporter = nodemailer.createTransport({
         host,
