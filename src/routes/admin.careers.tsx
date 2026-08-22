@@ -27,10 +27,6 @@ function CareerAdminPage() {
           {/* Header */}
           <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border/80 pb-6">
             <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-brand/20 bg-brand-soft px-3 py-1 text-xs font-bold uppercase tracking-wider text-brand mb-2">
-                <Sparkles className="h-3.5 w-3.5" />
-                VENUS CAREER MANAGEMENT
-              </div>
               <h1 className="font-display text-3xl font-bold text-foreground sm:text-4xl tracking-tight">
                 Career Admin Panel
               </h1>

@@ -1,7 +1,17 @@
 import { MOCK_JOBS, type JobItem } from "@/components/careers/mockJobs";
 
 export interface AdminJobItem extends JobItem {
-  status: "Draft" | "Published" | "Closed";
+  status: "Draft" | "Published" | "Paused" | "Closed";
+  category?: string;
+  workMode?: "Remote" | "Hybrid" | "On-site";
+  currency?: string;
+  minExperience?: string;
+  maxExperience?: string;
+  openingsCount?: number;
+  hiringManager?: string;
+  applicationDeadline?: string;
+  preferredQualifications?: string[];
+  aboutCompany?: string;
   createdAt?: string;
 }
 

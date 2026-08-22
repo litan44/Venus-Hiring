@@ -1,10 +1,13 @@
 export type ApplicationStatus =
   | "New"
+  | "Under Review"
   | "Reviewing"
   | "Shortlisted"
+  | "Interview Scheduled"
   | "Interview"
-  | "Rejected"
-  | "Hired";
+  | "Selected"
+  | "Hired"
+  | "Rejected";
 
 export interface CareerApplication {
   id: string;
@@ -18,6 +21,8 @@ export interface CareerApplication {
   currentTitle?: string;
   currentCompany?: string;
   experienceYears: string;
+  education?: string;
+  skills?: string[];
   linkedinUrl?: string;
   portfolioUrl?: string;
   resumeFileName?: string;
@@ -30,6 +35,13 @@ export interface CareerApplication {
   submittedAt: string;
   status: ApplicationStatus;
   internalNotes?: string;
+  interviewDate?: string;
+  interviewTime?: string;
+  interviewType?: "Phone" | "Video" | "In-person";
+  interviewerName?: string;
+  interviewNotes?: string;
+  interviewFeedback?: string;
+  interviewResult?: "Passed" | "Pending" | "Failed";
 }
 
 // Initial mock applications for Phase 5 testing
@@ -135,5 +147,13 @@ export function updateApplicationNotes(id: string, notes: string): boolean {
   const app = localApplications.find((a) => a.id === id);
   if (!app) return false;
   app.internalNotes = notes;
+  return true;
+}
+
+export function scheduleInterview(id: string, details: Partial<CareerApplication>): boolean {
+  const app = localApplications.find((a) => a.id === id);
+  if (!app) return false;
+  Object.assign(app, details);
+  app.status = "Interview Scheduled";
   return true;
 }
