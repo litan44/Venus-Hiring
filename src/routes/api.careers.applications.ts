@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { pool } from "@/lib/db";
 import { initCareerDatabase } from "@/lib/careers/schema";
+import { sendApplicationNotificationEmail } from "@/lib/careers/email-service";
 
 export const Route = createFileRoute("/api/careers/applications")({
   server: {
@@ -76,6 +77,33 @@ export const Route = createFileRoute("/api/careers/applications")({
               submittedAt,
             ]
           );
+
+          // Send automated email notification safely (does not block database application creation)
+          try {
+            await sendApplicationNotificationEmail({
+              id,
+              jobId: body.jobId,
+              jobTitle: body.jobTitle,
+              firstName: body.firstName,
+              lastName: body.lastName,
+              email: body.email,
+              phone: body.phone,
+              location: body.location,
+              currentTitle: body.currentTitle,
+              currentCompany: body.currentCompany,
+              experienceYears: body.experienceYears,
+              linkedinUrl: body.linkedinUrl,
+              portfolioUrl: body.portfolioUrl,
+              resumeFileName: body.resumeFileName,
+              resumeFileSize: body.resumeFileSize,
+              resumeFileType: body.resumeFileType,
+              resumeDataUrl: body.resumeDataUrl,
+              coverLetter: body.coverLetter,
+              submittedAt,
+            });
+          } catch (emailErr) {
+            console.error("[POST /api/careers/applications Notification Warning]:", emailErr);
+          }
 
           return new Response(JSON.stringify({ success: true, id }), {
             status: 201,
