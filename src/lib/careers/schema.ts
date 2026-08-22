@@ -52,12 +52,16 @@ export async function initCareerDatabase(): Promise<void> {
         resume_file_name TEXT,
         resume_file_size VARCHAR(50),
         resume_file_type VARCHAR(50),
+        resume_data_url TEXT,
         is_resume_built_live BOOLEAN DEFAULT false,
         cover_letter TEXT,
+        internal_notes TEXT,
         consent_given BOOLEAN DEFAULT true,
         status VARCHAR(50) DEFAULT 'New',
         submitted_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
+      ALTER TABLE career_applications ADD COLUMN IF NOT EXISTS resume_data_url TEXT;
+      ALTER TABLE career_applications ADD COLUMN IF NOT EXISTS internal_notes TEXT;
     `);
 
     // 3. Seed initial jobs if table is empty

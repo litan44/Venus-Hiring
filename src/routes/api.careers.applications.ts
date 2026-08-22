@@ -17,9 +17,10 @@ export const Route = createFileRoute("/api/careers/applications")({
               experience_years AS "experienceYears",
               linkedin_url AS "linkedinUrl", portfolio_url AS "portfolioUrl",
               resume_file_name AS "resumeFileName", resume_file_size AS "resumeFileSize",
-              resume_file_type AS "resumeFileType", is_resume_built_live AS "isResumeBuiltLive",
-              cover_letter AS "coverLetter", consent_given AS "consentGiven",
-              status, submitted_at AS "submittedAt"
+              resume_file_type AS "resumeFileType", resume_data_url AS "resumeDataUrl",
+              is_resume_built_live AS "isResumeBuiltLive",
+              cover_letter AS "coverLetter", internal_notes AS "internalNotes",
+              consent_given AS "consentGiven", status, submitted_at AS "submittedAt"
             FROM career_applications ORDER BY submitted_at DESC;`
           );
 
@@ -47,9 +48,9 @@ export const Route = createFileRoute("/api/careers/applications")({
             `INSERT INTO career_applications (
               id, job_id, job_title, first_name, last_name, email, phone, location,
               current_title, current_company, experience_years, linkedin_url, portfolio_url,
-              resume_file_name, resume_file_size, resume_file_type, is_resume_built_live,
-              cover_letter, consent_given, status, submitted_at
-            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21);`,
+              resume_file_name, resume_file_size, resume_file_type, resume_data_url,
+              is_resume_built_live, cover_letter, consent_given, status, submitted_at
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22);`,
             [
               id,
               body.jobId,
@@ -67,6 +68,7 @@ export const Route = createFileRoute("/api/careers/applications")({
               body.resumeFileName || null,
               body.resumeFileSize || null,
               body.resumeFileType || null,
+              body.resumeDataUrl || null,
               body.isResumeBuiltLive || false,
               body.coverLetter || null,
               body.consentGiven,
