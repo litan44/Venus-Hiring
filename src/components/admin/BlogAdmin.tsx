@@ -31,7 +31,20 @@ import {
   Layers,
   HelpCircle,
   ExternalLink,
+  LogOut,
+  Lock,
+  EyeOff,
+  Mail,
+  XCircle,
+  Shield,
 } from "lucide-react";
+import {
+  isBlogAdminAuthenticated,
+  getBlogAdminSession,
+  loginBlogAdmin,
+  logoutBlogAdmin,
+  type BlogAdminSession,
+} from "@/lib/blog-auth";
 import { useBlogs, type BlogPost, type ContentBlock, type BlogFaq } from "@/lib/blog-store";
 import { cn } from "@/lib/utils";
 
@@ -51,6 +64,34 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
     addCategory,
     deleteCategory,
   } = useBlogs();
+
+  // Authentication State
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => isBlogAdminAuthenticated());
+  const [adminSession, setAdminSession] = useState<BlogAdminSession | null>(() => getBlogAdminSession());
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [loginError, setLoginError] = useState("");
+
+  const handleLoginSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoginError("");
+    const res = loginBlogAdmin(loginEmail, loginPassword);
+    if (res.success && res.session) {
+      setIsLoggedIn(true);
+      setAdminSession(res.session);
+    } else {
+      setLoginError(res.error || "Invalid credentials. Please try again.");
+    }
+  };
+
+  const handleLogout = () => {
+    logoutBlogAdmin();
+    setIsLoggedIn(false);
+    setAdminSession(null);
+    setLoginEmail("");
+    setLoginPassword("");
+  };
 
   const [activeTab, setActiveTab] = useState<"list" | "editor" | "categories">("list");
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -369,6 +410,104 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
 
   if (!isOpen) return null;
 
+  // LOGIN PROTECTION CHECK FOR BLOG ADMIN
+  if (!isLoggedIn) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-xl animate-in fade-in duration-200">
+        <div className="relative w-full max-w-md space-y-6 rounded-3xl border border-border bg-card p-8 sm:p-10 shadow-2xl text-left">
+          <div className="flex justify-end">
+            <button
+              type="button"
+              onClick={onClose}
+              className="rounded-full p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+
+          <div className="text-center space-y-2">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-brand/10 text-brand shadow-soft border border-brand/20">
+              <Shield className="h-6 w-6" />
+            </div>
+            <h2 className="font-display text-2xl font-bold text-foreground tracking-tight">
+              Blog Admin Login
+            </h2>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Enter your credentials to access the Blog Content Management System.
+            </p>
+          </div>
+
+          {loginError && (
+            <div className="flex items-center gap-2 rounded-xl border border-destructive/30 bg-destructive/10 p-3 text-xs font-bold text-destructive">
+              <XCircle className="h-4 w-4 shrink-0" />
+              <span>{loginError}</span>
+            </div>
+          )}
+
+          <form onSubmit={handleLoginSubmit} className="space-y-4">
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground block">
+                Email / Username
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground">
+                  <Mail className="h-4 w-4" />
+                </div>
+                <input
+                  type="text"
+                  required
+                  value={loginEmail}
+                  onChange={(e) => setLoginEmail(e.target.value)}
+                  placeholder="admin@example.com"
+                  className="w-full rounded-xl border border-border bg-background py-2.5 pl-10 pr-4 text-xs font-medium text-foreground focus:border-brand focus:outline-none"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground block">
+                Password
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground">
+                  <Lock className="h-4 w-4" />
+                </div>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  required
+                  value={loginPassword}
+                  onChange={(e) => setLoginPassword(e.target.value)}
+                  placeholder="••••••••••••"
+                  className="w-full rounded-xl border border-border bg-background py-2.5 pl-10 pr-10 text-xs font-medium text-foreground focus:border-brand focus:outline-none"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground hover:text-foreground"
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-brand py-3 text-xs font-bold text-white shadow-brand hover:brightness-110 transition-all mt-2"
+            >
+              <Lock className="h-4 w-4" /> Access Blog Admin Panel
+            </button>
+          </form>
+
+          <div className="border-t border-border/60 pt-4 text-center">
+            <p className="text-[11px] text-muted-foreground font-mono">
+              Protected Area • Authorized Personnel Only
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const filteredBlogs = blogs.filter((b) => {
     const matchesSearch =
       b.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -436,8 +575,16 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
             </button>
             <button
               type="button"
+              onClick={handleLogout}
+              className="inline-flex items-center gap-1.5 rounded-xl border border-destructive/30 bg-destructive/10 px-3 py-2 text-xs font-bold text-destructive hover:bg-destructive hover:text-white transition-all shadow-soft ml-1"
+              title="Logout from Blog Admin"
+            >
+              <LogOut className="h-3.5 w-3.5" /> Logout
+            </button>
+            <button
+              type="button"
               onClick={onClose}
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-background text-muted-foreground hover:bg-brand hover:text-white transition-colors ml-2"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-background text-muted-foreground hover:bg-brand hover:text-white transition-colors ml-1"
             >
               <X className="h-5 w-5" />
             </button>
