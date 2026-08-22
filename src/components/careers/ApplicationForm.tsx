@@ -1,4 +1,5 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
+import { Link } from "@tanstack/react-router";
 import {
   ArrowLeft,
   Upload,
@@ -290,13 +291,14 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
         <div className="shell relative w-full py-28 sm:py-32 lg:py-36">
           <div className="max-w-4xl text-left">
             {/* Back Button */}
-            <a
-              href={`/careers/${job.slug}`}
+            <Link
+              to="/careers/$slug"
+              params={{ slug: job.slug }}
               className="inline-flex items-center gap-2 text-xs font-semibold text-white/70 hover:text-white transition-colors mb-6"
             >
               <ArrowLeft className="h-3.5 w-3.5" />
               Back to Position Details
-            </a>
+            </Link>
 
             {/* Department Tag */}
             <div className="mb-4 flex flex-wrap items-center gap-3">

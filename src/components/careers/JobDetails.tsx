@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { MapPin, Briefcase, GraduationCap, DollarSign, Calendar, ArrowLeft, ArrowRight, CheckCircle2, ShieldCheck, Clock } from "lucide-react";
 import heroOfficeImg from "@/assets/hero-office.jpg";
 import type { JobItem } from "./mockJobs";
@@ -50,13 +51,13 @@ export function JobDetails({ job }: JobDetailsProps) {
         <div className="shell relative w-full py-28 sm:py-32 lg:py-36">
           <div className="max-w-4xl text-left">
             {/* Back Button */}
-            <a
-              href="/careers"
+            <Link
+              to="/careers"
               className="inline-flex items-center gap-2 text-xs font-semibold text-white/70 hover:text-white transition-colors mb-6"
             >
               <ArrowLeft className="h-3.5 w-3.5" />
               Back to Open Positions
-            </a>
+            </Link>
 
             {/* Department Tag */}
             <div className="mb-4 flex flex-wrap items-center gap-3">
@@ -228,13 +229,14 @@ export function JobDetails({ job }: JobDetailsProps) {
               </div>
 
               <div className="pt-2">
-                <a
-                  href={`/careers/${job.slug}/apply`}
+                <Link
+                  to="/careers/$slug/apply"
+                  params={{ slug: job.slug }}
                   className="group flex h-13 w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-bold text-primary-foreground shadow-brand transition-all duration-300 hover:brightness-110 active:translate-y-0"
                 >
                   APPLY FOR THIS POSITION
                   <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                </a>
+                </Link>
               </div>
 
               <div className="border-t border-border/60 pt-6 space-y-3 text-xs text-muted-foreground">
