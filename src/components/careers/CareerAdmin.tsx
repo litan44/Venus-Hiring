@@ -30,7 +30,17 @@ import {
   ChevronRight,
   ArrowLeft,
   Layers,
+  LogOut,
+  Lock,
+  EyeOff,
 } from "lucide-react";
+import {
+  isAuthenticated,
+  getAdminSession,
+  loginAdmin,
+  logoutAdmin,
+  type AdminUserSession,
+} from "@/lib/careers/auth";
 import {
   fetchAllAdminJobs,
   createAdminJob,
@@ -57,6 +67,35 @@ export function CareerAdmin() {
   const [userRole, setUserRole] = useState<
     "Super Admin" | "HR Manager" | "Recruiter" | "Viewer"
   >("Super Admin");
+
+  // Authentication State
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => isAuthenticated());
+  const [adminSession, setAdminSession] = useState<AdminUserSession | null>(() => getAdminSession());
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [loginError, setLoginError] = useState("");
+
+  const handleLoginSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoginError("");
+    const res = loginAdmin(loginEmail, loginPassword);
+    if (res.success && res.session) {
+      setIsLoggedIn(true);
+      setAdminSession(res.session);
+      setUserRole(res.session.role);
+    } else {
+      setLoginError(res.error || "Invalid credentials.");
+    }
+  };
+
+  const handleLogout = () => {
+    logoutAdmin();
+    setIsLoggedIn(false);
+    setAdminSession(null);
+    setLoginEmail("");
+    setLoginPassword("");
+  };
 
   // Filters State
   const [searchQuery, setSearchQuery] = useState("");
@@ -378,6 +417,94 @@ export function CareerAdmin() {
     return matchesSearch && matchesStatus && matchesPos;
   });
 
+  // LOGIN PROTECTION CHECK
+  if (!isLoggedIn) {
+    return (
+      <div className="flex min-h-[65vh] items-center justify-center py-12 px-4 text-left">
+        <div className="w-full max-w-md space-y-6 rounded-3xl border border-border/80 bg-card p-8 sm:p-10 shadow-lift">
+          <div className="text-center space-y-2">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-brand/10 text-brand shadow-soft">
+              <Shield className="h-6 w-6" />
+            </div>
+            <h2 className="font-display text-2xl font-bold text-foreground tracking-tight">
+              Career Admin Portal
+            </h2>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Enter your recruitment administrator credentials to access management controls.
+            </p>
+          </div>
+
+          {loginError && (
+            <div className="flex items-center gap-2 rounded-xl border border-destructive/30 bg-destructive/10 p-3 text-xs font-bold text-destructive">
+              <XCircle className="h-4 w-4 shrink-0" />
+              <span>{loginError}</span>
+            </div>
+          )}
+
+          <form onSubmit={handleLoginSubmit} className="space-y-4">
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground block">
+                Email / Username
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground">
+                  <Mail className="h-4 w-4" />
+                </div>
+                <input
+                  type="text"
+                  required
+                  value={loginEmail}
+                  onChange={(e) => setLoginEmail(e.target.value)}
+                  placeholder="admin@venusconsultancy.com"
+                  className="w-full rounded-xl border border-border bg-background py-2.5 pl-10 pr-4 text-xs font-medium text-foreground focus:border-brand focus:outline-none"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground block">
+                Password
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground">
+                  <Lock className="h-4 w-4" />
+                </div>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  required
+                  value={loginPassword}
+                  onChange={(e) => setLoginPassword(e.target.value)}
+                  placeholder="••••••••••••"
+                  className="w-full rounded-xl border border-border bg-background py-2.5 pl-10 pr-10 text-xs font-medium text-foreground focus:border-brand focus:outline-none"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground hover:text-foreground"
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-brand py-3 text-xs font-bold text-white shadow-brand hover:brightness-110 transition-all mt-2"
+            >
+              <Lock className="h-4 w-4" /> Access Admin Dashboard
+            </button>
+          </form>
+
+          <div className="rounded-xl border border-brand/20 bg-brand-soft/20 p-3 text-center">
+            <p className="text-[11px] font-medium text-brand">
+              Default Admin: <strong className="font-bold">admin@venusconsultancy.com</strong> / <strong className="font-bold">VenusAdmin2026!</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-10 text-left">
       {/* Top Header Role Bar */}
@@ -390,26 +517,44 @@ export function CareerAdmin() {
             <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground block">
               Recruitment Access Level
             </span>
-            <span className="text-sm font-bold text-foreground">{userRole}</span>
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-bold text-foreground">{userRole}</span>
+              {adminSession?.email && (
+                <span className="text-xs text-muted-foreground font-medium hidden md:inline">
+                  ({adminSession.email})
+                </span>
+              )}
+            </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold text-muted-foreground hidden sm:inline">Role View:</span>
-          {(["Super Admin", "HR Manager", "Recruiter", "Viewer"] as const).map((role) => (
-            <button
-              key={role}
-              type="button"
-              onClick={() => setUserRole(role)}
-              className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
-                userRole === role
-                  ? "bg-brand text-white shadow-soft"
-                  : "bg-porcelain text-foreground hover:bg-accent border border-border/60"
-              }`}
-            >
-              {role}
-            </button>
-          ))}
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5">
+            <span className="text-xs font-semibold text-muted-foreground hidden sm:inline">Role View:</span>
+            {(["Super Admin", "HR Manager", "Recruiter", "Viewer"] as const).map((role) => (
+              <button
+                key={role}
+                type="button"
+                onClick={() => setUserRole(role)}
+                className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
+                  userRole === role
+                    ? "bg-brand text-white shadow-soft"
+                    : "bg-porcelain text-foreground hover:bg-accent border border-border/60"
+                }`}
+              >
+                {role}
+              </button>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="inline-flex items-center gap-1.5 rounded-xl border border-destructive/30 bg-destructive/10 px-3.5 py-1.5 text-xs font-bold text-destructive hover:bg-destructive hover:text-white transition-all shadow-soft"
+            title="Logout from Career Admin Session"
+          >
+            <LogOut className="h-3.5 w-3.5" /> Logout
+          </button>
         </div>
       </div>
 
