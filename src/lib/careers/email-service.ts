@@ -150,11 +150,16 @@ Recipients: ${TARGET_RECIPIENTS.join(", ")}
 
   try {
     if (host && user && pass) {
+      console.log(`[Email Service START] Initiating SMTP connection to ${host}:${port} for recipients: ${TARGET_RECIPIENTS.join(", ")}`);
+
       const transporter = nodemailer.createTransport({
         host,
         port,
         secure: port === 465,
         auth: { user, pass },
+        tls: {
+          rejectUnauthorized: false,
+        },
       });
 
       const attachments: any[] = [];
@@ -168,7 +173,7 @@ Recipients: ${TARGET_RECIPIENTS.join(", ")}
         }
       }
 
-      await transporter.sendMail({
+      const info = await transporter.sendMail({
         from: `"Venus Hiring Careers" <${user}>`,
         to: TARGET_RECIPIENTS.join(", "),
         subject,
@@ -177,14 +182,14 @@ Recipients: ${TARGET_RECIPIENTS.join(", ")}
         attachments,
       });
 
-      console.log(`[Email Service] Career application notification email successfully sent to ${TARGET_RECIPIENTS.join(", ")}`);
+      console.log(`[Email Service SUCCESS] Message ID: ${info.messageId} | Response: ${info.response} | Recipients: ${TARGET_RECIPIENTS.join(", ")}`);
       return true;
     } else {
-      console.log(`[Email Service Notice] SMTP credentials not configured in environment (SMTP_HOST/SMTP_USER/SMTP_PASS). Email content generated for recipients ${TARGET_RECIPIENTS.join(", ")}: Subject="${subject}"`);
+      console.warn(`[Email Service Warning] Missing SMTP credentials: host=${Boolean(host)}, user=${Boolean(user)}, pass=${Boolean(pass)}. Email recipients: ${TARGET_RECIPIENTS.join(", ")}`);
       return false;
     }
-  } catch (err) {
-    console.error(`[Email Service Error] Failed to send email to ${TARGET_RECIPIENTS.join(", ")}:`, err);
+  } catch (err: any) {
+    console.error(`[Email Service Error] Failed to deliver email to ${TARGET_RECIPIENTS.join(", ")}:`, err?.message || err);
     return false;
   }
 }
