@@ -27,6 +27,8 @@ import { Route as IndustriesIndexRouteImport } from './routes/industries.index'
 import { Route as IndustriesSlugRouteImport } from './routes/industries.$slug'
 import { Route as ServicesIndexRouteImport } from './routes/services.index'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
+import { Route as ApiCareersApplicationsRouteImport } from './routes/api.careers.applications'
+import { Route as ApiCareersJobsRouteImport } from './routes/api.careers.jobs'
 import { Route as CareersSlugApplyRouteImport } from './routes/careers.$slug.apply'
 
 const IndexRoute = IndexRouteImport.update({
@@ -119,6 +121,16 @@ const ServicesSlugRoute = ServicesSlugRouteImport.update({
   path: '/services/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiCareersApplicationsRoute = ApiCareersApplicationsRouteImport.update({
+  id: '/api/careers/applications',
+  path: '/api/careers/applications',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCareersJobsRoute = ApiCareersJobsRouteImport.update({
+  id: '/api/careers/jobs',
+  path: '/api/careers/jobs',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CareersSlugApplyRoute = CareersSlugApplyRouteImport.update({
   id: '/apply',
   path: '/apply',
@@ -144,6 +156,8 @@ export interface FileRoutesByFullPath {
   '/careers/': typeof CareersIndexRoute
   '/industries/': typeof IndustriesIndexRoute
   '/services/': typeof ServicesIndexRoute
+  '/api/careers/applications': typeof ApiCareersApplicationsRoute
+  '/api/careers/jobs': typeof ApiCareersJobsRoute
   '/careers/$slug/apply': typeof CareersSlugApplyRoute
 }
 export interface FileRoutesByTo {
@@ -165,6 +179,8 @@ export interface FileRoutesByTo {
   '/careers': typeof CareersIndexRoute
   '/industries': typeof IndustriesIndexRoute
   '/services': typeof ServicesIndexRoute
+  '/api/careers/applications': typeof ApiCareersApplicationsRoute
+  '/api/careers/jobs': typeof ApiCareersJobsRoute
   '/careers/$slug/apply': typeof CareersSlugApplyRoute
 }
 export interface FileRoutesById {
@@ -187,6 +203,8 @@ export interface FileRoutesById {
   '/careers/': typeof CareersIndexRoute
   '/industries/': typeof IndustriesIndexRoute
   '/services/': typeof ServicesIndexRoute
+  '/api/careers/applications': typeof ApiCareersApplicationsRoute
+  '/api/careers/jobs': typeof ApiCareersJobsRoute
   '/careers/$slug/apply': typeof CareersSlugApplyRoute
 }
 export interface FileRouteTypes {
@@ -210,6 +228,8 @@ export interface FileRouteTypes {
     | '/careers/'
     | '/industries/'
     | '/services/'
+    | '/api/careers/applications'
+    | '/api/careers/jobs'
     | '/careers/$slug/apply'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -231,6 +251,8 @@ export interface FileRouteTypes {
     | '/careers'
     | '/industries'
     | '/services'
+    | '/api/careers/applications'
+    | '/api/careers/jobs'
     | '/careers/$slug/apply'
   id:
     | '__root__'
@@ -252,6 +274,8 @@ export interface FileRouteTypes {
     | '/careers/'
     | '/industries/'
     | '/services/'
+    | '/api/careers/applications'
+    | '/api/careers/jobs'
     | '/careers/$slug/apply'
   fileRoutesById: FileRoutesById
 }
@@ -274,6 +298,8 @@ export interface RootRouteChildren {
   CareersIndexRoute: typeof CareersIndexRoute
   IndustriesIndexRoute: typeof IndustriesIndexRoute
   ServicesIndexRoute: typeof ServicesIndexRoute
+  ApiCareersApplicationsRoute: typeof ApiCareersApplicationsRoute
+  ApiCareersJobsRoute: typeof ApiCareersJobsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -404,6 +430,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/careers/applications': {
+      id: '/api/careers/applications'
+      path: '/api/careers/applications'
+      fullPath: '/api/careers/applications'
+      preLoaderRoute: typeof ApiCareersApplicationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/careers/jobs': {
+      id: '/api/careers/jobs'
+      path: '/api/careers/jobs'
+      fullPath: '/api/careers/jobs'
+      preLoaderRoute: typeof ApiCareersJobsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/careers/$slug/apply': {
       id: '/careers/$slug/apply'
       path: '/apply'
@@ -445,6 +485,8 @@ const rootRouteChildren: RootRouteChildren = {
   CareersIndexRoute: CareersIndexRoute,
   IndustriesIndexRoute: IndustriesIndexRoute,
   ServicesIndexRoute: ServicesIndexRoute,
+  ApiCareersApplicationsRoute: ApiCareersApplicationsRoute,
+  ApiCareersJobsRoute: ApiCareersJobsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

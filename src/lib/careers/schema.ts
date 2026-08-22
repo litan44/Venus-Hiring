@@ -1,6 +1,11 @@
 import { pool } from "@/lib/db";
+import { MOCK_JOBS } from "@/components/careers/mockJobs";
+
+let isCareerDbInitialized = false;
 
 export async function initCareerDatabase(): Promise<void> {
+  if (isCareerDbInitialized) return;
+
   let client;
   try {
     client = await pool.connect();
@@ -23,6 +28,7 @@ export async function initCareerDatabase(): Promise<void> {
         nice_to_have TEXT,
         benefits TEXT,
         status VARCHAR(50) DEFAULT 'Published',
+        posted_date VARCHAR(50) DEFAULT 'Just now',
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `);
@@ -54,9 +60,43 @@ export async function initCareerDatabase(): Promise<void> {
       );
     `);
 
-    console.log("[Career DB] Tables created/verified successfully.");
+    // 3. Seed initial jobs if table is empty
+    const checkJobs = await client.query("SELECT COUNT(*) FROM career_jobs;");
+    if (parseInt(checkJobs.rows[0].count, 10) === 0) {
+      for (const j of MOCK_JOBS) {
+        await client.query(
+          `INSERT INTO career_jobs (
+            id, title, slug, department, location, employment_type, experience_level,
+            salary_range, description, about_role, responsibilities, qualifications,
+            nice_to_have, benefits, status, posted_date
+          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
+          ON CONFLICT (id) DO NOTHING;`,
+          [
+            j.id,
+            j.title,
+            j.slug,
+            j.department,
+            j.location,
+            j.employmentType,
+            j.experienceLevel,
+            j.salaryRange || null,
+            j.description,
+            j.aboutRole || null,
+            j.responsibilities ? JSON.stringify(j.responsibilities) : null,
+            j.qualifications ? JSON.stringify(j.qualifications) : null,
+            j.niceToHave ? JSON.stringify(j.niceToHave) : null,
+            j.benefits ? JSON.stringify(j.benefits) : null,
+            "Published",
+            j.postedDate,
+          ]
+        );
+      }
+    }
+
+    isCareerDbInitialized = true;
+    console.log("[PostgreSQL] Career Panel database tables initialized successfully.");
   } catch (err) {
-    console.error("[Career DB Init Warning]:", err);
+    console.error("[PostgreSQL Career Init Warning]:", err);
   } finally {
     if (client) client.release();
   }

@@ -1,0 +1,92 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { pool } from "@/lib/db";
+import { initCareerDatabase } from "@/lib/careers/schema";
+
+export const Route = createFileRoute("/api/careers/applications")({
+  server: {
+    handlers: {
+      GET: async () => {
+        try {
+          await initCareerDatabase();
+          const res = await pool.query(
+            `SELECT 
+              id, job_id AS "jobId", job_title AS "jobTitle",
+              first_name AS "firstName", last_name AS "lastName",
+              email, phone, location,
+              current_title AS "currentTitle", current_company AS "currentCompany",
+              experience_years AS "experienceYears",
+              linkedin_url AS "linkedinUrl", portfolio_url AS "portfolioUrl",
+              resume_file_name AS "resumeFileName", resume_file_size AS "resumeFileSize",
+              resume_file_type AS "resumeFileType", is_resume_built_live AS "isResumeBuiltLive",
+              cover_letter AS "coverLetter", consent_given AS "consentGiven",
+              status, submitted_at AS "submittedAt"
+            FROM career_applications ORDER BY submitted_at DESC;`
+          );
+
+          return new Response(JSON.stringify(res.rows), {
+            headers: { "Content-Type": "application/json" },
+          });
+        } catch (err) {
+          console.error("GET /api/careers/applications error:", err);
+          return new Response(JSON.stringify({ error: "Failed to fetch applications" }), {
+            status: 500,
+            headers: { "Content-Type": "application/json" },
+          });
+        }
+      },
+
+      POST: async ({ request }) => {
+        try {
+          await initCareerDatabase();
+          const body = await request.json();
+
+          const id = `app_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+          const submittedAt = new Date().toISOString();
+
+          await pool.query(
+            `INSERT INTO career_applications (
+              id, job_id, job_title, first_name, last_name, email, phone, location,
+              current_title, current_company, experience_years, linkedin_url, portfolio_url,
+              resume_file_name, resume_file_size, resume_file_type, is_resume_built_live,
+              cover_letter, consent_given, status, submitted_at
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21);`,
+            [
+              id,
+              body.jobId,
+              body.jobTitle,
+              body.firstName,
+              body.lastName,
+              body.email,
+              body.phone,
+              body.location || null,
+              body.currentTitle || null,
+              body.currentCompany || null,
+              body.experienceYears,
+              body.linkedinUrl || null,
+              body.portfolioUrl || null,
+              body.resumeFileName || null,
+              body.resumeFileSize || null,
+              body.resumeFileType || null,
+              body.isResumeBuiltLive || false,
+              body.coverLetter || null,
+              body.consentGiven,
+              "New",
+              submittedAt,
+            ]
+          );
+
+          return new Response(JSON.stringify({ success: true, id }), {
+            status: 201,
+            headers: { "Content-Type": "application/json" },
+          });
+        } catch (err) {
+          console.error("POST /api/careers/applications error:", err);
+          return new Response(JSON.stringify({ error: "Failed to submit application" }), {
+            status: 500,
+            headers: { "Content-Type": "application/json" },
+          });
+        }
+      },
+    },
+  },
+});
