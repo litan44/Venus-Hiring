@@ -79,9 +79,10 @@ export const Route = createFileRoute("/api/careers/applications")({
           );
 
           // Await automated email notification with explicit [CAREER API] production logging
+          let emailDetails: { success: boolean; messageId?: string; response?: string; error?: string } = { success: false };
           try {
             console.log("[CAREER API] About to send notification email", { id, jobTitle: body.jobTitle, candidateEmail: body.email });
-            const emailSuccess = await sendApplicationNotificationEmail({
+            emailDetails = await sendApplicationNotificationEmail({
               id,
               jobId: body.jobId,
               jobTitle: body.jobTitle,
@@ -103,19 +104,31 @@ export const Route = createFileRoute("/api/careers/applications")({
               submittedAt,
             });
 
-            if (emailSuccess) {
-              console.log("[CAREER API] Notification email completed");
+            if (emailDetails.success) {
+              console.log(`[CAREER API] Notification email completed | Message ID: ${emailDetails.messageId} | Response: ${emailDetails.response}`);
             } else {
-              console.error("[CAREER API] Email failed: sendApplicationNotificationEmail returned false (check SMTP credentials or transport configuration)");
+              console.error("[CAREER API] Email failed:", emailDetails.error);
             }
           } catch (emailErr: any) {
             console.error("[CAREER API] Email failed:", emailErr?.message || emailErr);
+            emailDetails = { success: false, error: emailErr?.message || String(emailErr) };
           }
 
-          return new Response(JSON.stringify({ success: true, id }), {
-            status: 201,
-            headers: { "Content-Type": "application/json" },
-          });
+          return new Response(
+            JSON.stringify({
+              success: true,
+              id,
+              submittedAt,
+              emailStatus: emailDetails.success ? "DELIVERED" : "FAILED",
+              emailMessageId: emailDetails.messageId || null,
+              emailSmtpResponse: emailDetails.response || null,
+              recipients: ["jivan@venushiring.com", "subham@venushiring.ca"],
+            }),
+            {
+              status: 201,
+              headers: { "Content-Type": "application/json" },
+            }
+          );
         } catch (err) {
           console.error("POST /api/careers/applications error:", err);
           return new Response(JSON.stringify({ error: "Failed to submit application" }), {

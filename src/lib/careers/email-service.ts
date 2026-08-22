@@ -7,7 +7,14 @@ const TARGET_RECIPIENTS = process.env.CAREER_NOTIFICATION_EMAIL
   ? process.env.CAREER_NOTIFICATION_EMAIL.split(",").map((s) => s.trim())
   : DEFAULT_RECIPIENTS;
 
-export async function sendApplicationNotificationEmail(app: Partial<CareerApplication>): Promise<boolean> {
+export interface EmailSendResult {
+  success: boolean;
+  messageId?: string;
+  response?: string;
+  error?: string;
+}
+
+export async function sendApplicationNotificationEmail(app: Partial<CareerApplication>): Promise<EmailSendResult> {
   const host = process.env.SMTP_HOST || process.env.EMAIL_SERVER_HOST;
   const port = parseInt(process.env.SMTP_PORT || process.env.EMAIL_SERVER_PORT || "465", 10);
   const user = process.env.SMTP_USER || process.env.EMAIL_SERVER_USER || process.env.SMTP_FROM;
@@ -167,7 +174,6 @@ Recipients: ${TARGET_RECIPIENTS.join(", ")}
         const matches = app.resumeDataUrl.match(/^data:(.+);base64,(.+)$/);
         if (matches && matches[2]) {
           const buffer = Buffer.from(matches[2], "base64");
-          // Only attach if under 2.5MB to ensure lightweight transmission and avoid spam filter rejections
           if (buffer.length < 2.5 * 1024 * 1024) {
             attachments.push({
               filename: app.resumeFileName,
@@ -187,13 +193,25 @@ Recipients: ${TARGET_RECIPIENTS.join(", ")}
       });
 
       console.log(`[Email Service SUCCESS] Message ID: ${info.messageId} | Response: ${info.response} | Recipients: ${TARGET_RECIPIENTS.join(", ")}`);
-      return true;
+      return {
+        success: true,
+        messageId: info.messageId,
+        response: info.response,
+      };
     } else {
-      console.warn(`[Email Service Warning] Missing SMTP credentials: host=${Boolean(host)}, user=${Boolean(user)}, pass=${Boolean(pass)}. Email recipients: ${TARGET_RECIPIENTS.join(", ")}`);
-      return false;
+      const warnMsg = `Missing SMTP credentials: host=${Boolean(host)}, user=${Boolean(user)}, pass=${Boolean(pass)}`;
+      console.warn(`[Email Service Warning] ${warnMsg}. Recipients: ${TARGET_RECIPIENTS.join(", ")}`);
+      return {
+        success: false,
+        error: warnMsg,
+      };
     }
   } catch (err: any) {
-    console.error(`[Email Service Error] Failed to deliver email to ${TARGET_RECIPIENTS.join(", ")}:`, err?.message || err);
-    return false;
+    const errorStr = err?.message || String(err);
+    console.error(`[Email Service Error] Failed to deliver email to ${TARGET_RECIPIENTS.join(", ")}:`, errorStr);
+    return {
+      success: false,
+      error: errorStr,
+    };
   }
 }
