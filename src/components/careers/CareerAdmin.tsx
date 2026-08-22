@@ -494,12 +494,6 @@ export function CareerAdmin() {
               <Lock className="h-4 w-4" /> Access Admin Dashboard
             </button>
           </form>
-
-          <div className="rounded-xl border border-brand/20 bg-brand-soft/20 p-3 text-center">
-            <p className="text-[11px] font-medium text-brand">
-              Default Admin: <strong className="font-bold">admin@venusconsultancy.com</strong> / <strong className="font-bold">VenusAdmin2026!</strong>
-            </p>
-          </div>
         </div>
       </div>
     );

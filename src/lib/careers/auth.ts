@@ -57,7 +57,7 @@ export function loginAdmin(email: string, pass: string): { success: boolean; err
 
   return {
     success: false,
-    error: "Invalid email/username or password. Please check your credentials and try again.",
+    error: "Invalid credentials. Please try again.",
   };
 }
 
