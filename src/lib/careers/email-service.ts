@@ -1,13 +1,13 @@
 import nodemailer from "nodemailer";
 import type { CareerApplication } from "./applications";
 
-const TARGET_RECIPIENT = process.env.CAREER_NOTIFICATION_EMAIL || "jivan@venushiring.com";
+const TARGET_RECIPIENT = process.env.CAREER_NOTIFICATION_EMAIL || process.env.CONTACT_RECEIVER_EMAIL || "jivan@venushiring.com";
 
 export async function sendApplicationNotificationEmail(app: Partial<CareerApplication>): Promise<boolean> {
   const host = process.env.SMTP_HOST || process.env.EMAIL_SERVER_HOST;
-  const port = parseInt(process.env.SMTP_PORT || process.env.EMAIL_SERVER_PORT || "587", 10);
-  const user = process.env.SMTP_USER || process.env.EMAIL_SERVER_USER;
-  const pass = process.env.SMTP_PASS || process.env.EMAIL_SERVER_PASSWORD;
+  const port = parseInt(process.env.SMTP_PORT || process.env.EMAIL_SERVER_PORT || "465", 10);
+  const user = process.env.SMTP_USER || process.env.EMAIL_SERVER_USER || process.env.SMTP_FROM;
+  const pass = process.env.SMTP_PASS || process.env.SMTP_PASSWORD || process.env.EMAIL_SERVER_PASSWORD;
 
   const subject = `New Career Application Received - ${app.jobTitle || "Job Position"}`;
 
