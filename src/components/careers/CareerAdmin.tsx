@@ -28,6 +28,8 @@ import {
   Download,
   MessageSquare,
   ChevronRight,
+  ArrowLeft,
+  Layers,
 } from "lucide-react";
 import {
   fetchAllAdminJobs,
@@ -64,6 +66,30 @@ export function CareerAdmin() {
 
   const [appStatusFilter, setAppStatusFilter] = useState("all");
   const [appPosFilter, setAppPosFilter] = useState("all");
+
+  // ATS Job Selection State
+  const [selectedJobForApps, setSelectedJobForApps] = useState<AdminJobItem | null>(null);
+
+  // Helper to calculate job-specific pipeline stats
+  const getJobAppStats = (job: AdminJobItem) => {
+    const jobApps = applications.filter(
+      (a) =>
+        a.jobId === job.id ||
+        a.jobTitle.toLowerCase().trim() === job.title.toLowerCase().trim()
+    );
+    return {
+      total: jobApps.length,
+      newCount: jobApps.filter((a) => a.status === "New" || a.status === "Under Review").length,
+      reviewingCount: jobApps.filter((a) => a.status === "Under Review" || a.status === "Reviewing").length,
+      shortlistedCount: jobApps.filter((a) => a.status === "Shortlisted").length,
+      interviewCount: jobApps.filter(
+        (a) => a.status === "Interview Scheduled" || a.status === "Interview"
+      ).length,
+      hiredCount: jobApps.filter((a) => a.status === "Hired" || a.status === "Selected").length,
+      rejectedCount: jobApps.filter((a) => a.status === "Rejected").length,
+      apps: jobApps,
+    };
+  };
 
   // Modal States
   const [isJobModalOpen, setIsJobModalOpen] = useState(false);
@@ -687,111 +713,233 @@ export function CareerAdmin() {
           </div>
         )}
 
-        {/* TAB 2: APPLICATION MANAGEMENT & PIPELINE */}
+        {/* TAB 2: APPLICATION MANAGEMENT & PIPELINE (JOB-BASED ATS) */}
         {activeTab === "applications" && (
-          <div className="space-y-4">
-            {/* Filter Sub-bar */}
-            <div className="flex flex-wrap items-center gap-3 rounded-xl border border-border/60 bg-porcelain/40 p-3 text-xs">
-              <div className="flex items-center gap-1.5 font-bold text-muted-foreground uppercase text-[11px]">
-                <Filter className="h-3.5 w-3.5" /> Pipeline Filter:
-              </div>
+          <div className="space-y-6">
+            {/* VIEW 1: ALL JOBS OVERVIEW WITH APPLICANT PIPELINE STATS */}
+            {!selectedJobForApps ? (
+              <div className="space-y-6 text-left">
+                <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border/60 pb-4">
+                  <div>
+                    <h3 className="font-display text-lg font-bold text-foreground">Job-Based Candidate Management</h3>
+                    <p className="text-xs text-muted-foreground">Select a job posting below to review its dedicated candidate pipeline.</p>
+                  </div>
+                </div>
 
-              <select
-                value={appStatusFilter}
-                onChange={(e) => setAppStatusFilter(e.target.value)}
-                className="rounded-lg border border-border bg-background px-2.5 py-1 text-xs font-medium text-foreground"
-              >
-                <option value="all">All Pipeline Statuses</option>
-                <option value="New">New Application</option>
-                <option value="Under Review">Under Review</option>
-                <option value="Shortlisted">Shortlisted</option>
-                <option value="Interview Scheduled">Interview Scheduled</option>
-                <option value="Selected">Selected</option>
-                <option value="Hired">Hired</option>
-                <option value="Rejected">Rejected</option>
-              </select>
-            </div>
+                <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+                  {jobs.map((job) => {
+                    const stats = getJobAppStats(job);
+                    return (
+                      <div
+                        key={job.id}
+                        className="rounded-2xl border border-border bg-card p-6 shadow-soft space-y-4 hover:border-brand/40 transition-all"
+                      >
+                        <div className="flex items-start justify-between gap-3 border-b border-border/60 pb-4">
+                          <div>
+                            <span className="inline-flex rounded-md bg-brand-soft px-2.5 py-0.5 text-[11px] font-bold text-brand mb-1">
+                              {job.department}
+                            </span>
+                            <h4 className="font-display text-base font-bold text-foreground">{job.title}</h4>
+                            <p className="text-xs text-muted-foreground mt-0.5">
+                              {job.location} • {job.employmentType} • {job.workMode || "Hybrid"}
+                            </p>
+                          </div>
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs text-foreground">
-                <thead>
-                  <tr className="border-b border-border/80 uppercase tracking-wider text-[11px] text-muted-foreground font-semibold">
-                    <th className="py-3 px-4">Candidate Name</th>
-                    <th className="py-3 px-4">Position</th>
-                    <th className="py-3 px-4">Contact</th>
-                    <th className="py-3 px-4">Experience</th>
-                    <th className="py-3 px-4">Pipeline Status</th>
-                    <th className="py-3 px-4 text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border/60">
-                  {filteredApps.map((app) => (
-                    <tr key={app.id} className="hover:bg-porcelain/50 transition-colors">
-                      <td className="py-4 px-4 font-bold text-foreground">
-                        {app.firstName} {app.lastName}
-                      </td>
-                      <td className="py-4 px-4 text-muted-foreground max-w-[200px] truncate">
-                        {app.jobTitle}
-                      </td>
-                      <td className="py-4 px-4 text-muted-foreground">
-                        <div>{app.email}</div>
-                        <div className="text-[11px] text-muted-foreground/80">{app.phone}</div>
-                      </td>
-                      <td className="py-4 px-4 text-muted-foreground">{app.experienceYears}</td>
-                      <td className="py-4 px-4">
-                        <select
-                          value={app.status}
-                          onChange={(e) =>
-                            handleStatusChange(app.id, e.target.value as ApplicationStatus)
-                          }
-                          className="rounded-lg border border-border bg-background px-2.5 py-1 text-xs font-bold text-foreground focus:border-brand"
-                        >
-                          <option value="New">New Application</option>
-                          <option value="Under Review">Under Review</option>
-                          <option value="Shortlisted">Shortlisted</option>
-                          <option value="Interview Scheduled">Interview Scheduled</option>
-                          <option value="Selected">Selected</option>
-                          <option value="Hired">Hired</option>
-                          <option value="Rejected">Rejected</option>
-                        </select>
-                      </td>
-                      <td className="py-4 px-4 text-right">
-                        <div className="flex items-center justify-end gap-2">
+                          <div className="text-right shrink-0">
+                            <span className="inline-flex rounded-full bg-brand/10 border border-brand/20 px-3 py-1 text-xs font-bold text-brand">
+                              {stats.total} {stats.total === 1 ? "Candidate" : "Candidates"}
+                            </span>
+                            <div className="text-[11px] text-muted-foreground mt-1">
+                              Posted: {job.postedDate || "Recent"}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Pipeline Stage Summary Badges */}
+                        <div className="space-y-2">
+                          <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider block">
+                            Pipeline Summary
+                          </span>
+                          <div className="flex flex-wrap items-center gap-2 text-xs">
+                            <span className="inline-flex items-center gap-1 rounded-lg bg-blue-500/10 border border-blue-500/20 px-2.5 py-1 font-bold text-blue-600">
+                              New: {stats.newCount}
+                            </span>
+                            <span className="inline-flex items-center gap-1 rounded-lg bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 font-bold text-amber-600">
+                              Under Review: {stats.reviewingCount}
+                            </span>
+                            <span className="inline-flex items-center gap-1 rounded-lg bg-indigo-500/10 border border-indigo-500/20 px-2.5 py-1 font-bold text-indigo-600">
+                              Shortlisted: {stats.shortlistedCount}
+                            </span>
+                            <span className="inline-flex items-center gap-1 rounded-lg bg-purple-500/10 border border-purple-500/20 px-2.5 py-1 font-bold text-purple-600">
+                              Interview: {stats.interviewCount}
+                            </span>
+                            <span className="inline-flex items-center gap-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 font-bold text-emerald-600">
+                              Hired: {stats.hiredCount}
+                            </span>
+                            <span className="inline-flex items-center gap-1 rounded-lg bg-slate-500/10 border border-slate-500/20 px-2.5 py-1 font-bold text-slate-600">
+                              Rejected: {stats.rejectedCount}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="pt-2 flex items-center justify-between border-t border-border/60">
+                          <span className="text-xs text-muted-foreground">
+                            Deadline: {job.applicationDeadline || "Open until filled"}
+                          </span>
                           <button
                             type="button"
-                            onClick={() => {
-                              setSelectedApp(app);
-                              setCurrentNotes(app.internalNotes || "");
-                            }}
-                            className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-3 py-1 text-[11px] font-bold text-foreground hover:border-brand hover:text-brand"
+                            onClick={() => setSelectedJobForApps(job)}
+                            className="inline-flex items-center gap-1.5 rounded-full bg-brand px-5 py-2 text-xs font-bold text-white shadow-brand hover:brightness-110 transition-all"
                           >
-                            <Eye className="h-3.5 w-3.5" /> Details
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setInterviewModalApp(app);
-                              setInterviewForm({
-                                interviewDate: new Date().toISOString().split("T")[0],
-                                interviewTime: "10:00 AM",
-                                interviewType: "Video",
-                                interviewerName: "HR Lead",
-                                interviewNotes: "",
-                                interviewFeedback: "",
-                                interviewResult: "Pending",
-                              });
-                            }}
-                            className="inline-flex items-center gap-1 rounded-full bg-brand/10 border border-brand/20 px-3 py-1 text-[11px] font-bold text-brand hover:bg-brand hover:text-white"
-                          >
-                            <Calendar className="h-3.5 w-3.5" /> Interview
+                            View Candidates ({stats.total}) <ChevronRight className="h-3.5 w-3.5" />
                           </button>
                         </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : (
+              /* VIEW 2: SELECTED JOB DEDICATED CANDIDATE LIST & PIPELINE */
+              <div className="space-y-5 text-left">
+                {/* Back Button & Job Title Header */}
+                <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border/60 pb-4">
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedJobForApps(null)}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-4 py-2 text-xs font-bold text-foreground hover:bg-accent transition-colors shadow-soft"
+                    >
+                      <ArrowLeft className="h-4 w-4" /> Back to All Jobs
+                    </button>
+
+                    <div>
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-brand block">
+                        Candidate Pipeline For Position
+                      </span>
+                      <h3 className="font-display text-xl font-bold text-foreground">{selectedJobForApps.title}</h3>
+                    </div>
+                  </div>
+
+                  <span className="rounded-full bg-brand/10 border border-brand/20 px-3.5 py-1.5 text-xs font-bold text-brand">
+                    {getJobAppStats(selectedJobForApps).total} Total Applicants
+                  </span>
+                </div>
+
+                {/* Filter Sub-bar */}
+                <div className="flex flex-wrap items-center gap-3 rounded-xl border border-border/60 bg-porcelain/40 p-3 text-xs">
+                  <div className="flex items-center gap-1.5 font-bold text-muted-foreground uppercase text-[11px]">
+                    <Filter className="h-3.5 w-3.5" /> Pipeline Stage Filter:
+                  </div>
+
+                  <select
+                    value={appStatusFilter}
+                    onChange={(e) => setAppStatusFilter(e.target.value)}
+                    className="rounded-lg border border-border bg-background px-2.5 py-1 text-xs font-medium text-foreground"
+                  >
+                    <option value="all">All Pipeline Stages</option>
+                    <option value="New">New Application</option>
+                    <option value="Under Review">Under Review</option>
+                    <option value="Shortlisted">Shortlisted</option>
+                    <option value="Interview Scheduled">Interview Scheduled</option>
+                    <option value="Selected">Selected</option>
+                    <option value="Hired">Hired</option>
+                    <option value="Rejected">Rejected</option>
+                  </select>
+                </div>
+
+                {/* Filtered Applications Table for Selected Job */}
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-xs text-foreground">
+                    <thead>
+                      <tr className="border-b border-border/80 uppercase tracking-wider text-[11px] text-muted-foreground font-semibold">
+                        <th className="py-3 px-4">Candidate Name</th>
+                        <th className="py-3 px-4">Contact Details</th>
+                        <th className="py-3 px-4">Experience</th>
+                        <th className="py-3 px-4">Applied Date</th>
+                        <th className="py-3 px-4">Pipeline Status</th>
+                        <th className="py-3 px-4 text-right">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border/60">
+                      {getJobAppStats(selectedJobForApps)
+                        .apps.filter((a) => appStatusFilter === "all" || a.status === appStatusFilter)
+                        .map((app) => (
+                          <tr key={app.id} className="hover:bg-porcelain/50 transition-colors">
+                            <td className="py-4 px-4 font-bold text-foreground">
+                              {app.firstName} {app.lastName}
+                            </td>
+                            <td className="py-4 px-4 text-muted-foreground">
+                              <div>{app.email}</div>
+                              <div className="text-[11px] text-muted-foreground/80">{app.phone}</div>
+                            </td>
+                            <td className="py-4 px-4 text-muted-foreground">{app.experienceYears}</td>
+                            <td className="py-4 px-4 text-muted-foreground">
+                              {new Date(app.submittedAt).toLocaleDateString()}
+                            </td>
+                            <td className="py-4 px-4">
+                              <select
+                                value={app.status}
+                                onChange={(e) =>
+                                  handleStatusChange(app.id, e.target.value as ApplicationStatus)
+                                }
+                                className="rounded-lg border border-border bg-background px-2.5 py-1 text-xs font-bold text-foreground focus:border-brand"
+                              >
+                                <option value="New">New Application</option>
+                                <option value="Under Review">Under Review</option>
+                                <option value="Shortlisted">Shortlisted</option>
+                                <option value="Interview Scheduled">Interview Scheduled</option>
+                                <option value="Selected">Selected</option>
+                                <option value="Hired">Hired</option>
+                                <option value="Rejected">Rejected</option>
+                              </select>
+                            </td>
+                            <td className="py-4 px-4 text-right">
+                              <div className="flex items-center justify-end gap-2">
+                                <button
+                                  type="button"
+                                  onClick={() => handleViewResume(app)}
+                                  className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-3 py-1 text-[11px] font-bold text-foreground hover:border-brand hover:text-brand"
+                                >
+                                  <Eye className="h-3.5 w-3.5" /> Resume
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setSelectedApp(app);
+                                    setCurrentNotes(app.internalNotes || "");
+                                  }}
+                                  className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-3 py-1 text-[11px] font-bold text-foreground hover:border-brand hover:text-brand"
+                                >
+                                  Details
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setInterviewModalApp(app);
+                                    setInterviewForm({
+                                      interviewDate: new Date().toISOString().split("T")[0],
+                                      interviewTime: "10:00 AM",
+                                      interviewType: "Video",
+                                      interviewerName: "HR Lead",
+                                      interviewNotes: "",
+                                      interviewFeedback: "",
+                                      interviewResult: "Pending",
+                                    });
+                                  }}
+                                  className="inline-flex items-center gap-1 rounded-full bg-brand/10 border border-brand/20 px-3 py-1 text-[11px] font-bold text-brand hover:bg-brand hover:text-white"
+                                >
+                                  <Calendar className="h-3.5 w-3.5" /> Interview
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
