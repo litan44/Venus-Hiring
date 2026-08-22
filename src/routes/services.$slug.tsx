@@ -186,11 +186,6 @@ function ServiceDetailPage() {
             </div>
 
             <div className="max-w-3xl space-y-6">
-              <div className="inline-flex items-center gap-2 rounded-full border border-brand/40 bg-brand/10 px-4 py-1.5 text-xs font-extrabold uppercase tracking-widest text-brand backdrop-blur-md">
-                <Sparkles className="h-3.5 w-3.5 shrink-0" />
-                <span>{service.eyebrow}</span>
-              </div>
-
               <h1 className="font-display text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.08]">
                 {service.heroHeadline}
               </h1>

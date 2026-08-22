@@ -66,11 +66,6 @@ function ServicesIndexPage() {
             </div>
 
             <div className="max-w-3xl space-y-6">
-              <div className="inline-flex items-center gap-2 rounded-full border border-brand/40 bg-brand/10 px-4 py-1.5 text-xs font-extrabold uppercase tracking-widest text-brand backdrop-blur-md">
-                <Sparkles className="h-3.5 w-3.5" />
-                <span>END-TO-END WORKFORCE SOLUTIONS</span>
-              </div>
-
               <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.1]">
                 Specialized Talent Practices Engineered for Impact.
               </h1>
@@ -83,7 +78,7 @@ function ServicesIndexPage() {
         </section>
 
         {/* ── CORE VENUS SERVICES ARCHIVE GRID ── */}
-        <section className="py-16 sm:py-24 border-b border-slate-200">
+        <section className="py-16 sm:py-24">
           <div className="shell">
             <div className="text-center max-w-2xl mx-auto space-y-4 mb-16">
               <div className="inline-flex items-center gap-2 rounded-full bg-slate-200/80 px-4 py-1.5 text-xs font-extrabold uppercase tracking-widest text-slate-800">
@@ -150,7 +145,7 @@ function ServicesIndexPage() {
         />
 
         {/* ── SERVICE TAB SELECTOR FOR SPECIALIZED OFFERINGS ── */}
-        <section className="pt-16 pb-8 bg-white text-slate-900 border-b border-slate-200">
+        <section className="pt-16 pb-8 bg-white text-slate-900">
           <div className="shell">
             <div className="text-center max-w-3xl mx-auto space-y-4 mb-8">
               <div className="inline-flex items-center gap-2 rounded-full bg-slate-100 border border-slate-200 px-4 py-1.5 text-xs font-extrabold uppercase tracking-widest text-slate-800">
