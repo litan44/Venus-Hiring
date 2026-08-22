@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Outlet, useMatchRoute } from "@tanstack/react-router";
 import { SiteNav } from "@/components/site/SiteNav";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { JobDetails } from "@/components/careers/JobDetails";
@@ -30,6 +30,12 @@ export const Route = createFileRoute("/careers/$slug")({
 function JobDetailPage() {
   const { slug } = Route.useParams();
   const job = MOCK_JOBS.find((j) => j.slug === slug);
+  const matchRoute = useMatchRoute();
+  const isApplyRoute = matchRoute({ to: "/careers/$slug/apply", fuzzy: false });
+
+  if (isApplyRoute) {
+    return <Outlet />;
+  }
 
   return (
     <div className="min-h-screen bg-background">
