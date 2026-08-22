@@ -1436,6 +1436,34 @@ export function CareerAdmin() {
                   <span className="text-muted-foreground block mb-0.5">Experience</span>
                   <span className="font-semibold text-foreground">{selectedApp.experienceYears}</span>
                 </div>
+                {selectedApp.location && (
+                  <div>
+                    <span className="text-muted-foreground block mb-0.5">Location</span>
+                    <span className="font-semibold text-foreground">{selectedApp.location}</span>
+                  </div>
+                )}
+                {selectedApp.currentTitle && (
+                  <div>
+                    <span className="text-muted-foreground block mb-0.5">Current Role</span>
+                    <span className="font-semibold text-foreground">{selectedApp.currentTitle} {selectedApp.currentCompany ? `at ${selectedApp.currentCompany}` : ""}</span>
+                  </div>
+                )}
+                {selectedApp.linkedinUrl && (
+                  <div>
+                    <span className="text-muted-foreground block mb-0.5">LinkedIn Profile</span>
+                    <a href={selectedApp.linkedinUrl} target="_blank" rel="noreferrer" className="font-bold text-brand hover:underline">
+                      View LinkedIn →
+                    </a>
+                  </div>
+                )}
+                {selectedApp.portfolioUrl && (
+                  <div>
+                    <span className="text-muted-foreground block mb-0.5">Portfolio / Website</span>
+                    <a href={selectedApp.portfolioUrl} target="_blank" rel="noreferrer" className="font-bold text-brand hover:underline">
+                      View Portfolio →
+                    </a>
+                  </div>
+                )}
               </div>
 
               {selectedApp.coverLetter && (

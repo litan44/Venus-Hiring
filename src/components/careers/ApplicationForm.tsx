@@ -121,7 +121,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
     if (!allowedTypes.includes(file.type) && !file.name.match(/\.(pdf|doc|docx)$/i)) {
       setErrors((prev) => ({
         ...prev,
-        resume: "Invalid file format. Please upload a PDF, DOC, or DOCX file.",
+        resume: "Please upload a valid PDF, DOC, or DOCX file.",
       }));
       return;
     }
@@ -150,6 +150,18 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
     if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
     return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   };
+
+  // Helper to read uploaded resume file as Base64 Data URL
+  const readFileAsDataUrl = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (err) => reject(err);
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   // Form Validation
   const validate = (): boolean => {
@@ -185,7 +197,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
     }
 
     if (!selectedFile && !isResumeBuiltLive) {
-      newErrors.resume = "Please upload your Resume/CV or build your resume.";
+      newErrors.resume = "Please upload a valid PDF, DOC, or DOCX file.";
     }
 
     if (!form.consentGiven) {
@@ -193,6 +205,11 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
     }
 
     setErrors(newErrors);
+    if (Object.keys(newErrors).length > 0) {
+      setSubmitError("Please complete all required fields.");
+    } else {
+      setSubmitError(null);
+    }
     return Object.keys(newErrors).length === 0;
   };
 
@@ -210,8 +227,18 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
     }
 
     setIsSubmitting(true);
+    setSubmitError(null);
 
     try {
+      let resumeDataUrl: string | undefined = undefined;
+      if (selectedFile) {
+        try {
+          resumeDataUrl = await readFileAsDataUrl(selectedFile);
+        } catch (fileErr) {
+          console.error("Failed to read file Data URL:", fileErr);
+        }
+      }
+
       await submitCareerApplication({
         jobId: job.id,
         jobTitle: job.title,
@@ -228,6 +255,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
         resumeFileName: selectedFile?.name,
         resumeFileSize: selectedFile ? formatFileSize(selectedFile.size) : undefined,
         resumeFileType: selectedFile?.type,
+        resumeDataUrl,
         isResumeBuiltLive,
         coverLetter: form.coverLetter.trim() || undefined,
         consentGiven: form.consentGiven,
@@ -239,6 +267,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
     } catch (err) {
       console.error("Submission failed:", err);
       setIsSubmitting(false);
+      setSubmitError("Unable to submit application. Please try again.");
     }
   };
 
@@ -329,6 +358,13 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
 
         {/* Application Form */}
         <form onSubmit={handleSubmit} className="space-y-8">
+          {submitError && (
+            <div className="flex items-center gap-3 rounded-2xl border border-destructive/30 bg-destructive/10 p-4 text-xs font-bold text-destructive shadow-soft">
+              <AlertCircle className="h-5 w-5 shrink-0" />
+              <span>{submitError}</span>
+            </div>
+          )}
+
           {/* SECTION 1 — PERSONAL INFORMATION */}
           <div className="rounded-2xl border border-border/80 bg-card p-6 sm:p-8 shadow-soft">
             <div className="flex items-center gap-2.5 pb-4 mb-6 border-b border-border/60">

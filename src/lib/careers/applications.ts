@@ -116,10 +116,35 @@ const localApplications: CareerApplication[] = [
   },
 ];
 
+const APPLICATIONS_STORAGE_KEY = "venus_submitted_applications";
+
+function loadStoredApplications(): CareerApplication[] {
+  if (typeof window === "undefined") return localApplications;
+  try {
+    const stored = localStorage.getItem(APPLICATIONS_STORAGE_KEY);
+    if (stored) {
+      return JSON.parse(stored);
+    }
+    localStorage.setItem(APPLICATIONS_STORAGE_KEY, JSON.stringify(localApplications));
+  } catch (err) {
+    console.error("Failed to load applications from storage:", err);
+  }
+  return localApplications;
+}
+
+function saveStoredApplications(apps: CareerApplication[]): void {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(APPLICATIONS_STORAGE_KEY, JSON.stringify(apps));
+  } catch (err) {
+    console.error("Failed to save applications to storage:", err);
+  }
+}
+
 export async function submitCareerApplication(
   data: Omit<CareerApplication, "id" | "submittedAt" | "status">
 ): Promise<CareerApplication> {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await new Promise((resolve) => setTimeout(resolve, 800));
 
   const application: CareerApplication = {
     ...data,
@@ -128,32 +153,41 @@ export async function submitCareerApplication(
     status: "New",
   };
 
-  localApplications.unshift(application);
+  const currentApps = loadStoredApplications();
+  const updatedApps = [application, ...currentApps];
+  saveStoredApplications(updatedApps);
+
   return application;
 }
 
 export function getSubmittedApplications(): CareerApplication[] {
-  return [...localApplications];
+  return loadStoredApplications();
 }
 
 export function updateApplicationStatus(id: string, newStatus: ApplicationStatus): boolean {
-  const app = localApplications.find((a) => a.id === id);
+  const currentApps = loadStoredApplications();
+  const app = currentApps.find((a) => a.id === id);
   if (!app) return false;
   app.status = newStatus;
+  saveStoredApplications(currentApps);
   return true;
 }
 
 export function updateApplicationNotes(id: string, notes: string): boolean {
-  const app = localApplications.find((a) => a.id === id);
+  const currentApps = loadStoredApplications();
+  const app = currentApps.find((a) => a.id === id);
   if (!app) return false;
   app.internalNotes = notes;
+  saveStoredApplications(currentApps);
   return true;
 }
 
 export function scheduleInterview(id: string, details: Partial<CareerApplication>): boolean {
-  const app = localApplications.find((a) => a.id === id);
+  const currentApps = loadStoredApplications();
+  const app = currentApps.find((a) => a.id === id);
   if (!app) return false;
   Object.assign(app, details);
   app.status = "Interview Scheduled";
+  saveStoredApplications(currentApps);
   return true;
 }
