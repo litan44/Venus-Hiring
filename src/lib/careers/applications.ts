@@ -29,6 +29,7 @@ export interface CareerApplication {
   consentGiven: boolean;
   submittedAt: string;
   status: ApplicationStatus;
+  internalNotes?: string;
 }
 
 // Initial mock applications for Phase 5 testing
@@ -127,5 +128,12 @@ export function updateApplicationStatus(id: string, newStatus: ApplicationStatus
   const app = localApplications.find((a) => a.id === id);
   if (!app) return false;
   app.status = newStatus;
+  return true;
+}
+
+export function updateApplicationNotes(id: string, notes: string): boolean {
+  const app = localApplications.find((a) => a.id === id);
+  if (!app) return false;
+  app.internalNotes = notes;
   return true;
 }

@@ -15,12 +15,14 @@ import {
   MapPin,
   Clock,
   Sparkles,
+  Copy,
 } from "lucide-react";
 import {
   fetchAllAdminJobs,
   createAdminJob,
   updateAdminJob,
   deleteAdminJob,
+  duplicateAdminJob,
   type AdminJobItem,
 } from "@/lib/careers/jobs";
 import {
@@ -171,6 +173,12 @@ export function CareerAdmin() {
   const handleDeleteJob = async (id: string) => {
     await deleteAdminJob(id);
     setDeletingJobId(null);
+    loadData();
+  };
+
+  // Duplicate Job Handler
+  const handleDuplicateJob = async (id: string) => {
+    await duplicateAdminJob(id);
     loadData();
   };
 
@@ -336,6 +344,15 @@ export function CareerAdmin() {
                     </td>
                     <td className="py-4 px-4 text-right">
                       <div className="flex items-center justify-end gap-2">
+                        <button
+                          type="button"
+                          onClick={() => handleDuplicateJob(job.id)}
+                          title="Duplicate Job"
+                          aria-label="Duplicate position"
+                          className="rounded-lg p-1.5 text-muted-foreground hover:bg-accent hover:text-brand transition-colors"
+                        >
+                          <Copy className="h-4 w-4" />
+                        </button>
                         <button
                           type="button"
                           onClick={() => handleOpenEditModal(job)}

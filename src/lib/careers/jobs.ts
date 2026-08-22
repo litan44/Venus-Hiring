@@ -45,3 +45,21 @@ export async function deleteAdminJob(id: string): Promise<boolean> {
   jobsStore = jobsStore.filter((j) => j.id !== id);
   return jobsStore.length < initialLength;
 }
+
+export async function duplicateAdminJob(id: string): Promise<AdminJobItem | null> {
+  const existing = jobsStore.find((j) => j.id === id);
+  if (!existing) return null;
+
+  const duplicated: AdminJobItem = {
+    ...existing,
+    id: `job_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+    title: `${existing.title} (Copy)`,
+    slug: `${existing.slug}-copy-${Date.now().toString(36)}`,
+    status: "Draft",
+    postedDate: "Just now",
+    createdAt: new Date().toISOString(),
+  };
+
+  jobsStore.unshift(duplicated);
+  return duplicated;
+}
