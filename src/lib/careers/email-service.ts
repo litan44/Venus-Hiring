@@ -15,10 +15,10 @@ export interface EmailSendResult {
 }
 
 export async function sendApplicationNotificationEmail(app: Partial<CareerApplication>): Promise<EmailSendResult> {
-  const host = process.env.SMTP_HOST || process.env.EMAIL_SERVER_HOST;
+  const host = process.env.SMTP_HOST || process.env.EMAIL_SERVER_HOST || "smtppro.zoho.in";
   const port = parseInt(process.env.SMTP_PORT || process.env.EMAIL_SERVER_PORT || "465", 10);
-  const user = process.env.SMTP_USER || process.env.EMAIL_SERVER_USER || process.env.SMTP_FROM;
-  const pass = process.env.SMTP_PASS || process.env.SMTP_PASSWORD || process.env.EMAIL_SERVER_PASSWORD;
+  const user = process.env.SMTP_USER || process.env.EMAIL_SERVER_USER || process.env.SMTP_FROM || "jivan@venushiring.com";
+  const pass = process.env.SMTP_PASS || process.env.SMTP_PASSWORD || process.env.EMAIL_SERVER_PASSWORD || "8pySPQs5G1Gw";
 
   const subject = `New Career Application Received - ${app.jobTitle || "Job Position"}`;
 
