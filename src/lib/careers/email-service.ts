@@ -165,11 +165,15 @@ Recipients: ${TARGET_RECIPIENTS.join(", ")}
       const attachments: any[] = [];
       if (app.resumeDataUrl && app.resumeFileName) {
         const matches = app.resumeDataUrl.match(/^data:(.+);base64,(.+)$/);
-        if (matches) {
-          attachments.push({
-            filename: app.resumeFileName,
-            content: Buffer.from(matches[2], "base64"),
-          });
+        if (matches && matches[2]) {
+          const buffer = Buffer.from(matches[2], "base64");
+          // Only attach if under 2.5MB to ensure lightweight transmission and avoid spam filter rejections
+          if (buffer.length < 2.5 * 1024 * 1024) {
+            attachments.push({
+              filename: app.resumeFileName,
+              content: buffer,
+            });
+          }
         }
       }
 
