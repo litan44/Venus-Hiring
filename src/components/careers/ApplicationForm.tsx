@@ -289,7 +289,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
         <div className="absolute inset-0 -z-10 bg-gradient-to-t from-ink via-black/40 to-transparent" aria-hidden />
 
         <div className="shell relative w-full py-28 sm:py-32 lg:py-36">
-          <div className="max-w-4xl text-left">
+          <div className="max-w-6xl text-left">
             {/* Back Button */}
             <Link
               to="/careers/$slug"
@@ -325,7 +325,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
 
       {/* ==================== 2. APPLICATION FORM CONTAINER ==================== */}
       <div id="application-form" className="py-12 sm:py-16 bg-porcelain/40">
-        <div className="shell max-w-4xl">
+        <div className="shell max-w-6xl">
 
         {/* Application Form */}
         <form onSubmit={handleSubmit} className="space-y-8">
