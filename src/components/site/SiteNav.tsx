@@ -507,7 +507,7 @@ export function SiteNav() {
             {/* Actions */}
             <div className="hidden items-center gap-3 lg:flex">
               <a
-                href="https://www.venushiring.ca/find-jobs"
+                href="/careers"
                 className={cn(
                   "rounded-full border px-5 py-2.5 text-[0.875rem] font-medium transition-all duration-300 ease-out hover:-translate-y-0.5",
                   light
@@ -794,7 +794,7 @@ export function SiteNav() {
                 Book a call <span aria-hidden>→</span>
               </a>
               <a
-                href="https://www.venushiring.ca/find-jobs"
+                href="/careers"
                 tabIndex={open ? 0 : -1}
                 className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-border bg-card px-7 text-[0.95rem] font-medium text-foreground"
               >
