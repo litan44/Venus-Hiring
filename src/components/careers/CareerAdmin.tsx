@@ -455,7 +455,7 @@ export function CareerAdmin() {
                   required
                   value={loginEmail}
                   onChange={(e) => setLoginEmail(e.target.value)}
-                  placeholder="admin@venusconsultancy.com"
+                  placeholder="admin@example.com"
                   className="w-full rounded-xl border border-border bg-background py-2.5 pl-10 pr-4 text-xs font-medium text-foreground focus:border-brand focus:outline-none"
                 />
               </div>
