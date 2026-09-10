@@ -125,7 +125,7 @@ export const Route = createFileRoute("/api/careers/applications")({
               smtpResponse: emailDetails.response || null,
               id,
               submittedAt,
-              recipients: ["jivan@venushiring.com", "subham@venushiring.ca"],
+              recipients: ["jivan@venushiring.com"],
               error: emailDetails.error || null,
             }),
             {

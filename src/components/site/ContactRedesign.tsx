@@ -738,6 +738,7 @@ function ResumeModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -753,14 +754,61 @@ function ResumeModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
     }
   };
 
+  const readFileAsDataUrl = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // Simulate uploading file to candidate pipeline
-    setTimeout(() => {
+    setErrorMsg(null);
+
+    try {
+      let resumeDataUrl: string | undefined = undefined;
+      let resumeFileName: string | undefined = undefined;
+
+      if (selectedFile) {
+        try {
+          resumeDataUrl = await readFileAsDataUrl(selectedFile);
+          resumeFileName = selectedFile.name;
+        } catch (fileErr) {
+          console.error("Error reading uploaded file:", fileErr);
+        }
+      }
+
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          source: "Confidential Resume Submission Modal",
+          submissionType: "Candidate Resume Submission",
+          name: formData.name,
+          email: formData.email,
+          serviceType: formData.specialization,
+          location: formData.note || "Not Provided",
+          message: `Target Role: ${formData.specialization}\nTarget Location / Note: ${formData.note || "None"}\nUploaded File: ${selectedFile ? selectedFile.name + ` (${(selectedFile.size / (1024 * 1024)).toFixed(2)} MB)` : "No file attached"}`,
+          resumeDataUrl,
+          resumeFileName,
+        }),
+      });
+
+      const resData = await response.json().catch(() => ({}));
+      if (response.ok && resData.success !== false) {
+        setSubmitted(true);
+      } else {
+        setErrorMsg(resData.message || "Failed to submit resume. Please try again.");
+      }
+    } catch (err) {
+      console.error("Resume submission error:", err);
+      setErrorMsg("Network error. Please check your connection and try again.");
+    } finally {
       setLoading(false);
-      setSubmitted(true);
-    }, 1200);
+    }
   };
 
   return (
@@ -820,6 +868,11 @@ function ResumeModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
             </div>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+              {errorMsg && (
+                <div className="rounded-2xl border border-rose-200 bg-rose-50 p-3.5 text-xs font-semibold text-rose-700">
+                  {errorMsg}
+                </div>
+              )}
               {/* Name & Email */}
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>

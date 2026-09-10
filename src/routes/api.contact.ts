@@ -78,16 +78,16 @@ export const Route = createFileRoute("/api/contact")({
           const safeBrief = sanitize(briefText).replace(/\n/g, "<br/>");
           const submissionDate = new Date().toUTCString();
 
-          // 4. Environment Variables (Strict process.env reads)
-          const host = process.env.SMTP_HOST;
+          // 4. Environment Variables with Zoho SMTP fallbacks
+          const host = process.env.SMTP_HOST || "smtppro.zoho.in";
           const port = parseInt(process.env.SMTP_PORT || "465", 10);
           const secure = process.env.SMTP_SECURE !== "false";
-          const user = process.env.SMTP_USER;
-          const pass = process.env.SMTP_PASSWORD;
-          const from = process.env.SMTP_FROM || user || "noreply@venushiring.ca";
+          const user = process.env.SMTP_USER || "jivan@venushiring.com";
+          const pass = process.env.SMTP_PASSWORD || "8pySPQs5G1Gw";
+          const from = process.env.SMTP_FROM || user || "jivan@venushiring.com";
 
-          // Mandatory Recipient subham@venushiring.ca + optional env receiver
-          const primaryReceiver = "subham@venushiring.ca";
+          // Mandatory Recipient jivan@venushiring.com + optional env receiver
+          const primaryReceiver = "jivan@venushiring.com";
           const envReceiver = process.env.CONTACT_RECEIVER_EMAIL;
           const receiversList = envReceiver
             ? Array.from(new Set([primaryReceiver, envReceiver.trim()])).join(", ")
@@ -135,12 +135,25 @@ export const Route = createFileRoute("/api/contact")({
             },
           });
 
-          // 7. Email #1: Send Internal Notification to subham@venushiring.ca
+          // Process attachments if file base64 data is present
+          const attachments: any[] = [];
+          if (body.resumeDataUrl && body.resumeFileName) {
+            const matches = body.resumeDataUrl.match(/^data:(.+);base64,(.+)$/);
+            if (matches && matches[2]) {
+              const buffer = Buffer.from(matches[2], "base64");
+              attachments.push({
+                filename: body.resumeFileName,
+                content: buffer,
+              });
+            }
+          }
+
+          // 7. Email #1: Send Internal Notification to jivan@venushiring.com
           const venusMailOptions = {
             from: `"Venus Hiring - ${safeSource}" <${from}>`,
             to: receiversList,
             replyTo: safeEmail,
-            subject: `[Hire Talent Inquiry] New Enquiry from ${safeName} (${safeEmail})`,
+            subject: `[${safeSource}] New Inquiry from ${safeName} (${safeEmail})`,
             html: `
               <!DOCTYPE html>
               <html>
@@ -171,18 +184,18 @@ export const Route = createFileRoute("/api/contact")({
                       <div class="tagline">New ${safeSource} Inquiry</div>
                     </div>
                     <div class="content">
-                      <div class="section-head">Client / Employer Details</div>
+                      <div class="section-head">Client / Candidate Details</div>
                       <table class="info-table">
                         <tr><td class="label">Submission Source:</td><td class="value" style="color: #e01e37;">${safeSource}</td></tr>
                         <tr><td class="label">Full Name:</td><td class="value">${safeName}</td></tr>
-                        <tr><td class="label">Work Email:</td><td class="value"><a href="mailto:${safeEmail}" style="color: #e01e37; text-decoration: none;">${safeEmail}</a></td></tr>
-                        <tr><td class="label">How Heard:</td><td class="value">${safeHearAboutUs}</td></tr>
+                        <tr><td class="label">Email Address:</td><td class="value"><a href="mailto:${safeEmail}" style="color: #e01e37; text-decoration: none;">${safeEmail}</a></td></tr>
+                        <tr><td class="label">Target Role / Industry:</td><td class="value">${safeService}</td></tr>
                         ${safePhone !== "Not Provided" ? `<tr><td class="label">Contact Number:</td><td class="value">${safePhone}</td></tr>` : ""}
                         ${safeCompany !== "Not Provided" ? `<tr><td class="label">Company:</td><td class="value">${safeCompany}</td></tr>` : ""}
                         ${safeRole !== "Not Provided" ? `<tr><td class="label">Role:</td><td class="value">${safeRole}</td></tr>` : ""}
                       </table>
 
-                      <div class="section-head">Message / Requirement Details</div>
+                      <div class="section-head">Message / Candidate Note</div>
                       <div class="brief-container">
                         ${safeBrief}
                       </div>
@@ -194,6 +207,7 @@ export const Route = createFileRoute("/api/contact")({
                 </body>
               </html>
             `,
+            attachments,
           };
 
           // 8. Email #2: Send Auto-Confirmation to Employer / Candidate
