@@ -224,18 +224,15 @@ function ContactHero() {
             HR IS ALL ABOUT PEOPLE
           </div>
 
-          {/* Main Headline (Outlined White + Bold Solid White Dual Style) */}
-          <h1 className="font-display tracking-tight text-white leading-[1.05]">
-            <span className="block text-4xl sm:text-6xl lg:text-7xl font-extrabold text-transparent [-webkit-text-stroke:2px_#ffffff] drop-shadow-md">
-              Value your people
-            </span>
-            <span className="block text-5xl sm:text-7xl lg:text-8xl font-black text-white mt-1 drop-shadow-md">
-              Think Advantage
-            </span>
+          {/* Main Headline (Identical typography hierarchy to Homepage Hero) */}
+          <h1 className="text-[2.5rem] sm:text-5xl md:text-6xl lg:text-[5rem] xl:text-[5.5rem] font-semibold leading-[1.04] tracking-tight text-white">
+            Value your people,
+            <br />
+            Think <span className="text-gradient-brand">Advantage</span>
           </h1>
 
           {/* Supporting Subtitle */}
-          <p className="mt-5 text-base sm:text-lg leading-relaxed text-slate-200 max-w-xl font-medium drop-shadow">
+          <p className="mt-7 max-w-xl text-lg leading-relaxed text-white/80 sm:text-xl font-normal">
             Whether you're scaling an engineering team in Toronto, hiring executives in Michigan, or seeking your next executive career move — our talent advisory team is ready.
           </p>
         </div>

@@ -172,7 +172,7 @@ export function WhoWeServe() {
       copy: "Build your early team, hiring infrastructure and talent pipeline as you grow.",
       ctaText: "BUILD YOUR TEAM",
       secondaryLabel: "HYPERGROWTH",
-      href: "https://www.venushiring.ca/contact",
+      href: "/contact",
       image:
         "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1000&h=1400&fit=crop&auto=format",
     },
@@ -369,7 +369,7 @@ export function AboutVenus() {
             </div>
 
             <div className="pt-4">
-              <CtaLink href="https://www.venushiring.ca/contact" variant="brand" size="lg">
+              <CtaLink href="/contact" variant="brand" size="lg">
                 Meet Venus Consultancy →
               </CtaLink>
             </div>
@@ -711,7 +711,7 @@ export function Services() {
             {/* Text-based Editorial CTA */}
             <div className="pt-1">
               <a
-                href="https://www.venushiring.ca/contact"
+                href="/contact"
                 className="group inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-900 hover:text-brand transition-colors pb-1 border-b-2 border-slate-900 hover:border-brand cursor-pointer"
               >
                 <span>TALK TO A CONSULTANT</span>
