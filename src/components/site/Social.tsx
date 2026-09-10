@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ContactRedesign } from "@/components/site/ContactRedesign";
 import {
   ArrowLeft,
@@ -7,6 +7,8 @@ import {
   Building2,
   CalendarDays,
   CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
   Clock,
   Facebook,
   Instagram,
@@ -36,168 +38,118 @@ import p3 from "@/assets/person-3.jpg";
 const QUOTES = [
   {
     quote:
-      "Venus filled three controller roles in six weeks after two agencies stalled. The shortlists were tight, calibrated and genuinely interview-ready.",
-    name: "Amara Okafor",
-    role: "VP People, national manufacturing group",
-    photo: p1,
+      "They understood our stack well enough to challenge our own job spec. That saved us a full hiring cycle and a mis-hire we would have regretted.",
+    attribution: "- Rohan Mehta, Director of Engineering, Toronto SaaS scale-up",
   },
   {
     quote:
-      "They understood our stack well enough to challenge our own job spec. That saved us a full hiring cycle and a mis-hire we would have regretted.",
-    name: "Rohan Mehta",
-    role: "Director of Engineering, Toronto SaaS scale-up",
-    photo: p2,
+      "Venus filled three controller roles in six weeks after two agencies stalled. The shortlists were tight, calibrated and genuinely interview-ready.",
+    attribution: "- Amara Okafor, VP People, national manufacturing group",
   },
   {
     quote:
       "The fractional HR support carried us through a plant expansion — compliance, onboarding and workforce planning handled without adding headcount.",
-    name: "Catherine Boyle",
-    role: "COO, automotive supplier, Windsor",
-    photo: p3,
+    attribution: "- Catherine Boyle, COO, automotive supplier, Windsor",
   },
 ];
 
-function Stars() {
-  return (
-    <div className="flex gap-1" aria-label="Rated five out of five">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <Star
-          key={i}
-          className="h-4 w-4 text-gold"
-          fill="currentColor"
-          strokeWidth={0}
-          aria-hidden
-        />
-      ))}
-    </div>
-  );
-}
-
 export function Testimonials() {
   const { ref, shown } = useReveal<HTMLDivElement>();
-  const [index, setIndex] = useState(0);
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
 
-  const go = (next: number) => setIndex((next + QUOTES.length) % QUOTES.length);
-
-  const minSwipeDistance = 40;
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchEnd(null);
-    setTouchStart(e.targetTouches[0].clientX);
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
-
-  const handleTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-    const distance = touchStart - touchEnd;
-    if (distance > minSwipeDistance) {
-      go(index + 1);
-    } else if (distance < -minSwipeDistance) {
-      go(index - 1);
+  const updateScroll = () => {
+    if (!scrollRef.current) return;
+    const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+    const maxScroll = scrollWidth - clientWidth;
+    if (maxScroll <= 0) {
+      setCanScrollLeft(false);
+      setCanScrollRight(false);
+      return;
     }
+    setCanScrollLeft(scrollLeft > 5);
+    setCanScrollRight(scrollLeft < maxScroll - 5);
+  };
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    updateScroll();
+    el.addEventListener("scroll", updateScroll, { passive: true });
+    window.addEventListener("resize", updateScroll);
+    return () => {
+      el.removeEventListener("scroll", updateScroll);
+      window.removeEventListener("resize", updateScroll);
+    };
+  }, []);
+
+  const scroll = (direction: "left" | "right") => {
+    if (!scrollRef.current) return;
+    const containerWidth = scrollRef.current.clientWidth;
+    const scrollAmount = direction === "left" ? -containerWidth * 0.8 : containerWidth * 0.8;
+    scrollRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
   };
 
   return (
-    <section className="relative overflow-hidden border-b border-border bg-background section-padding">
-      <div
-        className="pointer-events-none absolute inset-0 -z-10 mesh-light opacity-70"
-        aria-hidden
-      />
+    <section className="relative isolate overflow-hidden bg-white section-padding border-b border-slate-200">
       <div className="shell relative">
-        <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
-          <SectionHeading
-            title="Employers who hire with us, hire again"
-            copy="Ninety-two percent of our engagements come from repeat clients and referrals across Canada and the US Midwest."
-          />
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={() => go(index - 1)}
-              aria-label="Previous testimonial"
-              className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-transparent hover:bg-primary hover:text-primary-foreground"
-            >
-              <ArrowLeft className="h-4 w-4" />
-            </button>
-            <button
-              type="button"
-              onClick={() => go(index + 1)}
-              aria-label="Next testimonial"
-              className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-transparent hover:bg-primary hover:text-primary-foreground"
-            >
-              <ArrowRight className="h-4 w-4" />
-            </button>
-          </div>
+        {/* Main Title Section */}
+        <div className="text-center max-w-4xl mx-auto mb-10 sm:mb-14">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-900 leading-tight">
+            Employers who hire with us, hire again
+          </h2>
+          <p className="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto">
+            Ninety-two percent of our engagements come from repeat clients and referrals across Canada and the US Midwest.
+          </p>
         </div>
 
-        {/* Slider */}
+        {/* Horizontal Testimonials Track */}
         <div
           ref={ref}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-          className={cn("reveal-item mt-12 overflow-hidden rounded-[2rem] touch-pan-y", shown && "is-shown")}
+          className={cn("reveal-item transition-all duration-700", shown && "is-shown")}
         >
           <div
-            className="flex transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
-            style={{ transform: `translate3d(-${index * 100}%, 0, 0)` }}
+            ref={scrollRef}
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+            className="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-4 select-none [-webkit-overflow-scrolling:touch]"
           >
-            {QUOTES.map((q) => (
-              <figure
-                key={q.name}
-                className="relative isolate w-full shrink-0 overflow-hidden rounded-[2rem] glass-panel p-8 shadow-[0_30px_80px_-45px_rgba(15,23,42,0.55)] sm:p-12"
+            {QUOTES.map((q, i) => (
+              <div
+                key={i}
+                className="w-[90%] sm:w-[48%] shrink-0 snap-start bg-white border border-slate-200/90 rounded-[2.2rem] p-8 sm:p-10 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between min-h-[220px] sm:min-h-[260px]"
               >
-                <span
-                  className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(60%_60%_at_85%_0%,var(--color-brand-soft),transparent_70%)]"
-                  aria-hidden
-                />
-                <Quote
-                  className="absolute right-8 top-8 -z-10 h-24 w-24 text-brand/10"
-                  aria-hidden
-                />
-                <Stars />
-                <blockquote className="mt-7 max-w-3xl text-xl leading-relaxed text-foreground sm:text-2xl">
+                <blockquote className="text-slate-800 text-base sm:text-lg lg:text-xl font-normal italic leading-relaxed">
                   “{q.quote}”
                 </blockquote>
-                <figcaption className="mt-9 flex items-center gap-4 border-t border-border pt-7">
-                  <span className="shrink-0 rounded-full bg-gradient-to-br from-brand to-brand/20 p-[2px]">
-                    <img
-                      src={q.photo}
-                      alt={q.name}
-                      loading="lazy"
-                      width={640}
-                      height={640}
-                      className="h-14 w-14 rounded-full object-cover"
-                    />
-                  </span>
-                  <div className="min-w-0">
-                    <p className="truncate text-base font-semibold">{q.name}</p>
-                    <p className="truncate text-sm text-muted-foreground">{q.role}</p>
-                  </div>
-                </figcaption>
-              </figure>
+                <div className="mt-8 sm:mt-10 text-slate-800 font-semibold text-sm sm:text-base">
+                  {q.attribution}
+                </div>
+              </div>
             ))}
           </div>
-        </div>
 
-        <div className="mt-7 flex items-center gap-2">
-          {QUOTES.map((q, i) => (
+          {/* Navigation Controls (Bottom Right) */}
+          <div className="mt-8 flex items-center justify-end gap-3">
             <button
-              key={q.name}
               type="button"
-              onClick={() => setIndex(i)}
-              aria-label={`Show testimonial from ${q.name}`}
-              aria-current={i === index}
-              className={cn(
-                "h-1.5 rounded-full transition-all duration-500 ease-out",
-                i === index ? "w-10 bg-brand" : "w-4 bg-border hover:bg-brand/40",
-              )}
-            />
-          ))}
+              onClick={() => scroll("left")}
+              disabled={!canScrollLeft}
+              aria-label="Previous testimonial"
+              className="w-12 h-12 rounded-full border border-slate-300 flex items-center justify-center text-slate-700 hover:border-slate-800 hover:bg-slate-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200 cursor-pointer"
+            >
+              <ChevronLeft className="w-5 h-5 stroke-[2.2]" />
+            </button>
+            <button
+              type="button"
+              onClick={() => scroll("right")}
+              disabled={!canScrollRight}
+              aria-label="Next testimonial"
+              className="w-12 h-12 rounded-full border border-slate-300 flex items-center justify-center text-slate-700 hover:border-slate-800 hover:bg-slate-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200 cursor-pointer"
+            >
+              <ChevronRight className="w-5 h-5 stroke-[2.2]" />
+            </button>
+          </div>
         </div>
       </div>
     </section>

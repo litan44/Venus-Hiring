@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { CtaLink } from "./primitives";
-import heroImg from "@/assets/hero-office.jpg";
+import heroImg from "@/assets/hero-woman-coffee.jpg";
 import { scrollToSection } from "@/lib/scroll";
 import { X, Phone, Mail, CheckCircle2, Loader2, Send, AlertCircle } from "lucide-react";
 
@@ -146,41 +146,31 @@ export function Hero() {
         ref={sectionRef}
         className="relative isolate flex min-h-[100svh] items-center overflow-hidden bg-ink"
       >
-        {/* Background photograph with Ken Burns + soft parallax */}
+        {/* Background photograph with soft parallax - Crystal clear & bright */}
         <div
-          className="absolute inset-0 -z-20"
+          className="absolute inset-0 -z-20 overflow-hidden"
           style={{ transform: `translate3d(0, ${offset}px, 0)` }}
         >
           <img
             src={heroImg}
-            alt="Diverse team of professionals in a modern Canadian corporate office meeting"
+            alt="Professional woman in a modern corporate setting"
             width={1920}
             height={1280}
             fetchPriority="high"
             decoding="async"
-            className="ken-burns h-full w-full scale-105 object-cover object-center"
+            className="h-full w-full object-cover object-[75%_30%] sm:object-center brightness-105 contrast-105 scale-105 transition-transform duration-1000 ease-out"
           />
         </div>
 
-        {/* Elegant dark gradient overlay */}
-        <div className="absolute inset-0 -z-10 hero-scrim" aria-hidden />
-        <div className="absolute inset-0 -z-10 bg-ink/25 backdrop-blur-[2px]" aria-hidden />
-
-        {/* Floating light shapes with mouse parallax */}
-        <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden>
-          <span
-            className="float-soft absolute -left-24 top-1/4 h-80 w-80 rounded-full bg-brand/25 blur-3xl transition-transform duration-700 ease-out"
-            style={{ transform: `translate3d(${pointer.x * 40}px, ${pointer.y * 28}px, 0)` }}
-          />
-          <span
-            className="float-soft absolute right-[8%] top-10 h-64 w-64 rounded-full bg-ink-foreground/10 blur-3xl transition-transform duration-700 ease-out"
-            style={{
-              animationDelay: "1.6s",
-              transform: `translate3d(${pointer.x * -55}px, ${pointer.y * -34}px, 0)`,
-            }}
-          />
-          <span className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-ink via-ink/40 to-transparent" />
-        </div>
+        {/* Directional left-to-right gradient overlay for text legibility, leaving the right side image crisp, sharp & bright */}
+        <div
+          className="absolute inset-0 -z-10 bg-gradient-to-r from-slate-950 via-slate-950/80 md:via-slate-950/50 to-transparent"
+          aria-hidden
+        />
+        <div
+          className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-slate-950/80 via-slate-950/30 to-transparent -z-10"
+          aria-hidden
+        />
 
         <div className="shell relative w-full py-20 sm:py-24 lg:py-28">
           <div className="max-w-4xl">

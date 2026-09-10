@@ -136,127 +136,156 @@ export function TrustedStrip() {
 export function WhoWeServe() {
   const { ref, shown } = useReveal<HTMLDivElement>();
 
-  const CARDS = [
+  const PANELS = [
     {
       id: "employers",
+      num: "01",
+      tag: "FOR ORGANIZATIONS",
+      category: "STRATEGIC ACQUISITION",
       title: "EMPLOYERS",
-      icon: Building2,
       copy: "Hire qualified professionals faster with structured recruitment, staffing and talent solutions.",
-      ctaText: "Hire Top Talent →",
+      ctaText: "HIRE TOP TALENT",
+      secondaryLabel: "TALENT SEARCH",
       href: "/contact",
-      tag: "For Organizations",
       image:
-        "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1000&h=750&fit=crop&auto=format",
-      imgPosition: "object-center",
+        "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1000&h=1400&fit=crop&auto=format",
     },
     {
       id: "professionals",
+      num: "02",
+      tag: "FOR CANDIDATES",
+      category: "EXECUTIVE PLACEMENTS",
       title: "PROFESSIONALS",
-      icon: Users,
       copy: "Discover career opportunities matched to your experience, skills and goals.",
-      ctaText: "Find Jobs →",
+      ctaText: "FIND JOBS",
+      secondaryLabel: "DIRECT REPRESENTATION",
       href: "/careers",
-      tag: "For Candidates",
       image:
-        "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1000&h=750&fit=crop&auto=format",
-      imgPosition: "object-top",
+        "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1000&h=1400&fit=crop&auto=format",
     },
     {
       id: "startups",
-      title: "STARTUPS & SCALEUPS",
-      icon: Rocket,
+      num: "03",
+      tag: "FOR SCALEUPS",
+      category: "VENTURE PIPELINE",
+      title: "STARTUPS &\nSCALEUPS",
       copy: "Build your early team, hiring infrastructure and talent pipeline as you grow.",
-      ctaText: "Build Your Team →",
+      ctaText: "BUILD YOUR TEAM",
+      secondaryLabel: "HYPERGROWTH",
       href: "https://www.venushiring.ca/contact",
-      tag: "For Scaleups",
       image:
-        "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1000&h=750&fit=crop&auto=format",
-      imgPosition: "object-center",
+        "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1000&h=1400&fit=crop&auto=format",
     },
   ];
 
   return (
     <section
       id="who-we-serve"
-      className="relative overflow-hidden border-b border-border bg-porcelain section-padding"
+      className="relative overflow-hidden bg-[#FAFAFB] py-16 sm:py-20 lg:py-24 border-b border-slate-200/80 scroll-mt-20"
     >
-      <div
-        className="pointer-events-none absolute inset-0 -z-10 mesh-light opacity-80"
-        aria-hidden
-      />
-      <div
-        className="pointer-events-none absolute inset-0 -z-10 dot-grid-light opacity-[0.25]"
-        aria-hidden
-      />
-
       <div className="shell relative">
-        <SectionHeading
-          title="Tailored Solutions for Employers, Candidates & Scaleups"
-          copy="Whether you are an enterprise building specialized teams, a professional pursuing your next leadership role, or a high-growth startup scaling fast."
-        />
+        {/* SECTION INTRO */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end pb-10">
+          {/* Left Column Heading */}
+          <div className="lg:col-span-7 space-y-4">
+            {/* Eyebrow */}
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest">
+              <span className="h-0.5 w-6 bg-brand shrink-0" />
+              <span className="text-brand font-extrabold">WHO WE SERVE</span>
+              <span className="text-slate-300">|</span>
+              <span className="text-slate-400 font-medium tracking-wider">THREE PATHS. ONE TALENT ECOSYSTEM.</span>
+            </div>
 
-        <div ref={ref} className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {CARDS.map((card, i) => {
-            const { icon: Icon } = card;
-            return (
-              <a
-                key={card.id}
-                href={card.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={cn(
-                  "group relative isolate flex flex-col justify-between overflow-hidden rounded-[2.25rem] p-6 sm:p-7",
-                  "border border-border/80 bg-background/95 backdrop-blur-xl shadow-lg",
-                  "transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
-                  "hover:-translate-y-2 hover:border-brand/60 hover:shadow-[0_25px_60px_-25px_rgba(224,30,55,0.25)]",
-                  "reveal-item",
-                  shown && "is-shown",
-                )}
-                style={{ transitionDelay: `${i * 120}ms` }}
-              >
-                {/* Card Header Image Banner */}
-                <div className="relative h-44 sm:h-48 w-full overflow-hidden rounded-2xl border border-border/60 shadow-sm">
-                  <img
-                    src={card.image}
-                    alt={card.title}
-                    loading="lazy"
-                    className={cn(
-                      "h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105",
-                      card.imgPosition
-                    )}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+            {/* Main Heading */}
+            <h2 className="text-3xl sm:text-4xl lg:text-[2.85rem] font-bold text-slate-900 leading-[1.12] tracking-tight">
+              Tailored Solutions for<br />
+              <span className="font-serif italic text-slate-800 font-normal">Employers, Professionals &amp;</span><br />
+              <span className="font-serif italic text-brand font-normal relative inline-block">
+                Scaleups
+                <span className="absolute bottom-1 left-0 right-0 h-[2px] bg-brand/40 rounded-full" />
+              </span>
+            </h2>
+          </div>
 
-                  <span className="absolute top-3 left-3 inline-flex items-center rounded-full border border-white/30 bg-black/40 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-white backdrop-blur-md">
-                    {card.tag}
-                  </span>
+          {/* Right Column Description */}
+          <div className="lg:col-span-5 space-y-4 lg:pl-4">
+            <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
+              Whether you are an enterprise building specialized teams, a professional pursuing your next leadership role, or a high-growth startup scaling fast.
+            </p>
 
-                  <span className="absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center rounded-xl bg-white/90 text-brand shadow-md backdrop-blur-md transition-all group-hover:bg-brand group-hover:text-white group-hover:scale-110">
-                    <Icon className="h-5 w-5" />
-                  </span>
-                </div>
 
-                <div className="mt-6 flex flex-col flex-1 justify-between">
-                  <div>
-                    <h3 className="text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">
-                      {card.title}
-                    </h3>
-
-                    <p className="mt-3 text-sm sm:text-base leading-relaxed text-muted-foreground">
-                      {card.copy}
-                    </p>
-                  </div>
-
-                  <div className="mt-6 pt-5 border-t border-border/60">
-                    <span className="inline-flex items-center gap-2 text-sm font-bold text-brand transition-all group-hover:translate-x-1">
-                      {card.ctaText}
-                    </span>
-                  </div>
-                </div>
-              </a>
-            );
-          })}
+          </div>
         </div>
+
+
+        {/* MAIN THREE-PANEL EXPERIENCE */}
+        <div ref={ref} className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {PANELS.map((panel, idx) => (
+            <a
+              key={panel.id}
+              href={panel.href}
+              className={cn(
+                "group relative isolate flex flex-col justify-between overflow-hidden rounded-3xl min-h-[520px] sm:min-h-[560px] p-7 lg:p-8",
+                "border border-slate-200/80 shadow-md transition-all duration-400 ease-out",
+                "hover:-translate-y-1.5 hover:shadow-2xl hover:border-brand/40 cursor-pointer",
+                "reveal-item",
+                shown && "is-shown"
+              )}
+              style={{ transitionDelay: `${idx * 150}ms` }}
+            >
+              {/* Full-bleed background image */}
+              <img
+                src={panel.image}
+                alt={panel.title}
+                loading="lazy"
+                className="absolute inset-0 -z-20 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              />
+
+              {/* Dark Gradient Overlay for text contrast */}
+              <div className="absolute inset-0 -z-10 bg-gradient-to-t from-slate-950/95 via-slate-950/60 to-slate-950/30 transition-opacity duration-300 group-hover:from-slate-950/98 group-hover:via-slate-950/70" />
+
+              {/* Top Bar: Pill Tag & Large Editorial Number */}
+              <div className="flex items-start justify-between gap-4">
+                <span className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur-md">
+                  {panel.tag}
+                </span>
+                <span className="font-mono text-4xl sm:text-5xl font-light text-white/40 tracking-tight">
+                  {panel.num}
+                </span>
+              </div>
+
+              {/* Bottom Content Area */}
+              <div className="space-y-4 pt-20 transition-transform duration-300 group-hover:-translate-y-1">
+                {/* Category */}
+                <p className="text-[11px] font-extrabold uppercase tracking-widest text-brand">
+                  {panel.category}
+                </p>
+
+                {/* Title */}
+                <h3 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-white leading-[1.05] whitespace-pre-line">
+                  {panel.title}
+                </h3>
+
+                {/* Description */}
+                <p className="text-xs sm:text-sm text-slate-200/85 leading-relaxed max-w-xs font-normal">
+                  {panel.copy}
+                </p>
+
+                {/* CTA Line */}
+                <div className="pt-4 border-t border-white/20 flex items-center justify-between gap-2 text-xs font-bold tracking-wider uppercase text-white">
+                  <span className="inline-flex items-center gap-1.5 group-hover:text-white">
+                    <span>{panel.ctaText}</span>
+                    <span className="text-brand font-bold text-base transition-transform duration-200 group-hover:translate-x-1">→</span>
+                  </span>
+                  <span className="text-[10px] font-semibold tracking-widest text-white/50">
+                    {panel.secondaryLabel}
+                  </span>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+
       </div>
     </section>
   );
@@ -555,237 +584,259 @@ export function WhyUs() {
 
 /* --------------------------------- Services --------------------------------- */
 
-const SERVICES_BENTO = [
+const SERVICES_LIST = [
   {
-    id: "perm",
-    slug: "executive-search",
-    tag: "Permanent Placement & Executive Search",
-    metric: "98.4% Retention Rate",
+    num: "01",
+    category: "PERMANENT PLACEMENT & EXECUTIVE SEARCH",
     title: "Permanent & Executive Search",
-    copy: "Full-time professionals and executive leadership across technology, engineering, corporate functions, and specialized operations.",
-    features: ["Executive Search", "Full-Time Hiring", "Guaranteed Retention", "Skilled Trades"],
-    ctaText: "Explore Permanent Placement →",
-    image:
-      "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=900&fit=crop&auto=format",
-    gridClass: "lg:col-span-2 min-h-[24rem] lg:min-h-[28rem]",
+    description:
+      "Full-time professionals and executive leadership across technology, engineering, corporate functions, and specialized operations.",
+    capabilities: [
+      "Executive Search",
+      "Full-Time Hiring",
+      "Guaranteed Retention",
+      "Skilled Trades",
+    ],
+    ctaText: "Explore Permanent Placement",
+    href: "/services/executive-search",
+    isActive: true,
   },
   {
-    id: "contract",
-    slug: "contract-staffing",
-    tag: "Flexible Staffing",
-    metric: "12hr Deployment",
+    num: "02",
+    category: "FLEXIBLE STAFFING",
     title: "Contract & Temporary Staffing",
-    copy: "Short- or long-term talent that flexes with project demand, fully compliant and payrolled.",
-    features: ["Project Staffing", "Turnkey Payroll", "Skill Augmentation", "Flex Capacity"],
-    ctaText: "Explore Contract Staffing →",
-    image:
-      "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=600&fit=crop&auto=format",
-    gridClass: "lg:col-span-1 min-h-[24rem] lg:min-h-[28rem]",
+    description:
+      "Short- or long-term talent that flexes with project demand, fully compliant and payrolled.",
+    capabilities: [
+      "Project Staffing",
+      "Turnkey Payroll",
+      "Skill Augmentation",
+      "Flex Capacity",
+    ],
+    ctaText: "Explore Contract Staffing",
+    href: "/services/contract-staffing",
   },
   {
-    id: "startup",
-    slug: "startup-hiring",
-    tag: "Startup Scaling & Early Team",
-    metric: "0-50 Team Scale",
+    num: "03",
+    category: "STARTUP SCALING & EARLY TEAM",
     title: "Startup Hiring",
-    copy: "Specialized recruitment solutions for startups and growing companies, connecting organizations with innovative talent ready to scale.",
-    features: [
+    description:
+      "Specialized recruitment solutions for startups and growing companies, connecting organizations with innovative talent ready to scale.",
+    capabilities: [
       "Founding-Team Hiring",
       "Early-Stage Recruitment",
       "Employer Branding",
       "0–50 Scaleup Pods",
     ],
-    ctaText: "Explore Startup Hiring →",
-    image:
-      "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1200&h=900&fit=crop&auto=format",
-    gridClass: "lg:col-span-2 min-h-[24rem] lg:min-h-[28rem]",
+    ctaText: "Explore Startup Hiring",
+    href: "/services/startup-hiring",
   },
   {
-    id: "consulting",
-    slug: "talent-consulting",
-    tag: "Strategic Advisory",
-    metric: "Pipeline Architecture",
+    num: "04",
+    category: "STRATEGIC ADVISORY",
     title: "Talent Consulting & Advisory",
-    copy: "Strategic talent consulting services to help organizations optimize hiring processes, build talent pipelines, and develop effective recruitment strategies.",
-    features: [
+    description:
+      "Strategic talent consulting services to help organizations optimize hiring processes, build talent pipelines, and develop effective recruitment strategies.",
+    capabilities: [
       "Talent Strategy",
       "Workforce Planning",
       "Pipeline Architecture",
       "Process Optimization",
     ],
-    ctaText: "Explore Talent Consulting →",
-    image:
-      "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1000&h=600&fit=crop&auto=format",
-    gridClass: "lg:col-span-1 min-h-[24rem] lg:min-h-[28rem]",
+    ctaText: "Explore Talent Consulting",
+    href: "/services/talent-consulting",
   },
   {
-    id: "advisory",
-    slug: "hr-advisory",
-    tag: "Fractional Leadership",
-    metric: "C-Level HR Pods",
+    num: "05",
+    category: "FRACTIONAL LEADERSHIP",
     title: "Fractional HR & HR Advisory",
-    copy: "Interim HR leadership for workforce planning, compliance frameworks, and employee engagement.",
-    features: ["Compliance Audits", "Org Planning", "Policy Design", "Labour Standards"],
-    ctaText: "Explore HR Advisory →",
-    image:
-      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&h=600&fit=crop&auto=format",
-    gridClass: "lg:col-span-1 min-h-[24rem] lg:min-h-[28rem]",
+    description:
+      "Interim HR leadership for workforce planning, compliance frameworks, and employee engagement.",
+    capabilities: [
+      "Compliance Audits",
+      "Org Planning",
+      "Policy Design",
+      "Labour Standards",
+    ],
+    ctaText: "Explore HR Advisory",
+    href: "/services/hr-advisory",
   },
   {
-    id: "sow",
-    slug: "sow-project-pods",
-    tag: "Outcome-Based Pods",
-    metric: "100% SLA Guarantee",
+    num: "06",
+    category: "OUTCOME-BASED PODS",
     title: "Statement of Work & Project Delivery",
-    copy: "Specialized pods deployed against defined deliverables — outcomes, not headcount commitments.",
-    features: ["Outcome SLAs", "Agile Pods", "Fixed Budget", "Project Deliverables"],
-    ctaText: "Explore SOW Pods →",
-    image:
-      "https://images.unsplash.com/photo-1531497865144-0464ef8fb9a9?w=1000&h=600&fit=crop&auto=format",
-    gridClass: "lg:col-span-2 min-h-[24rem] lg:min-h-[28rem]",
+    description:
+      "Specialized pods deployed against defined deliverables — outcomes, not headcount commitments.",
+    capabilities: [
+      "Outcome SLAs",
+      "Agile Pods",
+      "Fixed Budget",
+      "Project Deliverables",
+    ],
+    ctaText: "Explore SOW Pods",
+    href: "/services/sow-project-pods",
   },
 ];
 
 export function Services() {
   const { ref, shown } = useReveal<HTMLDivElement>();
+  const [activeService, setActiveService] = useState<string>("01");
 
   return (
     <section
       id="services"
-      className="relative isolate overflow-hidden bg-porcelain section-padding border-b border-border scroll-mt-20 sm:scroll-mt-24"
+      className="relative isolate bg-[#FAFAFB] py-16 sm:py-20 lg:py-24 border-b border-slate-200/80 scroll-mt-20 sm:scroll-mt-24"
     >
-      {/* Background Watermark Marquee */}
-      <div
-        className="pointer-events-none absolute top-12 left-0 right-0 -z-10 overflow-hidden opacity-[0.06] select-none"
-        aria-hidden
-      >
-        <div className="flex w-max marquee-lane gap-8 font-display text-[7rem] lg:text-[10rem] font-black uppercase tracking-tighter text-slate-900">
-          <span>
-            Solutions // Permanent Staffing // Startup Hiring // Talent Consulting // SOW Pods // HR Advisory //
-          </span>
-          <span>
-            Solutions // Permanent Staffing // Startup Hiring // Talent Consulting // SOW Pods // HR Advisory //
-          </span>
-        </div>
-      </div>
-
-      {/* Light background mesh, ambient glows & grid textures */}
-      <div
-        className="pointer-events-none absolute inset-0 -z-10 mesh-light opacity-90"
-        aria-hidden
-      />
-      <div
-        className="pointer-events-none absolute inset-0 -z-10 dot-grid-light opacity-50"
-        aria-hidden
-      />
-      <div
-        className="pointer-events-none absolute -left-32 top-1/4 -z-10 h-96 w-96 rounded-full bg-brand/15 blur-[120px]"
-        aria-hidden
-      />
-      <div
-        className="pointer-events-none absolute -right-32 bottom-1/4 -z-10 h-96 w-96 rounded-full bg-brand/15 blur-[120px]"
-        aria-hidden
-      />
-
       <div className="shell relative">
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-          <SectionHeading
-            title="Comprehensive Talent & Workforce Solutions"
-            copy="End-to-end recruitment capabilities, agile staffing models, startup team scaling, and strategic talent consulting tailored for high-growth enterprises and industry leaders."
-          />
-          <div className="flex items-center gap-3 shrink-0 self-start lg:self-end">
-            <CtaLink href="https://www.venushiring.ca/contact" variant="outline" size="lg">
-              Talk to a consultant
-            </CtaLink>
-          </div>
-        </div>
+        {/* Main Two-Column Editorial Grid (Left Column Sticky on Desktop) */}
+        <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
+          {/* LEFT COLUMN: Sticky Header & Executive Featured Card (~42% Width) */}
+          <div className="w-full lg:w-[42%] lg:sticky lg:top-24 lg:self-start space-y-6">
+            {/* Eyebrow */}
+            <div className="inline-flex items-center gap-2 text-brand font-bold text-xs tracking-widest uppercase">
+              <span className="h-0.5 w-4 bg-brand rounded-full" />
+              <span>TALENT SOLUTIONS</span>
+            </div>
 
-        {/* Outer Panel Wrapper */}
-        <div className="mt-10 rounded-[3rem] border border-slate-200/80 bg-slate-100/60 p-3 sm:p-5 lg:p-6 shadow-inner backdrop-blur-md">
-          {/* Bento Grid */}
-          <div ref={ref} className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {SERVICES_BENTO.map((item, i) => (
+            {/* Editorial Heading */}
+            <h2 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-bold text-slate-900 leading-[1.12] tracking-tight">
+              Comprehensive <span className="font-serif italic text-brand font-normal">Talent &amp; Workforce</span> Solutions
+            </h2>
+
+            {/* Description */}
+            <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-lg">
+              End-to-end recruitment capabilities, agile staffing models, startup team scaling, and strategic talent consulting tailored for high-growth enterprises and industry leaders.
+            </p>
+
+            {/* Text-based Editorial CTA */}
+            <div className="pt-1">
               <a
-                key={item.id}
-                href={`/services/${item.slug}`}
-                className={cn(
-                  "group relative isolate flex flex-col justify-between overflow-hidden rounded-[2.25rem] p-8 sm:p-10",
-                  "border border-border/80 bg-background/90 backdrop-blur-xl shadow-[0_20px_50px_-20px_rgba(15,23,42,0.15)]",
-                  "transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
-                  "hover:-translate-y-1.5 hover:border-brand/60 hover:shadow-[0_25px_60px_-25px_rgba(224,30,55,0.25)]",
-                  "reveal-item",
-                  shown && "is-shown",
-                  item.gridClass,
-                )}
-                style={{ transitionDelay: `${i * 100}ms` }}
+                href="https://www.venushiring.ca/contact"
+                className="group inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-900 hover:text-brand transition-colors pb-1 border-b-2 border-slate-900 hover:border-brand cursor-pointer"
               >
-                {/* Card background image with zoom effect */}
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  loading="lazy"
-                  width={1200}
-                  height={900}
-                  className="pointer-events-none absolute inset-0 -z-20 h-full w-full object-cover brightness-[0.4] transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105 group-hover:brightness-[0.48]"
-                />
-                {/* Gradient scrim */}
-                <span
-                  className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t from-ink via-ink/85 to-ink/30"
-                  aria-hidden
-                />
-
-                {/* Hover red radial glow */}
-                <span
-                  className="pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(80%_80%_at_50%_0%,color-mix(in_oklab,var(--color-brand)_35%,transparent),transparent_75%)]"
-                  aria-hidden
-                />
-
-                {/* Top badges bar */}
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <span className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.14em] text-white backdrop-blur-md">
-                    {item.tag}
-                  </span>
-                </div>
-
-                {/* Card Bottom content */}
-                <div className="mt-10 flex flex-col justify-end">
-                  <div className="flex items-start justify-between gap-4">
-                    <h3 className="text-2xl font-bold leading-tight text-white sm:text-3xl lg:text-[1.85rem]">
-                      {item.title}
-                    </h3>
-                    <span className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition-all duration-300 group-hover:rotate-45 group-hover:bg-brand group-hover:border-brand group-hover:text-white backdrop-blur-md">
-                      <ArrowUpRight className="h-5 w-5" />
-                    </span>
-                  </div>
-
-                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-white/85">
-                    {item.copy}
-                  </p>
-
-                  {/* Feature pills */}
-                  <div className="mt-5 flex flex-wrap gap-2">
-                    {item.features.map((feat) => (
-                      <span
-                        key={feat}
-                        className="inline-flex items-center gap-1.5 rounded-lg border border-white/15 bg-white/10 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm transition-colors group-hover:border-white/30 group-hover:bg-white/20"
-                      >
-                        <CheckCircle2 className="h-3.5 w-3.5 text-brand" />
-                        {feat}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Explicit CTA Link */}
-                  <div className="mt-6 pt-4 border-t border-white/15">
-                    <span className="inline-flex items-center gap-2 text-sm font-bold text-white group-hover:text-brand transition-colors">
-                      {item.ctaText}
-                    </span>
-                  </div>
-                </div>
+                <span>TALK TO A CONSULTANT</span>
+                <span className="text-brand font-bold text-sm transition-transform duration-200 group-hover:translate-x-1">→</span>
               </a>
-            ))}
+            </div>
+
+            {/* Featured Executive Service Card */}
+            <div className="mt-8 rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs space-y-4">
+              <div className="relative h-44 sm:h-48 w-full overflow-hidden rounded-xl bg-slate-100">
+                <img
+                  src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=500&fit=crop&auto=format"
+                  alt="Board and C-Suite Executive Meeting"
+                  loading="lazy"
+                  width={800}
+                  height={500}
+                  className="h-full w-full object-cover"
+                />
+                <span className="absolute top-3 left-3 bg-slate-950/90 text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md backdrop-blur-xs">
+                  • BOARD &amp; C-SUITE
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between text-[10px] font-mono font-bold uppercase tracking-wider">
+                <span className="text-slate-400">SERVICE BRIEF 01</span>
+                <span className="text-brand">MANDATE DIRECT</span>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-bold text-slate-900 leading-snug">
+                  Permanent &amp; Executive Search
+                </h3>
+                <p className="mt-1.5 text-xs text-slate-600 leading-relaxed">
+                  Deploying bespoke psychometric benchmarking and global market mapping for critical C-suite and permanent institutional talent.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-3 gap-2 pt-3.5 border-t border-slate-100">
+                <div>
+                  <p className="text-sm font-bold text-slate-900">98.4%</p>
+                  <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mt-0.5">RETENTION SLA</p>
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-slate-900">14-Day</p>
+                  <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mt-0.5">AVG SHORTLIST</p>
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-slate-900">Tier-1</p>
+                  <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mt-0.5">GUARANTEED</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* RIGHT COLUMN: Vertically Stacked Scrollable 6 Services (~58% Width) */}
+          <div className="w-full lg:w-[58%] flex flex-col space-y-3">
+            {SERVICES_LIST.map((srv) => {
+              const isActive = activeService === srv.num;
+              return (
+                <div
+                  key={srv.num}
+                  onMouseEnter={() => setActiveService(srv.num)}
+                  className={cn(
+                    "p-6 sm:p-8 rounded-2xl transition-all duration-300 group cursor-pointer border border-transparent my-1 sm:my-1.5",
+                    isActive
+                      ? "bg-slate-50/90 border-l-2 border-b-2 border-brand shadow-2xs"
+                      : "bg-transparent border-transparent hover:bg-slate-50/90 hover:border-l-2 hover:border-b-2 hover:border-brand hover:shadow-2xs"
+                  )}
+                >
+                  <div className="flex items-start gap-4 sm:gap-6">
+                    {/* Large Editorial Number */}
+                    <span
+                      className={cn(
+                        "font-mono text-3xl sm:text-4xl lg:text-5xl font-light shrink-0 w-12 sm:w-16 transition-colors duration-200",
+                        isActive ? "text-slate-500 font-normal" : "text-slate-300 group-hover:text-slate-500"
+                      )}
+                    >
+                      {srv.num}
+                    </span>
+
+                    {/* Service Content */}
+                    <div className="flex-1 min-w-0 space-y-3">
+                      {/* Category */}
+                      <p className="text-[11px] font-bold uppercase tracking-widest text-slate-500">
+                        {srv.category}
+                      </p>
+
+                      {/* Service Title */}
+                      <h3 className="text-xl sm:text-2xl font-bold text-slate-900 group-hover:text-brand transition-colors duration-200 leading-snug">
+                        {srv.title}
+                      </h3>
+
+                      {/* Description */}
+                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        {srv.description}
+                      </p>
+
+                      {/* Capabilities list with small red dots */}
+                      <div className="pt-2 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs font-medium text-slate-600">
+                        {srv.capabilities.map((cap) => (
+                          <span key={cap} className="inline-flex items-center gap-1.5">
+                            <span className="h-1.5 w-1.5 rounded-full bg-brand shrink-0" />
+                            <span>{cap}</span>
+                          </span>
+                        ))}
+                      </div>
+
+                      {/* CTA Link */}
+                      <div className="pt-3">
+                        <a
+                          href={srv.href}
+                          className="inline-flex items-center gap-1.5 text-xs font-bold text-brand hover:underline cursor-pointer group/cta"
+                        >
+                          <span>{srv.ctaText}</span>
+                          <span className="text-brand font-bold text-sm transition-transform duration-200 group-hover/cta:translate-x-1">→</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
+
       </div>
     </section>
   );
@@ -994,47 +1045,32 @@ const BOTTOM_HIGHLIGHTS = [
 ];
 
 export function Industries() {
-  const [currentIndex, setCurrentIndex] = useState(1);
-  const [isTransitioning, setIsTransitioning] = useState(true);
+  const [currentSlide, setCurrentSlide] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
 
-  // Auto-advance every 1.5 seconds in a continuous loop
+  const TOTAL_SLIDES = INDUSTRY_SLIDES.length; // 3 slides
+
+  // Auto-advance every 4 seconds smoothly
   useEffect(() => {
     if (isHovered) return;
     const timer = setInterval(() => {
-      setIsTransitioning(true);
-      setCurrentIndex((prev) => prev + 1);
-    }, 1500);
+      setCurrentSlide((prev) => (prev + 1) % TOTAL_SLIDES);
+    }, 4000);
 
     return () => clearInterval(timer);
-  }, [isHovered, currentIndex]);
+  }, [isHovered, TOTAL_SLIDES]);
 
   const prevSlide = () => {
-    setIsTransitioning(true);
-    setCurrentIndex((prev) => prev - 1);
+    setCurrentSlide((prev) => (prev - 1 + TOTAL_SLIDES) % TOTAL_SLIDES);
   };
 
   const nextSlide = () => {
-    setIsTransitioning(true);
-    setCurrentIndex((prev) => prev + 1);
+    setCurrentSlide((prev) => (prev + 1) % TOTAL_SLIDES);
   };
 
   const goToSlide = (slideIdx: number) => {
-    setIsTransitioning(true);
-    setCurrentIndex(slideIdx + 1);
-  };
-
-  const handleTransitionEnd = () => {
-    if (currentIndex === 4) {
-      // Arrived at Clone of Slide 0, jump immediately to real Slide 0 (index 1) without animation
-      setIsTransitioning(false);
-      setCurrentIndex(1);
-    } else if (currentIndex === 0) {
-      // Arrived at Clone of Slide 2, jump immediately to real Slide 2 (index 3) without animation
-      setIsTransitioning(false);
-      setCurrentIndex(3);
-    }
+    setCurrentSlide(slideIdx);
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -1051,9 +1087,6 @@ export function Industries() {
     }
     setTouchStartX(null);
   };
-
-  // Maps currentIndex (0 to 4) to real slide index (0, 1, 2)
-  const activeIndicatorIndex = (currentIndex - 1 + 3) % 3;
 
   return (
     <section
@@ -1194,7 +1227,7 @@ export function Industries() {
                   aria-label={`Go to slide ${idx + 1}`}
                   className={cn(
                     "h-1 rounded-full transition-all duration-300 cursor-pointer",
-                    activeIndicatorIndex === idx
+                    currentSlide === idx
                       ? "w-8 bg-brand"
                       : "w-8 bg-muted hover:bg-muted-foreground/30"
                   )}
@@ -1204,7 +1237,7 @@ export function Industries() {
           </div>
         </div>
 
-        {/* 3-Cards Per Slide Infinite Loop Smooth Transition Container */}
+        {/* 3-Cards Per Slide Container */}
         <div
           className="relative overflow-hidden w-full py-2"
           onMouseEnter={() => setIsHovered(true)}
@@ -1213,16 +1246,12 @@ export function Industries() {
           onTouchEnd={handleTouchEnd}
         >
           <div
-            className="flex"
-            onTransitionEnd={handleTransitionEnd}
+            className="flex transition-transform duration-500 ease-in-out"
             style={{
-              transform: `translateX(-${currentIndex * 100}%)`,
-              transition: isTransitioning
-                ? "transform 550ms cubic-bezier(0.25, 1, 0.5, 1)"
-                : "none",
+              transform: `translateX(-${currentSlide * 100}%)`,
             }}
           >
-            {INFINITE_SLIDES.map((slideCards, slideIdx) => (
+            {INDUSTRY_SLIDES.map((slideCards, slideIdx) => (
               <div
                 key={slideIdx}
                 className="w-full shrink-0 grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6 px-0.5"
