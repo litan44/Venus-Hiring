@@ -159,9 +159,6 @@ export function SiteFooter() {
                   <span className="text-[25px] 2xl:text-[30px] font-bold tracking-tight text-white leading-tight">
                     Venus <span className="text-brand">Consultancy</span>
                   </span>
-                  <span className="text-[15.75px] 2xl:text-[18px] font-bold tracking-widest text-slate-300 uppercase mt-0.5">
-                    Executive Search &amp; Workforce Solutions
-                  </span>
                 </div>
               </div>
 
