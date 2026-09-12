@@ -86,12 +86,14 @@ export const Route = createFileRoute("/api/contact")({
           const pass = process.env.SMTP_PASSWORD || "8pySPQs5G1Gw";
           const from = process.env.SMTP_FROM || user || "jivan@venushiring.com";
 
-          // Mandatory Recipient jivan@venushiring.com + optional env receiver
+          // Mandatory Recipient jivan@venushiring.com + optional env receivers
           const primaryReceiver = "jivan@venushiring.com";
-          const envReceiver = process.env.CONTACT_RECEIVER_EMAIL;
-          const receiversList = envReceiver
-            ? Array.from(new Set([primaryReceiver, envReceiver.trim()])).join(", ")
-            : primaryReceiver;
+          const envReceiver = process.env.CONTACT_RECEIVER_EMAIL || "";
+          const extraReceivers = envReceiver
+            .split(/[\s,]+/)
+            .map((e) => e.trim())
+            .filter(Boolean);
+          const receiversList = Array.from(new Set([primaryReceiver, ...extraReceivers])).join(", ");
 
           // Log server-side record of submission
           console.log("[NEW HIRE TALENT SUBMISSION]", {
