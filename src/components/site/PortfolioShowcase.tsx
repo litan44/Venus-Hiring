@@ -115,26 +115,26 @@ export function PortfolioShowcase() {
             <div
               key={item.id}
               className={cn(
-                "absolute inset-0 transition-opacity duration-700 ease-in-out",
+                "absolute inset-0 transition-opacity duration-500 ease-in-out flex flex-col justify-end p-5",
                 idx === activeIndex ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
               )}
             >
               <img
                 src={item.image}
                 alt={item.title}
-                className="h-full w-full object-cover"
+                className="absolute inset-0 h-full w-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent" />
 
               {/* Title & Copy */}
-              <div className="absolute bottom-0 inset-x-0 p-5 flex flex-col gap-2 z-20">
-                <span className="inline-block text-[11px] font-extrabold uppercase tracking-widest text-brand bg-brand/10 px-3 py-1 rounded-full w-fit backdrop-blur-md border border-brand/30">
+              <div className="relative z-20 flex flex-col gap-2.5">
+                <span className="inline-block text-[11px] font-extrabold uppercase tracking-widest text-brand bg-brand/20 px-3 py-1 rounded-full w-fit backdrop-blur-md border border-brand/40">
                   {item.category}
                 </span>
-                <div className="bg-brand text-white font-bold text-lg px-4 py-2.5 rounded-xl shadow-md">
+                <h3 className="text-xl font-bold text-white tracking-tight drop-shadow-md">
                   {item.title}
-                </div>
-                <p className="text-xs text-slate-200 leading-relaxed bg-slate-950/80 p-3.5 rounded-xl border border-white/10 backdrop-blur-md">
+                </h3>
+                <p className="text-xs text-slate-200 leading-relaxed bg-slate-900/90 p-3.5 rounded-xl border border-white/10 backdrop-blur-md">
                   {item.copy}
                 </p>
               </div>
@@ -146,7 +146,7 @@ export function PortfolioShowcase() {
             type="button"
             onClick={handlePrev}
             aria-label="Previous slide"
-            className="absolute left-3 top-1/2 -translate-y-1/2 z-30 h-10 w-10 rounded-full bg-slate-950/70 text-white backdrop-blur-md border border-white/20 flex items-center justify-center shadow-lg active:scale-90 transition-transform"
+            className="absolute left-3 top-1/2 -translate-y-1/2 z-30 h-10 w-10 rounded-full bg-slate-950/75 text-white backdrop-blur-md border border-white/20 flex items-center justify-center shadow-lg active:scale-90 transition-transform"
           >
             <ChevronLeft className="h-6 w-6" />
           </button>
@@ -154,13 +154,15 @@ export function PortfolioShowcase() {
             type="button"
             onClick={handleNext}
             aria-label="Next slide"
-            className="absolute right-3 top-1/2 -translate-y-1/2 z-30 h-10 w-10 rounded-full bg-slate-950/70 text-white backdrop-blur-md border border-white/20 flex items-center justify-center shadow-lg active:scale-90 transition-transform"
+            className="absolute right-3 top-1/2 -translate-y-1/2 z-30 h-10 w-10 rounded-full bg-slate-950/75 text-white backdrop-blur-md border border-white/20 flex items-center justify-center shadow-lg active:scale-90 transition-transform"
           >
             <ChevronRight className="h-6 w-6" />
           </button>
+        </div>
 
-          {/* Slide Indicator Dots */}
-          <div className="absolute top-4 right-4 z-30 flex items-center gap-1.5 bg-slate-950/60 px-3 py-1.5 rounded-full border border-white/10 backdrop-blur-md">
+        {/* Slide Indicator Dots - Centered BELOW the Card */}
+        <div className="mt-5 flex items-center justify-center">
+          <div className="flex items-center gap-2 bg-slate-900/90 px-4 py-2 rounded-full border border-slate-200/20 shadow-md">
             {SHOWCASE_ITEMS.map((_, i) => (
               <button
                 key={i}
@@ -168,8 +170,8 @@ export function PortfolioShowcase() {
                 onClick={() => setActiveIndex(i)}
                 aria-label={`Go to slide ${i + 1}`}
                 className={cn(
-                  "h-2 rounded-full transition-all duration-300",
-                  i === activeIndex ? "w-5 bg-brand" : "w-2 bg-white/40"
+                  "h-2.5 rounded-full transition-all duration-300",
+                  i === activeIndex ? "w-6 bg-brand" : "w-2.5 bg-slate-500 hover:bg-slate-400"
                 )}
               />
             ))}
