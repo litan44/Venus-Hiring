@@ -8,14 +8,20 @@ export const Route = createFileRoute("/api/ai-assistant")({
         try {
           const body = await request.json();
           const userMessage = (body.message || "").trim();
+          const rawUserName = (body.userName || body.name || "").trim();
+          const rawUserEmail = (body.userEmail || body.email || "").trim();
           const history = body.history || [];
 
-          console.log("[VENUS AI] Request received:", { query: userMessage, historyLength: history.length });
+          // Clean first name for natural conversational greetings
+          const firstName = rawUserName ? rawUserName.split(" ")[0] : "";
+          const namePrefix = firstName ? `Hello **${firstName}**! ` : "";
+
+          console.log("[VENUS AI] Request received:", { query: userMessage, userName: rawUserName, userEmail: rawUserEmail, historyLength: history.length });
 
           if (!userMessage) {
             return new Response(
               JSON.stringify({
-                answer: "Hello! I am the **Venus AI Assistant**. Ask me any question about Venus Consultancy, our executive search, contract staffing, startup hiring, career opportunities, or website tools.",
+                answer: `${namePrefix}I am your **Venus AI Assistant**. Ask me any question about Venus Consultancy, executive search, contract staffing, startup hiring, career opportunities, or website tools.`,
                 suggestedLinks: [
                   { label: "Explore Services", url: "/services" },
                   { label: "Contact Venus", url: "/contact" }
@@ -37,7 +43,7 @@ export const Route = createFileRoute("/api/ai-assistant")({
           if (intent === "HUMAN_HANDOFF") {
             return new Response(
               JSON.stringify({
-                answer: "Absolutely! I can connect you directly with the Venus Consultancy team.\n\nYou can reach our senior recruitment partners through our Contact Us page or book a consultation call directly.",
+                answer: `${namePrefix}I can connect you directly with the Venus Consultancy team.\n\nYou can reach our senior recruitment partners through our Contact Us page or book a consultation call directly.`,
                 suggestedLinks: [
                   { label: "Contact Venus Team", url: "/contact" },
                   { label: "Book a Call", url: "/contact" }
@@ -66,17 +72,21 @@ export const Route = createFileRoute("/api/ai-assistant")({
           if (apiKey) {
             const systemPrompt = `You are Venus AI Assistant, the official AI website assistant for Venus Consultancy (Venus Hiring).
 
+USER PERSONALIZATION REQUIREMENT:
+${firstName ? `- The user's name is "${firstName}" (Full Name: "${rawUserName}", Email: "${rawUserEmail}").\n- MANDATORY INSTRUCTION: You MUST address ${firstName} by their name ("${firstName}") naturally in your response (for example: "Hello **${firstName}**, ...", "Certainly **${firstName}**, ...", or "Here is what you need to know, **${firstName}**: ..."). Every response MUST include the user's name "${firstName}".` : ""}
+
 TECHNICAL BACKEND & IDENTITY:
 - You are an intelligent conversational AI website assistant.
 - Server-side, your AI reasoning and response generation are powered by Groq AI's high-speed inference engine.
 - For Venus Consultancy business facts (executive search, contract staffing, startup hiring, practice industries, track record, Canadian/US offices, careers), you rely on the verified Venus website knowledge provided below.
 
 INSTRUCTIONS & RULES:
-1. When asked about yourself or your technical backend (e.g., "Are you connected with Groq AI?", "What AI model powers you?"), answer directly, accurately, and naturally: Confirm that you are Venus AI Assistant, powered server-side by Groq AI for fast intelligent responses, with all Venus Consultancy business facts grounded in verified website data.
-2. For general knowledge questions (e.g., artificial intelligence, recruitment strategies, tech explanations, general advice), answer naturally, intelligently, and conversationally using your AI model capabilities.
-3. For Venus-specific questions, strictly ground your facts in the provided Venus knowledge base below. Do not invent employees, pricing, or unverified locations.
-4. Keep responses concise, clear, well-formatted, and professional. Use clean bold headings (**Title**) and bullet points (- item) when listing details.
-5. NEVER output localhost URLs or development links. Always use relative links (/services, /careers, /contact, /salary-check).
+1. Address ${firstName || "the user"} respectfully and naturally in your response.
+2. When asked about yourself or your technical backend (e.g., "Are you connected with Groq AI?", "What AI model powers you?"), answer directly, accurately, and naturally.
+3. For general knowledge questions, answer naturally and intelligently.
+4. For Venus-specific questions, strictly ground your facts in the provided Venus knowledge base below.
+5. Keep responses concise, clear, well-formatted, and professional using clean bold headings (**Title**) and bullet points (- item).
+6. NEVER output localhost URLs or development links. Always use relative links (/services, /careers, /contact, /salary-check).
 
 VERIFIED RETRIEVED VENUS WEBSITE KNOWLEDGE:
 ${ragContext}`;
@@ -118,6 +128,15 @@ ${ragContext}`;
 
                   if (rawContent && typeof rawContent === "string" && rawContent.trim().length > 0) {
                     let answer = sanitizeResponse(rawContent.trim());
+                    
+                    // Enforce user name in answer if not present
+                    if (firstName) {
+                      const nameRegex = new RegExp(`\\b${firstName}\\b`, "i");
+                      if (!nameRegex.test(answer)) {
+                        answer = `Hello **${firstName}**! ${answer}`;
+                      }
+                    }
+
                     console.log(`[VENUS AI] Groq API Success (${modelName}): Response length = ${answer.length}`);
                     return new Response(
                       JSON.stringify({
@@ -143,6 +162,12 @@ ${ragContext}`;
           const mainChunk = chunks[0];
           let fallbackAnswer = `**${mainChunk.title}**\n\n${mainChunk.content}`;
           fallbackAnswer = sanitizeResponse(fallbackAnswer);
+          if (firstName) {
+            const nameRegex = new RegExp(`\\b${firstName}\\b`, "i");
+            if (!nameRegex.test(fallbackAnswer)) {
+              fallbackAnswer = `Hello **${firstName}**! ${fallbackAnswer}`;
+            }
+          }
 
           return new Response(
             JSON.stringify({
