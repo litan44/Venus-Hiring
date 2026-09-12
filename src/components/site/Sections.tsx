@@ -200,9 +200,8 @@ export function WhoWeServe() {
             <h2 className="text-3xl sm:text-4xl lg:text-[2.85rem] font-bold text-slate-900 leading-[1.12] tracking-tight">
               Tailored Solutions for<br />
               <span className="font-serif italic text-slate-800 font-normal">Employers, Professionals &amp;</span><br />
-              <span className="font-serif italic text-brand font-normal relative inline-block">
+              <span className="font-serif italic text-brand font-normal">
                 Scaleups
-                <span className="absolute bottom-1 left-0 right-0 h-[2px] bg-brand/40 rounded-full" />
               </span>
             </h2>
           </div>
