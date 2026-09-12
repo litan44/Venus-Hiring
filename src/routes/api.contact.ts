@@ -80,7 +80,7 @@ export const Route = createFileRoute("/api/contact")({
 
           // 4. Mandatory Recipients (jivan@venushiring.com + paresh@venushiring.com)
           const primaryReceiver = "jivan@venushiring.com";
-          const envReceiver = process.env.CONTACT_RECEIVER_EMAIL || "";
+          const envReceiver = process.env.CONTACT_RECEIVER_EMAIL || "jivan@venushiring.com, paresh@venushiring.com";
           const extraReceivers = envReceiver
             .split(/[\s,]+/)
             .map((e) => e.trim())

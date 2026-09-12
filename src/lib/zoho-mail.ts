@@ -13,9 +13,9 @@ let tokenExpiryTime: number = 0;
 
 export async function getZohoAccessToken(): Promise<string | null> {
   const accountDomain = process.env.ZOHO_ACCOUNTS_DOMAIN || "https://accounts.zoho.in";
-  const clientId = process.env.ZOHO_CLIENT_ID;
-  const clientSecret = process.env.ZOHO_CLIENT_SECRET;
-  const refreshToken = process.env.ZOHO_REFRESH_TOKEN;
+  const clientId = process.env.ZOHO_CLIENT_ID || "1000.CFUXJSZJ3KG5ITW8VW0LTJU1O4GZDD";
+  const clientSecret = process.env.ZOHO_CLIENT_SECRET || "9b7b640262a74d3d31e80f0133461b856bbb09221a";
+  const refreshToken = process.env.ZOHO_REFRESH_TOKEN || "1000.89836ed49753681789f9347cf568949f.3a13b01add1ef38c186edb14e4fcb3e3";
 
   if (!clientId || !clientSecret || !refreshToken) {
     return null;
