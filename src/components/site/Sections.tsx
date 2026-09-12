@@ -1089,11 +1089,11 @@ export function Services() {
                       : "bg-transparent border-transparent hover:bg-slate-50/90 hover:border-slate-200"
                   )}
                 >
-                  <div className="flex items-start gap-4 sm:gap-6">
+                  <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4 sm:gap-6">
                     {/* Large Editorial Number */}
                     <span
                       className={cn(
-                        "font-mono text-3xl sm:text-4xl lg:text-5xl font-light shrink-0 w-12 sm:w-16 transition-colors duration-200",
+                        "font-mono text-4xl sm:text-4xl lg:text-5xl font-light shrink-0 sm:w-16 transition-colors duration-200 text-center sm:text-left",
                         isActive ? "text-brand font-normal" : "text-slate-300 group-hover:text-slate-500"
                       )}
                     >
@@ -1101,7 +1101,7 @@ export function Services() {
                     </span>
 
                     {/* Service Content */}
-                    <div className="flex-1 min-w-0 space-y-3">
+                    <div className="flex-1 min-w-0 space-y-3 text-center sm:text-left">
                       {/* Category */}
                       <p className="text-[11px] font-bold uppercase tracking-widest text-slate-500">
                         {srv.category}
@@ -1118,12 +1118,12 @@ export function Services() {
                       </h3>
 
                       {/* Description */}
-                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-md mx-auto sm:mx-0">
                         {srv.description}
                       </p>
 
                       {/* Capabilities list with small red dots */}
-                      <div className="pt-2 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs font-medium text-slate-600">
+                      <div className="pt-2 flex flex-wrap items-center justify-center sm:justify-start gap-x-4 gap-y-2 text-xs font-medium text-slate-600">
                         {srv.capabilities.map((cap) => (
                           <span key={cap} className="inline-flex items-center gap-1.5">
                             <span className="h-1.5 w-1.5 rounded-full bg-brand shrink-0" />
@@ -1133,7 +1133,7 @@ export function Services() {
                       </div>
 
                       {/* CTA Link */}
-                      <div className="pt-3">
+                      <div className="pt-3 flex justify-center sm:justify-start">
                         <a
                           href={srv.href}
                           className="inline-flex items-center gap-1.5 text-xs font-bold text-brand hover:underline cursor-pointer group/cta"
