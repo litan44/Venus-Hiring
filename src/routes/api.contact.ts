@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import nodemailer from "nodemailer";
 import { initDatabase, pool } from "@/lib/db";
+import { sendEmail } from "@/lib/zoho-mail";
 
 function sanitize(input: string): string {
   if (!input) return "";
@@ -78,15 +78,7 @@ export const Route = createFileRoute("/api/contact")({
           const safeBrief = sanitize(briefText).replace(/\n/g, "<br/>");
           const submissionDate = new Date().toUTCString();
 
-          // 4. Environment Variables with Zoho SMTP fallbacks
-          const host = process.env.SMTP_HOST || "smtppro.zoho.in";
-          const port = parseInt(process.env.SMTP_PORT || "465", 10);
-          const secure = process.env.SMTP_SECURE !== "false";
-          const user = process.env.SMTP_USER || "jivan@venushiring.com";
-          const pass = process.env.SMTP_PASSWORD || "8pySPQs5G1Gw";
-          const from = process.env.SMTP_FROM || user || "jivan@venushiring.com";
-
-          // Mandatory Recipient jivan@venushiring.com + optional env receivers
+          // 4. Mandatory Recipients (jivan@venushiring.com + paresh@venushiring.com)
           const primaryReceiver = "jivan@venushiring.com";
           const envReceiver = process.env.CONTACT_RECEIVER_EMAIL || "";
           const extraReceivers = envReceiver
@@ -118,189 +110,134 @@ export const Route = createFileRoute("/api/contact")({
             })
             .catch((dbErr) => console.error("[PostgreSQL Database Init Notice]:", dbErr));
 
-          // 6. Create Nodemailer Transporter with tight timeouts for serverless execution
-          const transporter = nodemailer.createTransport({
-            host,
-            port,
-            secure,
-            auth: {
-              user,
-              pass,
-            },
-            connectionTimeout: 6000,
-            greetingTimeout: 3000,
-            socketTimeout: 6000,
-            tls: {
-              rejectUnauthorized: false,
-            },
-          });
+          // 6. Build Internal Notification Email HTML
+          const internalHtml = `
+            <!DOCTYPE html>
+            <html>
+              <head>
+                <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <style>
+                  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f8fafc; color: #0f172a; margin: 0; padding: 24px 12px; }
+                  .wrapper { max-width: 600px; margin: 0 auto; background: #ffffff; border: 1px solid #e2e8f0; border-top: 4px solid #e01e37; border-radius: 8px; overflow: hidden; }
+                  .header { padding: 24px 28px 20px 28px; border-bottom: 1px solid #f1f5f9; }
+                  .brand { font-size: 20px; font-weight: 700; color: #0f172a; letter-spacing: -0.02em; text-decoration: none; }
+                  .brand span { color: #e01e37; }
+                  .tagline { font-size: 12px; font-weight: 600; text-transform: uppercase; tracking: 0.1em; color: #64748b; margin-top: 4px; }
+                  .content { padding: 28px; font-size: 14px; line-height: 1.6; color: #334155; }
+                  .section-head { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #e01e37; margin: 20px 0 10px 0; border-bottom: 1px solid #f1f5f9; padding-bottom: 4px; }
+                  .info-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+                  .info-table td { padding: 8px 0; border-bottom: 1px dashed #f1f5f9; font-size: 13.5px; }
+                  .label { color: #64748b; font-weight: 600; width: 38%; }
+                  .value { color: #0f172a; font-weight: 600; }
+                  .brief-container { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 16px; font-size: 13.5px; line-height: 1.65; color: #1e293b; margin-top: 8px; }
+                  .footer { background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 16px 28px; font-size: 12px; color: #64748b; text-align: left; }
+                </style>
+              </head>
+              <body>
+                <div class="wrapper">
+                  <div class="header">
+                    <div class="brand">Venus <span>Consultancy</span></div>
+                    <div class="tagline">New ${safeSource} Inquiry</div>
+                  </div>
+                  <div class="content">
+                    <div class="section-head">Client / Candidate Details</div>
+                    <table class="info-table">
+                      <tr><td class="label">Submission Source:</td><td class="value" style="color: #e01e37;">${safeSource}</td></tr>
+                      <tr><td class="label">Full Name:</td><td class="value">${safeName}</td></tr>
+                      <tr><td class="label">Email Address:</td><td class="value"><a href="mailto:${safeEmail}" style="color: #e01e37; text-decoration: none;">${safeEmail}</a></td></tr>
+                      <tr><td class="label">Target Role / Industry:</td><td class="value">${safeService}</td></tr>
+                      ${safePhone !== "Not Provided" ? `<tr><td class="label">Contact Number:</td><td class="value">${safePhone}</td></tr>` : ""}
+                      ${safeCompany !== "Not Provided" ? `<tr><td class="label">Company:</td><td class="value">${safeCompany}</td></tr>` : ""}
+                      ${safeRole !== "Not Provided" ? `<tr><td class="label">Role:</td><td class="value">${safeRole}</td></tr>` : ""}
+                    </table>
 
-          // Process attachments if file base64 data is present
-          const attachments: any[] = [];
-          if (body.resumeDataUrl && body.resumeFileName) {
-            const matches = body.resumeDataUrl.match(/^data:(.+);base64,(.+)$/);
-            if (matches && matches[2]) {
-              const buffer = Buffer.from(matches[2], "base64");
-              attachments.push({
-                filename: body.resumeFileName,
-                content: buffer,
-              });
-            }
-          }
-
-          // 7. Email #1: Send Internal Notification to jivan@venushiring.com & paresh@venushiring.com
-          const venusMailOptions = {
-            from: `"Venus Hiring" <${from}>`,
-            to: receiversList,
-            replyTo: safeEmail,
-            subject: `[${safeSource}] New Inquiry from ${safeName} (${safeEmail})`,
-            html: `
-              <!DOCTYPE html>
-              <html>
-                <head>
-                  <meta charset="utf-8">
-                  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                  <style>
-                    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f8fafc; color: #0f172a; margin: 0; padding: 24px 12px; }
-                    .wrapper { max-width: 600px; margin: 0 auto; background: #ffffff; border: 1px solid #e2e8f0; border-top: 4px solid #e01e37; border-radius: 8px; overflow: hidden; }
-                    .header { padding: 24px 28px 20px 28px; border-bottom: 1px solid #f1f5f9; }
-                    .brand { font-size: 20px; font-weight: 700; color: #0f172a; letter-spacing: -0.02em; text-decoration: none; }
-                    .brand span { color: #e01e37; }
-                    .tagline { font-size: 12px; font-weight: 600; text-transform: uppercase; tracking: 0.1em; color: #64748b; margin-top: 4px; }
-                    .content { padding: 28px; font-size: 14px; line-height: 1.6; color: #334155; }
-                    .section-head { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #e01e37; margin: 20px 0 10px 0; border-bottom: 1px solid #f1f5f9; padding-bottom: 4px; }
-                    .info-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
-                    .info-table td { padding: 8px 0; border-bottom: 1px dashed #f1f5f9; font-size: 13.5px; }
-                    .label { color: #64748b; font-weight: 600; width: 38%; }
-                    .value { color: #0f172a; font-weight: 600; }
-                    .brief-container { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 16px; font-size: 13.5px; line-height: 1.65; color: #1e293b; margin-top: 8px; }
-                    .footer { background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 16px 28px; font-size: 12px; color: #64748b; text-align: left; }
-                  </style>
-                </head>
-                <body>
-                  <div class="wrapper">
-                    <div class="header">
-                      <div class="brand">Venus <span>Consultancy</span></div>
-                      <div class="tagline">New ${safeSource} Inquiry</div>
-                    </div>
-                    <div class="content">
-                      <div class="section-head">Client / Candidate Details</div>
-                      <table class="info-table">
-                        <tr><td class="label">Submission Source:</td><td class="value" style="color: #e01e37;">${safeSource}</td></tr>
-                        <tr><td class="label">Full Name:</td><td class="value">${safeName}</td></tr>
-                        <tr><td class="label">Email Address:</td><td class="value"><a href="mailto:${safeEmail}" style="color: #e01e37; text-decoration: none;">${safeEmail}</a></td></tr>
-                        <tr><td class="label">Target Role / Industry:</td><td class="value">${safeService}</td></tr>
-                        ${safePhone !== "Not Provided" ? `<tr><td class="label">Contact Number:</td><td class="value">${safePhone}</td></tr>` : ""}
-                        ${safeCompany !== "Not Provided" ? `<tr><td class="label">Company:</td><td class="value">${safeCompany}</td></tr>` : ""}
-                        ${safeRole !== "Not Provided" ? `<tr><td class="label">Role:</td><td class="value">${safeRole}</td></tr>` : ""}
-                      </table>
-
-                      <div class="section-head">Message / Candidate Note</div>
-                      <div class="brief-container">
-                        ${safeBrief}
-                      </div>
-                    </div>
-                    <div class="footer">
-                      Submitted on ${submissionDate} &bull; Sent to ${receiversList}
+                    <div class="section-head">Message / Candidate Note</div>
+                    <div class="brief-container">
+                      ${safeBrief}
                     </div>
                   </div>
-                </body>
-              </html>
-            `,
-            attachments,
-          };
+                  <div class="footer">
+                    Submitted on ${submissionDate} &bull; Sent to ${receiversList}
+                  </div>
+                </div>
+              </body>
+            </html>
+          `;
 
-          // 8. Email #2: Send Auto-Confirmation to Client / Candidate
-          const confirmationMailOptions = {
-            from: `"Venus Consultancy" <${from}>`,
-            to: safeEmail,
-            subject: `We've Received Your Hiring Inquiry — Venus Consultancy`,
-            html: `
-              <!DOCTYPE html>
-              <html>
-                <head>
-                  <meta charset="utf-8">
-                  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                  <style>
-                    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f8fafc; color: #0f172a; margin: 0; padding: 24px 12px; }
-                    .wrapper { max-width: 600px; margin: 0 auto; background: #ffffff; border: 1px solid #e2e8f0; border-top: 4px solid #e01e37; border-radius: 8px; overflow: hidden; }
-                    .header { padding: 24px 28px 20px 28px; border-bottom: 1px solid #f1f5f9; }
-                    .brand { font-size: 20px; font-weight: 700; color: #0f172a; letter-spacing: -0.02em; }
-                    .brand span { color: #e01e37; }
-                    .content { padding: 28px; font-size: 14.5px; line-height: 1.65; color: #334155; }
-                    .notice-box { margin: 24px 0; padding: 18px 20px; background-color: #f8fafc; border-left: 3px solid #e01e37; border-top: 1px solid #f1f5f9; border-right: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9; border-radius: 6px; }
-                    .notice-text { margin: 0; font-size: 14px; font-weight: 600; line-height: 1.6; color: #0f172a; }
-                    .footer { background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 20px 28px; font-size: 12.5px; color: #64748b; }
-                    .footer p { margin: 3px 0; }
-                  </style>
-                </head>
-                <body>
-                  <div class="wrapper">
-                    <div class="header">
-                      <div class="brand">Venus <span>Consultancy</span></div>
-                    </div>
-                    <div class="content">
-                      <p style="margin-top: 0;">Hello <strong>${safeName}</strong>,</p>
-                      <p>Thank you for reaching out to <strong>Venus Consultancy</strong> regarding your hiring needs.</p>
-                      
-                      <div class="notice-box">
-                        <p class="notice-text">
-                          Our recruitment partners have received your inquiry and will contact you within 24 hours to assist with your hiring strategy.
-                        </p>
-                      </div>
-
-                      <p>Whether you require executive search, technical recruitment, contract staffing, or talent advisory across North America & India, our team is ready to assist.</p>
-
-                      <p style="margin-top: 32px; font-size: 14px; line-height: 1.5; color: #0f172a;">
-                        Best regards,<br/>
-                        <strong style="color: #e01e37;">Venus Consultancy Team</strong>
+          // 7. Build Client Confirmation Email HTML
+          const confirmHtml = `
+            <!DOCTYPE html>
+            <html>
+              <head>
+                <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <style>
+                  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f8fafc; color: #0f172a; margin: 0; padding: 24px 12px; }
+                  .wrapper { max-width: 600px; margin: 0 auto; background: #ffffff; border: 1px solid #e2e8f0; border-top: 4px solid #e01e37; border-radius: 8px; overflow: hidden; }
+                  .header { padding: 24px 28px 20px 28px; border-bottom: 1px solid #f1f5f9; }
+                  .brand { font-size: 20px; font-weight: 700; color: #0f172a; letter-spacing: -0.02em; }
+                  .brand span { color: #e01e37; }
+                  .content { padding: 28px; font-size: 14.5px; line-height: 1.65; color: #334155; }
+                  .notice-box { margin: 24px 0; padding: 18px 20px; background-color: #f8fafc; border-left: 3px solid #e01e37; border-top: 1px solid #f1f5f9; border-right: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9; border-radius: 6px; }
+                  .notice-text { margin: 0; font-size: 14px; font-weight: 600; line-height: 1.6; color: #0f172a; }
+                  .footer { background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 20px 28px; font-size: 12.5px; color: #64748b; }
+                  .footer p { margin: 3px 0; }
+                </style>
+              </head>
+              <body>
+                <div class="wrapper">
+                  <div class="header">
+                    <div class="brand">Venus <span>Consultancy</span></div>
+                  </div>
+                  <div class="content">
+                    <p style="margin-top: 0;">Hello <strong>${safeName}</strong>,</p>
+                    <p>Thank you for reaching out to <strong>Venus Consultancy</strong> regarding your hiring needs.</p>
+                    
+                    <div class="notice-box">
+                      <p class="notice-text">
+                        Our recruitment partners have received your inquiry and will contact you within 24 hours to assist with your hiring strategy.
                       </p>
                     </div>
-                    <div class="footer">
-                      <p><strong>Venus Consultancy</strong> &bull; Executive Search & Technical Staffing</p>
-                      <p>Canada &bull; USA &bull; India</p>
-                      <p><a href="https://www.venushiring.ca" style="color: #e01e37; text-decoration: none; font-weight: 600;">www.venushiring.ca</a></p>
-                    </div>
+
+                    <p>Whether you require executive search, technical recruitment, contract staffing, or talent advisory across North America & India, our team is ready to assist.</p>
+
+                    <p style="margin-top: 32px; font-size: 14px; line-height: 1.5; color: #0f172a;">
+                      Best regards,<br/>
+                      <strong style="color: #e01e37;">Venus Consultancy Team</strong>
+                    </p>
                   </div>
-                </body>
-              </html>
-            `,
-          };
+                  <div class="footer">
+                    <p><strong>Venus Consultancy</strong> &bull; Executive Search & Technical Staffing</p>
+                    <p>Canada &bull; USA &bull; India</p>
+                    <p><a href="https://www.venushiring.ca" style="color: #e01e37; text-decoration: none; font-weight: 600;">www.venushiring.ca</a></p>
+                  </div>
+                </div>
+              </body>
+            </html>
+          `;
 
-          // 9. Send emails over SMTP (Parallel Execution with Promise.allSettled)
-          let internalDelivered = false;
-          if (host && user && pass) {
-            try {
-              const [internalResult, confirmResult] = await Promise.allSettled([
-                transporter.sendMail(venusMailOptions),
-                transporter.sendMail(confirmationMailOptions),
-              ]);
+          // 8. Dispatch emails via Zoho REST API (with automatic fallback to SMTP)
+          const internalResult = await sendEmail({
+            to: receiversList,
+            subject: `[${safeSource}] New Inquiry from ${safeName} (${safeEmail})`,
+            html: internalHtml,
+            replyTo: safeEmail,
+          });
 
-              if (internalResult.status === "fulfilled") {
-                internalDelivered = true;
-                console.log("[Venus SMTP Delivery Success] Message ID:", internalResult.value.messageId, "Recipients:", receiversList);
-              } else {
-                console.error("[Venus SMTP Delivery Failure]:", internalResult.reason?.message || String(internalResult.reason));
-              }
-
-              if (confirmResult.status === "fulfilled") {
-                console.log("[Venus Auto-Confirmation Success] Message ID:", confirmResult.value.messageId);
-              } else {
-                console.warn("[Venus Auto-Confirmation Notice]:", confirmResult.reason?.message || String(confirmResult.reason));
-              }
-            } catch (smtpErr: unknown) {
-              const errDetail = smtpErr instanceof Error ? smtpErr.message : String(smtpErr);
-              console.error("[Venus SMTP Transmission Exception]:", errDetail);
-            }
-          } else {
-            console.warn("[Notice]: SMTP environment variables not configured on current environment. Submission logged.");
-          }
+          // Dispatch confirmation email to client asynchronously
+          sendEmail({
+            to: safeEmail,
+            subject: "We've Received Your Hiring Inquiry — Venus Consultancy",
+            html: confirmHtml,
+          }).catch((err) => console.warn("[Client Auto-Confirmation Notice]:", err));
 
           return new Response(
             JSON.stringify({
               success: true,
               message: "Thank you! Your hiring inquiry has been received.",
-              delivered: internalDelivered,
+              delivered: internalResult.success,
+              messageId: internalResult.messageId || null,
             }),
             { status: 200, headers: { "Content-Type": "application/json" } }
           );
