@@ -1,6 +1,23 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "@tanstack/react-router";
-import { ArrowUpRight, ChevronDown, ChevronRight, Sparkles } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  ChevronDown,
+  ChevronRight,
+  Menu,
+  X,
+  Home,
+  Briefcase,
+  Building2,
+  BookOpen,
+  Image as ImageIcon,
+  HelpCircle,
+  PhoneCall,
+  Sparkles,
+  Search,
+  ExternalLink,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import logo from "@/assets/venus-logo.png";
 import heroTeam from "@/assets/hero-team.jpg";
@@ -251,6 +268,7 @@ export function SiteNav() {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState<string | null>("top");
   const [open, setOpen] = useState(false);
+  const [mobileExpanded, setMobileExpanded] = useState<"services" | "industries" | null>(null);
   const [activeMegaMenu, setActiveMegaMenu] = useState<"services" | "industries" | null>(null);
   const [activeServiceIdx, setActiveServiceIdx] = useState(0);
   const [activeIndustryIdx, setActiveIndustryIdx] = useState(0);
@@ -268,7 +286,7 @@ export function SiteNav() {
     }, 200);
   };
 
-  // Throttled scroll state listener (only triggers re-renders on boundary change)
+  // Throttled scroll state listener
   useEffect(() => {
     let frame = 0;
     const onScroll = () => {
@@ -287,7 +305,7 @@ export function SiteNav() {
     };
   }, []);
 
-  // IntersectionObserver for active tab highlight (bypassed during navigation clicks)
+  // IntersectionObserver for active tab highlight
   useEffect(() => {
     const sections = SECTION_IDS.map((id) => document.getElementById(id)).filter(
       (el): el is HTMLElement => Boolean(el),
@@ -381,7 +399,7 @@ export function SiteNav() {
   };
 
   const isHeroDarkPage = isHomePage || pathname.startsWith("/industries/") || pathname.startsWith("/services/");
-  const light = isHeroDarkPage && !scrolled && !open && !activeMegaMenu;
+  const light = isHeroDarkPage && !scrolled && !activeMegaMenu;
 
   return (
     <>
@@ -417,13 +435,13 @@ export function SiteNav() {
                 decoding="async"
                 className={cn(
                   "shrink-0 rounded-lg object-contain transition-all duration-500 ease-out",
-                  light ? "h-11 w-11 bg-ink-foreground/90 p-0.5" : "h-9 w-9",
+                  light ? "h-10 w-10 bg-white/95 p-0.5 shadow-sm" : "h-9 w-9",
                 )}
               />
               <span
                 className={cn(
                   "truncate font-display font-semibold tracking-[-0.02em] transition-all duration-500 ease-out",
-                  light ? "text-[1.15rem] text-ink-foreground" : "text-[1rem] text-foreground",
+                  light ? "text-[1.1rem] sm:text-[1.15rem] text-white drop-shadow-sm" : "text-[1rem] text-foreground",
                 )}
               >
                 Venus Consultancy
@@ -473,8 +491,8 @@ export function SiteNav() {
                           "group relative inline-flex items-center gap-1.5 py-1 text-[0.95rem] tracking-[0.005em] transition-colors duration-300 ease-out",
                           light
                             ? isActive
-                              ? "font-semibold text-ink-foreground"
-                              : "font-medium text-ink-foreground/70 hover:text-ink-foreground"
+                              ? "font-semibold text-white"
+                              : "font-medium text-white/80 hover:text-white"
                             : isActive || isMegaActive
                               ? "font-semibold text-brand"
                               : "font-medium text-muted-foreground hover:text-brand",
@@ -487,7 +505,9 @@ export function SiteNav() {
                               "h-3.5 w-3.5 transition-transform duration-300",
                               isMegaActive
                                 ? "rotate-180 text-brand"
-                                : "text-muted-foreground group-hover:text-brand",
+                                : light
+                                  ? "text-white/70 group-hover:text-white"
+                                  : "text-muted-foreground group-hover:text-brand",
                             )}
                           />
                         )}
@@ -512,7 +532,7 @@ export function SiteNav() {
                 className={cn(
                   "rounded-full border px-5 py-2.5 text-[0.875rem] font-medium transition-all duration-300 ease-out hover:-translate-y-0.5",
                   light
-                    ? "border-ink-line bg-ink-foreground/10 text-ink-foreground backdrop-blur hover:bg-ink-foreground/20"
+                    ? "border-white/20 bg-white/10 text-white backdrop-blur hover:bg-white/20"
                     : "border-border bg-card text-foreground hover:border-brand/50 hover:text-brand",
                 )}
               >
@@ -533,41 +553,26 @@ export function SiteNav() {
               </a>
             </div>
 
-            {/* Mobile trigger */}
+            {/* Mobile Hamburger Trigger */}
             <button
               type="button"
-              onClick={() => setOpen((v) => !v)}
+              onClick={() => setOpen(true)}
               aria-expanded={open}
               aria-controls="mobile-nav"
-              aria-label={open ? "Close navigation menu" : "Open navigation menu"}
+              aria-label="Open navigation menu"
               className={cn(
-                "inline-flex h-11 w-11 items-center justify-center rounded-full border transition-colors duration-300 ease-out lg:hidden",
+                "inline-flex h-10 w-10 items-center justify-center rounded-xl border transition-all duration-300 ease-out active:scale-95 lg:hidden",
                 light
-                  ? "border-ink-line bg-ink-foreground/10 backdrop-blur"
-                  : "border-border bg-card/70 hover:border-brand/50",
+                  ? "border-white/20 bg-white/15 text-white backdrop-blur-md hover:bg-white/25 shadow-sm"
+                  : "border-border bg-card text-foreground hover:border-brand/50 shadow-sm",
               )}
             >
-              <span className="flex flex-col gap-[5px]" aria-hidden>
-                <span
-                  className={cn(
-                    "block h-px w-4.5 transition-transform duration-300 ease-out",
-                    light ? "bg-ink-foreground" : "bg-foreground",
-                    open && "translate-y-[3px] rotate-45",
-                  )}
-                />
-                <span
-                  className={cn(
-                    "block h-px w-4.5 transition-transform duration-300 ease-out",
-                    light ? "bg-ink-foreground" : "bg-foreground",
-                    open && "-translate-y-[3px] -rotate-45",
-                  )}
-                />
-              </span>
+              <Menu className="h-5 w-5" />
             </button>
           </div>
         </div>
 
-        {/* Capermint Replica Ultra-Premium Mega Menu Dropdown */}
+        {/* Desktop Mega Menu Dropdown */}
         {activeMegaMenu && (
           <div
             onMouseEnter={() => {
@@ -579,7 +584,7 @@ export function SiteNav() {
             <div className="overflow-hidden rounded-[2.25rem] border border-border/80 bg-background/95 backdrop-blur-2xl shadow-[0_30px_90px_-20px_rgba(15,23,42,0.35)] transition-all duration-300 text-foreground">
               {/* Upper 3-Column Content Grid */}
               <div className="grid grid-cols-12 p-5 sm:p-6 gap-6 items-stretch min-h-[270px]">
-                {/* Left Column: Sub-Categories List (Target ~25-28% Width) */}
+                {/* Left Column: Sub-Categories List */}
                 <div className="col-span-3 flex flex-col justify-start border-r border-border/60 pr-5">
                   <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-brand mb-2">
                     {activeMegaMenu === "services" ? "Service Categories" : "Industry Sectors"}
@@ -638,7 +643,7 @@ export function SiteNav() {
                   </div>
                 </div>
 
-                {/* Middle Column: Active Category Specialized Sub-Items (TRUE 2-COLUMN GRID - Target ~48-50% Width) */}
+                {/* Middle Column: Active Category Specialized Sub-Items */}
                 <div className="col-span-6 flex flex-col justify-start px-1">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-brand">
@@ -656,7 +661,7 @@ export function SiteNav() {
                     </span>
                   </div>
 
-                  {/* TRUE 2-COLUMN GRID */}
+                  {/* 2-Column Sub-Item Grid */}
                   <div className="grid grid-cols-2 gap-2.5 mt-1">
                     {(
                       (activeMegaMenu === "services" ? SERVICES_MEGA : INDUSTRIES_MEGA).categories[
@@ -691,7 +696,7 @@ export function SiteNav() {
                   </div>
                 </div>
 
-                {/* Right Column: Featured Promo Graphic Card (Target ~20-22% Width, Matched Height) */}
+                {/* Right Column: Featured Promo Graphic Card */}
                 <div className="col-span-3 pl-1 flex flex-col">
                   {(() => {
                     const promo = (activeMegaMenu === "services" ? SERVICES_MEGA : INDUSTRIES_MEGA).promo;
@@ -725,7 +730,7 @@ export function SiteNav() {
                 </div>
               </div>
 
-              {/* Bottom Full-Width Gradient Banner Bar (Capermint Replica) */}
+              {/* Bottom Banner */}
               <div className="flex items-center justify-between bg-gradient-to-r from-brand via-brand/90 to-brand/70 px-8 py-3 text-white">
                 <p className="font-display text-sm sm:text-base font-bold tracking-tight">
                   {(activeMegaMenu === "services" ? SERVICES_MEGA : INDUSTRIES_MEGA).bottomBanner.title}
@@ -747,64 +752,366 @@ export function SiteNav() {
             </div>
           </div>
         )}
-
-        {/* Mobile fullscreen menu */}
-        <div
-          id="mobile-nav"
-          className={cn(
-            "fixed inset-0 top-0 -z-10 bg-background/95 backdrop-blur-2xl transition-opacity duration-500 ease-out lg:hidden",
-            open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0",
-          )}
-          aria-hidden={!open}
-        >
-          <nav
-            aria-label="Mobile"
-            className="shell flex h-full flex-col justify-center gap-2 pb-16"
-          >
-            {NAV.map((item, index) => {
-              const isRouteLink = item.href.startsWith("/");
-              const targetId = item.href.startsWith("#") ? item.href.slice(1) : "";
-              const isActive = isRouteLink
-                ? pathname === item.href
-                : isHomePage && active === targetId;
-
-              return (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  tabIndex={open ? 0 : -1}
-                  onClick={(e) => handleNavClick(item.href, e)}
-                  style={{ transitionDelay: open ? `${80 + index * 45}ms` : "0ms" }}
-                  className={cn(
-                    "border-b border-border/70 py-4 font-display text-2xl font-medium tracking-[-0.02em] transition-all duration-500 ease-out hover:text-brand",
-                    isActive ? "text-brand font-bold" : "text-foreground",
-                    open ? "translate-y-0 opacity-100 blur-0" : "translate-y-3 opacity-0 blur-sm",
-                  )}
-                >
-                  {item.label}
-                </a>
-              );
-            })}
-            <div className="mt-8 flex flex-col gap-3">
-              <a
-                href="/contact"
-                tabIndex={open ? 0 : -1}
-                onClick={(e) => handleNavClick("/contact", e)}
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary px-7 text-[0.95rem] font-semibold text-primary-foreground shadow-brand"
-              >
-                Book a call <span aria-hidden>→</span>
-              </a>
-              <a
-                href="/careers"
-                tabIndex={open ? 0 : -1}
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-border bg-card px-7 text-[0.95rem] font-medium text-foreground"
-              >
-                Find jobs
-              </a>
-            </div>
-          </nav>
-        </div>
       </header>
+
+      {/* ========================================================================= */}
+      {/* MOBILE SOLID WHITE SIDEBAR DRAWER (Root Level z-[999])                    */}
+      {/* ========================================================================= */}
+
+      {/* Backdrop Overlay */}
+      <div
+        className={cn(
+          "fixed inset-0 z-[998] bg-slate-950/60 backdrop-blur-sm transition-opacity duration-300 lg:hidden",
+          open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none",
+        )}
+        onClick={() => setOpen(false)}
+        aria-hidden="true"
+      />
+
+      {/* Slide-out White Sidebar */}
+      <aside
+        id="mobile-nav"
+        aria-label="Mobile Navigation"
+        aria-hidden={!open}
+        className={cn(
+          "fixed inset-y-0 right-0 z-[999] flex w-full max-w-[340px] sm:max-w-[380px] flex-col bg-white text-slate-900 shadow-2xl transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] lg:hidden",
+          open ? "translate-x-0" : "translate-x-full",
+        )}
+      >
+        {/* Top Header of Sidebar */}
+        <div className="flex items-center justify-between border-b border-slate-100 bg-white px-5 py-4">
+          <a
+            href="#top"
+            onClick={(e) => {
+              handleNavClick("top", e);
+              setOpen(false);
+            }}
+            className="flex items-center gap-3"
+          >
+            <img
+              src={logo}
+              alt="Venus Consultancy"
+              width={38}
+              height={38}
+              className="h-9 w-9 shrink-0 rounded-lg object-contain bg-red-50 p-0.5 border border-red-100 shadow-xs"
+            />
+            <div className="min-w-0">
+              <span className="block truncate font-display text-[0.95rem] sm:text-base font-bold tracking-tight text-slate-900">
+                Venus Consultancy
+              </span>
+              <span className="block text-[10.5px] font-medium text-slate-500 uppercase tracking-wider">
+                Recruitment & Staffing
+              </span>
+            </div>
+          </a>
+
+          {/* Close X Button */}
+          <button
+            type="button"
+            onClick={() => setOpen(false)}
+            aria-label="Close menu"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        {/* Scrollable Navigation Menu Cards */}
+        <div className="flex-1 overflow-y-auto px-4 py-4 space-y-2.5 overscroll-contain">
+          {/* Home Card */}
+          <a
+            href="/"
+            onClick={(e) => {
+              handleNavClick("/", e);
+              setOpen(false);
+            }}
+            className={cn(
+              "flex items-center justify-between rounded-xl p-3 border transition-all duration-200",
+              pathname === "/" && (!active || active === "top")
+                ? "border-brand/30 bg-brand/5 text-brand font-semibold shadow-xs"
+                : "border-slate-100 bg-slate-50/70 text-slate-800 hover:bg-slate-100/80 hover:border-slate-200",
+            )}
+          >
+            <div className="flex items-center gap-3">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white shadow-xs border border-slate-100 text-brand">
+                <Home className="h-4 w-4" />
+              </div>
+              <span className="text-[0.9rem] sm:text-[0.95rem] font-medium">Home</span>
+            </div>
+            <ChevronRight className="h-4 w-4 text-slate-400" />
+          </a>
+
+          {/* Services Expandable Card */}
+          <div className="rounded-xl border border-slate-100 bg-slate-50/70 overflow-hidden transition-all duration-200">
+            <div
+              className="flex items-center justify-between p-3 cursor-pointer hover:bg-slate-100/80 transition-colors"
+              onClick={() =>
+                setMobileExpanded((prev) => (prev === "services" ? null : "services"))
+              }
+            >
+              <div className="flex items-center gap-3">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white shadow-xs border border-slate-100 text-brand">
+                  <Briefcase className="h-4 w-4" />
+                </div>
+                <div>
+                  <span className="block text-[0.9rem] sm:text-[0.95rem] font-medium text-slate-800">
+                    Services
+                  </span>
+                  <span className="block text-[10px] text-slate-500">
+                    Permanent, Contract, Startup & HR
+                  </span>
+                </div>
+              </div>
+              <ChevronDown
+                className={cn(
+                  "h-4 w-4 text-slate-400 transition-transform duration-200",
+                  mobileExpanded === "services" && "rotate-180 text-brand",
+                )}
+              />
+            </div>
+
+            {/* Expanded Services Sub-Links */}
+            {mobileExpanded === "services" && (
+              <div className="border-t border-slate-200/60 bg-white p-2.5 space-y-1.5 animate-in fade-in slide-in-from-top-1 duration-200">
+                {SERVICES_MEGA.categories.map((cat) => (
+                  <a
+                    key={cat.id}
+                    href={cat.href}
+                    onClick={(e) => {
+                      handleNavClick(cat.href, e);
+                      setOpen(false);
+                    }}
+                    className="flex items-center justify-between rounded-lg p-2 hover:bg-slate-50 border border-transparent hover:border-slate-100 transition-colors"
+                  >
+                    <div className="min-w-0 pr-2">
+                      <p className="text-[12px] sm:text-[13px] font-semibold text-slate-900 leading-tight">
+                        {cat.name}
+                      </p>
+                      <p className="text-[10px] sm:text-[10.5px] text-slate-500 line-clamp-1 mt-0.5">
+                        {cat.description}
+                      </p>
+                    </div>
+                    <ArrowUpRight className="h-3.5 w-3.5 text-slate-400 shrink-0" />
+                  </a>
+                ))}
+                <a
+                  href="/services"
+                  onClick={(e) => {
+                    handleNavClick("/services", e);
+                    setOpen(false);
+                  }}
+                  className="mt-1 flex items-center justify-center gap-1.5 rounded-lg bg-slate-50 py-2 text-[11px] font-bold text-brand hover:bg-slate-100 transition-colors"
+                >
+                  View All Services <ArrowRight className="h-3 w-3" />
+                </a>
+              </div>
+            )}
+          </div>
+
+          {/* Industries Expandable Card */}
+          <div className="rounded-xl border border-slate-100 bg-slate-50/70 overflow-hidden transition-all duration-200">
+            <div
+              className="flex items-center justify-between p-3 cursor-pointer hover:bg-slate-100/80 transition-colors"
+              onClick={() =>
+                setMobileExpanded((prev) => (prev === "industries" ? null : "industries"))
+              }
+            >
+              <div className="flex items-center gap-3">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white shadow-xs border border-slate-100 text-brand">
+                  <Building2 className="h-4 w-4" />
+                </div>
+                <div>
+                  <span className="block text-[0.9rem] sm:text-[0.95rem] font-medium text-slate-800">
+                    Industries
+                  </span>
+                  <span className="block text-[10px] text-slate-500">
+                    Tech, Finance, Auto, Healthcare
+                  </span>
+                </div>
+              </div>
+              <ChevronDown
+                className={cn(
+                  "h-4 w-4 text-slate-400 transition-transform duration-200",
+                  mobileExpanded === "industries" && "rotate-180 text-brand",
+                )}
+              />
+            </div>
+
+            {/* Expanded Industries Sub-Links */}
+            {mobileExpanded === "industries" && (
+              <div className="border-t border-slate-200/60 bg-white p-2.5 space-y-1.5 animate-in fade-in slide-in-from-top-1 duration-200">
+                <div className="grid grid-cols-2 gap-1.5">
+                  {INDUSTRIES_MEGA.categories.map((cat) => (
+                    <a
+                      key={cat.id}
+                      href={cat.href}
+                      onClick={(e) => {
+                        handleNavClick(cat.href, e);
+                        setOpen(false);
+                      }}
+                      className="flex flex-col justify-between rounded-lg p-2 bg-slate-50/80 hover:bg-slate-100 border border-slate-100/80 transition-colors min-h-[48px]"
+                    >
+                      <p className="text-[11.5px] font-semibold text-slate-900 line-clamp-1">
+                        {cat.name}
+                      </p>
+                      <span className="text-[9.5px] text-slate-500 line-clamp-1 mt-0.5">
+                        {cat.description.split(",")[0]}
+                      </span>
+                    </a>
+                  ))}
+                </div>
+                <a
+                  href="/industries"
+                  onClick={(e) => {
+                    handleNavClick("/industries", e);
+                    setOpen(false);
+                  }}
+                  className="mt-1 flex items-center justify-center gap-1.5 rounded-lg bg-slate-50 py-2 text-[11px] font-bold text-brand hover:bg-slate-100 transition-colors"
+                >
+                  View All Industries <ArrowRight className="h-3 w-3" />
+                </a>
+              </div>
+            )}
+          </div>
+
+          {/* Blog Card */}
+          <a
+            href="/blog"
+            onClick={(e) => {
+              handleNavClick("/blog", e);
+              setOpen(false);
+            }}
+            className={cn(
+              "flex items-center justify-between rounded-xl p-3 border transition-all duration-200",
+              pathname.startsWith("/blog")
+                ? "border-brand/30 bg-brand/5 text-brand font-semibold shadow-xs"
+                : "border-slate-100 bg-slate-50/70 text-slate-800 hover:bg-slate-100/80 hover:border-slate-200",
+            )}
+          >
+            <div className="flex items-center gap-3">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white shadow-xs border border-slate-100 text-brand">
+                <BookOpen className="h-4 w-4" />
+              </div>
+              <div>
+                <span className="block text-[0.9rem] sm:text-[0.95rem] font-medium">Blog</span>
+                <span className="block text-[10px] text-slate-500 font-normal">Hiring trends & market intelligence</span>
+              </div>
+            </div>
+            <ChevronRight className="h-4 w-4 text-slate-400" />
+          </a>
+
+          {/* Gallery Card */}
+          <a
+            href="/gallery"
+            onClick={(e) => {
+              handleNavClick("/gallery", e);
+              setOpen(false);
+            }}
+            className={cn(
+              "flex items-center justify-between rounded-xl p-3 border transition-all duration-200",
+              pathname === "/gallery"
+                ? "border-brand/30 bg-brand/5 text-brand font-semibold shadow-xs"
+                : "border-slate-100 bg-slate-50/70 text-slate-800 hover:bg-slate-100/80 hover:border-slate-200",
+            )}
+          >
+            <div className="flex items-center gap-3">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white shadow-xs border border-slate-100 text-brand">
+                <ImageIcon className="h-4 w-4" />
+              </div>
+              <div>
+                <span className="block text-[0.9rem] sm:text-[0.95rem] font-medium">Gallery</span>
+                <span className="block text-[10px] text-slate-500 font-normal">Team moments & corporate culture</span>
+              </div>
+            </div>
+            <ChevronRight className="h-4 w-4 text-slate-400" />
+          </a>
+
+          {/* FAQ Card */}
+          <a
+            href="/faq"
+            onClick={(e) => {
+              handleNavClick("/faq", e);
+              setOpen(false);
+            }}
+            className={cn(
+              "flex items-center justify-between rounded-xl p-3 border transition-all duration-200",
+              pathname === "/faq" || (isHomePage && active === "faq")
+                ? "border-brand/30 bg-brand/5 text-brand font-semibold shadow-xs"
+                : "border-slate-100 bg-slate-50/70 text-slate-800 hover:bg-slate-100/80 hover:border-slate-200",
+            )}
+          >
+            <div className="flex items-center gap-3">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white shadow-xs border border-slate-100 text-brand">
+                <HelpCircle className="h-4 w-4" />
+              </div>
+              <div>
+                <span className="block text-[0.9rem] sm:text-[0.95rem] font-medium">FAQ</span>
+                <span className="block text-[10px] text-slate-500 font-normal">Candidate & employer questions</span>
+              </div>
+            </div>
+            <ChevronRight className="h-4 w-4 text-slate-400" />
+          </a>
+
+          {/* Contact Card */}
+          <a
+            href="/contact"
+            onClick={(e) => {
+              handleNavClick("/contact", e);
+              setOpen(false);
+            }}
+            className={cn(
+              "flex items-center justify-between rounded-xl p-3 border transition-all duration-200",
+              pathname === "/contact" || (isHomePage && active === "contact")
+                ? "border-brand/30 bg-brand/5 text-brand font-semibold shadow-xs"
+                : "border-slate-100 bg-slate-50/70 text-slate-800 hover:bg-slate-100/80 hover:border-slate-200",
+            )}
+          >
+            <div className="flex items-center gap-3">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white shadow-xs border border-slate-100 text-brand">
+                <PhoneCall className="h-4 w-4" />
+              </div>
+              <div>
+                <span className="block text-[0.9rem] sm:text-[0.95rem] font-medium">Contact Us</span>
+                <span className="block text-[10px] text-slate-500 font-normal">Get candidate shortlists & quotes</span>
+              </div>
+            </div>
+            <ChevronRight className="h-4 w-4 text-slate-400" />
+          </a>
+        </div>
+
+        {/* Bottom CTA Action Buttons & Footer */}
+        <div className="border-t border-slate-100 bg-slate-50/90 p-4 space-y-2.5">
+          <a
+            href="/contact"
+            onClick={(e) => {
+              handleNavClick("/contact", e);
+              setOpen(false);
+            }}
+            className="flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-center text-sm font-bold text-primary-foreground shadow-brand transition-all hover:brightness-110 active:scale-[0.99]"
+          >
+            Book a call
+            <span aria-hidden>→</span>
+          </a>
+
+          <a
+            href="/careers"
+            onClick={(e) => {
+              handleNavClick("/careers", e);
+              setOpen(false);
+            }}
+            className="flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-center text-sm font-semibold text-slate-800 shadow-xs transition-colors hover:bg-slate-100 active:scale-[0.99]"
+          >
+            Find jobs / Careers
+          </a>
+
+          <div className="pt-1 text-center">
+            <p className="text-[10px] text-slate-400 font-medium">
+              Toronto • Vancouver • New York | +1 (800) VENUS-HIRE
+            </p>
+          </div>
+        </div>
+      </aside>
     </>
   );
 }
+
