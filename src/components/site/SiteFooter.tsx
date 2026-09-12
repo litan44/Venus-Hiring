@@ -44,17 +44,19 @@ const QUICK_LINKS = [
   { label: "Careers & Jobs", href: "/careers" },
   { label: "Blog Insights", href: "/blog" },
   { label: "Salary Calculator", href: "/salary-calculator" },
+  { label: "Gallery", href: "/gallery" },
   { label: "FAQ", href: "/faq" },
   { label: "Contact Us", href: "/contact" },
 ];
 
 const SOLUTIONS_LINKS = [
-  { label: "Permanent & Executive Search", href: "/services/permanent-recruitment" },
+  { label: "Executive Search", href: "/services/executive-search" },
+  { label: "Direct Hire Placement", href: "/services/direct-hire-staffing" },
   { label: "Contract & Temporary Staffing", href: "/services/contract-staffing" },
   { label: "Startup Hiring & Scaleup Pods", href: "/services/startup-hiring" },
-  { label: "Talent Consulting & Advisory", href: "/services/executive-search" },
-  { label: "Skill Augmentation & Flex Capacity", href: "/services" },
-  { label: "Turnkey Payroll & Compliance", href: "/services" },
+  { label: "Talent Consulting & Advisory", href: "/services/talent-consulting" },
+  { label: "HR & Strategic Advisory", href: "/services/hr-advisory" },
+  { label: "SOW & Project Pods", href: "/services/sow-project-pods" },
 ];
 
 const CONNECT_SOCIALS = [
@@ -62,13 +64,6 @@ const CONNECT_SOCIALS = [
   { label: "Facebook", href: "https://www.facebook.com/venushiring", icon: Facebook },
   { label: "Instagram", href: "https://www.instagram.com/venushiring", icon: Instagram },
   { label: "Twitter", href: "https://twitter.com/venushiring", icon: Twitter },
-];
-
-const LEGAL_LINKS = [
-  { label: "Privacy Policy", href: "https://www.venushiring.ca/privacy-policy" },
-  { label: "Terms of Service", href: "https://www.venushiring.ca/terms" },
-  { label: "Disclaimer", href: "https://www.venushiring.ca/disclaimer" },
-  { label: "Sitemap & Index", href: "/sitemap" },
 ];
 
 function WhatsappIcon(props: React.SVGProps<SVGSVGElement>) {
@@ -158,8 +153,8 @@ export function SiteFooter() {
       <div className="shell max-w-7xl 2xl:max-w-[1650px] 3xl:max-w-[1850px] mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 pt-12 lg:pt-16 2xl:pt-24 pb-10 lg:pb-12 2xl:pb-20">
         <div className="grid gap-8 lg:gap-10 2xl:gap-14 sm:grid-cols-2 lg:grid-cols-12">
           
-          {/* COLUMN 01 — BRAND (Span 3) */}
-          <div className="lg:col-span-3 flex flex-col justify-between pr-0 lg:pr-4 2xl:pr-8">
+          {/* COLUMN 01 — BRAND (Span 4) */}
+          <div className="lg:col-span-4 flex flex-col justify-between pr-0 lg:pr-6 2xl:pr-10">
             <div>
               <div className="flex items-center gap-3 2xl:gap-5 mb-5 2xl:mb-8">
                 <img
@@ -201,8 +196,8 @@ export function SiteFooter() {
             </div>
           </div>
 
-          {/* COLUMN 02 — QUICK LINKS (Span 2) */}
-          <div className="lg:col-span-2">
+          {/* COLUMN 02 — QUICK LINKS (Span 3) */}
+          <div className="lg:col-span-3">
             <h4 className="text-base sm:text-lg 2xl:text-xl font-bold uppercase tracking-[0.14em] text-white mb-4 lg:mb-5 2xl:mb-6">
               Quick Links
             </h4>
@@ -241,26 +236,7 @@ export function SiteFooter() {
             </ul>
           </div>
 
-          {/* COLUMN 04 — LEGAL & TRUST (Span 2) */}
-          <div className="lg:col-span-2">
-            <h4 className="text-base sm:text-lg 2xl:text-xl font-bold uppercase tracking-[0.14em] text-white mb-4 lg:mb-5 2xl:mb-6">
-              Legal &amp; Trust
-            </h4>
-            <ul className="space-y-2 sm:space-y-2.5 lg:space-y-3 2xl:space-y-4 text-sm sm:text-base 2xl:text-lg">
-              {LEGAL_LINKS.map((leg) => (
-                <li key={leg.label}>
-                  <a
-                    href={leg.href}
-                    className="text-slate-200 hover:text-white transition-colors"
-                  >
-                    {leg.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* COLUMN 05 — CONTACT (Span 2) */}
+          {/* COLUMN 04 — CONTACT (Span 2) */}
           <div className="lg:col-span-2">
             <h4 className="text-base sm:text-lg 2xl:text-xl font-bold uppercase tracking-[0.14em] text-white mb-4 lg:mb-5 2xl:mb-6">
               Contact
