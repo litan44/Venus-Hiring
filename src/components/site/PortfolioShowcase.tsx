@@ -52,12 +52,12 @@ export function PortfolioShowcase() {
   const [isPaused, setIsPaused] = useState(false);
   const touchStartX = useRef<number | null>(null);
 
-  // Auto slideshow for mobile only (3.5s interval)
+  // Auto slideshow for mobile only (2.0s interval for faster scroll speed)
   useEffect(() => {
     if (isPaused) return;
     const interval = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % SHOWCASE_ITEMS.length);
-    }, 3500);
+    }, 2000);
     return () => clearInterval(interval);
   }, [isPaused]);
 
