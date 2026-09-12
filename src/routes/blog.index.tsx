@@ -64,13 +64,14 @@ function BlogArchivePage() {
   // Articles per page for clean 3-column desktop grid
   const POSTS_PER_PAGE = 6;
 
-  // Helper functions to update URL search parameters safely
+  // Helper functions to update URL search parameters safely without resetting scroll
   const setPage = (newPage: number) => {
     navigate({
       search: (old: BlogSearchSchema) => ({
         ...old,
         page: newPage === 1 ? undefined : newPage,
       }),
+      resetScroll: false,
     });
     setTimeout(() => {
       document.getElementById("articles")?.scrollIntoView({ behavior: "smooth" });
@@ -84,6 +85,7 @@ function BlogArchivePage() {
         category: newCat === "All" ? undefined : newCat,
         page: undefined, // Reset to Page 1 when changing category
       }),
+      resetScroll: false,
     });
     setTimeout(() => {
       document.getElementById("articles")?.scrollIntoView({ behavior: "smooth" });
@@ -97,6 +99,8 @@ function BlogArchivePage() {
         q: newQ ? newQ : undefined,
         page: undefined, // Reset to Page 1 when typing search
       }),
+      replace: true,
+      resetScroll: false,
     });
   };
 
