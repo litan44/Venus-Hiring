@@ -15,8 +15,6 @@ import {
   HelpCircle,
   PhoneCall,
   Sparkles,
-  Search,
-  ExternalLink,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import logo from "@/assets/venus-logo.png";
@@ -337,7 +335,7 @@ export function SiteNav() {
     };
   }, [open]);
 
-  // Escape key handler to close mobile nav
+  // Escape key handler
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -399,7 +397,7 @@ export function SiteNav() {
   };
 
   const isHeroDarkPage = isHomePage || pathname.startsWith("/industries/") || pathname.startsWith("/services/");
-  const light = isHeroDarkPage && !scrolled && !activeMegaMenu;
+  const light = isHeroDarkPage && !scrolled && !open && !activeMegaMenu;
 
   return (
     <>
@@ -435,13 +433,13 @@ export function SiteNav() {
                 decoding="async"
                 className={cn(
                   "shrink-0 rounded-lg object-contain transition-all duration-500 ease-out",
-                  light ? "h-10 w-10 bg-white/95 p-0.5 shadow-sm" : "h-9 w-9",
+                  light ? "h-11 w-11 bg-ink-foreground/90 p-0.5" : "h-9 w-9",
                 )}
               />
               <span
                 className={cn(
                   "truncate font-display font-semibold tracking-[-0.02em] transition-all duration-500 ease-out",
-                  light ? "text-[1.1rem] sm:text-[1.15rem] text-white drop-shadow-sm" : "text-[1rem] text-foreground",
+                  light ? "text-[1.15rem] text-ink-foreground" : "text-[1rem] text-foreground",
                 )}
               >
                 Venus Consultancy
@@ -491,8 +489,8 @@ export function SiteNav() {
                           "group relative inline-flex items-center gap-1.5 py-1 text-[0.95rem] tracking-[0.005em] transition-colors duration-300 ease-out",
                           light
                             ? isActive
-                              ? "font-semibold text-white"
-                              : "font-medium text-white/80 hover:text-white"
+                              ? "font-semibold text-ink-foreground"
+                              : "font-medium text-ink-foreground/70 hover:text-ink-foreground"
                             : isActive || isMegaActive
                               ? "font-semibold text-brand"
                               : "font-medium text-muted-foreground hover:text-brand",
@@ -505,9 +503,7 @@ export function SiteNav() {
                               "h-3.5 w-3.5 transition-transform duration-300",
                               isMegaActive
                                 ? "rotate-180 text-brand"
-                                : light
-                                  ? "text-white/70 group-hover:text-white"
-                                  : "text-muted-foreground group-hover:text-brand",
+                                : "text-muted-foreground group-hover:text-brand",
                             )}
                           />
                         )}
@@ -532,7 +528,7 @@ export function SiteNav() {
                 className={cn(
                   "rounded-full border px-5 py-2.5 text-[0.875rem] font-medium transition-all duration-300 ease-out hover:-translate-y-0.5",
                   light
-                    ? "border-white/20 bg-white/10 text-white backdrop-blur hover:bg-white/20"
+                    ? "border-ink-line bg-ink-foreground/10 text-ink-foreground backdrop-blur hover:bg-ink-foreground/20"
                     : "border-border bg-card text-foreground hover:border-brand/50 hover:text-brand",
                 )}
               >
@@ -579,17 +575,17 @@ export function SiteNav() {
               if (leaveTimeoutRef.current) clearTimeout(leaveTimeoutRef.current);
             }}
             onMouseLeave={handleMenuLeave}
-            className="absolute left-1/2 top-full -translate-x-1/2 w-full max-w-6xl pt-3 px-4 transition-all duration-300 ease-out z-50 hidden lg:block"
+            className="absolute left-1/2 top-full -translate-x-1/2 w-full max-w-[1320px] pt-3 px-4 transition-all duration-300 ease-out z-50 hidden lg:block"
           >
             <div className="overflow-hidden rounded-[2.25rem] border border-border/80 bg-background/95 backdrop-blur-2xl shadow-[0_30px_90px_-20px_rgba(15,23,42,0.35)] transition-all duration-300 text-foreground">
               {/* Upper 3-Column Content Grid */}
               <div className="grid grid-cols-12 p-5 sm:p-6 gap-6 items-stretch min-h-[270px]">
                 {/* Left Column: Sub-Categories List */}
                 <div className="col-span-3 flex flex-col justify-start border-r border-border/60 pr-5">
-                  <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-brand mb-2">
+                  <span className="text-xs sm:text-sm font-extrabold uppercase tracking-[0.18em] text-brand mb-3">
                     {activeMegaMenu === "services" ? "Service Categories" : "Industry Sectors"}
                   </span>
-                  <div className="flex flex-col gap-1 mt-1">
+                  <div className="flex flex-col gap-1.5 mt-1">
                     {(activeMegaMenu === "services" ? SERVICES_MEGA : INDUSTRIES_MEGA).categories.map(
                       (cat, idx) => {
                         const selected =
@@ -612,25 +608,25 @@ export function SiteNav() {
                             }}
                             className={cn(
                               "group flex items-center justify-between rounded-xl text-left transition-all duration-200",
-                              isIndustries ? "py-1.5 px-2.5" : "py-2.5 px-3",
+                              isIndustries ? "py-2.5 px-3.5" : "py-3 px-4",
                               selected
                                 ? "bg-brand/10 text-brand font-bold shadow-sm"
                                 : "text-foreground hover:bg-card hover:text-brand",
                             )}
                           >
                             <div className="min-w-0 pr-1">
-                              <p className={cn("font-semibold truncate", isIndustries ? "text-[11.5px]" : "text-xs")}>
+                              <p className="text-[0.95rem] font-bold truncate leading-snug">
                                 {cat.name}
                               </p>
                               {!isIndustries && (
-                                <p className="text-[10px] text-muted-foreground line-clamp-1 mt-0.5">
+                                <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5 font-medium">
                                   {cat.description}
                                 </p>
                               )}
                             </div>
                             <ChevronRight
                               className={cn(
-                                "h-3.5 w-3.5 shrink-0 transition-transform duration-200",
+                                "h-4.5 w-4.5 shrink-0 transition-transform duration-200",
                                 selected
                                   ? "translate-x-1 text-brand"
                                   : "text-muted-foreground/50 group-hover:translate-x-1 group-hover:text-brand",
@@ -644,12 +640,12 @@ export function SiteNav() {
                 </div>
 
                 {/* Middle Column: Active Category Specialized Sub-Items */}
-                <div className="col-span-6 flex flex-col justify-start px-1">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-brand">
-                      Specialized Offerings & Roles
+                <div className="col-span-6 flex flex-col justify-start px-2">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-xs sm:text-sm font-extrabold uppercase tracking-[0.18em] text-brand">
+                      Specialized Offerings &amp; Roles
                     </span>
-                    <span className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">
+                    <span className="text-xs sm:text-sm text-slate-500 font-extrabold uppercase tracking-wider">
                       {(activeMegaMenu === "services" ? SERVICES_MEGA : INDUSTRIES_MEGA).categories[
                         (activeMegaMenu === "services" ? activeServiceIdx : activeIndustryIdx) >=
                         (activeMegaMenu === "services" ? SERVICES_MEGA : INDUSTRIES_MEGA).categories.length
@@ -661,8 +657,7 @@ export function SiteNav() {
                     </span>
                   </div>
 
-                  {/* 2-Column Sub-Item Grid */}
-                  <div className="grid grid-cols-2 gap-2.5 mt-1">
+                  <div className="grid grid-cols-2 gap-3.5 mt-1">
                     {(
                       (activeMegaMenu === "services" ? SERVICES_MEGA : INDUSTRIES_MEGA).categories[
                         (activeMegaMenu === "services" ? activeServiceIdx : activeIndustryIdx) >=
@@ -680,15 +675,15 @@ export function SiteNav() {
                           handleNavClick(subItem.href, e);
                           setActiveMegaMenu(null);
                         }}
-                        className="group flex flex-col justify-between rounded-xl p-2.5 border border-border/50 bg-background/60 hover:border-brand/40 hover:bg-card hover:shadow-md transition-all duration-200 min-h-[58px]"
+                        className="group flex flex-col justify-between rounded-xl p-3.5 border border-border/50 bg-background/60 hover:border-brand/40 hover:bg-card hover:shadow-md transition-all duration-200 min-h-[70px]"
                       >
-                        <div className="flex items-start justify-between gap-1">
-                          <p className="text-[11.5px] font-bold text-foreground group-hover:text-brand transition-colors leading-tight">
+                        <div className="flex items-start justify-between gap-2">
+                          <p className="text-[0.95rem] font-bold text-foreground group-hover:text-brand transition-colors leading-tight">
                             {subItem.title}
                           </p>
-                          <ArrowUpRight className="h-3.5 w-3.5 text-muted-foreground/60 shrink-0 group-hover:text-brand group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+                          <ArrowUpRight className="h-4.5 w-4.5 text-muted-foreground/60 shrink-0 group-hover:text-brand group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
                         </div>
-                        <p className="text-[10.5px] text-muted-foreground mt-1 leading-snug line-clamp-1">
+                        <p className="text-xs text-muted-foreground mt-1 leading-snug line-clamp-1">
                           {subItem.desc}
                         </p>
                       </a>
@@ -701,7 +696,7 @@ export function SiteNav() {
                   {(() => {
                     const promo = (activeMegaMenu === "services" ? SERVICES_MEGA : INDUSTRIES_MEGA).promo;
                     return (
-                      <div className="group relative isolate flex h-full min-h-[235px] flex-col justify-between overflow-hidden rounded-2xl border border-white/20 p-4 sm:p-5 text-white shadow-xl">
+                      <div className="group relative isolate flex h-full min-h-[270px] flex-col justify-between overflow-hidden rounded-2xl border border-white/20 p-6 text-white shadow-xl">
                         <img
                           src={promo.image}
                           alt={promo.title}
@@ -709,17 +704,17 @@ export function SiteNav() {
                         />
                         <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t from-slate-950 via-slate-950/75 to-slate-900/50" />
                         <div className="relative z-10">
-                          <h4 className="text-xs sm:text-sm font-bold leading-snug text-white drop-shadow-sm">{promo.title}</h4>
-                          <p className="mt-1.5 text-[10.5px] text-white/90 leading-relaxed drop-shadow-sm line-clamp-3">{promo.copy}</p>
+                          <h4 className="text-base sm:text-lg font-bold leading-snug text-white drop-shadow-sm">{promo.title}</h4>
+                          <p className="mt-2 text-xs sm:text-sm text-white/95 leading-relaxed drop-shadow-sm line-clamp-3">{promo.copy}</p>
                         </div>
-                        <div className="relative z-10 mt-3 pt-2.5 border-t border-white/20">
+                        <div className="relative z-10 mt-4 pt-3 border-t border-white/20">
                           <a
                             href={promo.href}
                             onClick={(e) => {
                               handleNavClick(promo.href, e);
                               setActiveMegaMenu(null);
                             }}
-                            className="inline-flex items-center gap-1.5 rounded-xl bg-brand px-3.5 py-1.5 text-[11px] font-bold text-white shadow-brand hover:brightness-110 transition-all"
+                            className="inline-flex items-center gap-1.5 rounded-xl bg-brand px-4.5 py-2.5 text-sm font-bold text-white shadow-brand hover:brightness-110 transition-all"
                           >
                             {promo.ctaText}
                           </a>
@@ -744,7 +739,7 @@ export function SiteNav() {
                     );
                     setActiveMegaMenu(null);
                   }}
-                  className="rounded-full bg-black px-6 py-2.5 text-[11.5px] font-extrabold uppercase tracking-wider text-white shadow-xl hover:bg-slate-950 hover:scale-105 transition-all"
+                  className="rounded-full bg-black px-7 py-3 text-xs sm:text-sm font-extrabold uppercase tracking-wider text-white shadow-xl hover:bg-slate-950 hover:scale-105 transition-all"
                 >
                   {(activeMegaMenu === "services" ? SERVICES_MEGA : INDUSTRIES_MEGA).bottomBanner.ctaText}
                 </a>
@@ -1114,4 +1109,3 @@ export function SiteNav() {
     </>
   );
 }
-
