@@ -155,12 +155,12 @@ function BlogArchivePage() {
   }, [blogs]);
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans">
+<div className="min-h-screen bg-slate-50 text-slate-900 font-sans max-w-full overflow-x-hidden">
       <SiteNav />
 
-      <main id="main-content" className="flex-1">
+      <main id="main-content" className="flex-1 max-w-full overflow-x-hidden">
         {/* ── 1. HERO BANNER WITH RESPONSIVE PADDING & OVERLAY ── */}
-        <section className="relative isolate overflow-hidden bg-slate-950 text-white py-16 sm:py-24 lg:py-32 flex flex-col justify-center border-b border-slate-800">
+        <section className="relative isolate overflow-hidden bg-slate-950 text-white py-12 sm:py-24 lg:py-32 flex flex-col justify-center border-b border-slate-800">
           {/* Background Image with Black Overlay */}
           <div className="absolute inset-0 -z-20 overflow-hidden pointer-events-none">
             <img
@@ -175,7 +175,7 @@ function BlogArchivePage() {
 
           <div className="shell relative z-10">
             {/* Breadcrumbs */}
-            <div className="flex items-center gap-2 text-xs font-bold text-slate-300 mb-6 uppercase tracking-wider">
+            <div className="flex items-center gap-2 text-xs font-bold text-slate-300 mb-4 sm:mb-6 uppercase tracking-wider">
               <Link to="/" className="hover:text-white transition-colors">
                 Home
               </Link>
@@ -183,15 +183,15 @@ function BlogArchivePage() {
               <span className="text-brand font-black">Blog Archive</span>
             </div>
 
-            <div className="max-w-4xl space-y-4">
-              <div className="inline-flex items-center gap-2 rounded-full border border-brand/40 bg-brand/10 px-3.5 py-1.5 text-[11px] sm:text-xs font-extrabold uppercase tracking-widest text-brand backdrop-blur-md">
+            <div className="max-w-4xl space-y-3 sm:space-y-4">
+              <div className="inline-flex items-center gap-2 rounded-full border border-brand/40 bg-brand/10 px-3 py-1 sm:px-3.5 sm:py-1.5 text-[10px] sm:text-xs font-extrabold uppercase tracking-widest text-brand backdrop-blur-md">
                 <Newspaper className="h-3.5 w-3.5 shrink-0" />
                 <span>WORKFORCE INTELLIGENCE & INSIGHTS</span>
               </div>
-              <h1 className="font-display text-2xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight drop-shadow-md">
+              <h1 className="font-display text-xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight drop-shadow-md break-words">
                 Canadian & US Hiring Trends, Executive Search & Compliance
               </h1>
-              <p className="text-sm sm:text-lg text-slate-200 font-medium leading-relaxed max-w-3xl drop-shadow">
+              <p className="text-xs sm:text-lg text-slate-200 font-medium leading-relaxed max-w-3xl drop-shadow">
                 Stay updated with Canadian & US recruitment intelligence, compensation benchmarks, executive hiring strategies, and cross-border compliance guides from senior recruitment partners.
               </p>
             </div>
@@ -199,16 +199,16 @@ function BlogArchivePage() {
         </section>
 
         {/* ── 2. MAIN 2-COLUMN LAYOUT (CAPERMINT STYLE GRID & SIDEBAR) ── */}
-        <section className="py-8 sm:py-16">
+        <section className="py-6 sm:py-16">
           <div className="shell">
-            <div className="grid gap-8 sm:gap-12 lg:grid-cols-12 items-start">
+            <div className="grid gap-6 sm:gap-12 lg:grid-cols-12 items-start">
               
               {/* ── LEFT MAIN STREAM (8 COLUMNS) ── */}
-              <div className="lg:col-span-8 space-y-8 sm:space-y-12">
+              <div className="lg:col-span-8 space-y-6 sm:space-y-12 min-w-0 w-full">
                 
                 {/* ── FEATURED POST SPOTLIGHT (Shown when no search/category filter active) ── */}
                 {!searchQuery && selectedCategory === "All" && featuredPost && currentPage === 1 && (
-                  <div className="space-y-4">
+                  <div className="space-y-3 sm:space-y-4 min-w-0 w-full">
                     <div className="flex items-center gap-2">
                       <Sparkles className="h-4 w-4 text-brand" />
                       <span className="text-xs font-black uppercase tracking-widest text-slate-500">
@@ -216,8 +216,8 @@ function BlogArchivePage() {
                       </span>
                     </div>
 
-                    <div className="group relative overflow-hidden rounded-2xl sm:rounded-[2.5rem] border border-slate-200 bg-white shadow-xl transition-all duration-300 hover:border-brand/40 hover:shadow-2xl">
-                      <div className="relative aspect-[16/9] overflow-hidden bg-slate-900">
+                    <div className="group relative overflow-hidden rounded-2xl sm:rounded-[2.5rem] border border-slate-200 bg-white shadow-xl transition-all duration-300 hover:border-brand/40 hover:shadow-2xl min-w-0 w-full">
+                      <div className="relative aspect-[16/10] sm:aspect-[16/9] overflow-hidden bg-slate-900 w-full">
                         <img
                           src={featuredPost.featuredImage || DEFAULT_FALLBACK_IMAGE}
                           alt={featuredPost.title}
@@ -225,14 +225,14 @@ function BlogArchivePage() {
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/30 to-transparent" />
                         
-                        <div className="absolute top-4 left-4 sm:top-5 sm:left-5">
+                        <div className="absolute top-3 left-3 sm:top-5 sm:left-5 z-10">
                           <span className="inline-block rounded-full bg-brand px-3 py-1 sm:px-4 sm:py-1.5 text-[10px] sm:text-xs font-extrabold text-white uppercase tracking-wider shadow-md">
                             {featuredPost.category}
                           </span>
                         </div>
 
-                        <div className="absolute bottom-6 left-6 right-6 text-white hidden sm:block">
-                          <div className="flex items-center gap-4 text-xs font-bold text-slate-300 mb-2">
+                        <div className="absolute bottom-4 left-5 right-5 text-white hidden sm:block">
+                          <div className="flex items-center gap-4 text-xs font-bold text-slate-300 mb-1">
                             <span className="flex items-center gap-1.5">
                               <Calendar className="h-3.5 w-3.5 text-brand" />
                               {featuredPost.publishDate}
@@ -246,7 +246,7 @@ function BlogArchivePage() {
                         </div>
                       </div>
 
-                      <div className="p-5 sm:p-8 lg:p-10 space-y-4">
+                      <div className="p-4 sm:p-8 lg:p-10 space-y-3 sm:space-y-4 min-w-0 w-full">
                         <div className="sm:hidden flex items-center gap-3 text-xs font-bold text-slate-500">
                           <span className="flex items-center gap-1.5">
                             <Calendar className="h-3.5 w-3.5 text-brand" />
@@ -259,36 +259,36 @@ function BlogArchivePage() {
                           </span>
                         </div>
 
-                        <h2 className="font-display text-xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-900 leading-snug group-hover:text-brand transition-colors duration-300">
-                          <Link to="/blog/$slug" params={{ slug: featuredPost.slug }}>
+                        <h2 className="font-display text-lg sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-900 leading-snug group-hover:text-brand transition-colors duration-300 break-words">
+                          <Link to="/blog/$slug" params={{ slug: featuredPost.slug }} className="hover:underline">
                             {featuredPost.title}
                           </Link>
                         </h2>
 
-                        <p className="text-xs sm:text-base leading-relaxed text-slate-600 line-clamp-3 font-medium">
+                        <p className="text-xs sm:text-base leading-relaxed text-slate-600 line-clamp-3 font-medium break-words">
                           {featuredPost.excerpt}
                         </p>
 
-                        <div className="pt-5 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                          <div className="flex items-center gap-3">
+                        <div className="pt-4 sm:pt-5 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 min-w-0 w-full">
+                          <div className="flex items-center gap-3 min-w-0">
                             <img
                               src={
                                 featuredPost.author?.avatar ||
                                 "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop"
                               }
                               alt={featuredPost.author?.name || "Venus Team"}
-                              className="h-10 w-10 rounded-full object-cover border border-slate-200 shrink-0"
+                              className="h-9 w-9 sm:h-10 sm:w-10 rounded-full object-cover border border-slate-200 shrink-0"
                             />
-                            <div>
-                              <p className="text-xs font-extrabold text-slate-900">{featuredPost.author?.name || "Venus Hiring Team"}</p>
-                              <p className="text-[11px] font-medium text-slate-500">{featuredPost.author?.role || "Workforce Specialist"}</p>
+                            <div className="min-w-0">
+                              <p className="text-xs font-extrabold text-slate-900 truncate">{featuredPost.author?.name || "Venus Hiring Team"}</p>
+                              <p className="text-[11px] font-medium text-slate-500 truncate">{featuredPost.author?.role || "Workforce Specialist"}</p>
                             </div>
                           </div>
 
                           <Link
                             to="/blog/$slug"
                             params={{ slug: featuredPost.slug }}
-                            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-3 text-xs font-extrabold text-white shadow-brand transition-all duration-300 hover:brightness-110 hover:gap-3 w-full sm:w-auto"
+                            className="inline-flex items-center justify-center gap-2 rounded-xl sm:rounded-2xl bg-brand px-5 py-2.5 sm:px-6 sm:py-3 text-xs font-extrabold text-white shadow-brand transition-all duration-300 hover:brightness-110 hover:gap-3 w-full sm:w-auto"
                           >
                             <span>Read Full Article</span>
                             <ArrowRight className="h-4 w-4" />
@@ -300,22 +300,22 @@ function BlogArchivePage() {
                 )}
 
                 {/* ── CATEGORY FILTER BAR ── */}
-                <div id="articles" className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-200 pb-4 scroll-mt-28">
-                  <h3 className="font-display text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight">
+                <div id="articles" className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-200 pb-3 sm:pb-4 scroll-mt-28 min-w-0 w-full">
+                  <h3 className="font-display text-base sm:text-xl font-extrabold text-slate-900 tracking-tight">
                     {searchQuery || selectedCategory !== "All"
                       ? `Articles (${filteredBlogs.length})`
                       : `Latest Articles (Page ${currentPage} of ${totalPages})`}
                   </h3>
 
                   {/* Filter Pills */}
-                  <div className="w-full sm:w-auto flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+                  <div className="w-full sm:w-auto flex items-center gap-2 overflow-x-auto no-scrollbar py-1 min-w-0">
                     {categories.map((cat) => {
                       const isActive = selectedCategory.toLowerCase() === cat.toLowerCase();
                       return (
                         <button
                           key={cat}
                           onClick={() => setSelectedCategory(cat)}
-                          className={`rounded-xl px-3.5 py-1.5 text-xs font-extrabold transition-all cursor-pointer whitespace-nowrap ${
+                          className={`rounded-xl px-3 py-1.5 sm:px-3.5 text-xs font-extrabold transition-all cursor-pointer whitespace-nowrap shrink-0 ${
                             isActive
                               ? "bg-brand text-white shadow-brand shadow-sm scale-[1.02]"
                               : "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900"
@@ -330,7 +330,7 @@ function BlogArchivePage() {
 
                 {/* ── ARTICLE CARDS GRID ── */}
                 {loading ? (
-                  <div className="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2">
+                  <div className="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 min-w-0 w-full">
                     {[1, 2, 3, 4].map((i) => (
                       <div key={i} className="animate-pulse rounded-3xl border border-slate-200 bg-white p-6 h-96" />
                     ))}
@@ -354,20 +354,20 @@ function BlogArchivePage() {
                     </button>
                   </div>
                 ) : (
-                  <div className="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2">
+                  <div className="grid gap-5 sm:gap-8 grid-cols-1 sm:grid-cols-2 min-w-0 w-full">
                     {paginatedBlogs.map((post) => (
                       <article
                         key={post.id}
-                        className="group relative flex flex-col overflow-hidden rounded-2xl sm:rounded-[2rem] border border-slate-200/90 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-brand/40 hover:shadow-xl"
+                        className="group relative flex flex-col overflow-hidden rounded-2xl sm:rounded-[2rem] border border-slate-200/90 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-brand/40 hover:shadow-xl min-w-0 w-full"
                       >
                         {/* Image Thumbnail */}
-                        <div className="relative aspect-[16/10] overflow-hidden bg-slate-100">
+                        <div className="relative aspect-[16/9] sm:aspect-[16/10] overflow-hidden bg-slate-100 w-full">
                           <img
                             src={post.featuredImage || DEFAULT_FALLBACK_IMAGE}
                             alt={post.title}
                             className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
                           />
-                          <div className="absolute top-3 left-3 sm:top-4 sm:left-4">
+                          <div className="absolute top-3 left-3 sm:top-4 sm:left-4 z-10">
                             <span className="inline-block rounded-full bg-slate-900/90 backdrop-blur-md px-2.5 py-1 text-[10px] sm:text-[11px] font-extrabold text-white uppercase tracking-wider shadow-sm">
                               {post.category}
                             </span>
@@ -375,32 +375,32 @@ function BlogArchivePage() {
                         </div>
 
                         {/* Content */}
-                        <div className="flex flex-1 flex-col justify-between p-5 sm:p-7">
-                          <div>
-                            <div className="flex items-center gap-3 text-xs font-bold text-slate-400 mb-2.5">
+                        <div className="flex flex-1 flex-col justify-between p-4 sm:p-7 min-w-0 w-full">
+                          <div className="min-w-0 w-full">
+                            <div className="flex flex-wrap items-center gap-2 text-[11px] sm:text-xs font-bold text-slate-400 mb-2">
                               <span className="flex items-center gap-1">
-                                <Calendar className="h-3.5 w-3.5 text-brand" />
+                                <Calendar className="h-3.5 w-3.5 text-brand shrink-0" />
                                 {post.publishDate}
                               </span>
                               <span>•</span>
                               <span className="flex items-center gap-1">
-                                <Clock className="h-3.5 w-3.5 text-brand" />
+                                <Clock className="h-3.5 w-3.5 text-brand shrink-0" />
                                 {post.readTime}
                               </span>
                             </div>
 
-                            <h3 className="font-display text-lg sm:text-xl font-bold tracking-tight text-slate-900 leading-snug group-hover:text-brand transition-colors duration-200">
-                              <Link to="/blog/$slug" params={{ slug: post.slug }}>
+                            <h3 className="font-display text-base sm:text-xl font-bold tracking-tight text-slate-900 leading-snug group-hover:text-brand transition-colors duration-200 break-words mt-1">
+                              <Link to="/blog/$slug" params={{ slug: post.slug }} className="hover:underline">
                                 {post.title}
                               </Link>
                             </h3>
 
-                            <p className="mt-2.5 text-xs sm:text-sm leading-relaxed text-slate-600 line-clamp-3 font-medium">
+                            <p className="mt-2 text-xs sm:text-sm leading-relaxed text-slate-600 line-clamp-3 font-medium break-words">
                               {post.excerpt}
                             </p>
                           </div>
 
-                          <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between gap-2">
+                          <div className="mt-4 pt-3.5 border-t border-slate-100 flex items-center justify-between gap-2 min-w-0 w-full">
                             <div className="flex items-center gap-2 min-w-0">
                               <img
                                 src={
@@ -410,7 +410,7 @@ function BlogArchivePage() {
                                 alt={post.author?.name || "Venus Team"}
                                 className="h-7 w-7 sm:h-8 sm:w-8 rounded-full object-cover border border-slate-200 shrink-0"
                               />
-                              <span className="text-xs font-bold text-slate-800 truncate">{post.author?.name || "Venus Hiring Team"}</span>
+                              <span className="text-xs font-bold text-slate-800 truncate max-w-[120px] sm:max-w-none">{post.author?.name || "Venus Hiring Team"}</span>
                             </div>
 
                             <Link

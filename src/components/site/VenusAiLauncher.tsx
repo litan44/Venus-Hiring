@@ -449,8 +449,8 @@ export function VenusAiLauncher() {
         </div>
       )}
 
-      {/* ── FLOATING LAUNCHER BUTTON (ENLARGED BY ~15-20% FOR GLOBAL PERSISTENCE) ── */}
-      <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3.5">
+      {/* ── FLOATING LAUNCHER BUTTON ── */}
+      <div className="fixed bottom-3 right-3 sm:bottom-6 sm:right-6 z-40 flex items-center gap-3.5">
         
         {/* Helper Prompt Card next to button (if closed) */}
         {!isOpen && (
@@ -467,7 +467,7 @@ export function VenusAiLauncher() {
         <button
           type="button"
           onClick={() => setIsOpen((prev) => !prev)}
-          className={`relative group p-4 sm:p-4.5 rounded-full transition-all hover:scale-105 active:scale-95 cursor-pointer flex items-center justify-center shadow-2xl ${
+          className={`relative group p-2.5 sm:p-4.5 rounded-full transition-all hover:scale-105 active:scale-95 cursor-pointer flex items-center justify-center shadow-2xl ${
             isOpen
               ? "bg-slate-900 hover:bg-black text-white border-2 border-white"
               : "bg-white text-slate-900 border-2 border-slate-200/90 hover:bg-slate-50"
@@ -478,15 +478,15 @@ export function VenusAiLauncher() {
           <div className="absolute inset-0 rounded-full bg-slate-900/5 blur-md group-hover:bg-slate-900/10 transition-all pointer-events-none" />
 
           {isOpen ? (
-            <X className="w-7 h-7 text-white relative z-10" />
+            <X className="w-5 h-5 sm:w-7 sm:h-7 text-white relative z-10" />
           ) : (
-            <div className="relative z-10 flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10">
+            <div className="relative z-10 flex items-center justify-center w-7 h-7 sm:w-10 sm:h-10">
               <img
                 src="/images/venus_logo.png"
                 alt="Venus Consultancy Logo"
                 className="w-full h-full object-contain"
               />
-              <span className="w-3 h-3 rounded-full bg-red-500 border-2 border-white absolute -bottom-0.5 -right-0.5 animate-pulse" />
+              <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-red-500 border-2 border-white absolute -bottom-0.5 -right-0.5 animate-pulse" />
             </div>
           )}
         </button>
