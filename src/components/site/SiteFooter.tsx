@@ -71,6 +71,20 @@ const LEGAL_LINKS = [
   { label: "Sitemap & Index", href: "/sitemap" },
 ];
 
+function WhatsappIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width="1em"
+      height="1em"
+      fill="currentColor"
+      {...props}
+    >
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.572-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.461c-1.74 0-3.447-.463-4.954-1.341l-.355-.21-3.684.966.983-3.593-.231-.368A9.824 9.824 0 0 1 2.505 12.3c0-5.424 4.413-9.837 9.837-9.837 2.627 0 5.097 1.023 6.953 2.88 1.857 1.858 2.88 4.327 2.88 6.957 0 5.425-4.413 9.843-9.837 9.843m0-18.069C6.012 3.774 1.155 8.63 1.155 14.671c0 2.1.597 4.148 1.727 5.922L1 23l6.575-1.725a10.87 10.87 0 0 0 5.302 1.393h.005c6.042 0 10.899-4.857 10.899-10.897 0-2.909-1.133-5.644-3.192-7.702-2.059-2.059-4.794-3.193-7.704-3.193" />
+    </svg>
+  );
+}
+
 export function SiteFooter() {
   return (
     <footer className="relative bg-[#050507] text-white selection:bg-brand selection:text-white font-sans overflow-hidden border-t border-white/10">
@@ -253,16 +267,20 @@ export function SiteFooter() {
             </h4>
             <div className="space-y-3 sm:space-y-3.5 2xl:space-y-5 text-[17px] sm:text-[20px] 2xl:text-[22px]">
               <a
-                href="tel:6476162677"
-                className="block text-slate-200 hover:text-white transition-colors"
+                href="https://wa.me/16476162677"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center gap-2.5 text-slate-200 hover:text-white transition-colors"
               >
-                📞 +1 (647) 616-2677
+                <WhatsappIcon className="w-5 h-5 2xl:w-6 2xl:h-6 text-brand shrink-0 group-hover:scale-110 transition-transform" />
+                <span>+1 (647) 616-2677</span>
               </a>
               <a
                 href="mailto:info@venushiring.com"
-                className="block text-slate-200 hover:text-white transition-colors"
+                className="group flex items-center gap-2.5 text-slate-200 hover:text-white transition-colors"
               >
-                ✉️ info@venushiring.com
+                <Mail className="w-5 h-5 2xl:w-6 2xl:h-6 text-brand shrink-0 group-hover:scale-110 transition-transform" />
+                <span>info@venushiring.com</span>
               </a>
             </div>
           </div>
