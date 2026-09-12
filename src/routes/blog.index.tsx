@@ -304,7 +304,7 @@ function BlogArchivePage() {
 
                 {/* ── CATEGORY FILTER BAR ── */}
                 <div id="articles" className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-200 pb-3 sm:pb-4 scroll-mt-28 min-w-0 w-full">
-                  <h3 className="font-display text-base sm:text-xl font-extrabold text-slate-900 tracking-tight">
+                  <h3 className="font-display text-base sm:text-xl font-extrabold text-slate-900 tracking-tight shrink-0 whitespace-nowrap">
                     {searchQuery || selectedCategory !== "All"
                       ? `Articles (${filteredBlogs.length})`
                       : `Latest Articles (Page ${currentPage} of ${totalPages})`}
@@ -364,7 +364,7 @@ function BlogArchivePage() {
                   </div>
 
                   {/* Filter Pills (Desktop / Tablet View Only) */}
-                  <div className="hidden sm:flex items-center gap-2 overflow-x-auto no-scrollbar py-1 min-w-0">
+                  <div className="hidden sm:flex sm:w-auto items-center gap-2 overflow-x-auto no-scrollbar py-1 min-w-0">
                     {categories.map((cat) => {
                       const isActive = selectedCategory.toLowerCase() === cat.toLowerCase();
                       return (
