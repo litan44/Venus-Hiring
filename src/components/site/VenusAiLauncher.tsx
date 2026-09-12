@@ -207,6 +207,17 @@ export function VenusAiLauncher() {
       console.error("Error saving Venus AI user info:", err);
     }
 
+    // Trigger immediate lead email notification to jivan@venushiring.com & paresh@venushiring.com
+    fetch("/api/ai-assistant", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        isLeadCapture: true,
+        userName: info.name,
+        userEmail: info.email,
+      }),
+    }).catch((err) => console.error("Lead capture notification notice:", err));
+
     const firstName = name.split(" ")[0];
     if (messages.length === 0) {
       const welcomeMsg: ChatMessage = {

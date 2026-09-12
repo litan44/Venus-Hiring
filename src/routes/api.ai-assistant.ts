@@ -1,5 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { retrieveRelevantKnowledge } from "@/lib/venus-rag";
+import { sendEmail } from "@/lib/zoho-mail";
+import { pool, initDatabase } from "@/lib/db";
+
+// Memory cache to prevent duplicate lead notification emails for the same user email in 1 hour
+const notifiedLeadEmails = new Map<string, number>();
 
 export const Route = createFileRoute("/api/ai-assistant")({
   server: {
@@ -10,13 +15,106 @@ export const Route = createFileRoute("/api/ai-assistant")({
           const userMessage = (body.message || "").trim();
           const rawUserName = (body.userName || body.name || "").trim();
           const rawUserEmail = (body.userEmail || body.email || "").trim();
+          const isLeadCapture = !!body.isLeadCapture;
           const history = body.history || [];
 
           // Clean first name for natural conversational greetings
           const firstName = rawUserName ? rawUserName.split(" ")[0] : "";
           const namePrefix = firstName ? `Hello **${firstName}**! ` : "";
 
-          console.log("[VENUS AI] Request received:", { query: userMessage, userName: rawUserName, userEmail: rawUserEmail, historyLength: history.length });
+          console.log("[VENUS AI] Request received:", { query: userMessage, userName: rawUserName, userEmail: rawUserEmail, isLeadCapture, historyLength: history.length });
+
+          // 1. Process & Notify Lead (Name & Email to jivan@venushiring.com, paresh@venushiring.com)
+          if (rawUserName && rawUserEmail) {
+            const emailKey = rawUserEmail.toLowerCase();
+            const lastNotified = notifiedLeadEmails.get(emailKey) || 0;
+            const now = Date.now();
+
+            // Send notification if explicitly requested as lead capture OR if not notified in last 60 minutes
+            if (isLeadCapture || now - lastNotified > 3600000) {
+              notifiedLeadEmails.set(emailKey, now);
+
+              const primaryReceiver = "jivan@venushiring.com";
+              const envReceiver = process.env.CONTACT_RECEIVER_EMAIL || "jivan@venushiring.com, paresh@venushiring.com";
+              const extraReceivers = envReceiver
+                .split(/[\s,]+/)
+                .map((e) => e.trim())
+                .filter(Boolean);
+              const receiversList = Array.from(new Set([primaryReceiver, ...extraReceivers])).join(", ");
+
+              const leadHtml = `
+                <!DOCTYPE html>
+                <html>
+                  <head>
+                    <meta charset="utf-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <style>
+                      body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f8fafc; color: #0f172a; margin: 0; padding: 24px 12px; }
+                      .wrapper { max-width: 600px; margin: 0 auto; background: #ffffff; border: 1px solid #e2e8f0; border-top: 4px solid #e01e37; border-radius: 8px; overflow: hidden; }
+                      .header { padding: 24px 28px 20px 28px; border-bottom: 1px solid #f1f5f9; }
+                      .brand { font-size: 20px; font-weight: 700; color: #0f172a; }
+                      .brand span { color: #e01e37; }
+                      .content { padding: 28px; font-size: 14px; line-height: 1.6; color: #334155; }
+                      .info-table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+                      .info-table td { padding: 10px 0; border-bottom: 1px dashed #f1f5f9; font-size: 14px; }
+                      .label { color: #64748b; font-weight: 600; width: 38%; }
+                      .value { color: #0f172a; font-weight: 700; }
+                      .footer { background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 16px 28px; font-size: 12px; color: #64748b; }
+                    </style>
+                  </head>
+                  <body>
+                    <div class="wrapper">
+                      <div class="header">
+                        <div class="brand">Venus <span>AI Assistant</span></div>
+                        <div style="font-size: 12px; font-weight: 600; text-transform: uppercase; color: #64748b; margin-top: 4px;">New AI Chatbot Visitor Lead</div>
+                      </div>
+                      <div class="content">
+                        <p style="margin-top: 0;">A website visitor has submitted their contact details to start chatting with the <strong>Venus AI Assistant</strong>:</p>
+                        <table class="info-table">
+                          <tr><td class="label">Full Name:</td><td class="value">${rawUserName}</td></tr>
+                          <tr><td class="label">Email Address:</td><td class="value"><a href="mailto:${rawUserEmail}" style="color: #e01e37; text-decoration: none;">${rawUserEmail}</a></td></tr>
+                          ${userMessage ? `<tr><td class="label">First Message Asked:</td><td class="value" style="font-weight: 500;">${userMessage}</td></tr>` : ""}
+                          <tr><td class="label">Captured At:</td><td class="value" style="font-weight: 500;">${new Date().toUTCString()}</td></tr>
+                        </table>
+                      </div>
+                      <div class="footer">
+                        Venus Consultancy &bull; AI Chatbot Lead Capture &bull; Sent to ${receiversList}
+                      </div>
+                    </div>
+                  </body>
+                </html>
+              `;
+
+              // Dispatch notification email asynchronously
+              sendEmail({
+                to: receiversList,
+                subject: `[Venus AI Chatbot] New Lead: ${rawUserName} (${rawUserEmail})`,
+                html: leadHtml,
+                replyTo: rawUserEmail,
+              }).catch((mailErr) => console.error("[Venus AI Mail Dispatch Error]:", mailErr));
+
+              // Store into PostgreSQL contact_briefs table asynchronously
+              initDatabase()
+                .then(() => {
+                  pool.query(
+                    `INSERT INTO contact_briefs (name, email, service_type, phone, company, role, budget, location, brief) VALUES ($1, $2, 'Venus AI Assistant Lead', 'Not Provided', 'Not Provided', 'Website Visitor', 'N/A', 'N/A', $3);`,
+                    [rawUserName, rawUserEmail, `[Venus AI Lead Capture] User started AI Chatbot session. First message: ${userMessage || "Lead Captured"}`]
+                  ).catch((dbErr) => console.error("[PostgreSQL AI Lead Insert Notice]:", dbErr));
+                })
+                .catch((dbErr) => console.error("[PostgreSQL DB Init Notice]:", dbErr));
+            }
+          }
+
+          // If request was purely for lead capture without user message, return early
+          if (isLeadCapture && !userMessage) {
+            return new Response(
+              JSON.stringify({
+                success: true,
+                message: `Thank you ${firstName || rawUserName}! Lead captured successfully.`
+              }),
+              { headers: { "Content-Type": "application/json" } }
+            );
+          }
 
           if (!userMessage) {
             return new Response(
