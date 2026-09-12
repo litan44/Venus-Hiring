@@ -205,8 +205,8 @@ function BlogArchivePage() {
         <section className="py-6 sm:py-16">
           <div className="shell space-y-8 sm:space-y-12">
             
-            {/* ── FEATURED POST SPOTLIGHT (Shown when no search/category filter active) ── */}
-            {!searchQuery && selectedCategory === "All" && featuredPost && currentPage === 1 && (
+            {/* ── FEATURED POST SPOTLIGHT (Shown on Page 1) ── */}
+            {featuredPost && currentPage === 1 && (
               <div className="space-y-3 sm:space-y-4 min-w-0 w-full">
                 <div className="flex items-center gap-2">
                   <Sparkles className="h-4 w-4 text-brand" />
