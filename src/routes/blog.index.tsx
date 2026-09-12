@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import {
   Search,
@@ -12,6 +12,8 @@ import {
   ChevronLeft,
   TrendingUp,
   PhoneCall,
+  ChevronDown,
+  Check,
 } from "lucide-react";
 import { useBlogs, DEFAULT_FALLBACK_IMAGE } from "@/lib/blog-store";
 import { SiteNav } from "@/components/site/SiteNav";
@@ -53,6 +55,7 @@ function BlogArchivePage() {
   const { blogs, loading } = useBlogs();
   const search = Route.useSearch();
   const navigate = useNavigate({ from: Route.fullPath });
+  const [mobileCategoryOpen, setMobileCategoryOpen] = useState(false);
 
   const currentPage = search.page || 1;
   const selectedCategory = search.category || "All";
@@ -307,8 +310,61 @@ function BlogArchivePage() {
                       : `Latest Articles (Page ${currentPage} of ${totalPages})`}
                   </h3>
 
-                  {/* Filter Pills */}
-                  <div className="w-full sm:w-auto flex items-center gap-2 overflow-x-auto no-scrollbar py-1 min-w-0">
+                  {/* Category Dropdown (Mobile View Only) */}
+                  <div className="relative sm:hidden w-full">
+                    <button
+                      type="button"
+                      onClick={() => setMobileCategoryOpen((prev) => !prev)}
+                      className="w-full flex items-center justify-between gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-extrabold text-slate-800 shadow-sm transition-all active:bg-slate-50 cursor-pointer"
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className="text-slate-400 font-medium">Category:</span>
+                        <span className="text-brand font-black">{selectedCategory}</span>
+                      </div>
+                      <ChevronDown
+                        className={`h-4 w-4 text-slate-500 transition-transform duration-200 ${
+                          mobileCategoryOpen ? "rotate-180 text-brand" : ""
+                        }`}
+                      />
+                    </button>
+
+                    {mobileCategoryOpen && (
+                      <>
+                        {/* Backdrop overlay for closing dropdown */}
+                        <div
+                          className="fixed inset-0 z-20"
+                          onClick={() => setMobileCategoryOpen(false)}
+                        />
+                        {/* Dropdown Menu */}
+                        <div className="absolute left-0 right-0 top-full mt-1.5 z-30 overflow-hidden rounded-2xl border border-slate-200 bg-white p-1.5 shadow-xl animate-in fade-in slide-in-from-top-2 duration-200">
+                          {categories.map((cat) => {
+                            const isActive = selectedCategory.toLowerCase() === cat.toLowerCase();
+                            return (
+                              <button
+                                key={cat}
+                                type="button"
+                                onClick={() => {
+                                  setSelectedCategory(cat);
+                                  setMobileCategoryOpen(false);
+                                }}
+                                className={`w-full flex items-center justify-between rounded-xl px-3.5 py-2.5 text-xs font-extrabold transition-colors cursor-pointer ${
+                                  isActive
+                                    ? "bg-brand/10 text-brand font-black"
+                                    : "text-slate-700 hover:bg-slate-100"
+                                }`}
+                              >
+                                <span>{cat}</span>
+                                {isActive && <Check className="h-3.5 w-3.5 text-brand shrink-0" />}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </>
+                    )}
+                  </div>
+
+                  {/* Filter Pills (Desktop / Tablet View Only) */}
+                  <div className="hidden sm:flex items-center gap-2 overflow-x-auto no-scrollbar py-1 min-w-0">
                     {categories.map((cat) => {
                       const isActive = selectedCategory.toLowerCase() === cat.toLowerCase();
                       return (
