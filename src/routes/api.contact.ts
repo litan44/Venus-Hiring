@@ -106,21 +106,19 @@ export const Route = createFileRoute("/api/contact")({
             date: submissionDate,
           });
 
-          // 5. Save into Railway PostgreSQL Database contact_briefs table (if available)
-          try {
-            await initDatabase();
-            await pool.query(
-              `INSERT INTO contact_briefs (
-                name, email, service_type, phone, company, role, budget, location, brief
-              ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);`,
-              [name, email, serviceType, phone, company, role, budget, location, `[Source: ${source} | Heard: ${hearAboutUs}] ${briefText}`]
-            );
-            console.log("[PostgreSQL] Hire Talent Inquiry Saved to Database.");
-          } catch (dbErr) {
-            console.error("[PostgreSQL Contact Insert Notice]:", dbErr);
-          }
+          // 5. Save into Railway PostgreSQL Database contact_briefs table asynchronously (non-blocking)
+          initDatabase()
+            .then(() => {
+              pool.query(
+                `INSERT INTO contact_briefs (
+                  name, email, service_type, phone, company, role, budget, location, brief
+                ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);`,
+                [name, email, serviceType, phone, company, role, budget, location, `[Source: ${source} | Heard: ${hearAboutUs}] ${briefText}`]
+              ).catch((dbErr) => console.error("[PostgreSQL Contact Insert Notice]:", dbErr));
+            })
+            .catch((dbErr) => console.error("[PostgreSQL Database Init Notice]:", dbErr));
 
-          // 6. Create Nodemailer Transporter
+          // 6. Create Nodemailer Transporter with tight timeouts for serverless execution
           const transporter = nodemailer.createTransport({
             host,
             port,
@@ -129,9 +127,9 @@ export const Route = createFileRoute("/api/contact")({
               user,
               pass,
             },
-            connectionTimeout: 10000,
-            greetingTimeout: 5000,
-            socketTimeout: 10000,
+            connectionTimeout: 6000,
+            greetingTimeout: 3000,
+            socketTimeout: 6000,
             tls: {
               rejectUnauthorized: false,
             },
@@ -150,9 +148,9 @@ export const Route = createFileRoute("/api/contact")({
             }
           }
 
-          // 7. Email #1: Send Internal Notification to jivan@venushiring.com
+          // 7. Email #1: Send Internal Notification to jivan@venushiring.com & paresh@venushiring.com
           const venusMailOptions = {
-            from: `"Venus Hiring - ${safeSource}" <${from}>`,
+            from: `"Venus Hiring" <${from}>`,
             to: receiversList,
             replyTo: safeEmail,
             subject: `[${safeSource}] New Inquiry from ${safeName} (${safeEmail})`,
@@ -212,7 +210,7 @@ export const Route = createFileRoute("/api/contact")({
             attachments,
           };
 
-          // 8. Email #2: Send Auto-Confirmation to Employer / Candidate
+          // 8. Email #2: Send Auto-Confirmation to Client / Candidate
           const confirmationMailOptions = {
             from: `"Venus Consultancy" <${from}>`,
             to: safeEmail,
@@ -269,24 +267,40 @@ export const Route = createFileRoute("/api/contact")({
             `,
           };
 
-          // 9. Send emails over SMTP
+          // 9. Send emails over SMTP (Parallel Execution with Promise.allSettled)
+          let internalDelivered = false;
           if (host && user && pass) {
             try {
-              const venusInfo = await transporter.sendMail(venusMailOptions);
-              await transporter.sendMail(confirmationMailOptions);
-              console.log("[Venus SMTP Delivery Success]: Sent to subham@venushiring.ca. Accepted:", venusInfo.accepted);
+              const [internalResult, confirmResult] = await Promise.allSettled([
+                transporter.sendMail(venusMailOptions),
+                transporter.sendMail(confirmationMailOptions),
+              ]);
+
+              if (internalResult.status === "fulfilled") {
+                internalDelivered = true;
+                console.log("[Venus SMTP Delivery Success] Message ID:", internalResult.value.messageId, "Recipients:", receiversList);
+              } else {
+                console.error("[Venus SMTP Delivery Failure]:", internalResult.reason?.message || String(internalResult.reason));
+              }
+
+              if (confirmResult.status === "fulfilled") {
+                console.log("[Venus Auto-Confirmation Success] Message ID:", confirmResult.value.messageId);
+              } else {
+                console.warn("[Venus Auto-Confirmation Notice]:", confirmResult.reason?.message || String(confirmResult.reason));
+              }
             } catch (smtpErr: unknown) {
               const errDetail = smtpErr instanceof Error ? smtpErr.message : String(smtpErr);
-              console.error("[Venus SMTP Transmission Notice]:", errDetail);
+              console.error("[Venus SMTP Transmission Exception]:", errDetail);
             }
           } else {
-            console.log("[Notice]: SMTP environment variables (SMTP_HOST / SMTP_USER / SMTP_PASSWORD) not configured on current environment. Submission logged to console & DB.");
+            console.warn("[Notice]: SMTP environment variables not configured on current environment. Submission logged.");
           }
 
           return new Response(
             JSON.stringify({
               success: true,
               message: "Thank you! Your hiring inquiry has been received.",
+              delivered: internalDelivered,
             }),
             { status: 200, headers: { "Content-Type": "application/json" } }
           );
