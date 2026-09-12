@@ -176,7 +176,7 @@ export function SiteFooter() {
                 </div>
               </div>
 
-              <p className="text-[20px] 2xl:text-[22px] text-slate-200 leading-relaxed mb-5 2xl:mb-8 max-w-sm 2xl:max-w-lg">
+              <p className="text-sm sm:text-base 2xl:text-lg text-slate-200 leading-relaxed mb-5 2xl:mb-8 max-w-sm 2xl:max-w-lg">
                 Venus Hiring connects organizations with exceptional talent through permanent recruitment, flexible staffing, executive search, and strategic workforce advisory.
               </p>
 
@@ -203,17 +203,17 @@ export function SiteFooter() {
 
           {/* COLUMN 02 — QUICK LINKS (Span 2) */}
           <div className="lg:col-span-2">
-            <h4 className="text-[22px] 2xl:text-[26px] font-black uppercase tracking-[0.14em] text-white mb-5 lg:mb-6 2xl:mb-8">
+            <h4 className="text-base sm:text-lg 2xl:text-xl font-bold uppercase tracking-[0.14em] text-white mb-4 lg:mb-5 2xl:mb-6">
               Quick Links
             </h4>
-            <ul className="space-y-2.5 sm:space-y-3 lg:space-y-3.5 2xl:space-y-5">
+            <ul className="space-y-2 sm:space-y-2.5 lg:space-y-3 2xl:space-y-4">
               {QUICK_LINKS.map((l) => (
                 <li key={l.label}>
                   <a
                     href={l.href}
-                    className="group inline-flex items-center gap-2 text-[17px] sm:text-[20px] 2xl:text-[22px] text-slate-200 hover:text-white transition-all duration-200"
+                    className="group inline-flex items-center gap-2 text-sm sm:text-base 2xl:text-lg text-slate-200 hover:text-white transition-all duration-200"
                   >
-                    <ChevronRight className="w-4 h-4 2xl:w-5 2xl:h-5 text-slate-400 group-hover:text-brand transition-colors group-hover:translate-x-0.5 shrink-0" />
+                    <ChevronRight className="w-3.5 h-3.5 2xl:w-4 2xl:h-4 text-slate-400 group-hover:text-brand transition-colors group-hover:translate-x-0.5 shrink-0" />
                     <span>{l.label}</span>
                   </a>
                 </li>
@@ -223,17 +223,17 @@ export function SiteFooter() {
 
           {/* COLUMN 03 — SOLUTIONS (Span 3) */}
           <div className="lg:col-span-3">
-            <h4 className="text-[22px] 2xl:text-[26px] font-black uppercase tracking-[0.14em] text-white mb-5 lg:mb-6 2xl:mb-8">
+            <h4 className="text-base sm:text-lg 2xl:text-xl font-bold uppercase tracking-[0.14em] text-white mb-4 lg:mb-5 2xl:mb-6">
               Solutions
             </h4>
-            <ul className="space-y-2.5 sm:space-y-3 lg:space-y-3.5 2xl:space-y-5">
+            <ul className="space-y-2 sm:space-y-2.5 lg:space-y-3 2xl:space-y-4">
               {SOLUTIONS_LINKS.map((s) => (
                 <li key={s.label}>
                   <a
                     href={s.href}
-                    className="group inline-flex items-start gap-2 text-[17px] sm:text-[20px] 2xl:text-[22px] text-slate-200 hover:text-white transition-all duration-200"
+                    className="group inline-flex items-start gap-2 text-sm sm:text-base 2xl:text-lg text-slate-200 hover:text-white transition-all duration-200"
                   >
-                    <ChevronRight className="w-4 h-4 2xl:w-5 2xl:h-5 text-slate-400 group-hover:text-brand transition-colors mt-1 shrink-0 group-hover:translate-x-0.5" />
+                    <ChevronRight className="w-3.5 h-3.5 2xl:w-4 2xl:h-4 text-slate-400 group-hover:text-brand transition-colors mt-1 shrink-0 group-hover:translate-x-0.5" />
                     <span>{s.label}</span>
                   </a>
                 </li>
@@ -243,10 +243,10 @@ export function SiteFooter() {
 
           {/* COLUMN 04 — LEGAL & TRUST (Span 2) */}
           <div className="lg:col-span-2">
-            <h4 className="text-[22px] 2xl:text-[26px] font-black uppercase tracking-[0.14em] text-white mb-5 lg:mb-6 2xl:mb-8">
+            <h4 className="text-base sm:text-lg 2xl:text-xl font-bold uppercase tracking-[0.14em] text-white mb-4 lg:mb-5 2xl:mb-6">
               Legal &amp; Trust
             </h4>
-            <ul className="space-y-2.5 sm:space-y-3 lg:space-y-3.5 2xl:space-y-5 text-[17px] sm:text-[20px] 2xl:text-[22px]">
+            <ul className="space-y-2 sm:space-y-2.5 lg:space-y-3 2xl:space-y-4 text-sm sm:text-base 2xl:text-lg">
               {LEGAL_LINKS.map((leg) => (
                 <li key={leg.label}>
                   <a
@@ -262,24 +262,24 @@ export function SiteFooter() {
 
           {/* COLUMN 05 — CONTACT (Span 2) */}
           <div className="lg:col-span-2">
-            <h4 className="text-[22px] 2xl:text-[26px] font-black uppercase tracking-[0.14em] text-white mb-5 lg:mb-6 2xl:mb-8">
+            <h4 className="text-base sm:text-lg 2xl:text-xl font-bold uppercase tracking-[0.14em] text-white mb-4 lg:mb-5 2xl:mb-6">
               Contact
             </h4>
-            <div className="space-y-3 sm:space-y-3.5 2xl:space-y-5 text-[17px] sm:text-[20px] 2xl:text-[22px]">
+            <div className="space-y-2.5 sm:space-y-3 2xl:space-y-4 text-sm sm:text-base 2xl:text-lg">
               <a
                 href="https://wa.me/16476162677"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center gap-2.5 text-slate-200 hover:text-white transition-colors"
+                className="group flex items-center gap-2.5 text-slate-200 hover:text-white transition-colors whitespace-nowrap"
               >
-                <WhatsappIcon className="w-5 h-5 2xl:w-6 2xl:h-6 text-brand shrink-0 group-hover:scale-110 transition-transform" />
+                <WhatsappIcon className="w-4 h-4 sm:w-4.5 sm:h-4.5 2xl:w-5 2xl:h-5 text-brand shrink-0 group-hover:scale-110 transition-transform" />
                 <span>+1 (647) 616-2677</span>
               </a>
               <a
                 href="mailto:info@venushiring.com"
-                className="group flex items-center gap-2.5 text-slate-200 hover:text-white transition-colors"
+                className="group flex items-center gap-2.5 text-slate-200 hover:text-white transition-colors whitespace-nowrap"
               >
-                <Mail className="w-5 h-5 2xl:w-6 2xl:h-6 text-brand shrink-0 group-hover:scale-110 transition-transform" />
+                <Mail className="w-4 h-4 sm:w-4.5 sm:h-4.5 2xl:w-5 2xl:h-5 text-brand shrink-0 group-hover:scale-110 transition-transform" />
                 <span>info@venushiring.com</span>
               </a>
             </div>
