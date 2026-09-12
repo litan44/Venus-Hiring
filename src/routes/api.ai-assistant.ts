@@ -92,7 +92,7 @@ ${ragContext}`;
             ];
 
             // List of models to try in fallback cascade
-            const primaryModels = ["groq/compound", "openai/gpt-oss-120b"];
+            const primaryModels = ["openai/gpt-oss-120b", "groq/compound", "qwen/qwen3.8-27b"];
 
             for (const modelName of primaryModels) {
               try {
@@ -178,9 +178,12 @@ ${ragContext}`;
 function sanitizeResponse(text: string): string {
   if (!text) return "";
   return text
+    .replace(/^[\s\S]*?\*\*Reasoning Process\*\*[\s\S]*?\n\n/i, "")
+    .replace(/<think>[\s\S]*?<\/think>/gi, "")
     .replace(/http:\/\/localhost:\d+/g, "")
     .replace(/https:\/\/www\.venushiring\.ca/g, "")
-    .replace(/\s{3,}/g, "\n\n");
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
 }
 
 function generateFollowUps(query: string, intent: string): string[] {
