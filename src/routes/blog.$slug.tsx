@@ -440,51 +440,51 @@ function BlogDetailPage() {
         </div>
 
         {/* Article Section */}
-        <article className="shell section-padding py-10 lg:py-14">
-          <div className="max-w-6xl mx-auto space-y-8">
+        <article className="shell section-padding py-6 sm:py-10 lg:py-14">
+          <div className="max-w-6xl mx-auto space-y-6 sm:space-y-8">
             {/* HERO / ARTICLE HEADER */}
-            <header className="space-y-6">
+            <header className="space-y-4 sm:space-y-6">
               {/* Category Tag, Reading Time & Publication Date */}
-              <div className="flex flex-wrap items-center gap-3">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-brand/10 border border-brand/30 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-brand">
+              <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-brand/10 border border-brand/30 px-3 py-1 text-[11px] sm:text-xs font-bold uppercase tracking-wider text-brand">
                   <Tag className="h-3.5 w-3.5" /> {blog.category || "General"}
                 </span>
-                <span className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground">
+                <span className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-semibold text-muted-foreground">
                   <Clock className="h-3.5 w-3.5 text-brand" /> {readingTime}
                 </span>
-                <span className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground">
+                <span className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-semibold text-muted-foreground">
                   <Calendar className="h-3.5 w-3.5 text-muted-foreground" /> Published {blog.publishDate || "Recently"}
                 </span>
               </div>
 
               {/* H1 Main Heading with controlled max-width and clean typography */}
               <div className="max-w-4xl lg:max-w-5xl">
-                <h1 className="font-sans text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight text-foreground leading-snug">
+                <h1 className="font-sans text-xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-foreground leading-snug break-words">
                   {blog.title}
                 </h1>
               </div>
 
               {/* Simple Short Description / Excerpt */}
               {blog.excerpt && (
-                <p className="text-base sm:text-lg leading-relaxed text-muted-foreground font-normal max-w-3xl border-l-2 border-brand/40 pl-3.5 py-0.5">
+                <p className="text-sm sm:text-lg leading-relaxed text-muted-foreground font-normal max-w-3xl border-l-2 border-brand/40 pl-3.5 py-0.5">
                   {blog.excerpt}
                 </p>
               )}
 
               {/* Author Info Bar & Share Toolbar Header */}
-              <div className="flex flex-wrap items-center justify-between gap-6 py-5 border-y border-border/80">
-                <div className="flex items-center gap-3.5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-4 border-y border-border/80">
+                <div className="flex items-center gap-3">
                   <img
                     src={
                       blog.author?.avatar ||
                       "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop"
                     }
                     alt={blog.author?.name || "Venus Team"}
-                    className="h-12 w-12 rounded-full object-cover border-2 border-brand/40 shadow-sm"
+                    className="h-10 w-10 sm:h-12 sm:w-12 rounded-full object-cover border-2 border-brand/40 shadow-sm shrink-0"
                   />
                   <div>
-                    <p className="text-sm font-bold text-foreground">{blog.author?.name || "Venus Hiring Team"}</p>
-                    <p className="text-xs text-muted-foreground">{blog.author?.role || "Workforce Specialist"}</p>
+                    <p className="text-xs sm:text-sm font-bold text-foreground">{blog.author?.name || "Venus Hiring Team"}</p>
+                    <p className="text-[11px] sm:text-xs text-muted-foreground">{blog.author?.role || "Workforce Specialist"}</p>
                   </div>
                 </div>
 
@@ -537,7 +537,7 @@ function BlogDetailPage() {
 
               {/* FEATURED HERO IMAGE - Only displayed if explicitly provided and not already present in article content */}
               {showTopHeroImage && (
-                <div className="my-8 overflow-hidden rounded-3xl border border-border shadow-xl aspect-[16/9] max-h-[520px]">
+                <div className="my-6 sm:my-8 overflow-hidden rounded-2xl sm:rounded-3xl border border-border shadow-xl aspect-[16/9] max-h-[520px]">
                   <img
                     src={blog.featuredImage}
                     alt={blog.title}
@@ -549,12 +549,12 @@ function BlogDetailPage() {
             </header>
 
             {/* MAIN DESKTOP GRID (Left: 70% Article Content / Right: 30% Sidebar with ONE LARGE TOC CARD) */}
-            <div className="grid gap-10 lg:grid-cols-12 lg:items-start pt-2">
+            <div className="grid gap-8 lg:gap-10 lg:grid-cols-12 lg:items-start pt-2">
               {/* LEFT / MAIN COLUMN (70% - lg:col-span-8) */}
-              <div className="min-w-0 space-y-10 lg:col-span-8">
+              <div className="min-w-0 space-y-8 sm:space-y-10 lg:col-span-8">
                 {/* Mobile Collapsible TOC */}
                 {tocItems.length > 0 && (
-                  <div className="lg:hidden rounded-2xl border border-border/80 bg-card p-5 space-y-3 shadow-sm">
+                  <div className="lg:hidden rounded-2xl border border-border/80 bg-card p-4 sm:p-5 space-y-3 shadow-sm">
                     <button
                       type="button"
                       onClick={() => setIsMobileTocOpen(!isMobileTocOpen)}
@@ -605,7 +605,7 @@ function BlogDetailPage() {
                 {/* Render Complete Article HTML Body */}
                 <div
                   ref={articleContentRef}
-                  className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-sans prose-headings:font-semibold prose-h2:text-xl sm:prose-h2:text-2xl prose-h2:tracking-tight prose-h2:text-foreground prose-h2:mt-7 prose-h2:mb-3 prose-h3:text-lg sm:prose-h3:text-xl prose-h3:font-semibold prose-h3:text-foreground prose-h3:mt-5 prose-h3:mb-2 prose-h4:text-base sm:prose-h4:text-lg prose-h4:font-semibold prose-h4:text-foreground prose-h4:mt-4 prose-h4:mb-2 prose-p:text-[15px] sm:prose-p:text-[16px] prose-p:leading-relaxed prose-p:text-foreground/85 prose-li:text-[15px] prose-li:leading-relaxed prose-blockquote:border-l-4 prose-blockquote:border-brand prose-blockquote:pl-5 prose-blockquote:italic prose-blockquote:my-5"
+                  className="prose prose-slate dark:prose-invert max-w-none break-words overflow-hidden prose-headings:font-sans prose-headings:font-semibold prose-h2:text-xl sm:prose-h2:text-2xl prose-h2:tracking-tight prose-h2:text-foreground prose-h2:mt-7 prose-h2:mb-3 prose-h3:text-lg sm:prose-h3:text-xl prose-h3:font-semibold prose-h3:text-foreground prose-h3:mt-5 prose-h3:mb-2 prose-h4:text-base sm:prose-h4:text-lg prose-h4:font-semibold prose-h4:text-foreground prose-h4:mt-4 prose-h4:mb-2 prose-p:text-[15px] sm:prose-p:text-[16px] prose-p:leading-relaxed prose-p:text-foreground/85 prose-li:text-[15px] prose-li:leading-relaxed prose-blockquote:border-l-4 prose-blockquote:border-brand prose-blockquote:pl-5 prose-blockquote:italic prose-blockquote:my-5"
                   dangerouslySetInnerHTML={{ __html: blog.content }}
                 />
 

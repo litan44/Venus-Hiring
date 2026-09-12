@@ -159,8 +159,8 @@ function BlogArchivePage() {
       <SiteNav />
 
       <main id="main-content" className="flex-1">
-        {/* ── 1. HERO BANNER WITH FULL VIEWPORT HEIGHT & OVERLAY ── */}
-        <section className="relative isolate overflow-hidden bg-slate-950 text-white min-h-screen lg:min-h-screen flex flex-col justify-center pt-28 sm:pt-32 pb-16 border-b border-slate-800">
+        {/* ── 1. HERO BANNER WITH RESPONSIVE PADDING & OVERLAY ── */}
+        <section className="relative isolate overflow-hidden bg-slate-950 text-white py-16 sm:py-24 lg:py-32 flex flex-col justify-center border-b border-slate-800">
           {/* Background Image with Black Overlay */}
           <div className="absolute inset-0 -z-20 overflow-hidden pointer-events-none">
             <img
@@ -183,15 +183,15 @@ function BlogArchivePage() {
               <span className="text-brand font-black">Blog Archive</span>
             </div>
 
-            <div className="max-w-4xl">
-              <div className="inline-flex items-center gap-2 rounded-full border border-brand/40 bg-brand/10 px-4 py-1.5 text-xs font-extrabold uppercase tracking-widest text-brand mb-4 backdrop-blur-md">
-                <Newspaper className="h-3.5 w-3.5" />
+            <div className="max-w-4xl space-y-4">
+              <div className="inline-flex items-center gap-2 rounded-full border border-brand/40 bg-brand/10 px-3.5 py-1.5 text-[11px] sm:text-xs font-extrabold uppercase tracking-widest text-brand backdrop-blur-md">
+                <Newspaper className="h-3.5 w-3.5 shrink-0" />
                 <span>WORKFORCE INTELLIGENCE & INSIGHTS</span>
               </div>
-              <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.1] drop-shadow-md">
+              <h1 className="font-display text-2xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight drop-shadow-md">
                 Canadian & US Hiring Trends, Executive Search & Compliance
               </h1>
-              <p className="mt-4 text-base sm:text-lg text-slate-200 font-medium leading-relaxed max-w-3xl drop-shadow">
+              <p className="text-sm sm:text-lg text-slate-200 font-medium leading-relaxed max-w-3xl drop-shadow">
                 Stay updated with Canadian & US recruitment intelligence, compensation benchmarks, executive hiring strategies, and cross-border compliance guides from senior recruitment partners.
               </p>
             </div>
@@ -199,12 +199,12 @@ function BlogArchivePage() {
         </section>
 
         {/* ── 2. MAIN 2-COLUMN LAYOUT (CAPERMINT STYLE GRID & SIDEBAR) ── */}
-        <section className="py-12 sm:py-16">
+        <section className="py-8 sm:py-16">
           <div className="shell">
-            <div className="grid gap-12 lg:grid-cols-12 items-start">
+            <div className="grid gap-8 sm:gap-12 lg:grid-cols-12 items-start">
               
               {/* ── LEFT MAIN STREAM (8 COLUMNS) ── */}
-              <div className="lg:col-span-8 space-y-12">
+              <div className="lg:col-span-8 space-y-8 sm:space-y-12">
                 
                 {/* ── FEATURED POST SPOTLIGHT (Shown when no search/category filter active) ── */}
                 {!searchQuery && selectedCategory === "All" && featuredPost && currentPage === 1 && (
@@ -216,7 +216,7 @@ function BlogArchivePage() {
                       </span>
                     </div>
 
-                    <div className="group relative overflow-hidden rounded-[2.5rem] border border-slate-200 bg-white shadow-xl transition-all duration-300 hover:border-brand/40 hover:shadow-2xl">
+                    <div className="group relative overflow-hidden rounded-2xl sm:rounded-[2.5rem] border border-slate-200 bg-white shadow-xl transition-all duration-300 hover:border-brand/40 hover:shadow-2xl">
                       <div className="relative aspect-[16/9] overflow-hidden bg-slate-900">
                         <img
                           src={featuredPost.featuredImage || DEFAULT_FALLBACK_IMAGE}
@@ -225,8 +225,8 @@ function BlogArchivePage() {
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/30 to-transparent" />
                         
-                        <div className="absolute top-5 left-5">
-                          <span className="inline-block rounded-full bg-brand px-4 py-1.5 text-xs font-extrabold text-white uppercase tracking-wider shadow-md">
+                        <div className="absolute top-4 left-4 sm:top-5 sm:left-5">
+                          <span className="inline-block rounded-full bg-brand px-3 py-1 sm:px-4 sm:py-1.5 text-[10px] sm:text-xs font-extrabold text-white uppercase tracking-wider shadow-md">
                             {featuredPost.category}
                           </span>
                         </div>
@@ -246,8 +246,8 @@ function BlogArchivePage() {
                         </div>
                       </div>
 
-                      <div className="p-8 sm:p-10 space-y-4">
-                        <div className="sm:hidden flex items-center gap-4 text-xs font-bold text-slate-500">
+                      <div className="p-5 sm:p-8 lg:p-10 space-y-4">
+                        <div className="sm:hidden flex items-center gap-3 text-xs font-bold text-slate-500">
                           <span className="flex items-center gap-1.5">
                             <Calendar className="h-3.5 w-3.5 text-brand" />
                             {featuredPost.publishDate}
@@ -259,17 +259,17 @@ function BlogArchivePage() {
                           </span>
                         </div>
 
-                        <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-900 leading-snug group-hover:text-brand transition-colors duration-300">
+                        <h2 className="font-display text-xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-900 leading-snug group-hover:text-brand transition-colors duration-300">
                           <Link to="/blog/$slug" params={{ slug: featuredPost.slug }}>
                             {featuredPost.title}
                           </Link>
                         </h2>
 
-                        <p className="text-sm sm:text-base leading-relaxed text-slate-600 line-clamp-3 font-medium">
+                        <p className="text-xs sm:text-base leading-relaxed text-slate-600 line-clamp-3 font-medium">
                           {featuredPost.excerpt}
                         </p>
 
-                        <div className="pt-6 border-t border-slate-100 flex items-center justify-between">
+                        <div className="pt-5 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                           <div className="flex items-center gap-3">
                             <img
                               src={
@@ -277,7 +277,7 @@ function BlogArchivePage() {
                                 "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop"
                               }
                               alt={featuredPost.author?.name || "Venus Team"}
-                              className="h-10 w-10 rounded-full object-cover border border-slate-200"
+                              className="h-10 w-10 rounded-full object-cover border border-slate-200 shrink-0"
                             />
                             <div>
                               <p className="text-xs font-extrabold text-slate-900">{featuredPost.author?.name || "Venus Hiring Team"}</p>
@@ -288,7 +288,7 @@ function BlogArchivePage() {
                           <Link
                             to="/blog/$slug"
                             params={{ slug: featuredPost.slug }}
-                            className="inline-flex items-center gap-2 rounded-2xl bg-brand px-6 py-3 text-xs font-extrabold text-white shadow-brand transition-all duration-300 hover:brightness-110 hover:gap-3"
+                            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-3 text-xs font-extrabold text-white shadow-brand transition-all duration-300 hover:brightness-110 hover:gap-3 w-full sm:w-auto"
                           >
                             <span>Read Full Article</span>
                             <ArrowRight className="h-4 w-4" />
@@ -300,15 +300,15 @@ function BlogArchivePage() {
                 )}
 
                 {/* ── CATEGORY FILTER BAR ── */}
-                <div id="articles" className="flex items-center justify-between border-b border-slate-200 pb-4 scroll-mt-28">
-                  <h3 className="font-display text-xl font-extrabold text-slate-900 tracking-tight">
+                <div id="articles" className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-200 pb-4 scroll-mt-28">
+                  <h3 className="font-display text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight">
                     {searchQuery || selectedCategory !== "All"
                       ? `Articles (${filteredBlogs.length})`
                       : `Latest Articles (Page ${currentPage} of ${totalPages})`}
                   </h3>
 
                   {/* Filter Pills */}
-                  <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+                  <div className="w-full sm:w-auto flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
                     {categories.map((cat) => {
                       const isActive = selectedCategory.toLowerCase() === cat.toLowerCase();
                       return (
@@ -330,16 +330,16 @@ function BlogArchivePage() {
 
                 {/* ── ARTICLE CARDS GRID ── */}
                 {loading ? (
-                  <div className="grid gap-8 sm:grid-cols-2">
+                  <div className="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2">
                     {[1, 2, 3, 4].map((i) => (
                       <div key={i} className="animate-pulse rounded-3xl border border-slate-200 bg-white p-6 h-96" />
                     ))}
                   </div>
                 ) : paginatedBlogs.length === 0 ? (
-                  <div className="rounded-3xl border border-slate-200 bg-white p-12 text-center shadow-sm">
+                  <div className="rounded-3xl border border-slate-200 bg-white p-8 sm:p-12 text-center shadow-sm">
                     <BookOpen className="h-12 w-12 text-slate-400 mx-auto mb-4" />
-                    <h3 className="text-xl font-bold text-slate-900">No matching articles found</h3>
-                    <p className="mt-2 text-sm text-slate-500 font-medium max-w-md mx-auto">
+                    <h3 className="text-lg sm:text-xl font-bold text-slate-900">No matching articles found</h3>
+                    <p className="mt-2 text-xs sm:text-sm text-slate-500 font-medium max-w-md mx-auto">
                       We couldn't find any articles matching "{searchQuery}". Try searching for terms like "executive search" or "compliance".
                     </p>
                     <button
@@ -354,11 +354,11 @@ function BlogArchivePage() {
                     </button>
                   </div>
                 ) : (
-                  <div className="grid gap-8 sm:grid-cols-2">
+                  <div className="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2">
                     {paginatedBlogs.map((post) => (
                       <article
                         key={post.id}
-                        className="group relative flex flex-col overflow-hidden rounded-[2rem] border border-slate-200/90 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-brand/40 hover:shadow-xl"
+                        className="group relative flex flex-col overflow-hidden rounded-2xl sm:rounded-[2rem] border border-slate-200/90 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-brand/40 hover:shadow-xl"
                       >
                         {/* Image Thumbnail */}
                         <div className="relative aspect-[16/10] overflow-hidden bg-slate-100">
@@ -367,17 +367,17 @@ function BlogArchivePage() {
                             alt={post.title}
                             className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
                           />
-                          <div className="absolute top-4 left-4">
-                            <span className="inline-block rounded-full bg-slate-900/90 backdrop-blur-md px-3 py-1 text-[11px] font-extrabold text-white uppercase tracking-wider shadow-sm">
+                          <div className="absolute top-3 left-3 sm:top-4 sm:left-4">
+                            <span className="inline-block rounded-full bg-slate-900/90 backdrop-blur-md px-2.5 py-1 text-[10px] sm:text-[11px] font-extrabold text-white uppercase tracking-wider shadow-sm">
                               {post.category}
                             </span>
                           </div>
                         </div>
 
                         {/* Content */}
-                        <div className="flex flex-1 flex-col justify-between p-6 sm:p-7">
+                        <div className="flex flex-1 flex-col justify-between p-5 sm:p-7">
                           <div>
-                            <div className="flex items-center gap-3 text-xs font-bold text-slate-400 mb-3">
+                            <div className="flex items-center gap-3 text-xs font-bold text-slate-400 mb-2.5">
                               <span className="flex items-center gap-1">
                                 <Calendar className="h-3.5 w-3.5 text-brand" />
                                 {post.publishDate}
@@ -389,36 +389,36 @@ function BlogArchivePage() {
                               </span>
                             </div>
 
-                            <h3 className="font-display text-xl font-bold tracking-tight text-slate-900 leading-snug group-hover:text-brand transition-colors duration-200">
+                            <h3 className="font-display text-lg sm:text-xl font-bold tracking-tight text-slate-900 leading-snug group-hover:text-brand transition-colors duration-200">
                               <Link to="/blog/$slug" params={{ slug: post.slug }}>
                                 {post.title}
                               </Link>
                             </h3>
 
-                            <p className="mt-3 text-xs sm:text-sm leading-relaxed text-slate-600 line-clamp-3 font-medium">
+                            <p className="mt-2.5 text-xs sm:text-sm leading-relaxed text-slate-600 line-clamp-3 font-medium">
                               {post.excerpt}
                             </p>
                           </div>
 
-                          <div className="mt-6 pt-5 border-t border-slate-100 flex items-center justify-between">
-                            <div className="flex items-center gap-2.5">
+                          <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between gap-2">
+                            <div className="flex items-center gap-2 min-w-0">
                               <img
                                 src={
                                   post.author?.avatar ||
                                   "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop"
                                 }
                                 alt={post.author?.name || "Venus Team"}
-                                className="h-8 w-8 rounded-full object-cover border border-slate-200"
+                                className="h-7 w-7 sm:h-8 sm:w-8 rounded-full object-cover border border-slate-200 shrink-0"
                               />
-                              <span className="text-xs font-bold text-slate-800">{post.author?.name || "Venus Hiring Team"}</span>
+                              <span className="text-xs font-bold text-slate-800 truncate">{post.author?.name || "Venus Hiring Team"}</span>
                             </div>
 
                             <Link
                               to="/blog/$slug"
                               params={{ slug: post.slug }}
-                              className="inline-flex items-center gap-1.5 text-xs font-extrabold text-brand transition-all hover:gap-2"
+                              className="inline-flex items-center gap-1 text-xs font-extrabold text-brand transition-all hover:gap-2 shrink-0"
                             >
-                              <span>Read Article</span>
+                              <span>Read</span>
                               <ArrowRight className="h-3.5 w-3.5" />
                             </Link>
                           </div>
@@ -430,12 +430,12 @@ function BlogArchivePage() {
 
                 {/* ── REUSABLE PAGINATION BAR ── */}
                 {totalPages > 1 && (
-                  <div className="pt-10 flex items-center justify-center gap-2">
+                  <div className="pt-8 flex flex-wrap items-center justify-center gap-2">
                     {/* Previous Button */}
                     <button
                       disabled={currentPage <= 1}
                       onClick={() => setPage(currentPage - 1)}
-                      className="inline-flex items-center justify-center h-10 px-4 rounded-xl border border-slate-200 bg-white text-slate-700 font-extrabold text-xs transition-all hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shadow-sm gap-1"
+                      className="inline-flex items-center justify-center h-10 px-3.5 sm:px-4 rounded-xl border border-slate-200 bg-white text-slate-700 font-extrabold text-xs transition-all hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shadow-sm gap-1"
                       aria-label="Previous Page"
                     >
                       <ChevronLeft className="h-4 w-4" />
@@ -464,7 +464,7 @@ function BlogArchivePage() {
                     <button
                       disabled={currentPage >= totalPages}
                       onClick={() => setPage(currentPage + 1)}
-                      className="inline-flex items-center justify-center h-10 px-4 rounded-xl border border-slate-200 bg-white text-slate-700 font-extrabold text-xs transition-all hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shadow-sm gap-1"
+                      className="inline-flex items-center justify-center h-10 px-3.5 sm:px-4 rounded-xl border border-slate-200 bg-white text-slate-700 font-extrabold text-xs transition-all hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shadow-sm gap-1"
                       aria-label="Next Page"
                     >
                       <span>Next</span>
@@ -475,11 +475,11 @@ function BlogArchivePage() {
               </div>
 
               {/* ── RIGHT SIDEBAR WIDGET COLUMN (4 COLUMNS) ── */}
-              <div className="lg:col-span-4 space-y-8 sticky top-28">
+              <div className="lg:col-span-4 space-y-6 lg:sticky lg:top-28">
                 
                 {/* WIDGET 1: SEARCH BAR */}
-                <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-                  <h4 className="text-xs font-black uppercase tracking-wider text-slate-400 mb-4 flex items-center gap-2">
+                <div className="rounded-2xl sm:rounded-3xl border border-slate-200 bg-white p-5 sm:p-6 shadow-sm">
+                  <h4 className="text-xs font-black uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
                     <Search className="h-4 w-4 text-brand" />
                     <span>Search Articles</span>
                   </h4>
@@ -496,18 +496,18 @@ function BlogArchivePage() {
                 </div>
 
                 {/* WIDGET 2: TRENDING ARTICLES */}
-                <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-                  <h4 className="text-xs font-black uppercase tracking-wider text-slate-400 mb-4 flex items-center gap-2">
+                <div className="rounded-2xl sm:rounded-3xl border border-slate-200 bg-white p-5 sm:p-6 shadow-sm">
+                  <h4 className="text-xs font-black uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
                     <TrendingUp className="h-4 w-4 text-brand" />
                     <span>Trending Articles</span>
                   </h4>
-                  <div className="space-y-4">
+                  <div className="space-y-3.5">
                     {trendingBlogs.map((b) => (
-                      <div key={b.id} className="group flex items-start gap-3.5 pb-3 border-b border-slate-100 last:border-0 last:pb-0">
+                      <div key={b.id} className="group flex items-start gap-3 pb-3 border-b border-slate-100 last:border-0 last:pb-0">
                         <img
                           src={b.featuredImage || DEFAULT_FALLBACK_IMAGE}
                           alt={b.title}
-                          className="h-14 w-14 rounded-xl object-cover shrink-0 border border-slate-200"
+                          className="h-12 w-12 sm:h-14 sm:w-14 rounded-xl object-cover shrink-0 border border-slate-200"
                         />
                         <div className="min-w-0 flex-1">
                           <span className="text-[10px] font-extrabold uppercase tracking-wider text-brand">
@@ -528,7 +528,7 @@ function BlogArchivePage() {
                 </div>
 
                 {/* WIDGET 3: STRATEGIC RECRUITMENT ADVISORY CALLOUT */}
-                <div className="relative overflow-hidden rounded-3xl bg-slate-950 p-6 text-white shadow-xl border border-slate-800">
+                <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-slate-950 p-5 sm:p-6 text-white shadow-xl border border-slate-800">
                   <div className="pointer-events-none absolute -right-10 -bottom-10 h-40 w-40 rounded-full bg-brand/20 blur-2xl" aria-hidden />
 
                   <div className="inline-flex items-center gap-1.5 rounded-full bg-brand/20 px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider text-brand mb-3">
@@ -536,7 +536,7 @@ function BlogArchivePage() {
                     <span>HIRING CONSULTATION</span>
                   </div>
 
-                  <h4 className="font-display text-lg font-bold tracking-tight text-white">
+                  <h4 className="font-display text-base sm:text-lg font-bold tracking-tight text-white">
                     Scaling Your Team Across Canada or USA?
                   </h4>
                   <p className="mt-2 text-xs text-slate-300 leading-relaxed font-medium">
