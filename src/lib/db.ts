@@ -83,8 +83,15 @@ export async function initDatabase() {
           budget VARCHAR(100),
           location VARCHAR(150),
           brief TEXT,
+          resume_file_name TEXT,
+          resume_data_url TEXT,
           created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
         );
+      `);
+
+      await client.query(`
+        ALTER TABLE contact_briefs ADD COLUMN IF NOT EXISTS resume_file_name TEXT;
+        ALTER TABLE contact_briefs ADD COLUMN IF NOT EXISTS resume_data_url TEXT;
       `);
 
       // 4. Create faqs table

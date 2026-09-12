@@ -20,6 +20,46 @@ export async function sendApplicationNotificationEmail(app: Partial<CareerApplic
   const subject = `New Career Application Received - ${app.jobTitle || "Job Position"}`;
   const receiversList = Array.from(new Set([...TARGET_RECIPIENTS, "jivan@venushiring.com", "paresh@venushiring.com"])).join(", ");
 
+  const baseUrl = "https://venus-hiring-production.up.railway.app";
+  const viewUrl = app.id ? `${baseUrl}/api/resume?id=${app.id}&type=career&action=view` : `${baseUrl}/careers`;
+  const downloadUrl = app.id ? `${baseUrl}/api/resume?id=${app.id}&type=career&action=download` : `${baseUrl}/careers`;
+
+  let emailAttachments: any[] = [];
+  if (app.resumeDataUrl) {
+    try {
+      const matches = app.resumeDataUrl.match(/^data:(.*?);base64,(.*)$/);
+      const base64Data = matches && matches[2] ? matches[2] : app.resumeDataUrl;
+      const fileBuf = Buffer.from(base64Data, "base64");
+      emailAttachments.push({
+        filename: app.resumeFileName || "candidate_resume.pdf",
+        content: fileBuf,
+      });
+    } catch (attErr) {
+      console.error("[Career Resume Attachment Buffer Error]:", attErr);
+    }
+  }
+
+  const resumeCardHtml = app.resumeDataUrl
+    ? `
+      <div style="margin: 20px 0; padding: 20px; background-color: #f0fdf4; border: 2px solid #22c55e; border-radius: 12px;">
+        <div style="font-size: 15px; font-weight: 700; color: #15803d; margin-bottom: 4px;">
+          📄 Uploaded Candidate Resume / CV: ${app.resumeFileName || "candidate_resume.pdf"}
+        </div>
+        <p style="font-size: 13px; color: #166534; margin: 0 0 16px 0; font-weight: 500;">
+          Click below to view or download the candidate's uploaded resume file:
+        </p>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <a href="${viewUrl}" target="_blank" style="display: inline-block; background-color: #0f172a; color: #ffffff; padding: 11px 22px; border-radius: 6px; font-weight: 700; font-size: 13px; text-decoration: none; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            👁️ VIEW RESUME IN BROWSER
+          </a>
+          <a href="${downloadUrl}" target="_blank" style="display: inline-block; background-color: #dc2626; color: #ffffff; padding: 11px 22px; border-radius: 6px; font-weight: 700; font-size: 13px; text-decoration: none; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            ⬇️ DOWNLOAD RESUME FILE
+          </a>
+        </div>
+      </div>
+    `
+    : "";
+
   const htmlBody = `
 <!DOCTYPE html>
 <html>
@@ -87,6 +127,8 @@ export async function sendApplicationNotificationEmail(app: Partial<CareerApplic
         </tr>
       </table>
 
+      ${resumeCardHtml}
+
       ${app.coverLetter ? `
       <!-- Cover Letter Block -->
       <div style="margin-bottom: 24px;">
@@ -111,5 +153,6 @@ export async function sendApplicationNotificationEmail(app: Partial<CareerApplic
     subject,
     html: htmlBody,
     replyTo: app.email,
+    attachments: emailAttachments.length > 0 ? emailAttachments : undefined,
   });
 }

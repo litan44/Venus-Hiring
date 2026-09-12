@@ -688,10 +688,13 @@ function EmployerVsCandidatePath({ onOpenResumeModal }: { onOpenResumeModal?: ()
 
             <div className="mt-8">
               <a
-                href="https://wa.me/16476162677?text=Hello%20Venus%20Consultancy%2C%20I%20am%20looking%20for%20qualified%20talent%20for%20my%20team."
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2.5 rounded-2xl bg-brand px-7 py-3.5 text-sm font-extrabold text-white shadow-brand transition-all duration-300 hover:brightness-110 hover:gap-3.5 active:scale-[0.98]"
+                href="#contact-form"
+                onClick={(e) => {
+                  e.preventDefault();
+                  const el = document.getElementById("contact-form");
+                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="inline-flex items-center gap-2.5 rounded-2xl bg-brand px-7 py-3.5 text-sm font-extrabold text-white shadow-brand transition-all duration-300 hover:brightness-110 hover:gap-3.5 active:scale-[0.98] cursor-pointer"
               >
                 <span>Talk to Our Recruitment Team</span>
                 <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />

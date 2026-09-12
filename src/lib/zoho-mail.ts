@@ -1,11 +1,18 @@
 import nodemailer from "nodemailer";
 
+export interface EmailAttachment {
+  filename: string;
+  content: Buffer;
+  contentType?: string;
+}
+
 interface SendMailParams {
   to: string;
   subject: string;
   html: string;
   from?: string;
   replyTo?: string;
+  attachments?: EmailAttachment[];
 }
 
 let cachedAccessToken: string | null = null;
@@ -123,6 +130,7 @@ export async function sendEmail(params: SendMailParams): Promise<{ success: bool
       replyTo: params.replyTo,
       subject: params.subject,
       html: params.html,
+      attachments: params.attachments,
     });
 
     console.log(`[SMTP Fallback Delivery Success] Sent to: ${params.to} | messageId:`, info.messageId);

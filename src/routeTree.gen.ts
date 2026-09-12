@@ -28,6 +28,7 @@ import { Route as ApiBlogsRouteImport } from './routes/api.blogs'
 import { Route as ApiCategoriesRouteImport } from './routes/api.categories'
 import { Route as ApiContactRouteImport } from './routes/api.contact'
 import { Route as ApiFaqsRouteImport } from './routes/api.faqs'
+import { Route as ApiResumeRouteImport } from './routes/api.resume'
 import { Route as ApiSalaryAssistantRouteImport } from './routes/api.salary-assistant'
 import { Route as ApiSalaryInsightsRouteImport } from './routes/api.salary-insights'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
@@ -140,6 +141,11 @@ const ApiFaqsRoute = ApiFaqsRouteImport.update({
   path: '/api/faqs',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiResumeRoute = ApiResumeRouteImport.update({
+  id: '/api/resume',
+  path: '/api/resume',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiSalaryAssistantRoute = ApiSalaryAssistantRouteImport.update({
   id: '/api/salary-assistant',
   path: '/api/salary-assistant',
@@ -241,6 +247,7 @@ export interface FileRoutesByFullPath {
   '/api/categories': typeof ApiCategoriesRoute
   '/api/contact': typeof ApiContactRoute
   '/api/faqs': typeof ApiFaqsRoute
+  '/api/resume': typeof ApiResumeRoute
   '/api/salary-assistant': typeof ApiSalaryAssistantRoute
   '/api/salary-insights': typeof ApiSalaryInsightsRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -278,6 +285,7 @@ export interface FileRoutesByTo {
   '/api/categories': typeof ApiCategoriesRoute
   '/api/contact': typeof ApiContactRoute
   '/api/faqs': typeof ApiFaqsRoute
+  '/api/resume': typeof ApiResumeRoute
   '/api/salary-assistant': typeof ApiSalaryAssistantRoute
   '/api/salary-insights': typeof ApiSalaryInsightsRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -316,6 +324,7 @@ export interface FileRoutesById {
   '/api/categories': typeof ApiCategoriesRoute
   '/api/contact': typeof ApiContactRoute
   '/api/faqs': typeof ApiFaqsRoute
+  '/api/resume': typeof ApiResumeRoute
   '/api/salary-assistant': typeof ApiSalaryAssistantRoute
   '/api/salary-insights': typeof ApiSalaryInsightsRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -355,6 +364,7 @@ export interface FileRouteTypes {
     | '/api/categories'
     | '/api/contact'
     | '/api/faqs'
+    | '/api/resume'
     | '/api/salary-assistant'
     | '/api/salary-insights'
     | '/blog/$slug'
@@ -392,6 +402,7 @@ export interface FileRouteTypes {
     | '/api/categories'
     | '/api/contact'
     | '/api/faqs'
+    | '/api/resume'
     | '/api/salary-assistant'
     | '/api/salary-insights'
     | '/blog/$slug'
@@ -429,6 +440,7 @@ export interface FileRouteTypes {
     | '/api/categories'
     | '/api/contact'
     | '/api/faqs'
+    | '/api/resume'
     | '/api/salary-assistant'
     | '/api/salary-insights'
     | '/blog/$slug'
@@ -466,6 +478,7 @@ export interface RootRouteChildren {
   ApiCategoriesRoute: typeof ApiCategoriesRoute
   ApiContactRoute: typeof ApiContactRoute
   ApiFaqsRoute: typeof ApiFaqsRoute
+  ApiResumeRoute: typeof ApiResumeRoute
   ApiSalaryAssistantRoute: typeof ApiSalaryAssistantRoute
   ApiSalaryInsightsRoute: typeof ApiSalaryInsightsRoute
   BlogSlugRoute: typeof BlogSlugRoute
@@ -616,6 +629,13 @@ declare module '@tanstack/react-router' {
       path: '/api/faqs'
       fullPath: '/api/faqs'
       preLoaderRoute: typeof ApiFaqsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/resume': {
+      id: '/api/resume'
+      path: '/api/resume'
+      fullPath: '/api/resume'
+      preLoaderRoute: typeof ApiResumeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/salary-assistant': {
@@ -774,6 +794,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiCategoriesRoute: ApiCategoriesRoute,
   ApiContactRoute: ApiContactRoute,
   ApiFaqsRoute: ApiFaqsRoute,
+  ApiResumeRoute: ApiResumeRoute,
   ApiSalaryAssistantRoute: ApiSalaryAssistantRoute,
   ApiSalaryInsightsRoute: ApiSalaryInsightsRoute,
   BlogSlugRoute: BlogSlugRoute,

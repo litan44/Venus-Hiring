@@ -46,6 +46,8 @@ export const Route = createFileRoute("/api/contact")({
           const budget = (body.budget || "Not Specified").trim();
           const location = (body.location || "Not Specified").trim();
           const messageContent = (body.message || body.brief || "").trim();
+          const resumeDataUrl = (body.resumeDataUrl || body.resume_data_url || "").trim();
+          const resumeFileName = (body.resumeFileName || body.resume_file_name || "candidate_resume.pdf").trim();
 
           if (!name || name.length > 100) {
             return new Response(
@@ -76,6 +78,7 @@ export const Route = createFileRoute("/api/contact")({
           const safeBudget = sanitize(budget);
           const safeLocation = sanitize(location);
           const safeBrief = sanitize(briefText).replace(/\n/g, "<br/>");
+          const safeResumeFileName = sanitize(resumeFileName);
           const submissionDate = new Date().toUTCString();
 
           // 4. Mandatory Recipients (jivan@venushiring.com + paresh@venushiring.com)
@@ -87,30 +90,86 @@ export const Route = createFileRoute("/api/contact")({
             .filter(Boolean);
           const receiversList = Array.from(new Set([primaryReceiver, ...extraReceivers])).join(", ");
 
-          // Log server-side record of submission
-          console.log("[NEW HIRE TALENT SUBMISSION]", {
-            source,
-            name,
-            email,
-            hearAboutUs,
-            message: messageContent,
-            receivers: receiversList,
-            date: submissionDate,
-          });
+          // 5. Save into Railway PostgreSQL Database contact_briefs table
+          let insertedId: number | null = null;
+          try {
+            await initDatabase();
+            const dbResult = await pool.query(
+              `INSERT INTO contact_briefs (
+                name, email, service_type, phone, company, role, budget, location, brief, resume_file_name, resume_data_url
+              ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id;`,
+              [
+                name,
+                email,
+                serviceType,
+                phone,
+                company,
+                role,
+                budget,
+                location,
+                `[Source: ${source} | Heard: ${hearAboutUs}] ${briefText}`,
+                resumeFileName || null,
+                resumeDataUrl || null,
+              ]
+            );
+            if (dbResult.rows.length > 0) {
+              insertedId = dbResult.rows[0].id;
+            }
+          } catch (dbErr) {
+            console.error("[PostgreSQL Contact Insert Notice]:", dbErr);
+          }
 
-          // 5. Save into Railway PostgreSQL Database contact_briefs table asynchronously (non-blocking)
-          initDatabase()
-            .then(() => {
-              pool.query(
-                `INSERT INTO contact_briefs (
-                  name, email, service_type, phone, company, role, budget, location, brief
-                ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);`,
-                [name, email, serviceType, phone, company, role, budget, location, `[Source: ${source} | Heard: ${hearAboutUs}] ${briefText}`]
-              ).catch((dbErr) => console.error("[PostgreSQL Contact Insert Notice]:", dbErr));
-            })
-            .catch((dbErr) => console.error("[PostgreSQL Database Init Notice]:", dbErr));
+          // 6. Construct Host Base URL & Resume Links
+          const rawHost = request.headers.get("host") || "venus-hiring-production.up.railway.app";
+          const host = rawHost.includes("localhost") ? rawHost : "venus-hiring-production.up.railway.app";
+          const protocol = rawHost.includes("localhost") ? "http" : "https";
+          const baseUrl = `${protocol}://${host}`;
 
-          // 6. Build Internal Notification Email HTML
+          const viewUrl = insertedId
+            ? `${baseUrl}/api/resume?id=${insertedId}&type=contact&action=view`
+            : `${baseUrl}/contact`;
+          const downloadUrl = insertedId
+            ? `${baseUrl}/api/resume?id=${insertedId}&type=contact&action=download`
+            : `${baseUrl}/contact`;
+
+          // Prepare email attachment if resume Data URL exists
+          let emailAttachments: any[] = [];
+          if (resumeDataUrl) {
+            try {
+              const matches = resumeDataUrl.match(/^data:(.*?);base64,(.*)$/);
+              const base64Data = matches && matches[2] ? matches[2] : resumeDataUrl;
+              const fileBuf = Buffer.from(base64Data, "base64");
+              emailAttachments.push({
+                filename: resumeFileName || "candidate_resume.pdf",
+                content: fileBuf,
+              });
+            } catch (attErr) {
+              console.error("[Resume Attachment Buffer Error]:", attErr);
+            }
+          }
+
+          // 7. Build Internal Notification Email HTML
+          const resumeCardHtml = resumeDataUrl
+            ? `
+              <div style="margin: 20px 0; padding: 20px; background-color: #f0fdf4; border: 2px solid #22c55e; border-radius: 8px;">
+                <div style="font-size: 15px; font-weight: 700; color: #15803d; margin-bottom: 4px;">
+                  📄 Uploaded Candidate Resume / CV: ${safeResumeFileName}
+                </div>
+                <p style="font-size: 13px; color: #166534; margin: 0 0 16px 0; font-weight: 500;">
+                  Click below to view or download the candidate's uploaded resume file:
+                </p>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                  <a href="${viewUrl}" target="_blank" style="display: inline-block; background-color: #0f172a; color: #ffffff; padding: 11px 22px; border-radius: 6px; font-weight: 700; font-size: 13px; text-decoration: none; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    👁️ VIEW RESUME IN BROWSER
+                  </a>
+                  <a href="${downloadUrl}" target="_blank" style="display: inline-block; background-color: #e01e37; color: #ffffff; padding: 11px 22px; border-radius: 6px; font-weight: 700; font-size: 13px; text-decoration: none; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    ⬇️ DOWNLOAD RESUME FILE
+                  </a>
+                </div>
+              </div>
+            `
+            : "";
+
           const internalHtml = `
             <!DOCTYPE html>
             <html>
@@ -152,6 +211,8 @@ export const Route = createFileRoute("/api/contact")({
                       ${safeRole !== "Not Provided" ? `<tr><td class="label">Role:</td><td class="value">${safeRole}</td></tr>` : ""}
                     </table>
 
+                    ${resumeCardHtml}
+
                     <div class="section-head">Message / Candidate Note</div>
                     <div class="brief-container">
                       ${safeBrief}
@@ -165,7 +226,7 @@ export const Route = createFileRoute("/api/contact")({
             </html>
           `;
 
-          // 7. Build Client Confirmation Email HTML
+          // 8. Build Client Confirmation Email HTML
           const confirmHtml = `
             <!DOCTYPE html>
             <html>
@@ -217,12 +278,13 @@ export const Route = createFileRoute("/api/contact")({
             </html>
           `;
 
-          // 8. Dispatch emails via Zoho REST API (with automatic fallback to SMTP)
+          // 9. Dispatch emails via Zoho REST API / SMTP
           const internalResult = await sendEmail({
             to: receiversList,
             subject: `[${safeSource}] New Inquiry from ${safeName} (${safeEmail})`,
             html: internalHtml,
             replyTo: safeEmail,
+            attachments: emailAttachments.length > 0 ? emailAttachments : undefined,
           });
 
           // Dispatch confirmation email to client asynchronously
