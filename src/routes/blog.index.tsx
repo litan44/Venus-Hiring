@@ -55,7 +55,7 @@ function BlogArchivePage() {
   const { blogs, loading } = useBlogs();
   const search = Route.useSearch();
   const navigate = useNavigate({ from: Route.fullPath });
-  const [mobileCategoryOpen, setMobileCategoryOpen] = useState(false);
+  const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
 
   const currentPage = search.page || 1;
   const selectedCategory = search.category || "All";
@@ -307,45 +307,47 @@ function BlogArchivePage() {
               </h3>
 
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 min-w-0 w-full md:w-auto">
-                {/* Search Bar Input */}
-                <div className="relative shrink-0 w-full sm:w-60">
+                {/* Enlarged Search Bar Input */}
+                <div className="relative shrink-0 w-full sm:w-80 md:w-[380px] lg:w-[440px]">
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search articles..."
-                    className="w-full rounded-xl border border-slate-200 bg-white pl-3.5 pr-9 py-2 text-xs font-medium text-slate-900 placeholder:text-slate-400 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 transition-all shadow-sm"
+                    placeholder="Search articles by title, topic, or keyword..."
+                    className="w-full rounded-2xl border border-slate-200 bg-white pl-4 pr-10 py-2.5 text-xs font-medium text-slate-900 placeholder:text-slate-400 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 transition-all shadow-sm"
                   />
-                  <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
+                  <Search className="absolute right-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                 </div>
 
-                {/* Category Dropdown (Mobile View Only) */}
-                <div className="relative sm:hidden w-full">
+                {/* Category Dropdown Selector (Mobile & Desktop) */}
+                <div className="relative w-full sm:w-auto shrink-0">
                   <button
                     type="button"
-                    onClick={() => setMobileCategoryOpen((prev) => !prev)}
-                    className="w-full flex items-center justify-between gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-extrabold text-slate-800 shadow-sm transition-all active:bg-slate-50 cursor-pointer"
+                    onClick={() => setCategoryDropdownOpen((prev) => !prev)}
+                    className="w-full sm:w-auto flex items-center justify-between sm:justify-start gap-2.5 rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-extrabold text-slate-800 shadow-sm transition-all hover:border-brand/40 active:bg-slate-50 cursor-pointer"
                   >
                     <div className="flex items-center gap-2">
                       <span className="text-slate-400 font-medium">Category:</span>
-                      <span className="text-brand font-black">{selectedCategory}</span>
+                      <span className="inline-block rounded-full bg-brand px-2.5 py-0.5 text-xs font-extrabold text-white shadow-sm">
+                        {selectedCategory}
+                      </span>
                     </div>
                     <ChevronDown
                       className={`h-4 w-4 text-slate-500 transition-transform duration-200 ${
-                        mobileCategoryOpen ? "rotate-180 text-brand" : ""
+                        categoryDropdownOpen ? "rotate-180 text-brand" : ""
                       }`}
                     />
                   </button>
 
-                  {mobileCategoryOpen && (
+                  {categoryDropdownOpen && (
                     <>
                       {/* Backdrop overlay for closing dropdown */}
                       <div
                         className="fixed inset-0 z-20"
-                        onClick={() => setMobileCategoryOpen(false)}
+                        onClick={() => setCategoryDropdownOpen(false)}
                       />
                       {/* Dropdown Menu */}
-                      <div className="absolute left-0 right-0 top-full mt-1.5 z-30 overflow-hidden rounded-2xl border border-slate-200 bg-white p-1.5 shadow-xl animate-in fade-in slide-in-from-top-2 duration-200">
+                      <div className="absolute left-0 sm:right-0 sm:left-auto top-full mt-1.5 z-30 min-w-[220px] overflow-hidden rounded-2xl border border-slate-200 bg-white p-1.5 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200">
                         {categories.map((cat) => {
                           const isActive = selectedCategory.toLowerCase() === cat.toLowerCase();
                           return (
@@ -354,7 +356,7 @@ function BlogArchivePage() {
                               type="button"
                               onClick={() => {
                                 setSelectedCategory(cat);
-                                setMobileCategoryOpen(false);
+                                setCategoryDropdownOpen(false);
                               }}
                               className={`w-full flex items-center justify-between rounded-xl px-3.5 py-2.5 text-xs font-extrabold transition-colors cursor-pointer ${
                                 isActive
@@ -370,26 +372,6 @@ function BlogArchivePage() {
                       </div>
                     </>
                   )}
-                </div>
-
-                {/* Filter Pills (Desktop / Tablet View Only) */}
-                <div className="hidden sm:flex sm:w-auto items-center gap-2 overflow-x-auto no-scrollbar py-1 min-w-0">
-                  {categories.map((cat) => {
-                    const isActive = selectedCategory.toLowerCase() === cat.toLowerCase();
-                    return (
-                      <button
-                        key={cat}
-                        onClick={() => setSelectedCategory(cat)}
-                        className={`rounded-xl px-3 py-1.5 sm:px-3.5 text-xs font-extrabold transition-all cursor-pointer whitespace-nowrap shrink-0 ${
-                          isActive
-                            ? "bg-brand text-white shadow-brand shadow-sm scale-[1.02]"
-                            : "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900"
-                        }`}
-                      >
-                        {cat}
-                      </button>
-                    );
-                  })}
                 </div>
               </div>
             </div>
