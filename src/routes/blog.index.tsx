@@ -160,7 +160,7 @@ function BlogArchivePage() {
 
       <main id="main-content" className="flex-1 max-w-full overflow-x-hidden">
         {/* ── 1. HERO BANNER WITH RESPONSIVE PADDING & OVERLAY ── */}
-        <section className="relative isolate overflow-hidden bg-slate-950 text-white py-12 sm:py-24 lg:py-32 flex flex-col justify-center border-b border-slate-800">
+        <section className="relative isolate overflow-hidden bg-slate-950 text-white pt-28 sm:pt-36 lg:pt-40 pb-12 sm:pb-20 lg:pb-24 flex flex-col justify-center border-b border-slate-800">
           {/* Background Image with Black Overlay */}
           <div className="absolute inset-0 -z-20 overflow-hidden pointer-events-none">
             <img
