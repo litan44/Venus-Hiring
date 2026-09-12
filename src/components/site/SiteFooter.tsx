@@ -251,28 +251,19 @@ export function SiteFooter() {
             <h4 className="text-[22px] 2xl:text-[26px] font-black uppercase tracking-[0.14em] text-white mb-5 lg:mb-6 2xl:mb-8">
               Contact
             </h4>
-            <div className="space-y-4 lg:space-y-5 2xl:space-y-7 text-[20px] 2xl:text-[22px] text-slate-200">
-              <div>
-                <span className="block font-bold text-white text-[20px] 2xl:text-[22px] uppercase tracking-wider mb-1">
-                  Toronto Office (HQ)
-                </span>
-                <p className="text-slate-200 text-[20px] 2xl:text-[22px] leading-relaxed">
-                  #205 - 1085 Bellamy Road North<br />
-                  Toronto, ON, Canada
-                </p>
-              </div>
-
-              <div>
-                <span className="block font-bold text-white text-[20px] 2xl:text-[22px] uppercase tracking-wider mb-1">
-                  Direct Line &amp; Inquiry
-                </span>
-                <a href="tel:6476162677" className="block text-slate-200 hover:text-brand transition-colors text-[20px] 2xl:text-[22px]">
-                  📞 +1 (647) 616-2677
-                </a>
-                <a href="mailto:info@venushiring.com" className="block text-slate-200 hover:text-brand transition-colors text-[20px] 2xl:text-[22px] mt-1">
-                  ✉️ info@venushiring.com
-                </a>
-              </div>
+            <div className="space-y-3 sm:space-y-3.5 2xl:space-y-5 text-[17px] sm:text-[20px] 2xl:text-[22px]">
+              <a
+                href="tel:6476162677"
+                className="block text-slate-200 hover:text-white transition-colors"
+              >
+                📞 +1 (647) 616-2677
+              </a>
+              <a
+                href="mailto:info@venushiring.com"
+                className="block text-slate-200 hover:text-white transition-colors"
+              >
+                ✉️ info@venushiring.com
+              </a>
             </div>
           </div>
 
