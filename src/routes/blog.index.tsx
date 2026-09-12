@@ -211,7 +211,7 @@ function BlogArchivePage() {
             
             {/* ── FEATURED POST SPOTLIGHT (Shown on Page 1) ── */}
             {featuredPost && currentPage === 1 && (
-              <div className="space-y-3 sm:space-y-4 min-w-0 w-full">
+              <div className="space-y-3 min-w-0 w-full">
                 <div className="flex items-center gap-2">
                   <Sparkles className="h-4 w-4 text-brand" />
                   <span className="text-xs font-black uppercase tracking-widest text-slate-500">
@@ -219,82 +219,72 @@ function BlogArchivePage() {
                   </span>
                 </div>
 
-                <div className="group relative overflow-hidden rounded-2xl sm:rounded-[2.5rem] border border-slate-200 bg-white shadow-xl transition-all duration-300 hover:border-brand/40 hover:shadow-2xl min-w-0 w-full">
-                  <div className="relative aspect-[16/10] sm:aspect-[16/9] overflow-hidden bg-slate-900 w-full">
+                <div className="group relative overflow-hidden rounded-2xl sm:rounded-3xl border border-slate-200 bg-white shadow-lg transition-all duration-300 hover:border-brand/40 hover:shadow-xl min-w-0 w-full grid grid-cols-1 lg:grid-cols-12 items-stretch">
+                  {/* Image Container (Left Column on Desktop) */}
+                  <div className="relative lg:col-span-6 h-52 sm:h-64 lg:h-full min-h-[240px] lg:min-h-[320px] overflow-hidden bg-slate-900 w-full">
                     <img
                       src={featuredPost.featuredImage || DEFAULT_FALLBACK_IMAGE}
                       alt={featuredPost.title}
                       className="h-full w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/30 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent lg:hidden" />
                     
-                    <div className="absolute top-3 left-3 sm:top-5 sm:left-5 z-10">
-                      <span className="inline-block rounded-full bg-brand px-3 py-1 sm:px-4 sm:py-1.5 text-[10px] sm:text-xs font-extrabold text-white uppercase tracking-wider shadow-md">
+                    <div className="absolute top-3 left-3 sm:top-4 sm:left-4 z-10">
+                      <span className="inline-block rounded-full bg-brand px-3 py-1 text-[10px] sm:text-xs font-extrabold text-white uppercase tracking-wider shadow-md">
                         {featuredPost.category}
                       </span>
                     </div>
+                  </div>
 
-                    <div className="absolute bottom-4 left-5 right-5 text-white hidden sm:block">
-                      <div className="flex items-center gap-4 text-xs font-bold text-slate-300 mb-1">
+                  {/* Content Container (Right Column on Desktop) */}
+                  <div className="lg:col-span-6 p-5 sm:p-7 lg:p-8 flex flex-col justify-between space-y-4 min-w-0 w-full bg-white">
+                    <div className="space-y-2.5 min-w-0">
+                      <div className="flex items-center gap-3 text-xs font-bold text-slate-400">
                         <span className="flex items-center gap-1.5">
-                          <Calendar className="h-3.5 w-3.5 text-brand" />
+                          <Calendar className="h-3.5 w-3.5 text-brand shrink-0" />
                           {featuredPost.publishDate}
                         </span>
                         <span>•</span>
                         <span className="flex items-center gap-1.5">
-                          <Clock className="h-3.5 w-3.5 text-brand" />
+                          <Clock className="h-3.5 w-3.5 text-brand shrink-0" />
                           {featuredPost.readTime}
                         </span>
                       </div>
-                    </div>
-                  </div>
 
-                  <div className="p-4 sm:p-8 lg:p-10 space-y-3 sm:space-y-4 min-w-0 w-full">
-                    <div className="sm:hidden flex items-center gap-3 text-xs font-bold text-slate-500">
-                      <span className="flex items-center gap-1.5">
-                        <Calendar className="h-3.5 w-3.5 text-brand" />
-                        {featuredPost.publishDate}
-                      </span>
-                      <span>•</span>
-                      <span className="flex items-center gap-1.5">
-                        <Clock className="h-3.5 w-3.5 text-brand" />
-                        {featuredPost.readTime}
-                      </span>
+                      <h2 className="font-display text-base sm:text-2xl lg:text-2xl font-extrabold tracking-tight text-slate-900 leading-snug group-hover:text-brand transition-colors duration-300 break-words">
+                        <Link to="/blog/$slug" params={{ slug: featuredPost.slug }} className="hover:underline">
+                          {featuredPost.title}
+                        </Link>
+                      </h2>
+
+                      <p className="text-xs sm:text-sm leading-relaxed text-slate-600 line-clamp-3 font-medium break-words">
+                        {featuredPost.excerpt}
+                      </p>
                     </div>
 
-                    <h2 className="font-display text-lg sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-900 leading-snug group-hover:text-brand transition-colors duration-300 break-words">
-                      <Link to="/blog/$slug" params={{ slug: featuredPost.slug }} className="hover:underline">
-                        {featuredPost.title}
-                      </Link>
-                    </h2>
-
-                    <p className="text-xs sm:text-base leading-relaxed text-slate-600 line-clamp-3 font-medium break-words">
-                      {featuredPost.excerpt}
-                    </p>
-
-                    <div className="pt-4 sm:pt-5 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 min-w-0 w-full">
-                      <div className="flex items-center gap-3 min-w-0">
+                    <div className="pt-3.5 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 min-w-0 w-full">
+                      <div className="flex items-center gap-2.5 min-w-0">
                         <img
                           src={
                             featuredPost.author?.avatar ||
                             "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop"
                           }
                           alt={featuredPost.author?.name || "Venus Team"}
-                          className="h-9 w-9 sm:h-10 sm:w-10 rounded-full object-cover border border-slate-200 shrink-0"
+                          className="h-8 w-8 rounded-full object-cover border border-slate-200 shrink-0"
                         />
                         <div className="min-w-0">
                           <p className="text-xs font-extrabold text-slate-900 truncate">{featuredPost.author?.name || "Venus Hiring Team"}</p>
-                          <p className="text-[11px] font-medium text-slate-500 truncate">{featuredPost.author?.role || "Workforce Specialist"}</p>
+                          <p className="text-[10px] font-medium text-slate-500 truncate">{featuredPost.author?.role || "Workforce Specialist"}</p>
                         </div>
                       </div>
 
                       <Link
                         to="/blog/$slug"
                         params={{ slug: featuredPost.slug }}
-                        className="inline-flex items-center justify-center gap-2 rounded-xl sm:rounded-2xl bg-brand px-5 py-2.5 sm:px-6 sm:py-3 text-xs font-extrabold text-white shadow-brand transition-all duration-300 hover:brightness-110 hover:gap-3 w-full sm:w-auto"
+                        className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-xs font-extrabold text-white shadow-brand transition-all duration-300 hover:brightness-110 hover:gap-3 w-full sm:w-auto shrink-0"
                       >
-                        <span>Read Full Article</span>
-                        <ArrowRight className="h-4 w-4" />
+                        <span>Read Article</span>
+                        <ArrowRight className="h-3.5 w-3.5" />
                       </Link>
                     </div>
                   </div>
