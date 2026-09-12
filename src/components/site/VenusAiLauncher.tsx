@@ -239,7 +239,7 @@ export function VenusAiLauncher() {
     <>
       {/* ── FLOATING CHAT POPUP WINDOW ── */}
       {isOpen && (
-        <div className="fixed bottom-20 right-4 sm:right-6 w-[92vw] sm:w-[410px] h-[560px] max-h-[82vh] z-50 bg-white text-slate-900 shadow-2xl rounded-3xl border border-slate-200/90 overflow-hidden flex flex-col animate-in fade-in slide-in-from-bottom-5 duration-300 font-sans">
+        <div className="fixed bottom-24 sm:bottom-20 right-3 sm:right-6 w-[92vw] sm:w-[410px] max-w-[calc(100vw-24px)] h-[560px] max-h-[80vh] sm:max-h-[82vh] z-50 bg-white text-slate-900 shadow-2xl rounded-3xl border border-slate-200/90 overflow-hidden flex flex-col animate-in fade-in slide-in-from-bottom-5 duration-300 font-sans">
           
           {/* POPUP HEADER */}
           <div className="bg-slate-900 text-white px-4 py-3.5 flex items-center justify-between border-b border-slate-800 shrink-0">

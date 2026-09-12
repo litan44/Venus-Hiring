@@ -291,6 +291,214 @@ export function WhoWeServe() {
   );
 }
 
+/* -------------------------- Enterprise Client Trust Bar -------------------------- */
+
+export function ClientTrustBar() {
+  const ROW1 = [
+    {
+      name: "WOOD-MIZER",
+      logo: (
+        <span className="font-extrabold tracking-wider text-[#E85D04] text-base sm:text-lg font-sans uppercase">
+          WOOD-MIZER
+        </span>
+      ),
+    },
+    {
+      name: "appili THERAPEUTICS",
+      logo: (
+        <div className="flex flex-col items-center justify-center leading-none">
+          <span className="font-extrabold text-slate-900 text-base sm:text-lg tracking-tight lowercase">
+            appili
+          </span>
+          <span className="font-bold text-[#10B981] text-[8px] tracking-[0.22em] uppercase mt-0.5">
+            THERAPEUTICS
+          </span>
+        </div>
+      ),
+    },
+    {
+      name: "GIGL",
+      logo: (
+        <span className="font-black text-slate-900 text-base sm:text-lg tracking-wider font-sans flex items-center">
+          GIGL<span className="text-[#00B4D8] font-bold text-xl ml-0.5">•</span>
+        </span>
+      ),
+    },
+    {
+      name: "LeddarTech",
+      logo: (
+        <span className="font-extrabold text-slate-900 text-base sm:text-lg tracking-tight font-sans">
+          Leddar<span className="text-[#00A8E8]">Tech</span>
+        </span>
+      ),
+    },
+    {
+      name: "sanofi",
+      logo: (
+        <span className="font-black text-[#5C2483] text-lg sm:text-xl tracking-tight font-sans">
+          sanofi
+        </span>
+      ),
+    },
+    {
+      name: "gm",
+      logo: (
+        <div className="border-[2px] border-[#00529B] rounded-md px-2 py-0.5 flex flex-col items-center justify-center leading-none">
+          <span className="font-extrabold text-[#00529B] text-base sm:text-lg tracking-tighter lowercase font-sans">gm</span>
+          <span className="h-[1.5px] w-full bg-[#00529B] mt-0.5 rounded-full" />
+        </div>
+      ),
+    },
+    {
+      name: "Ford",
+      logo: (
+        <span className="font-serif italic font-extrabold text-[#003478] text-xl sm:text-2xl tracking-tight leading-none">
+          Ford
+        </span>
+      ),
+    },
+    {
+      name: "Apobiologix",
+      logo: (
+        <span className="font-extrabold tracking-tight text-[#0A2540] text-base sm:text-lg font-sans">
+          Apobiologix
+        </span>
+      ),
+    },
+  ];
+
+  const ROW2 = [
+    {
+      name: "LeddarTech",
+      logo: (
+        <span className="font-extrabold text-slate-900 text-base sm:text-lg tracking-tight font-sans">
+          Leddar<span className="text-[#00A8E8]">Tech</span>
+        </span>
+      ),
+    },
+    {
+      name: "WOOD-MIZER",
+      logo: (
+        <span className="font-extrabold tracking-wider text-[#E85D04] text-base sm:text-lg font-sans uppercase">
+          WOOD-MIZER
+        </span>
+      ),
+    },
+    {
+      name: "sanofi",
+      logo: (
+        <span className="font-black text-[#5C2483] text-lg sm:text-xl tracking-tight font-sans">
+          sanofi
+        </span>
+      ),
+    },
+    {
+      name: "gm",
+      logo: (
+        <div className="border-[2px] border-[#00529B] rounded-md px-2 py-0.5 flex flex-col items-center justify-center leading-none">
+          <span className="font-extrabold text-[#00529B] text-base sm:text-lg tracking-tighter lowercase font-sans">gm</span>
+          <span className="h-[1.5px] w-full bg-[#00529B] mt-0.5 rounded-full" />
+        </div>
+      ),
+    },
+    {
+      name: "Ford",
+      logo: (
+        <span className="font-serif italic font-extrabold text-[#003478] text-xl sm:text-2xl tracking-tight leading-none">
+          Ford
+        </span>
+      ),
+    },
+    {
+      name: "Apobiologix",
+      logo: (
+        <span className="font-extrabold tracking-tight text-[#0A2540] text-base sm:text-lg font-sans">
+          Apobiologix
+        </span>
+      ),
+    },
+    {
+      name: "appili THERAPEUTICS",
+      logo: (
+        <div className="flex flex-col items-center justify-center leading-none">
+          <span className="font-extrabold text-slate-900 text-base sm:text-lg tracking-tight lowercase">
+            appili
+          </span>
+          <span className="font-bold text-[#10B981] text-[8px] tracking-[0.22em] uppercase mt-0.5">
+            THERAPEUTICS
+          </span>
+        </div>
+      ),
+    },
+    {
+      name: "GIGL",
+      logo: (
+        <span className="font-black text-slate-900 text-base sm:text-lg tracking-wider font-sans flex items-center">
+          GIGL<span className="text-[#00B4D8] font-bold text-xl ml-0.5">•</span>
+        </span>
+      ),
+    },
+  ];
+
+  const LOOP_ROW1 = [...ROW1, ...ROW1, ...ROW1, ...ROW1];
+  const LOOP_ROW2 = [...ROW2, ...ROW2, ...ROW2, ...ROW2];
+
+  return (
+    <section className="relative bg-[#FAFAFB] py-14 sm:py-20 border-b border-slate-200/80 overflow-hidden">
+      {/* SECTION HEADER */}
+      <div className="shell relative mb-8 lg:mb-12">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div className="max-w-2xl">
+            <h2 className="text-3xl sm:text-4xl lg:text-[2.65rem] font-bold text-slate-900 leading-tight tracking-tight">
+              Partners &amp; Technology Ecosystem
+            </h2>
+          </div>
+          <div className="max-w-md lg:text-right shrink-0">
+            <p className="text-slate-500 text-xs sm:text-sm lg:text-base leading-relaxed font-normal">
+              Integrated with premier tier-1 enterprise partners, industry leaders, global innovators, and regulatory compliance frameworks globally.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* TWO-ROW MARQUEE TRACK */}
+      <div className="space-y-4 sm:space-y-5">
+        {/* ROW 1: Scroll Left */}
+        <div className="marquee-viewport py-1">
+          <div className="marquee-lane marquee-lane-fast flex items-center gap-4 sm:gap-5">
+            {LOOP_ROW1.map((client, i) => (
+              <div
+                key={`row1-${client.name}-${i}`}
+                className="group relative flex shrink-0 items-center justify-center rounded-2xl bg-white p-3.5 min-w-[210px] sm:min-w-[230px] h-[86px] sm:h-[96px] border border-slate-200/70 shadow-[0_2px_12px_rgba(0,0,0,0.03)] transition-all duration-300 hover:border-sky-300 hover:shadow-[0_8px_25px_rgba(0,180,216,0.12)] hover:-translate-y-0.5"
+              >
+                <div className="bg-[#F3F6F9] group-hover:bg-[#EBF3FA] transition-colors rounded-xl px-5 py-2.5 flex items-center justify-center w-full h-full">
+                  {client.logo}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ROW 2: Scroll Right */}
+        <div className="marquee-viewport py-1">
+          <div className="marquee-lane marquee-lane-fast marquee-lane-reverse flex items-center gap-4 sm:gap-5">
+            {LOOP_ROW2.map((client, i) => (
+              <div
+                key={`row2-${client.name}-${i}`}
+                className="group relative flex shrink-0 items-center justify-center rounded-2xl bg-white p-3.5 min-w-[210px] sm:min-w-[230px] h-[86px] sm:h-[96px] border border-slate-200/70 shadow-[0_2px_12px_rgba(0,0,0,0.03)] transition-all duration-300 hover:border-sky-300 hover:shadow-[0_8px_25px_rgba(0,180,216,0.12)] hover:-translate-y-0.5"
+              >
+                <div className="bg-[#F3F6F9] group-hover:bg-[#EBF3FA] transition-colors rounded-xl px-5 py-2.5 flex items-center justify-center w-full h-full">
+                  {client.logo}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* -------------------------------- About Venus -------------------------------- */
 
 export function AboutVenus() {
@@ -600,6 +808,17 @@ const SERVICES_LIST = [
     ctaText: "Explore Permanent Placement",
     href: "/services/executive-search",
     isActive: true,
+    cardMeta: {
+      badge: "BOARD & C-SUITE",
+      mandate: "MANDATE DIRECT",
+      briefCopy: "Deploying bespoke psychometric benchmarking and global market mapping for critical C-suite and permanent institutional talent.",
+      image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=500&fit=crop&auto=format",
+      stats: [
+        { val: "98.4%", label: "RETENTION SLA" },
+        { val: "14-Day", label: "AVG SHORTLIST" },
+        { val: "Tier-1", label: "GUARANTEED" },
+      ],
+    },
   },
   {
     num: "02",
@@ -615,6 +834,17 @@ const SERVICES_LIST = [
     ],
     ctaText: "Explore Contract Staffing",
     href: "/services/contract-staffing",
+    cardMeta: {
+      badge: "FLEX CAPACITY",
+      mandate: "PAYROLL & COMPLIANCE",
+      briefCopy: "Rapid deployment of pre-vetted contractors with fully compliant turnkey payroll and flex capacity management.",
+      image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&h=500&fit=crop&auto=format",
+      stats: [
+        { val: "48-Hour", label: "DEPLOYMENT" },
+        { val: "100%", label: "COMPLIANT" },
+        { val: "On-Demand", label: "SCALING" },
+      ],
+    },
   },
   {
     num: "03",
@@ -630,6 +860,17 @@ const SERVICES_LIST = [
     ],
     ctaText: "Explore Startup Hiring",
     href: "/services/startup-hiring",
+    cardMeta: {
+      badge: "0–50 SCALEUP",
+      mandate: "FOUNDING TEAM",
+      briefCopy: "Specialized startup recruitment pods designed for venture-backed teams to scale from initial seed to Series B.",
+      image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&h=500&fit=crop&auto=format",
+      stats: [
+        { val: "3x", label: "SPEED TO HIRE" },
+        { val: "95%", label: "ACCEPTANCE" },
+        { val: "Pod-Based", label: "MODEL" },
+      ],
+    },
   },
   {
     num: "04",
@@ -645,6 +886,17 @@ const SERVICES_LIST = [
     ],
     ctaText: "Explore Talent Consulting",
     href: "/services/talent-consulting",
+    cardMeta: {
+      badge: "STRATEGIC ADVISORY",
+      mandate: "PIPELINE ARCHITECTURE",
+      briefCopy: "Workforce optimization, talent pipeline engineering, and process redesign tailored for enterprise growth.",
+      image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=800&h=500&fit=crop&auto=format",
+      stats: [
+        { val: "40%", label: "REDUCED CAC" },
+        { val: "100%", label: "AUDIT READY" },
+        { val: "Strategic", label: "ALIGNMENT" },
+      ],
+    },
   },
   {
     num: "05",
@@ -660,6 +912,17 @@ const SERVICES_LIST = [
     ],
     ctaText: "Explore HR Advisory",
     href: "/services/hr-advisory",
+    cardMeta: {
+      badge: "FRACTIONAL HR",
+      mandate: "COMPLIANCE & ORG",
+      briefCopy: "Interim executive HR leadership providing policy design, labor compliance frameworks, and organizational structure.",
+      image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=500&fit=crop&auto=format",
+      stats: [
+        { val: "Zero", label: "RISK" },
+        { val: "Enterprise", label: "READY" },
+        { val: "Executive", label: "ADVISORY" },
+      ],
+    },
   },
   {
     num: "06",
@@ -675,12 +938,57 @@ const SERVICES_LIST = [
     ],
     ctaText: "Explore SOW Pods",
     href: "/services/sow-project-pods",
+    cardMeta: {
+      badge: "OUTCOME PODS",
+      mandate: "DELIVERABLE BASED",
+      briefCopy: "Specialized project delivery pods executing strictly against milestones and outcome SLAs without headcount expansion.",
+      image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=800&h=500&fit=crop&auto=format",
+      stats: [
+        { val: "Fixed", label: "BUDGET" },
+        { val: "Milestone", label: "SLA" },
+        { val: "Outcome", label: "DRIVEN" },
+      ],
+    },
   },
 ];
 
 export function Services() {
   const { ref, shown } = useReveal<HTMLDivElement>();
   const [activeService, setActiveService] = useState<string>("01");
+  const itemRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+
+  const activeServiceObj =
+    SERVICES_LIST.find((s) => s.num === activeService) || SERVICES_LIST[0];
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const centerY = window.innerHeight / 2;
+      let minDistance = Infinity;
+      let closestNum = activeService;
+
+      SERVICES_LIST.forEach((srv) => {
+        const el = itemRefs.current[srv.num];
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.bottom > 0 && rect.top < window.innerHeight) {
+            const cardCenterY = rect.top + rect.height / 2;
+            const dist = Math.abs(cardCenterY - centerY);
+            if (dist < minDistance) {
+              minDistance = dist;
+              closestNum = srv.num;
+            }
+          }
+        }
+      });
+
+      if (closestNum && closestNum !== activeService) {
+        setActiveService(closestNum);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [activeService]);
 
   return (
     <section
@@ -719,49 +1027,44 @@ export function Services() {
               </a>
             </div>
 
-            {/* Featured Executive Service Card */}
-            <div className="mt-8 rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs space-y-4">
+            {/* Dynamic Featured Executive Service Card */}
+            <div className="mt-8 rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs space-y-4 transition-all duration-300">
               <div className="relative h-44 sm:h-48 w-full overflow-hidden rounded-xl bg-slate-100">
                 <img
-                  src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=500&fit=crop&auto=format"
-                  alt="Board and C-Suite Executive Meeting"
+                  key={activeServiceObj.cardMeta.image}
+                  src={activeServiceObj.cardMeta.image}
+                  alt={activeServiceObj.title}
                   loading="lazy"
                   width={800}
                   height={500}
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-cover transition-all duration-500"
                 />
                 <span className="absolute top-3 left-3 bg-slate-950/90 text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md backdrop-blur-xs">
-                  • BOARD &amp; C-SUITE
+                  • {activeServiceObj.cardMeta.badge}
                 </span>
               </div>
 
               <div className="flex items-center justify-between text-[10px] font-mono font-bold uppercase tracking-wider">
-                <span className="text-slate-400">SERVICE BRIEF 01</span>
-                <span className="text-brand">MANDATE DIRECT</span>
+                <span className="text-slate-400">SERVICE BRIEF {activeServiceObj.num}</span>
+                <span className="text-brand">{activeServiceObj.cardMeta.mandate}</span>
               </div>
 
               <div>
                 <h3 className="text-lg font-bold text-slate-900 leading-snug">
-                  Permanent &amp; Executive Search
+                  {activeServiceObj.title}
                 </h3>
                 <p className="mt-1.5 text-xs text-slate-600 leading-relaxed">
-                  Deploying bespoke psychometric benchmarking and global market mapping for critical C-suite and permanent institutional talent.
+                  {activeServiceObj.cardMeta.briefCopy}
                 </p>
               </div>
 
               <div className="grid grid-cols-3 gap-2 pt-3.5 border-t border-slate-100">
-                <div>
-                  <p className="text-sm font-bold text-slate-900">98.4%</p>
-                  <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mt-0.5">RETENTION SLA</p>
-                </div>
-                <div>
-                  <p className="text-sm font-bold text-slate-900">14-Day</p>
-                  <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mt-0.5">AVG SHORTLIST</p>
-                </div>
-                <div>
-                  <p className="text-sm font-bold text-slate-900">Tier-1</p>
-                  <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mt-0.5">GUARANTEED</p>
-                </div>
+                {activeServiceObj.cardMeta.stats.map((st) => (
+                  <div key={st.label}>
+                    <p className="text-sm font-bold text-slate-900">{st.val}</p>
+                    <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mt-0.5">{st.label}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -773,12 +1076,17 @@ export function Services() {
               return (
                 <div
                   key={srv.num}
+                  ref={(el) => {
+                    itemRefs.current[srv.num] = el;
+                  }}
                   onMouseEnter={() => setActiveService(srv.num)}
+                  onTouchStart={() => setActiveService(srv.num)}
+                  onClick={() => setActiveService(srv.num)}
                   className={cn(
-                    "p-6 sm:p-8 rounded-2xl transition-all duration-300 group cursor-pointer border border-transparent my-1 sm:my-1.5",
+                    "p-6 sm:p-8 rounded-2xl transition-all duration-300 group cursor-pointer border my-1 sm:my-1.5",
                     isActive
-                      ? "bg-slate-50/90 border-l-2 border-b-2 border-brand shadow-2xs"
-                      : "bg-transparent border-transparent hover:bg-slate-50/90 hover:border-l-2 hover:border-b-2 hover:border-brand hover:shadow-2xs"
+                      ? "bg-white border-brand shadow-md"
+                      : "bg-transparent border-transparent hover:bg-slate-50/90 hover:border-slate-200"
                   )}
                 >
                   <div className="flex items-start gap-4 sm:gap-6">
@@ -786,7 +1094,7 @@ export function Services() {
                     <span
                       className={cn(
                         "font-mono text-3xl sm:text-4xl lg:text-5xl font-light shrink-0 w-12 sm:w-16 transition-colors duration-200",
-                        isActive ? "text-slate-500 font-normal" : "text-slate-300 group-hover:text-slate-500"
+                        isActive ? "text-brand font-normal" : "text-slate-300 group-hover:text-slate-500"
                       )}
                     >
                       {srv.num}
@@ -800,7 +1108,12 @@ export function Services() {
                       </p>
 
                       {/* Service Title */}
-                      <h3 className="text-xl sm:text-2xl font-bold text-slate-900 group-hover:text-brand transition-colors duration-200 leading-snug">
+                      <h3
+                        className={cn(
+                          "text-xl sm:text-2xl font-bold transition-colors duration-200 leading-snug",
+                          isActive ? "text-brand" : "text-slate-900 group-hover:text-brand"
+                        )}
+                      >
                         {srv.title}
                       </h3>
 
@@ -1046,31 +1359,40 @@ const BOTTOM_HIGHLIGHTS = [
 
 export function Industries() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [mobileSlide, setMobileSlide] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
 
-  const TOTAL_SLIDES = INDUSTRY_SLIDES.length; // 3 slides
+  const TOTAL_SLIDES = INDUSTRY_SLIDES.length; // 3 slides for desktop
+  const TOTAL_MOBILE_SLIDES = INDUSTRIES.length; // 9 cards for mobile
 
   // Auto-advance every 4 seconds smoothly
   useEffect(() => {
     if (isHovered) return;
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % TOTAL_SLIDES);
+      setMobileSlide((prev) => (prev + 1) % TOTAL_MOBILE_SLIDES);
     }, 4000);
 
     return () => clearInterval(timer);
-  }, [isHovered, TOTAL_SLIDES]);
+  }, [isHovered, TOTAL_SLIDES, TOTAL_MOBILE_SLIDES]);
 
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev - 1 + TOTAL_SLIDES) % TOTAL_SLIDES);
+    setMobileSlide((prev) => (prev - 1 + TOTAL_MOBILE_SLIDES) % TOTAL_MOBILE_SLIDES);
   };
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % TOTAL_SLIDES);
+    setMobileSlide((prev) => (prev + 1) % TOTAL_MOBILE_SLIDES);
   };
 
   const goToSlide = (slideIdx: number) => {
     setCurrentSlide(slideIdx);
+  };
+
+  const goToMobileSlide = (slideIdx: number) => {
+    setMobileSlide(slideIdx);
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -1086,6 +1408,80 @@ export function Industries() {
       prevSlide();
     }
     setTouchStartX(null);
+  };
+
+  const renderIndustryCard = (ind: (typeof INDUSTRIES)[0]) => {
+    const { icon: IndIcon } = ind;
+    return (
+      <div
+        key={ind.id}
+        className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-brand/50 hover:shadow-xl h-full"
+      >
+        {/* Image Header with Number Badge */}
+        <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-muted">
+          <img
+            src={ind.image}
+            alt={ind.title}
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+          />
+          <span className="absolute top-3 right-3 rounded-full bg-black/75 backdrop-blur-md px-2.5 py-0.5 text-[11px] font-mono font-bold text-white shadow-xs">
+            {ind.id}
+          </span>
+        </div>
+
+        {/* Overlapping Floating Circle Icon Badge */}
+        <div className="-mt-5 ml-4 relative z-10 flex h-10 w-10 items-center justify-center rounded-full border border-brand/20 bg-background text-brand shadow-sm">
+          <IndIcon className="h-4 w-4" />
+        </div>
+
+        {/* Card Body */}
+        <div className="flex flex-1 flex-col px-5 pt-2.5 pb-5 space-y-3">
+          <div>
+            <p className="text-[11px] font-bold uppercase tracking-wider text-brand mb-1">
+              {ind.category}
+            </p>
+            <h3 className="text-xl font-bold tracking-tight text-foreground transition-colors duration-200 group-hover:text-brand leading-snug">
+              {ind.title}
+            </h3>
+          </div>
+
+          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed line-clamp-2">
+            {ind.copy}
+          </p>
+
+          {/* Roles We Hire For */}
+          <div className="pt-1">
+            <p className="text-[10px] font-bold uppercase tracking-wider text-brand mb-2">
+              ROLES WE HIRE FOR:
+            </p>
+            <div className="flex flex-wrap gap-1.5 min-h-[58px]">
+              {ind.roles.map((role) => (
+                <span
+                  key={role}
+                  className="inline-flex items-center rounded-full bg-secondary px-2.5 py-1 text-[11px] font-medium text-secondary-foreground transition-colors group-hover:bg-secondary/80"
+                >
+                  {role}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Bottom Link */}
+          <div className="pt-3.5 mt-auto border-t border-border/60">
+            <a
+              href={ind.slug ? `/industries/${ind.slug}` : "/industries"}
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-foreground transition-colors group-hover:text-brand"
+            >
+              <span>{ind.ctaText}</span>
+              <span className="text-brand font-bold text-sm transition-transform duration-200 group-hover:translate-x-1">
+                →
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -1182,8 +1578,8 @@ export function Industries() {
 
       <div className="shell relative z-10">
         {/* Header Section */}
-        <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between mb-10 sm:mb-12">
-          <div className="max-w-2xl">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between mb-10 sm:mb-12">
+          <div className="max-w-xl">
             <div className="mb-3">
               <Eyebrow>INDUSTRIES & ROLES</Eyebrow>
             </div>
@@ -1191,34 +1587,36 @@ export function Industries() {
               Industries & Roles <br />
               <span className="text-brand">We Hire For</span>
             </h2>
-            <p className="mt-4 text-base sm:text-lg leading-relaxed text-muted-foreground max-w-xl">
-              Explore the specialized technical, executive, and operational positions we recruit across Canada and North America.
-            </p>
           </div>
 
-          {/* Controls & Pagination Bars */}
-          <div className="flex flex-col items-start sm:items-end gap-3 shrink-0">
-            <div className="flex items-center gap-2.5">
-              <button
-                type="button"
-                onClick={prevSlide}
-                aria-label="Previous 3 industries"
-                className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-border bg-background text-foreground shadow-xs transition-all duration-200 hover:border-brand/50 hover:bg-brand-soft hover:text-brand active:scale-95 cursor-pointer"
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </button>
-              <button
-                type="button"
-                onClick={nextSlide}
-                aria-label="Next 3 industries"
-                className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-border bg-background text-foreground shadow-xs transition-all duration-200 hover:border-brand/50 hover:bg-brand-soft hover:text-brand active:scale-95 cursor-pointer"
-              >
-                <ChevronRight className="h-4 w-4" />
-              </button>
-            </div>
+          {/* Right Side Description & Navigation Controls */}
+          <div className="flex flex-col items-start lg:items-end gap-5 max-w-md">
+            <p className="text-base sm:text-lg leading-relaxed text-muted-foreground text-left">
+              Explore the specialized technical, executive, and operational positions we recruit across Canada and North America.
+            </p>
 
-            {/* Pagination Dash Indicators */}
-            <div className="flex items-center gap-1.5 pt-1">
+            <div className="flex flex-col items-start lg:items-end gap-3 shrink-0">
+              <div className="flex items-center gap-2.5">
+                <button
+                  type="button"
+                  onClick={prevSlide}
+                  aria-label="Previous industry"
+                  className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-border bg-background text-foreground shadow-xs transition-all duration-200 hover:border-brand/50 hover:bg-brand-soft hover:text-brand active:scale-95 cursor-pointer"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={nextSlide}
+                  aria-label="Next industry"
+                  className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-border bg-background text-foreground shadow-xs transition-all duration-200 hover:border-brand/50 hover:bg-brand-soft hover:text-brand active:scale-95 cursor-pointer"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </button>
+              </div>
+
+            {/* Desktop Pagination Dash Indicators (3 Slides) */}
+            <div className="hidden md:flex items-center gap-1.5 pt-1">
               {[0, 1, 2].map((idx) => (
                 <button
                   key={idx}
@@ -1234,16 +1632,33 @@ export function Industries() {
                 />
               ))}
             </div>
+
+            {/* Mobile Pagination Indicators (9 Single-Card Slides) */}
+            <div className="flex md:hidden items-center gap-1.5 pt-1 flex-wrap">
+              {INDUSTRIES.map((_, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => goToMobileSlide(idx)}
+                  aria-label={`Go to industry ${idx + 1}`}
+                  className={cn(
+                    "h-1.5 rounded-full transition-all duration-300 cursor-pointer",
+                    mobileSlide === idx
+                      ? "w-6 bg-brand"
+                      : "w-2 bg-muted hover:bg-muted-foreground/40"
+                  )}
+                />
+              ))}
+            </div>
           </div>
         </div>
+      </div>
 
-        {/* 3-Cards Per Slide Container */}
+        {/* Desktop 3-Cards Per Slide Container (hidden on mobile) */}
         <div
-          className="relative overflow-hidden w-full py-2"
+          className="hidden md:block relative overflow-hidden w-full py-2"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
         >
           <div
             className="flex transition-transform duration-500 ease-in-out"
@@ -1254,81 +1669,31 @@ export function Industries() {
             {INDUSTRY_SLIDES.map((slideCards, slideIdx) => (
               <div
                 key={slideIdx}
-                className="w-full shrink-0 grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6 px-0.5"
+                className="w-full shrink-0 grid grid-cols-3 gap-5 lg:gap-6 px-0.5"
               >
-                {slideCards.map((ind) => {
-                  const { icon: IndIcon } = ind;
-                  return (
-                    <div
-                      key={ind.id}
-                      className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-brand/50 hover:shadow-xl"
-                    >
-                      {/* Image Header with Number Badge */}
-                      <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-muted">
-                        <img
-                          src={ind.image}
-                          alt={ind.title}
-                          loading="lazy"
-                          className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                        />
-                        <span className="absolute top-3 right-3 rounded-full bg-black/75 backdrop-blur-md px-2.5 py-0.5 text-[11px] font-mono font-bold text-white shadow-xs">
-                          {ind.id}
-                        </span>
-                      </div>
+                {slideCards.map((ind) => renderIndustryCard(ind))}
+              </div>
+            ))}
+          </div>
+        </div>
 
-                      {/* Overlapping Floating Circle Icon Badge */}
-                      <div className="-mt-5 ml-4 relative z-10 flex h-10 w-10 items-center justify-center rounded-full border border-brand/20 bg-background text-brand shadow-sm">
-                        <IndIcon className="h-4 w-4" />
-                      </div>
-
-                      {/* Card Body */}
-                      <div className="flex flex-1 flex-col px-5 pt-2.5 pb-5 space-y-3">
-                        <div>
-                          <p className="text-[11px] font-bold uppercase tracking-wider text-brand mb-1">
-                            {ind.category}
-                          </p>
-                          <h3 className="text-xl font-bold tracking-tight text-foreground transition-colors duration-200 group-hover:text-brand leading-snug">
-                            {ind.title}
-                          </h3>
-                        </div>
-
-                        <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed line-clamp-2">
-                          {ind.copy}
-                        </p>
-
-                        {/* Roles We Hire For */}
-                        <div className="pt-1">
-                          <p className="text-[10px] font-bold uppercase tracking-wider text-brand mb-2">
-                            ROLES WE HIRE FOR:
-                          </p>
-                          <div className="flex flex-wrap gap-1.5 min-h-[58px]">
-                            {ind.roles.map((role) => (
-                              <span
-                                key={role}
-                                className="inline-flex items-center rounded-full bg-secondary px-2.5 py-1 text-[11px] font-medium text-secondary-foreground transition-colors group-hover:bg-secondary/80"
-                              >
-                                {role}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* Bottom Link */}
-                        <div className="pt-3.5 mt-auto border-t border-border/60">
-                          <a
-                            href={ind.slug ? `/industries/${ind.slug}` : "/industries"}
-                            className="inline-flex items-center gap-1.5 text-xs font-bold text-foreground transition-colors group-hover:text-brand"
-                          >
-                            <span>{ind.ctaText}</span>
-                            <span className="text-brand font-bold text-sm transition-transform duration-200 group-hover:translate-x-1">
-                              →
-                            </span>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
+        {/* Mobile Single-Card-At-A-Time Slide Container (block on mobile) */}
+        <div
+          className="block md:hidden relative overflow-hidden w-full py-2"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          <div
+            className="flex transition-transform duration-500 ease-in-out"
+            style={{
+              transform: `translateX(-${mobileSlide * 100}%)`,
+            }}
+          >
+            {INDUSTRIES.map((ind) => (
+              <div key={ind.id} className="w-full shrink-0 px-0.5">
+                {renderIndustryCard(ind)}
               </div>
             ))}
           </div>
@@ -1432,10 +1797,19 @@ export function Process() {
       />
 
       <div className="shell relative">
-        <SectionHeading
-          title="A hiring process built for speed and precision"
-          copy="Five transparent stages, defined timelines, and dedicated recruitment experts committed to your success."
-        />
+        {/* Split Header Section */}
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-xl">
+            <h2 className="text-3xl font-semibold leading-[1.08] sm:text-4xl lg:text-[2.9rem] text-foreground tracking-tight">
+              A hiring process built for speed and precision
+            </h2>
+          </div>
+          <div className="max-w-md">
+            <p className="text-base sm:text-lg leading-relaxed text-muted-foreground text-left">
+              Five transparent stages, defined timelines, and dedicated recruitment experts committed to your success.
+            </p>
+          </div>
+        </div>
 
         <div ref={ref} className="mt-14 flex flex-col gap-4 lg:flex-row lg:h-[580px] lg:gap-5">
           {PROCESS_STEPS.map((s, i) => {
@@ -1687,10 +2061,19 @@ export function Stats() {
         aria-hidden
       />
       <div className="shell relative" ref={ref}>
-        <SectionHeading
-          title="Our proven track record speaks volumes"
-          copy="We deliver measurable results through strategic talent solutions across Canadian and North American industries."
-        />
+        {/* Split Header Section */}
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-xl">
+            <h2 className="text-3xl font-semibold leading-[1.08] sm:text-4xl lg:text-[2.9rem] text-foreground tracking-tight">
+              Our proven track record speaks volumes
+            </h2>
+          </div>
+          <div className="max-w-md">
+            <p className="text-base sm:text-lg leading-relaxed text-muted-foreground text-left">
+              We deliver measurable results through strategic talent solutions across Canadian and North American industries.
+            </p>
+          </div>
+        </div>
         <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {METRICS.map((m, i) => (
             <Metric key={m.label} metric={m} run={run} index={i} />

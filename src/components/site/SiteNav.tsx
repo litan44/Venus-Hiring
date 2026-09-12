@@ -412,7 +412,7 @@ export function SiteNav() {
         className={cn(
           "nav-drop fixed inset-x-0 top-0 z-50 transition-[padding,background-color,box-shadow,backdrop-filter] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
           scrolled || activeMegaMenu || !isHeroDarkPage
-            ? "border-b border-border/70 bg-background/95 text-foreground py-2.5 shadow-[0_10px_40px_-30px_rgba(15,23,42,0.6)] backdrop-blur-xl"
+            ? "border-b border-slate-200/80 bg-white/95 dark:bg-slate-900/95 text-slate-900 dark:text-white py-2.5 shadow-[0_10px_40px_-30px_rgba(15,23,42,0.6)] backdrop-blur-xl"
             : "border-b border-transparent bg-transparent py-4",
         )}
       >
@@ -577,7 +577,7 @@ export function SiteNav() {
             onMouseLeave={handleMenuLeave}
             className="absolute left-1/2 top-full -translate-x-1/2 w-full max-w-[1320px] pt-3 px-4 transition-all duration-300 ease-out z-50 hidden lg:block"
           >
-            <div className="overflow-hidden rounded-[2.25rem] border border-border/80 bg-background/95 backdrop-blur-2xl shadow-[0_30px_90px_-20px_rgba(15,23,42,0.35)] transition-all duration-300 text-foreground">
+            <div className="overflow-hidden rounded-[2.25rem] border border-slate-200 bg-white dark:bg-slate-900 shadow-[0_30px_90px_-20px_rgba(15,23,42,0.35)] transition-all duration-300 text-foreground">
               {/* Upper 3-Column Content Grid */}
               <div className="grid grid-cols-12 p-5 sm:p-6 gap-6 items-stretch min-h-[270px]">
                 {/* Left Column: Sub-Categories List */}
@@ -675,7 +675,7 @@ export function SiteNav() {
                           handleNavClick(subItem.href, e);
                           setActiveMegaMenu(null);
                         }}
-                        className="group flex flex-col justify-between rounded-xl p-3.5 border border-border/50 bg-background/60 hover:border-brand/40 hover:bg-card hover:shadow-md transition-all duration-200 min-h-[70px]"
+                        className="group flex flex-col justify-between rounded-xl p-3.5 border border-slate-200/60 bg-slate-50/70 hover:border-brand/40 hover:bg-white hover:shadow-md transition-all duration-200 min-h-[70px]"
                       >
                         <div className="flex items-start justify-between gap-2">
                           <p className="text-[0.95rem] font-bold text-foreground group-hover:text-brand transition-colors leading-tight">

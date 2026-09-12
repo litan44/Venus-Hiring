@@ -4,6 +4,7 @@ import { Hero } from "@/components/site/Hero";
 import {
   TrustedStrip,
   WhoWeServe,
+  ClientTrustBar,
   Services,
   Industries,
   Process,
@@ -18,6 +19,25 @@ const TITLE = "Venus Consultancy | Recruitment & Staffing Across Canada";
 const DESCRIPTION =
   "Venus Consultancy unites technology, talent and opportunity — permanent, contract and executive recruitment plus HR advisory for Canadian employers and professionals.";
 
+const LOCAL_BUSINESS_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "RecruitmentAgency",
+  name: "Venus Consultancy",
+  url: "https://www.venushiring.ca",
+  logo: "https://www.venushiring.ca/logo.png",
+  description: DESCRIPTION,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Toronto",
+    addressRegion: "ON",
+    addressCountry: "CA",
+  },
+  sameAs: [
+    "https://www.linkedin.com/company/venus-consultancy",
+    "https://twitter.com/venusconsulting",
+  ],
+};
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -27,44 +47,35 @@ export const Route = createFileRoute("/")({
       { property: "og:description", content: DESCRIPTION },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: TITLE },
+      { name: "twitter:description", content: DESCRIPTION },
+    ],
+    links: [
+      {
+        rel: "canonical",
+        href: "https://www.venushiring.ca",
+      },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: "Home",
+              item: "https://www.venushiring.ca",
+            },
+          ],
+        }),
+      },
     ],
   }),
   component: Home,
 });
-
-const LOCAL_BUSINESS_SCHEMA = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "ProfessionalService",
-      "@id": "https://www.venushiring.ca/#localbusiness-toronto",
-      name: "Venus Consultancy - Toronto Office",
-      url: "https://www.venushiring.ca",
-      telephone: "+1-647-616-2677",
-      address: {
-        "@type": "PostalAddress",
-        streetAddress: "#205 - 1085 Bellamy Road North",
-        addressLocality: "Toronto",
-        addressRegion: "ON",
-        postalCode: "M1H 3C7",
-        addressCountry: "CA",
-      },
-      priceRange: "$$",
-    },
-    {
-      "@type": "BreadcrumbList",
-      "@id": "https://www.venushiring.ca/#breadcrumb",
-      itemListElement: [
-        {
-          "@type": "ListItem",
-          position: 1,
-          name: "Home",
-          item: "https://www.venushiring.ca",
-        },
-      ],
-    },
-  ],
-};
 
 function Home() {
   return (
@@ -78,6 +89,7 @@ function Home() {
         <Hero />
         <TrustedStrip />
         <WhoWeServe />
+        <ClientTrustBar />
         <Services />
         <PortfolioShowcase />
         <Industries />

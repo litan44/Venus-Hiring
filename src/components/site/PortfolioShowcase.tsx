@@ -1,3 +1,5 @@
+import { useState, useEffect, useRef } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useReveal } from "@/hooks/use-reveal";
 
@@ -46,14 +48,49 @@ const SHOWCASE_ITEMS: ShowcaseItem[] = [
 
 export function PortfolioShowcase() {
   const { ref, shown } = useReveal<HTMLDivElement>();
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const touchStartX = useRef<number | null>(null);
+
+  // Auto slideshow for mobile only (3.5s interval)
+  useEffect(() => {
+    if (isPaused) return;
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % SHOWCASE_ITEMS.length);
+    }, 3500);
+    return () => clearInterval(interval);
+  }, [isPaused]);
+
+  const handlePrev = () => {
+    setActiveIndex((prev) => (prev - 1 + SHOWCASE_ITEMS.length) % SHOWCASE_ITEMS.length);
+  };
+
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev + 1) % SHOWCASE_ITEMS.length);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const touchEndX = e.changedTouches[0].clientX;
+    const diff = touchStartX.current - touchEndX;
+    if (Math.abs(diff) > 40) {
+      if (diff > 0) handleNext();
+      else handlePrev();
+    }
+    touchStartX.current = null;
+  };
 
   return (
     <section
       id="portfolio-showcase"
-      className="relative overflow-hidden bg-white pt-24 sm:pt-28 pb-20 sm:pb-28 lg:pb-32 font-sans"
+      className="relative overflow-hidden bg-white pt-20 sm:pt-28 pb-16 sm:pb-28 lg:pb-32 font-sans"
     >
       {/* Section Header */}
-      <div className="shell mb-14 sm:mb-16 text-left">
+      <div className="shell mb-10 sm:mb-16 text-left">
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.15]">
           Recruitment that behaves like an in-house team
         </h2>
@@ -62,10 +99,90 @@ export function PortfolioShowcase() {
         </p>
       </div>
 
-      {/* Full-Screen Edge-to-Edge 4-Column Grid (Zero Borders, Zero Gaps) */}
+      {/* ----------------------------------------------------------------- */}
+      {/* MOBILE ONLY: Auto-Play Slideshow Carousel with Left & Right Arrows */}
+      {/* ----------------------------------------------------------------- */}
+      <div
+        className="block sm:hidden px-4"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
+        <div className="relative isolate overflow-hidden rounded-2xl bg-slate-950 aspect-[3/4] min-h-[460px] w-full shadow-2xl">
+          {/* Active Image */}
+          {SHOWCASE_ITEMS.map((item, idx) => (
+            <div
+              key={item.id}
+              className={cn(
+                "absolute inset-0 transition-opacity duration-700 ease-in-out",
+                idx === activeIndex ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+              )}
+            >
+              <img
+                src={item.image}
+                alt={item.title}
+                className="h-full w-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
+
+              {/* Title & Copy */}
+              <div className="absolute bottom-0 inset-x-0 p-5 flex flex-col gap-2 z-20">
+                <span className="inline-block text-[11px] font-extrabold uppercase tracking-widest text-brand bg-brand/10 px-3 py-1 rounded-full w-fit backdrop-blur-md border border-brand/30">
+                  {item.category}
+                </span>
+                <div className="bg-brand text-white font-bold text-lg px-4 py-2.5 rounded-xl shadow-md">
+                  {item.title}
+                </div>
+                <p className="text-xs text-slate-200 leading-relaxed bg-slate-950/80 p-3.5 rounded-xl border border-white/10 backdrop-blur-md">
+                  {item.copy}
+                </p>
+              </div>
+            </div>
+          ))}
+
+          {/* Left & Right Arrow Controls */}
+          <button
+            type="button"
+            onClick={handlePrev}
+            aria-label="Previous slide"
+            className="absolute left-3 top-1/2 -translate-y-1/2 z-30 h-10 w-10 rounded-full bg-slate-950/70 text-white backdrop-blur-md border border-white/20 flex items-center justify-center shadow-lg active:scale-90 transition-transform"
+          >
+            <ChevronLeft className="h-6 w-6" />
+          </button>
+          <button
+            type="button"
+            onClick={handleNext}
+            aria-label="Next slide"
+            className="absolute right-3 top-1/2 -translate-y-1/2 z-30 h-10 w-10 rounded-full bg-slate-950/70 text-white backdrop-blur-md border border-white/20 flex items-center justify-center shadow-lg active:scale-90 transition-transform"
+          >
+            <ChevronRight className="h-6 w-6" />
+          </button>
+
+          {/* Slide Indicator Dots */}
+          <div className="absolute top-4 right-4 z-30 flex items-center gap-1.5 bg-slate-950/60 px-3 py-1.5 rounded-full border border-white/10 backdrop-blur-md">
+            {SHOWCASE_ITEMS.map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => setActiveIndex(i)}
+                aria-label={`Go to slide ${i + 1}`}
+                className={cn(
+                  "h-2 rounded-full transition-all duration-300",
+                  i === activeIndex ? "w-5 bg-brand" : "w-2 bg-white/40"
+                )}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ----------------------------------------------------------------- */}
+      {/* DESKTOP / TABLET ONLY: Full-Screen 4-Column Grid (Unchanged)      */}
+      {/* ----------------------------------------------------------------- */}
       <div
         ref={ref}
-        className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0 p-0 m-0 border-0"
+        className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-0 p-0 m-0 border-0"
       >
         {SHOWCASE_ITEMS.map((item, index) => (
           <div
@@ -76,7 +193,7 @@ export function PortfolioShowcase() {
               "aspect-[3/4] min-h-[460px] w-full cursor-pointer select-none",
               "transition-all duration-500 ease-out focus:outline-none",
               "reveal-item",
-              shown && "is-shown",
+              shown && "is-shown"
             )}
             style={{
               transitionDelay: `${index * 60}ms`,
@@ -98,26 +215,19 @@ export function PortfolioShowcase() {
               aria-hidden
             />
 
-            {/* ------------------------------------------------------------- */}
             {/* DEFAULT STATE: Bright Blue Banner (Pinned Bottom, No Borders) */}
-            {/* ------------------------------------------------------------- */}
             <div className="absolute bottom-0 inset-x-0 z-20 flex items-center px-6 py-4 bg-brand rounded-none border-0 transition-all duration-300 ease-in-out group-hover:opacity-0 group-hover:pointer-events-none group-focus-within:opacity-0">
               <span className="font-bold text-white text-base sm:text-lg tracking-tight truncate">
                 {item.title}
               </span>
             </div>
 
-            {/* ------------------------------------------------------------- */}
-            {/* HOVER / FOCUS STATE: Slide-Up Dark Container (No Borders)     */}
-            {/* ------------------------------------------------------------- */}
+            {/* HOVER / FOCUS STATE: Slide-Up Dark Container (No Borders) */}
             <div className="absolute inset-x-0 bottom-0 z-30 transform translate-y-full opacity-0 transition-all duration-300 ease-in-out group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100">
               <div className="bg-ink/95 p-6 sm:p-7 backdrop-blur-md border-0 rounded-none">
-                {/* Title */}
                 <h3 className="text-xl font-bold tracking-tight text-white mb-2.5">
                   {item.title}
                 </h3>
-
-                {/* Description */}
                 <p className="text-sm leading-relaxed text-slate-300">
                   {item.copy}
                 </p>

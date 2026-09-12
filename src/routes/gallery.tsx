@@ -55,7 +55,7 @@ function GalleryPage() {
 
       <main className="overflow-x-hidden">
         {/* HERO SECTION (Preserved Exactly As Designed) */}
-        <section className="relative min-h-[90vh] sm:min-h-screen flex items-center justify-center pt-28 pb-16 px-4 sm:px-6 lg:px-8 text-white overflow-hidden bg-slate-950">
+        <section className="relative min-h-[50vh] sm:min-h-[65vh] lg:min-h-[75vh] flex items-center justify-center pt-28 pb-16 px-4 sm:px-6 lg:px-8 text-white overflow-hidden bg-slate-950">
           {/* Background Corporate Event Image */}
           <div className="absolute inset-0 z-0">
             <img

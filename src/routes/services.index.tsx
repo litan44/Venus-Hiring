@@ -42,7 +42,7 @@ function ServicesIndexPage() {
 
       <main id="main-content" className="flex-1">
         {/* ── HERO ── */}
-        <section className="relative isolate overflow-hidden min-h-screen lg:min-h-[100svh] flex flex-col justify-center bg-slate-950 text-white pt-28 sm:pt-32 pb-16 border-b border-slate-800">
+        <section className="relative isolate overflow-hidden min-h-[55vh] sm:min-h-[70vh] lg:min-h-[85vh] flex flex-col justify-center bg-slate-950 text-white pt-28 sm:pt-32 pb-16 border-b border-slate-800">
           {/* Background Image with Black Overlay */}
           <div className="absolute inset-0 -z-20 overflow-hidden pointer-events-none">
             <img

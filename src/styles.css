@@ -375,7 +375,7 @@
 }
 
 @utility marquee-lane-fast {
-  animation-duration: 10s;
+  animation-duration: 5s;
 }
 
 @utility marquee-lane-reverse {
