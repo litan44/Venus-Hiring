@@ -310,55 +310,72 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
     reader.readAsDataURL(file);
   };
 
+  // Format plain text into clean HTML paragraphs if no HTML tags are present
+  const formatHtmlBody = (raw: string): string => {
+    if (!raw) return "";
+    const trimmed = raw.trim();
+    if (/<[a-z][\s\S]*>/i.test(trimmed)) {
+      return trimmed;
+    }
+    return trimmed
+      .split(/\n{2,}/)
+      .map((p) => `<p>${p.replace(/\n/g, "<br/>")}</p>`)
+      .join("\n");
+  };
+
   // Compile Dynamic Blocks into HTML content for rendering and saving
   const compileBlocksToHtml = (): string => {
-    if (!formData.contentBlocks || formData.contentBlocks.length === 0) {
-      return formData.content;
-    }
+    const mainBodyFormatted = formatHtmlBody(formData.content || "");
 
-    const htmlParts = formData.contentBlocks.map((b) => {
-      switch (b.type) {
-        case "heading":
-          return `<${b.headingLevel || "h2"}>${b.text || ""}</${b.headingLevel || "h2"}>`;
-        case "paragraph":
-          return `<p>${(b.text || "").replace(/\n/g, "<br/>")}</p>`;
-        case "quote":
-          return `<blockquote>"${b.text || ""}"</blockquote>`;
-        case "image":
-          if (!b.mediaUrl) return "";
-          return `
-            <figure class="my-6">
-              <img src="${b.mediaUrl}" alt="${b.caption || "Blog Image"}" class="w-full rounded-2xl border border-border max-h-[480px] object-cover" />
-              ${b.caption ? `<figcaption class="mt-2 text-center text-xs text-muted-foreground">${b.caption}</figcaption>` : ""}
-            </figure>
-          `;
-        case "video":
-          if (!b.mediaUrl) return "";
-          if (b.mediaUrl.includes("youtube.com") || b.mediaUrl.includes("youtu.be")) {
-            let embedUrl = b.mediaUrl;
-            if (b.mediaUrl.includes("watch?v=")) {
-              embedUrl = b.mediaUrl.replace("watch?v=", "embed/");
-            } else if (b.mediaUrl.includes("youtu.be/")) {
-              embedUrl = b.mediaUrl.replace("youtu.be/", "youtube.com/embed/");
+    const blocksHtml = (formData.contentBlocks || [])
+      .map((b) => {
+        switch (b.type) {
+          case "heading":
+            return `<${b.headingLevel || "h2"}>${b.text || ""}</${b.headingLevel || "h2"}>`;
+          case "paragraph":
+            return `<p>${(b.text || "").replace(/\n/g, "<br/>")}</p>`;
+          case "quote":
+            return `<blockquote>"${b.text || ""}"</blockquote>`;
+          case "image":
+            if (!b.mediaUrl) return "";
+            return `
+              <figure class="my-6 flex flex-col items-center">
+                <img src="${b.mediaUrl}" alt="${b.caption || "Blog Image"}" class="max-h-[480px] w-auto max-w-full rounded-2xl border border-border object-contain mx-auto" />
+                ${b.caption ? `<figcaption class="mt-2 text-center text-xs text-muted-foreground">${b.caption}</figcaption>` : ""}
+              </figure>
+            `;
+          case "video":
+            if (!b.mediaUrl) return "";
+            if (b.mediaUrl.includes("youtube.com") || b.mediaUrl.includes("youtu.be")) {
+              let embedUrl = b.mediaUrl;
+              if (b.mediaUrl.includes("watch?v=")) {
+                embedUrl = b.mediaUrl.replace("watch?v=", "embed/");
+              } else if (b.mediaUrl.includes("youtu.be/")) {
+                embedUrl = b.mediaUrl.replace("youtu.be/", "youtube.com/embed/");
+              }
+              return `
+                <div class="my-6 aspect-video overflow-hidden rounded-2xl border border-border">
+                  <iframe src="${embedUrl}" title="Video player" class="w-full h-full" allowfullscreen></iframe>
+                </div>
+              `;
             }
             return `
-              <div class="my-6 aspect-video overflow-hidden rounded-2xl border border-border">
-                <iframe src="${embedUrl}" title="Video player" class="w-full h-full" allowfullscreen></iframe>
+              <div class="my-6 overflow-hidden rounded-2xl border border-border">
+                <video src="${b.mediaUrl}" controls class="w-full max-h-[480px] bg-black"></video>
+                ${b.caption ? `<p class="mt-2 text-center text-xs text-muted-foreground">${b.caption}</p>` : ""}
               </div>
             `;
-          }
-          return `
-            <div class="my-6 overflow-hidden rounded-2xl border border-border">
-              <video src="${b.mediaUrl}" controls class="w-full max-h-[480px] bg-black"></video>
-              ${b.caption ? `<p class="mt-2 text-center text-xs text-muted-foreground">${b.caption}</p>` : ""}
-            </div>
-          `;
-        default:
-          return "";
-      }
-    });
+          default:
+            return "";
+        }
+      })
+      .filter(Boolean)
+      .join("\n");
 
-    return htmlParts.join("\n");
+    if (mainBodyFormatted && blocksHtml) {
+      return `${mainBodyFormatted}\n\n${blocksHtml}`;
+    }
+    return mainBodyFormatted || blocksHtml;
   };
 
   // CKEditor Rich Text Formatting Helper
@@ -404,8 +421,8 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
 
     const postPayload = {
       ...formData,
-      featuredImage: resolvedFeaturedImage,
-      content: compiledHtml || formData.content,
+      featuredImage: resolvedFeaturedImage || "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=800&fit=crop",
+      content: compiledHtml || formatHtmlBody(formData.content),
     };
 
     if (editingId) {

@@ -268,29 +268,42 @@ function BlogDetailPage() {
   const pageDescription = blog.seo?.metaDescription || blog.excerpt || "";
   const canonicalUrl = blog.seo?.canonicalUrl || currentUrl || "https://venus-hiring.vercel.app/blog";
 
+  // Helper to ensure raw text gets formatted into clean HTML paragraphs if HTML tags are missing
+  const formattedContentHtml = useMemo(() => {
+    let raw = blog.content || "";
+    if (!raw.trim() && blog.contentBlocks && blog.contentBlocks.length > 0) {
+      raw = blog.contentBlocks
+        .map((b) => {
+          if (b.type === "heading") return `<${b.headingLevel || "h2"}>${b.text || ""}</${b.headingLevel || "h2"}>`;
+          if (b.type === "paragraph") return `<p>${(b.text || "").replace(/\n/g, "<br/>")}</p>`;
+          if (b.type === "quote") return `<blockquote>"${b.text || ""}"</blockquote>`;
+          if (b.type === "image" && b.mediaUrl) return `<figure class="my-6 flex justify-center"><img src="${b.mediaUrl}" class="max-h-[480px] w-auto max-w-full rounded-2xl object-contain" /></figure>`;
+          return "";
+        })
+        .filter(Boolean)
+        .join("\n");
+    }
+
+    const trimmed = raw.trim();
+    if (!trimmed) return "<p class='text-muted-foreground italic'>No content available for this article.</p>";
+    if (/<[a-z][\s\S]*>/i.test(trimmed)) {
+      return trimmed;
+    }
+    return trimmed
+      .split(/\n{2,}/)
+      .map((p) => `<p>${p.replace(/\n/g, "<br/>")}</p>`)
+      .join("\n");
+  }, [blog]);
+
   // Extract first image from content blocks or body if present
   const contentFirstImage =
     blog.contentBlocks?.find((b) => b.type === "image" && b.mediaUrl)?.mediaUrl;
 
-  const contentHasImages = Boolean(
-    contentFirstImage ||
-    (blog.content && (blog.content.includes("<img") || blog.content.includes("<figure")))
-  );
+  const showTopHeroImage = Boolean(blog.featuredImage);
 
-  const hasCustomFeaturedImage = Boolean(
-    blog.featuredImage &&
-    blog.featuredImage !== DEFAULT_FALLBACK_IMAGE &&
-    !blog.featuredImage.includes("photo-1522071820081-009f0129c71c")
-  );
-
-  // Show top hero banner only if the admin gave a featured image AND it is not duplicated in the content body
-  const showTopHeroImage = hasCustomFeaturedImage && !contentHasImages;
-
-  // For SEO meta image, use admin's image (either featuredImage or content block image) or fallback
+  // For SEO meta image, use admin's image or fallback
   const featuredImg =
-    (hasCustomFeaturedImage ? blog.featuredImage : contentFirstImage) ||
-    blog.featuredImage ||
-    DEFAULT_FALLBACK_IMAGE;
+    blog.featuredImage || contentFirstImage || DEFAULT_FALLBACK_IMAGE;
 
   // JSON-LD Schemas
   const articleSchema = {
@@ -535,14 +548,14 @@ function BlogDetailPage() {
                 </div>
               </div>
 
-              {/* FEATURED HERO IMAGE - Only displayed if explicitly provided and not already present in article content */}
+              {/* FEATURED HERO COVER IMAGE - Auto-scales any image ratio without cropping */}
               {showTopHeroImage && (
-                <div className="my-6 sm:my-8 overflow-hidden rounded-2xl sm:rounded-3xl border border-border shadow-xl aspect-[16/9] max-h-[520px]">
+                <div className="my-6 sm:my-8 overflow-hidden rounded-2xl sm:rounded-3xl border border-border/80 bg-accent/20 shadow-md flex items-center justify-center p-3 sm:p-5 min-h-[260px] max-h-[520px] w-full">
                   <img
                     src={blog.featuredImage}
                     alt={blog.title}
                     loading="eager"
-                    className="h-full w-full object-cover transition-transform duration-700 hover:scale-[1.02]"
+                    className="max-h-[480px] w-auto max-w-full object-contain mx-auto rounded-xl sm:rounded-2xl transition-transform duration-500 hover:scale-[1.01]"
                   />
                 </div>
               )}
@@ -606,7 +619,7 @@ function BlogDetailPage() {
                 <div
                   ref={articleContentRef}
                   className="prose prose-slate dark:prose-invert max-w-none break-words overflow-hidden prose-headings:font-sans prose-headings:font-semibold prose-h2:text-xl sm:prose-h2:text-2xl prose-h2:tracking-tight prose-h2:text-foreground prose-h2:mt-7 prose-h2:mb-3 prose-h3:text-lg sm:prose-h3:text-xl prose-h3:font-semibold prose-h3:text-foreground prose-h3:mt-5 prose-h3:mb-2 prose-h4:text-base sm:prose-h4:text-lg prose-h4:font-semibold prose-h4:text-foreground prose-h4:mt-4 prose-h4:mb-2 prose-p:text-[15px] sm:prose-p:text-[16px] prose-p:leading-relaxed prose-p:text-foreground/85 prose-li:text-[15px] prose-li:leading-relaxed prose-blockquote:border-l-4 prose-blockquote:border-brand prose-blockquote:pl-5 prose-blockquote:italic prose-blockquote:my-5"
-                  dangerouslySetInnerHTML={{ __html: blog.content }}
+                  dangerouslySetInnerHTML={{ __html: formattedContentHtml }}
                 />
 
                 {/* MAIN RECRUITMENT END CTA BANNER */}
