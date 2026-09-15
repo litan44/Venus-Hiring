@@ -324,17 +324,55 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
     reader.readAsDataURL(file);
   };
 
-  // Format plain text into clean HTML paragraphs if no HTML tags are present
+  // Format plain text into clean HTML paragraphs & auto-link plain URLs
   const formatHtmlBody = (raw: string): string => {
     if (!raw) return "";
-    const trimmed = raw.trim();
+    let trimmed = raw.trim();
+
+    // Ensure all <a> tags are properly configured with target="_blank" and underline styling
     if (/<[a-z][\s\S]*>/i.test(trimmed)) {
-      return trimmed;
+      return trimmed.replace(/<a\s+(?:[^>]*?\s+)?href="([^"]*)"([^>]*)>/gi, (match, href, rest) => {
+        let cleanRest = rest.replace(/target="[^"]*"/gi, "").replace(/rel="[^"]*"/gi, "");
+        return `<a href="${href}" target="_blank" rel="noopener noreferrer" class="text-brand font-bold underline hover:underline"${cleanRest}>`;
+      });
     }
+
+    // Auto-link plain text URLs
+    const urlRegex = /(?<!href=["'])(https?:\/\/[^\s<]+)/g;
     return trimmed
       .split(/\n{2,}/)
-      .map((p) => `<p>${p.replace(/\n/g, "<br/>")}</p>`)
+      .map((p) => {
+        const linkedPara = p.replace(
+          urlRegex,
+          '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-brand font-bold underline hover:underline">$1</a>'
+        );
+        return `<p>${linkedPara.replace(/\n/g, "<br/>")}</p>`;
+      })
       .join("\n");
+  };
+
+  // Interactive Hyperlink Prompt Action
+  const insertHyperlink = () => {
+    const rawUrl = prompt(
+      "Enter target URL (e.g. https://google.com or https://venushiring.ca):",
+      "https://"
+    );
+    if (!rawUrl || rawUrl.trim() === "https://" || !rawUrl.trim()) return;
+
+    let targetUrl = rawUrl.trim();
+    if (!targetUrl.startsWith("http://") && !targetUrl.startsWith("https://")) {
+      targetUrl = `https://${targetUrl}`;
+    }
+
+    const rawText = prompt("Enter link text to display in article:", "Click here to visit link");
+    const linkText = rawText && rawText.trim() ? rawText.trim() : targetUrl;
+
+    const formattedLink = `<a href="${targetUrl}" target="_blank" rel="noopener noreferrer" class="text-brand font-bold underline hover:underline">${linkText}</a>`;
+    
+    setFormData((prev) => ({
+      ...prev,
+      content: prev.content ? `${prev.content}\n${formattedLink}\n` : formattedLink,
+    }));
   };
 
   // Compile Dynamic Blocks into HTML content for rendering and saving
@@ -1158,13 +1196,11 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
                       </button>
                       <button
                         type="button"
-                        title="Insert Link"
-                        onClick={() =>
-                          insertCkFormatting('<a href="https://www.venushiring.ca">', "</a>")
-                        }
-                        className="rounded-lg p-1.5 hover:bg-accent text-foreground"
+                        title="Insert Active Hyperlink (URL & Link Text Prompt)"
+                        onClick={insertHyperlink}
+                        className="rounded-lg p-1.5 hover:bg-accent text-brand font-bold flex items-center gap-1 border border-brand/20 bg-brand/5"
                       >
-                        <LinkIcon className="h-4 w-4" />
+                        <LinkIcon className="h-4 w-4" /> Add Link
                       </button>
                     </div>
 

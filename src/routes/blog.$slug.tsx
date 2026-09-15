@@ -268,7 +268,7 @@ function BlogDetailPage() {
   const pageDescription = blog.seo?.metaDescription || blog.excerpt || "";
   const canonicalUrl = blog.seo?.canonicalUrl || currentUrl || "https://venus-hiring.vercel.app/blog";
 
-  // Helper to ensure raw text gets formatted into clean HTML paragraphs if HTML tags are missing
+  // Helper to ensure raw text gets formatted into clean HTML paragraphs & URLs become active clickable links
   const formattedContentHtml = useMemo(() => {
     let raw = blog.content || "";
     if (!raw.trim() && blog.contentBlocks && blog.contentBlocks.length > 0) {
@@ -286,12 +286,27 @@ function BlogDetailPage() {
 
     const trimmed = raw.trim();
     if (!trimmed) return "<p class='text-muted-foreground italic'>No content available for this article.</p>";
+
+    const urlRegex = /(?<!href=["'])(https?:\/\/[^\s<]+)/g;
+
     if (/<[a-z][\s\S]*>/i.test(trimmed)) {
-      return trimmed;
+      // Ensure all <a> tags are active, bold, underlined, and open in target="_blank"
+      return trimmed.replace(/<a\s+(?:[^>]*?\s+)?href="([^"]*)"([^>]*)>/gi, (match, href, rest) => {
+        let cleanRest = rest.replace(/target="[^"]*"/gi, "").replace(/rel="[^"]*"/gi, "");
+        return `<a href="${href}" target="_blank" rel="noopener noreferrer" class="text-brand font-bold underline hover:underline cursor-pointer"${cleanRest}>`;
+      });
     }
+
+    // Convert plain text line breaks and auto-link URLs
     return trimmed
       .split(/\n{2,}/)
-      .map((p) => `<p>${p.replace(/\n/g, "<br/>")}</p>`)
+      .map((p) => {
+        const linkedPara = p.replace(
+          urlRegex,
+          '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-brand font-bold underline hover:underline cursor-pointer">$1</a>'
+        );
+        return `<p>${linkedPara.replace(/\n/g, "<br/>")}</p>`;
+      })
       .join("\n");
   }, [blog]);
 
@@ -618,7 +633,7 @@ function BlogDetailPage() {
                 {/* Render Complete Article HTML Body */}
                 <div
                   ref={articleContentRef}
-                  className="prose prose-slate dark:prose-invert max-w-none break-words overflow-hidden prose-headings:font-sans prose-headings:font-semibold prose-h2:text-xl sm:prose-h2:text-2xl prose-h2:tracking-tight prose-h2:text-foreground prose-h2:mt-7 prose-h2:mb-3 prose-h3:text-lg sm:prose-h3:text-xl prose-h3:font-semibold prose-h3:text-foreground prose-h3:mt-5 prose-h3:mb-2 prose-h4:text-base sm:prose-h4:text-lg prose-h4:font-semibold prose-h4:text-foreground prose-h4:mt-4 prose-h4:mb-2 prose-p:text-[15px] sm:prose-p:text-[16px] prose-p:leading-relaxed prose-p:text-foreground/85 prose-li:text-[15px] prose-li:leading-relaxed prose-blockquote:border-l-4 prose-blockquote:border-brand prose-blockquote:pl-5 prose-blockquote:italic prose-blockquote:my-5"
+                  className="prose prose-slate dark:prose-invert max-w-none break-words overflow-hidden prose-headings:font-sans prose-headings:font-semibold prose-h2:text-xl sm:prose-h2:text-2xl prose-h2:tracking-tight prose-h2:text-foreground prose-h2:mt-7 prose-h2:mb-3 prose-h3:text-lg sm:prose-h3:text-xl prose-h3:font-semibold prose-h3:text-foreground prose-h3:mt-5 prose-h3:mb-2 prose-h4:text-base sm:prose-h4:text-lg prose-h4:font-semibold prose-h4:text-foreground prose-h4:mt-4 prose-h4:mb-2 prose-p:text-[15px] sm:prose-p:text-[16px] prose-p:leading-relaxed prose-p:text-foreground/85 prose-a:text-brand prose-a:font-bold prose-a:underline hover:prose-a:text-brand/80 prose-a:underline-offset-2 prose-a:transition-colors prose-li:text-[15px] prose-li:leading-relaxed prose-blockquote:border-l-4 prose-blockquote:border-brand prose-blockquote:pl-5 prose-blockquote:italic prose-blockquote:my-5"
                   dangerouslySetInnerHTML={{ __html: formattedContentHtml }}
                 />
 
