@@ -187,7 +187,7 @@ export function Hero() {
               className="blur-reveal mt-7 max-w-xl text-lg leading-relaxed text-ink-foreground/80 sm:text-xl"
               style={{ animationDelay: "300ms" }}
             >
-              We unite technology, talent and opportunity — partnering with Canadian employers to hire
+              We unite technology, talent and opportunity — partnering with Global employers to hire
               faster, and with professionals to land the role that fits.
             </p>
 

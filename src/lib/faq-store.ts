@@ -13,14 +13,14 @@ export const INITIAL_FAQS: FaqItem[] = [
   {
     id: "faq-emp-1",
     q: "How does Venus Hiring help employers find qualified candidates?",
-    a: "Venus Hiring combines deep market mapping, technical pre-screening, background checks, and active headhunting across Canada and the US. We present a calibrated shortlist of pre-vetted candidates within 5 business days, managing recruitment from initial outreach through offer negotiation.",
+    a: "Venus Hiring combines deep market mapping, technical pre-screening, background checks, and active headhunting globally. We present a calibrated shortlist of pre-vetted candidates within 5 business days, managing recruitment from initial outreach through offer negotiation.",
     category: "Employers",
     orderIndex: 1,
   },
   {
     id: "faq-emp-2",
     q: "What industries does Venus specialize in?",
-    a: "We specialize in Technology & Software Engineering, Finance & Accounting, Automotive & EV Manufacturing, Aerospace, Advanced Manufacturing, Skilled Trades, and Executive Leadership placement across Canada and the US.",
+    a: "We specialize in Technology & Software Engineering, Finance & Accounting, Automotive & EV Manufacturing, Aerospace, Advanced Manufacturing, Skilled Trades, and Executive Leadership placement globally.",
     category: "Employers",
     orderIndex: 2,
   },
@@ -77,8 +77,8 @@ export const INITIAL_FAQS: FaqItem[] = [
   },
   {
     id: "faq-cand-4",
-    q: "Can Venus help candidates relocating to Canada?",
-    a: "Yes. We assist candidates and employers with work-permit transitions, LMIA applications, Express Entry pathways, and relocation onboarding across major Canadian tech and industrial hubs.",
+    q: "Can Venus help candidates relocating globally?",
+    a: "Yes. We assist candidates and employers with work-permit transitions, LMIA applications, Express Entry pathways, and relocation onboarding across major global tech and industrial hubs.",
     category: "Candidates",
     orderIndex: 10,
   },
@@ -152,7 +152,7 @@ export const INITIAL_FAQS: FaqItem[] = [
   {
     id: "faq-serv-4",
     q: "Can you support international talent sourcing?",
-    a: "Yes. We leverage global talent pipelines to source specialized international talent and assist US companies expanding into Canada with Employer of Record (EOR) structures.",
+    a: "Yes. We leverage global talent pipelines to source specialized international talent and assist companies expanding globally with Employer of Record (EOR) structures.",
     category: "Services",
     orderIndex: 20,
   },

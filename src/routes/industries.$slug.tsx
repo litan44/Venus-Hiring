@@ -154,7 +154,7 @@ const DEFAULT_WHO_WE_HELP = [
   },
   {
     title: "High-Velocity Headcount Expansion",
-    desc: "Companies rapidly expanding production, engineering, or operations across Canada and the US.",
+    desc: "Companies rapidly expanding production, engineering, or operations globally.",
     tag: "SCALEUP RECRUITMENT",
   },
   {
@@ -164,7 +164,7 @@ const DEFAULT_WHO_WE_HELP = [
   },
   {
     title: "Cross-Border Talent Acquisition",
-    desc: "US companies hiring Canadian specialized talent or Canadian firms building US market presence.",
+    desc: "Global companies hiring specialized talent or firms expanding global market presence.",
     tag: "CROSS-BORDER SCALING",
   },
 ];
@@ -968,7 +968,7 @@ function IndustryDetailPage() {
                 {ind.name} Hiring Trends & Metrics
               </h2>
               <p className="text-base text-slate-600 font-medium">
-                Data-backed insights from recent talent placements across Canada and the US.
+                Data-backed insights from recent talent placements globally.
               </p>
             </div>
 

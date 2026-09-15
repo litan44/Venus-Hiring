@@ -57,7 +57,7 @@ export const INDUSTRIES_DATA: Record<string, IndustryDetail> = {
     eyebrow: "TECH RECRUITMENT PRACTICE",
     heroHeadline: "Top 1% Engineering & AI Talent. Scaled for Impact.",
     heroValueProp:
-      "Specialized technical recruitment connecting Canadian and US companies with vetted Software Architects, AI/ML Engineers, DevOps leads, and Product Executives.",
+      "Specialized technical recruitment connecting global companies with vetted Software Architects, AI/ML Engineers, DevOps leads, and Product Executives.",
     heroImage:
       "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1600&h=900&fit=crop&auto=format",
     stats: [
@@ -74,7 +74,7 @@ export const INDUSTRIES_DATA: Record<string, IndustryDetail> = {
       keyPoints: [
         "Rigorous technical vetting covering system design, code quality, & scalability",
         "Discreet headhunting targeting passive engineers in Big Tech & high-growth scaleups",
-        "Cross-border US-Canada technical hiring with turnkey EOR and payroll compliance",
+        "Cross-border global technical hiring with turnkey EOR and payroll compliance",
         "Full 90-day replacement guarantee on all permanent software placements",
       ],
     },
@@ -124,7 +124,7 @@ export const INDUSTRIES_DATA: Record<string, IndustryDetail> = {
     faqCategory: "Employers",
     metaTitle: "Technology & Software Engineering Recruitment | Venus Hiring",
     metaDescription:
-      "Specialized technology recruitment sourcing top 1% Software Engineers, AI/ML Specialists, Cloud Architects, and CTOs in Canada & US.",
+      "Specialized technology recruitment sourcing top 1% Software Engineers, AI/ML Specialists, Cloud Architects, and CTOs globally.",
   },
 
   "automotive-ev": {
@@ -201,7 +201,7 @@ export const INDUSTRIES_DATA: Record<string, IndustryDetail> = {
     faqCategory: "Employers",
     metaTitle: "Automotive & EV Mobility Recruitment | Venus Hiring",
     metaDescription:
-      "Automotive and EV recruitment placing Battery Engineers, Plant Operations Directors, ADAS Engineers, and Quality Managers in Canada & US.",
+      "Automotive and EV recruitment placing Battery Engineers, Plant Operations Directors, ADAS Engineers, and Quality Managers globally.",
   },
 
   aerospace: {
@@ -368,7 +368,7 @@ export const INDUSTRIES_DATA: Record<string, IndustryDetail> = {
     stats: [
       { label: "Compliance", value: "Health Canada & FDA" },
       { label: "Talent Scope", value: "Clinical & Device R&D" },
-      { label: "Placement Reach", value: "Canada & US" },
+      { label: "Placement Reach", value: "Global" },
     ],
     overview: {
       heading: "Connecting Lifesaving Organizations with Specialized Talent",
@@ -445,7 +445,7 @@ export const INDUSTRIES_DATA: Record<string, IndustryDetail> = {
     stats: [
       { label: "Financial Placement", value: "CPAs & Controllers" },
       { label: "Executive Level", value: "CFOs & VPs of Finance" },
-      { label: "Market Reach", value: "Canada & US" },
+      { label: "Market Reach", value: "Global" },
     ],
     overview: {
       heading: "Powering Corporate Growth with Proven Financial Leaders",
@@ -521,7 +521,7 @@ export const INDUSTRIES_DATA: Record<string, IndustryDetail> = {
     stats: [
       { label: "Scope", value: "Global Sourcing & Distribution" },
       { label: "Leadership Level", value: "VPs & Operations Leads" },
-      { label: "Coverage", value: "Canada & US Hubs" },
+      { label: "Coverage", value: "Global Hubs" },
     ],
     overview: {
       heading: "Building Agility & Continuity Across Global Supply Networks",
@@ -582,7 +582,7 @@ export const INDUSTRIES_DATA: Record<string, IndustryDetail> = {
     faqCategory: "Employers",
     metaTitle: "Supply Chain & Logistics Recruitment | Venus Hiring",
     metaDescription:
-      "Supply chain recruitment placing Procurement Directors, Distribution Center Managers, Logistics Leads, and Demand Planners in Canada & US.",
+      "Supply chain recruitment placing Procurement Directors, Distribution Center Managers, Logistics Leads, and Demand Planners globally.",
   },
 
   "professional-services": {
@@ -597,7 +597,7 @@ export const INDUSTRIES_DATA: Record<string, IndustryDetail> = {
     stats: [
       { label: "Placements", value: "Partners & VPs" },
       { label: "Retention Rate", value: "98.1% Tenure" },
-      { label: "Coverage", value: "Canada & US Corporate" },
+      { label: "Coverage", value: "Global Corporate" },
     ],
     overview: {
       heading: "Empowering Professional Services & Corporate Enterprise Scaling",
@@ -658,7 +658,7 @@ export const INDUSTRIES_DATA: Record<string, IndustryDetail> = {
     faqCategory: "Employers",
     metaTitle: "Professional & Corporate Services Recruitment | Venus Hiring",
     metaDescription:
-      "Specialized recruitment placing Management Consultants, VPs of Business Development, Corporate Counsel, and HR Executives across Canada & US.",
+      "Specialized recruitment placing Management Consultants, VPs of Business Development, Corporate Counsel, and HR Executives across Global.",
   },
 };
 

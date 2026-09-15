@@ -3,9 +3,9 @@ import { SiteNav } from "@/components/site/SiteNav";
 import { ContactRedesign } from "@/components/site/ContactRedesign";
 import { SiteFooter } from "@/components/site/SiteFooter";
 
-const TITLE = "Contact Venus Consultancy | Canadian Recruitment & Workforce Advisory";
+const TITLE = "Contact Venus Consultancy | Global Recruitment & Workforce Advisory";
 const DESCRIPTION =
-  "Get in touch with Venus Consultancy for executive search, direct-hire staffing, project pods, and HR advisory across Canada and the US. 12-hour response guaranteed.";
+  "Get in touch with Venus Consultancy for executive search, direct-hire staffing, project pods, and HR advisory globally. 12-hour response guaranteed.";
 
 const CONTACT_PAGE_SCHEMA = {
   "@context": "https://schema.org",

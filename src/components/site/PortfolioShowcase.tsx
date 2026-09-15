@@ -21,9 +21,9 @@ const SHOWCASE_ITEMS: ShowcaseItem[] = [
     category: "Screening & Quality",
   },
   {
-    id: "canadian-market-fluency",
-    title: "Canadian market fluency",
-    copy: "Provincial compliance, PR and work-permit pathways, and salary benchmarking across every major Canadian metro.",
+    id: "global-market-fluency",
+    title: "Global market fluency",
+    copy: "Provincial compliance, PR and work-permit pathways, and salary benchmarking across every major global city.",
     image:
       "https://images.unsplash.com/photo-1517935706615-2717063c2225?w=800&h=1100&fit=crop&auto=format",
     category: "Local Expertise",

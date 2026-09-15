@@ -22,7 +22,7 @@ import blogHeroArchive from "@/assets/blog-hero-archive.jpg";
 
 const TITLE = "Workforce Intelligence & Recruitment Insights | Venus Consultancy";
 const DESCRIPTION =
-  "Explore Canadian & US recruitment trends, executive search strategies, salary benchmarks, and cross-border compliance insights from Venus Consultancy.";
+  "Explore Global recruitment trends, executive search strategies, salary benchmarks, and cross-border compliance insights from Venus Consultancy.";
 
 interface BlogSearchSchema {
   page?: number;
@@ -196,10 +196,10 @@ function BlogArchivePage() {
                 <span>WORKFORCE INTELLIGENCE & INSIGHTS</span>
               </div>
               <h1 className="font-display text-xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight drop-shadow-md break-words">
-                Canadian & US Hiring Trends, Executive Search & Compliance
+                Global Hiring Trends, Executive Search & Compliance
               </h1>
               <p className="text-xs sm:text-lg text-slate-200 font-medium leading-relaxed max-w-3xl drop-shadow">
-                Stay updated with Canadian & US recruitment intelligence, compensation benchmarks, executive hiring strategies, and cross-border compliance guides from senior recruitment partners.
+                Stay updated with Global recruitment intelligence, compensation benchmarks, executive hiring strategies, and cross-border compliance guides from senior recruitment partners.
               </p>
             </div>
           </div>
@@ -560,7 +560,7 @@ function BlogArchivePage() {
                   </div>
 
                   <h4 className="font-display text-base sm:text-lg font-bold tracking-tight text-white">
-                    Scaling Your Team Across Canada or USA?
+                    Scaling Your Team Globally?
                   </h4>
                   <p className="mt-2 text-xs text-slate-300 leading-relaxed font-medium">
                     Speak directly with our senior talent partners to receive pre-screened candidate shortlists within 12 business hours.

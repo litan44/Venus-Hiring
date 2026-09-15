@@ -374,7 +374,7 @@ export const SKILL_LEVELS: SkillLevel[] = [
 
 export const LOCATIONS: LocationOption[] = [
   { id: "usa", name: "USA", currency: "USD", symbol: "$" },
-  { id: "canada", name: "Canada", currency: "CAD", symbol: "$" },
+  { id: "canada", name: "Global (Canada)", currency: "CAD", symbol: "$" },
   { id: "india", name: "India", currency: "INR", symbol: "₹" },
   { id: "remote", name: "Remote", currency: "USD", symbol: "$" },
 ];
@@ -390,7 +390,7 @@ export const CITIES: Record<string, CityOption[]> = {
     { id: "toronto", name: "Toronto", countryId: "canada" },
     { id: "vancouver", name: "Vancouver", countryId: "canada" },
     { id: "calgary", name: "Calgary", countryId: "canada" },
-    { id: "other_ca", name: "Other Canada", countryId: "canada" },
+    { id: "other_ca", name: "Other Global Cities", countryId: "canada" },
   ],
   india: [
     { id: "bangalore", name: "Bangalore", countryId: "india" },

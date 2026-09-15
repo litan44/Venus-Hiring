@@ -79,7 +79,7 @@ const SKILL_PROFICIENCY_LEVELS = [
 
 const COUNTRY_OPTIONS = [
   { label: "India (INR)", value: "India", currency: "INR", symbol: "₹" },
-  { label: "Canada (CAD)", value: "Canada", currency: "CAD", symbol: "C$" },
+  { label: "Global (CAD)", value: "Canada", currency: "CAD", symbol: "C$" },
   { label: "United States (USD)", value: "United States", currency: "USD", symbol: "$" },
   { label: "United Kingdom (GBP)", value: "United Kingdom", currency: "GBP", symbol: "£" },
   { label: "Remote / Global Hubs", value: "Remote", currency: "USD", symbol: "$" },

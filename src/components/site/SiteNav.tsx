@@ -41,7 +41,7 @@ const SERVICES_MEGA = {
     {
       id: "perm",
       name: "Permanent Placement",
-      description: "Direct hire & executive search across Canada & US",
+      description: "Direct hire & executive search across Global markets",
       href: "/services/executive-search",
       items: [
         { title: "Executive Search", desc: "C-Suite, VP and senior leadership recruitment", href: "/services/executive-search" },
@@ -98,7 +98,7 @@ const SERVICES_MEGA = {
       items: [
         { title: "Talent Acquisition Strategy", desc: "Strategic hiring programs, talent pipelines and workforce planning", href: "/services/hr-advisory" },
         { title: "HR & People Advisory", desc: "Workforce planning, organizational development and HR support", href: "/services/hr-advisory" },
-        { title: "Compliance Audits", desc: "Canadian & US employment law frameworks", href: "/services/hr-advisory" },
+        { title: "Compliance Audits", desc: "Global employment law frameworks", href: "/services/hr-advisory" },
         { title: "Compensation Benchmarking", desc: "Market rate analysis & incentive plans", href: "/services/hr-advisory" },
         { title: "Retention Programs", desc: "Structured onboarding & 90-day retention checks", href: "/services/hr-advisory" },
         { title: "Workforce Planning", desc: "Organizational design & headcount forecasting", href: "/services/hr-advisory" },
@@ -120,7 +120,7 @@ const SERVICES_MEGA = {
     },
   ],
   promo: {
-    title: "Hire Top 1% Canadian Talent across Canada & USA",
+    title: "Hire Top 1% Global Talent",
     copy: "Calibrated shortlists delivered in under 14 days with our 98.4% retention guarantee.",
     ctaText: "Book a Call →",
     href: "#contact",
@@ -249,7 +249,7 @@ const INDUSTRIES_MEGA = {
     },
   ],
   promo: {
-    title: "Specialized Industry Headhunters across Canada & USA",
+    title: "Specialized Industry Headhunters across Global marketsA",
     copy: "Deep sector expertise and pre-screened candidate pipelines ready to deploy.",
     ctaText: "Explore Industries →",
     href: "/industries",

@@ -6,7 +6,7 @@ import { JobSearch } from "@/components/careers/JobSearch";
 
 const TITLE = "Careers at Venus Hiring | Executive Recruitment & Workforce Opportunities";
 const DESCRIPTION =
-  "Join Venus Hiring and build your career with leading executive search, workforce advisory, and technology talent teams across Canada, USA & international markets.";
+  "Join Venus Hiring and build your career with leading executive search, workforce advisory, and technology talent teams across Global markets.";
 
 export const Route = createFileRoute("/careers/")({
   head: () => ({

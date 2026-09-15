@@ -80,7 +80,7 @@ const ORGANIZATION_SCHEMA = {
       url: "https://www.venushiring.ca",
       logo: "https://www.venushiring.ca/favicon.ico",
       description:
-        "Enterprise recruitment, staffing, executive search, and HR advisory across Canada, USA, and India.",
+        "Enterprise recruitment, staffing, executive search, and HR advisory globally.",
       contactPoint: [
         {
           "@type": "ContactPoint",
@@ -120,34 +120,34 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Venus Consultancy | Recruitment & Staffing Across Canada" },
+      { title: "Venus Consultancy | Recruitment & Staffing Across Global" },
       {
         name: "description",
         content:
-          "Venus Consultancy unites technology, talent and opportunity — permanent, contract and executive recruitment plus HR advisory for Canadian employers and professionals.",
+          "Venus Consultancy unites technology, talent and opportunity — permanent, contract and executive recruitment plus HR advisory for Global employers and professionals.",
       },
       { name: "author", content: "Venus Consultancy" },
       { name: "robots", content: "index, follow" },
       { property: "og:site_name", content: "Venus Consultancy" },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://www.venushiring.ca/" },
-      { property: "og:title", content: "Venus Consultancy | Recruitment & Staffing Across Canada" },
+      { property: "og:title", content: "Venus Consultancy | Recruitment & Staffing Across Global" },
       {
         property: "og:description",
         content:
-          "Venus Consultancy unites technology, talent and opportunity — permanent, contract and executive recruitment plus HR advisory for Canadian employers and professionals.",
+          "Venus Consultancy unites technology, talent and opportunity — permanent, contract and executive recruitment plus HR advisory for Global employers and professionals.",
       },
       { property: "og:locale", content: "en_CA" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@venushiring" },
       {
         name: "twitter:title",
-        content: "Venus Consultancy | Recruitment & Staffing Across Canada",
+        content: "Venus Consultancy | Recruitment & Staffing Across Global",
       },
       {
         name: "twitter:description",
         content:
-          "Venus Consultancy unites technology, talent and opportunity — permanent, contract and executive recruitment plus HR advisory for Canadian employers and professionals.",
+          "Venus Consultancy unites technology, talent and opportunity — permanent, contract and executive recruitment plus HR advisory for Global employers and professionals.",
       },
     ],
     links: [

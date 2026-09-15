@@ -74,7 +74,7 @@ function SitemapPage() {
     {
       title: "Home — Venus Consultancy",
       url: "/",
-      description: "Main landing page showcasing executive search, recruitment services, and Canadian employer solutions.",
+      description: "Main landing page showcasing executive search, recruitment services, and Global employer solutions.",
       badge: "Primary Hub",
       category: "core",
       priority: "1.0",
@@ -167,7 +167,7 @@ function SitemapPage() {
     {
       title: "Salary Benchmark Calculator",
       url: "/salary-calculator",
-      description: "Interactive compensation modeling tool for Canadian & US tech and corporate salaries.",
+      description: "Interactive compensation modeling tool for Global tech and corporate salaries.",
       badge: "Interactive Tool",
       category: "tools",
       priority: "0.8",
@@ -176,7 +176,7 @@ function SitemapPage() {
     {
       title: "Market Rate Salary Check",
       url: "/salary-check",
-      description: "Real-time salary comparison tool across Canadian provinces and metropolitan areas.",
+      description: "Real-time salary comparison tool across global cities and regions.",
       badge: "Interactive Tool",
       category: "tools",
       priority: "0.8",

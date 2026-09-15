@@ -220,7 +220,7 @@ export const Route = createFileRoute("/api/salary/chat")({
             suggestedChips = ["0–1 years", "1–2 years", "2–4 years", "4–7 years", "7–10 years", "10+ years"];
           } else if (!updatedProfile.location.city && !updatedProfile.location.country) {
             nextMessage = "Where are you currently based? (City, State, and Country)";
-            suggestedChips = ["Bhubaneswar, India", "Bangalore, India", "Toronto, Canada", "San Francisco, USA"];
+            suggestedChips = ["Bhubaneswar, India", "Bangalore, India", "Toronto, ON", "San Francisco, USA"];
           } else if (!updatedProfile.currentCompensation.normalizedAnnual && !updatedProfile.currentCompensation.raw) {
             nextMessage = "What is your current annual compensation or CTC?";
             suggestedChips = ["₹4.2 LPA", "₹8.5 LPA", "CAD $65,000", "$95,000 USD"];

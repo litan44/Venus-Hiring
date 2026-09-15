@@ -32,7 +32,7 @@ const KNOWLEDGE_CHUNKS: KnowledgeChunk[] = [
     title: "About Venus Consultancy (Venus Hiring)",
     content: `${knowledgeData.company.name} (${knowledgeData.company.alternateName}) - ${knowledgeData.company.tagline}. ${knowledgeData.company.description} Dual headquarters: Toronto, ON, Canada (${knowledgeData.company.headquarters.toronto}) and Bangalore, India (${knowledgeData.company.headquarters.bangalore}). Key track record: ${knowledgeData.company.metrics.retentionRate}, ${knowledgeData.company.metrics.shortlistTurnaround}, ${knowledgeData.company.metrics.contractTurnaround}, ${knowledgeData.company.metrics.guarantee}, ${knowledgeData.company.metrics.screening}.`,
     route: "/",
-    keywords: ["venus consultancy", "about venus", "venus hiring", "who is venus", "recruitment agency", "toronto recruiting", "headquarters", "retention rate", "guarantee", "canada recruiting"]
+    keywords: ["venus consultancy", "about venus", "venus hiring", "who is venus", "recruitment agency", "toronto recruiting", "headquarters", "retention rate", "guarantee", "global recruiting"]
   },
 
   // Services chunks

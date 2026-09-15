@@ -60,7 +60,7 @@ export function BlogCarousel({ showSearchFilter = false }: BlogCarouselProps) {
               Recruitment & Compliance Insights
             </h2>
             <p className="text-base text-muted-foreground sm:text-lg">
-              Stay updated with Canadian & US recruitment trends, executive search strategies, salary benchmarks, and cross-border compliance.
+              Stay updated with Global recruitment trends, executive search strategies, salary benchmarks, and cross-border compliance.
             </p>
           </div>
 

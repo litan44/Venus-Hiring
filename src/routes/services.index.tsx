@@ -15,7 +15,7 @@ import servicesHero from "@/assets/services-hero.jpg";
 
 const TITLE = "Our Recruitment & Workforce Services | Venus Hiring";
 const DESCRIPTION =
-  "Comprehensive Canadian and US recruitment services, executive search, contract staffing, startup hiring, talent consulting, fractional HR, and SOW project pods.";
+  "Comprehensive Global recruitment services, executive search, contract staffing, startup hiring, talent consulting, fractional HR, and SOW project pods.";
 
 export const Route = createFileRoute("/services/")({
   head: () => ({

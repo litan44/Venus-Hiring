@@ -3,7 +3,7 @@
     "name": "Venus Consultancy",
     "alternateName": "Venus Hiring",
     "tagline": "Uniting Technology, Talent & Opportunity",
-    "description": "Venus Consultancy is a premier recruitment agency and executive search firm specializing in Canadian, US, and North American talent acquisition, direct placement, contract staffing, and workforce consulting.",
+    "description": "Venus Consultancy is a premier recruitment agency and executive search firm specializing in global talent acquisition, direct placement, contract staffing, and workforce consulting.",
     "headquarters": {
       "toronto": "Corporate Office: #205 - 1085 Bellamy Road North, Toronto, ON M1H 3C7, Canada. Phone: +1-647-616-2677",
       "usa": "US Customer Service: Phone: +1-248-275-1077",
@@ -23,7 +23,7 @@
       "id": "executive-search",
       "title": "Executive Search & Permanent Direct Placement",
       "route": "/services/executive-search",
-      "summary": "Precision direct-hire placement and discreet headhunting targeting C-Suite executives, VPs, and specialized technical leaders across Canada and North America.",
+      "summary": "Precision direct-hire placement and discreet headhunting targeting C-Suite executives, VPs, and specialized technical leaders globally.",
       "targetRoles": [
         "Chief Executive Officer (CEO)",
         "Chief Technology Officer (CTO)",
@@ -57,7 +57,7 @@
         "Rapid 48-hour onboarding turnaround",
         "Transparent hourly billing rates",
         "Zero long-term lock-in commitments",
-        "Full Canadian/US payroll and tax compliance"
+        "Full global payroll and tax compliance"
       ],
       "bestFor": "Project acceleration, temporary skill gap coverage, and flexible scaling."
     },
@@ -102,7 +102,7 @@
       "id": "fractional-hr",
       "title": "Fractional HR & HR Advisory Solutions",
       "route": "/services/fractional-hr",
-      "summary": "On-demand Chief Human Resources Officer (CHRO) leadership, Canadian work permit/LMIA compliance, performance management, and HR policy setup.",
+      "summary": "On-demand Chief Human Resources Officer (CHRO) leadership, global work permit/LMIA compliance, performance management, and HR policy setup.",
       "targetRoles": [
         "Fractional CHRO",
         "HR Compliance Specialists",
@@ -110,7 +110,7 @@
       ],
       "keyHighlights": [
         "Fractional CHRO executive guidance",
-        "Canadian LMIA & Express Entry work-permit guidance",
+        "Global LMIA & Express Entry work-permit guidance",
         "HR policy setup and labor law compliance",
         "Performance appraisal frameworks"
       ],
@@ -175,7 +175,7 @@
       "id": "trades",
       "title": "Skilled Trades & Field Technical Services Practice",
       "route": "/industries/trades",
-      "summary": "Placement of licensed industrial electricians, millwrights, HVAC field technicians, and trade supervisors across Canada.",
+      "summary": "Placement of licensed industrial electricians, millwrights, HVAC field technicians, and trade supervisors globally.",
       "roles": ["Licensed Industrial Electrician (309A/442A)", "Red Seal Millwright", "HVAC Technician", "Field Service Engineer", "Trades Supervisor"]
     }
   ],
@@ -201,7 +201,7 @@
       "id": "salary-calculator",
       "title": "Salary Calculator (Take-Home Pay & Cost of Living)",
       "route": "/salary-calculator",
-      "summary": "Take-home pay, tax deduction, and cost-of-living comparison calculator for Canadian and North American locations."
+      "summary": "Take-home pay, tax deduction, and cost-of-living comparison calculator for global locations."
     },
     {
       "id": "resume-builder",
@@ -233,8 +233,8 @@
       "answer": "100% of technical candidates undergo code-verified technical assessments, structural behavioral interviews, and thorough background/reference checks before presentation."
     },
     {
-      "question": "Does Venus assist with Canadian work permits and LMIA?",
-      "answer": "Yes. Through our Fractional HR & Advisory practice, Venus provides guidance on Canadian LMIA applications, Express Entry transitions, and work permit compliance."
+      "question": "Does Venus assist with global work permits and LMIA?",
+      "answer": "Yes. Through our Fractional HR & Advisory practice, Venus provides guidance on LMIA applications, Express Entry transitions, and global work permit compliance."
     },
     {
       "question": "Is there any fee for job seekers or candidates?",

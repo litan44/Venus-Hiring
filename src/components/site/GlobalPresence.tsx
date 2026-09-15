@@ -13,7 +13,7 @@ export interface OfficeLocation {
 export const GLOBAL_OFFICES: OfficeLocation[] = [
   {
     city: "Toronto",
-    country: "Canada (Headquarters)",
+    country: "Global (Headquarters)",
     address: "#205 - 1085 Bellamy Road North, Toronto, ON M1H 3C7",
     phone: "+1 (647) 616-2677",
     phoneRaw: "+16476162677",
@@ -50,7 +50,7 @@ export function GlobalPresence() {
             Our Global Recruitment Network
           </h2>
           <p className="text-sm text-muted-foreground">
-            Delivering executive search, technology recruitment, and cross-border staffing across Canada, USA, and India.
+            Delivering executive search, technology recruitment, and cross-border staffing globally.
           </p>
         </div>
 

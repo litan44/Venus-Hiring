@@ -515,7 +515,7 @@ function ContactMainSection() {
                         </label>
                       </div>
 
-                      {/* Popular Quick Country Pills (Canada, USA, India) */}
+                      {/* Popular Quick Country Pills (Global, USA, India) */}
                       <div className="flex flex-wrap items-center gap-1 mb-2">
                         {POPULAR_COUNTRIES.map((c) => {
                           const isActive = phoneCountry === c.id;
@@ -683,7 +683,7 @@ function EmployerVsCandidatePath({ onOpenResumeModal }: { onOpenResumeModal?: ()
               Need Qualified Talent For Your Team?
             </h3>
             <p className="mt-3 text-sm sm:text-base leading-relaxed text-slate-600 font-medium">
-              Access pre-vetted Canadian and US talent across Software Engineering, Executive Leadership, Finance, and Industrial Operations with guaranteed placement SLAs.
+              Access pre-vetted global talent across Software Engineering, Executive Leadership, Finance, and Industrial Operations with guaranteed placement SLAs.
             </p>
 
             <div className="mt-8">
@@ -716,7 +716,7 @@ function EmployerVsCandidatePath({ onOpenResumeModal }: { onOpenResumeModal?: ()
               Ready for Your Next Career Move?
             </h3>
             <p className="mt-3 text-sm sm:text-base leading-relaxed text-slate-600 font-medium">
-              Connect with top Canadian employers hiring for direct-hire, executive, and high-impact contract roles. Submit your resume to our confidential career database.
+              Connect with top global employers hiring for direct-hire, executive, and high-impact contract roles. Submit your resume to our confidential career database.
             </p>
 
             <div className="mt-8">
@@ -866,7 +866,7 @@ function ResumeModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
                 Submit Your Resume / CV
               </h3>
               <p className="mt-1 text-xs text-slate-500">
-                Join Canada & US executive talent pipeline. 100% confidential.
+                Join our global executive talent pipeline. 100% confidential.
               </p>
             </div>
 

@@ -175,7 +175,7 @@ export function CareerAdmin() {
   // Settings Form State
   const [careerSettings, setCareerSettings] = useState({
     headline: "Build Your Career at Venus Consultancy",
-    description: "Join Canada's leading technology & executive talent firm.",
+    description: "Join the world.s leading global technology & executive talent firm.",
     benefitsText: "Competitive compensation, health insurance, hybrid work mode, learning budget.",
     cultureText: "Inclusive, merit-based, and fast-paced environment.",
     equalOpportunityText: "Venus Consultancy is an Equal Opportunity Employer.",

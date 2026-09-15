@@ -53,26 +53,26 @@ export const INITIAL_CATEGORIES = [
   "Executive Search",
   "Workforce Trends",
   "HR & Compliance",
-  "Canada & US Market",
+  "Global Market",
 ];
 
 export const INITIAL_BLOGS: BlogPost[] = [
   {
     id: "blog-1",
-    title: "Navigating US-Canada Remote Workforce Compliance & EOR Solutions",
-    slug: "navigating-us-canada-remote-workforce-compliance",
+    title: "Navigating Global Remote Workforce Compliance & EOR Solutions",
+    slug: "navigating-global-remote-workforce-compliance",
     category: "HR & Compliance",
     tags: ["EOR", "Compliance", "Remote Work", "Cross Border", "HR Advisory"],
     excerpt:
-      "Hiring Canadian talent from the United States can open access to highly skilled professionals, but cross-border employment introduces important considerations around payroll, employment standards, benefits, worker classification, and compliance. This guide explains how US companies can build Canadian teams while choosing the right employment structure for long-term growth.",
+      "Hiring global talent can open access to highly skilled professionals, but cross-border employment introduces important considerations around payroll, employment standards, benefits, worker classification, and compliance. This guide explains how companies can build global teams while choosing the right employment structure for long-term growth.",
     content: `
-      <h2>Understanding US-Canada Remote Hiring</h2>
-      <p>For US companies, Canada can be an attractive talent market for expanding engineering, technology, finance, automotive, and professional teams. Shared business hours across many regions, strong professional networks, and established economic ties make cross-border collaboration practical.</p>
-      <p>But hiring someone who lives and works in Canada is not simply a matter of issuing the same employment agreement used in the United States. The employment arrangement needs to account for Canadian payroll, applicable provincial employment standards, benefits, tax deductions, and the employee's actual work location.</p>
-      <p>The Canada Revenue Agency notes that an employee's province or territory of employment affects payroll deductions, making location an important consideration when setting up Canadian employees.</p>
+      <h2>Understanding Global Remote Hiring</h2>
+      <p>For US companies, Global markets can be an attractive talent source for expanding engineering, technology, finance, automotive, and professional teams. Shared business hours across many regions, strong professional networks, and established economic ties make cross-border collaboration practical.</p>
+      <p>But hiring someone who lives and works in a different country is not simply a matter of issuing the same employment agreement used in the United States. The employment arrangement needs to account for local payroll, applicable local employment standards, benefits, tax deductions, and the employee's actual work location.</p>
+      <p>Local tax authorities note that an employee.s location affects payroll deductions, making location an important consideration when setting up remote employees.</p>
 
       <h2>Why Cross-Border Hiring Is Different</h2>
-      <p>A US company hiring a Canadian employee needs to think beyond recruitment.</p>
+      <p>A company hiring a remote global employee needs to think beyond recruitment.</p>
       <p>The key questions include:</p>
       <ul>
         <li>Where will the employee physically perform their work?</li>
@@ -80,7 +80,7 @@ export const INITIAL_BLOGS: BlogPost[] = [
         <li>Which provincial employment standards apply?</li>
         <li>How will payroll deductions be handled?</li>
         <li>What benefits and statutory requirements apply?</li>
-        <li>Does the company need a Canadian entity?</li>
+        <li>Does the company need a local entity?</li>
         <li>How will employment documentation be managed?</li>
       </ul>
       <p>Getting these questions right before the first hire can prevent expensive administrative problems later.</p>
@@ -96,23 +96,23 @@ export const INITIAL_BLOGS: BlogPost[] = [
         <li>Local employment compliance</li>
         <li>Employee onboarding</li>
       </ul>
-      <p>For companies testing the Canadian market or building an initial team, an EOR can provide a practical alternative to immediately establishing a local entity.</p>
+      <p>For companies testing the global market or building an initial team, an EOR can provide a practical alternative to immediately establishing a local entity.</p>
 
       <h2>When Should a US Company Consider an EOR?</h2>
       <p>An EOR can be particularly useful when:</p>
-      <p><strong>You are hiring your first Canadian employee:</strong> Establishing an entire local employment infrastructure for one or two hires may not be practical.</p>
+      <p><strong>You are hiring your first international employee:</strong> Establishing an entire local employment infrastructure for one or two hires may not be practical.</p>
       <p><strong>You want to hire quickly:</strong> An existing local employment structure can simplify administrative setup.</p>
-      <p><strong>You are testing the Canadian market:</strong> An EOR can allow an organization to build an initial team while evaluating its longer-term Canadian presence.</p>
-      <p><strong>You don't have Canadian HR expertise:</strong> Local employment rules and payroll processes can be unfamiliar to US-based teams.</p>
+      <p><strong>You are testing the global market:</strong> An EOR can allow an organization to build an initial team while evaluating its longer-term local presence.</p>
+      <p><strong>You don't have local HR expertise:</strong> Local employment rules and payroll processes can be unfamiliar to US-based teams.</p>
 
-      <h2>Canadian Payroll and Tax Considerations</h2>
-      <p>Canadian payroll is different from simply paying a Canadian employee through a US payroll system.</p>
+      <h2>Global Payroll and Tax Considerations</h2>
+      <p>Global payroll is different from simply paying an international employee through a domestic payroll system.</p>
       <p>Employers need to consider applicable deductions and payroll obligations, including federal requirements and the employee's province of employment.</p>
       <p>The CRA specifically requires employers to determine the appropriate province of employment when calculating payroll deductions.</p>
       <p>This is one reason companies should establish the employment structure before the employee's first day rather than trying to correct payroll processes afterward.</p>
 
       <h2>Provincial Employment Standards Matter</h2>
-      <p>Canada doesn't operate as one completely uniform employment jurisdiction.</p>
+      <p>Countries don't operate as one completely uniform employment jurisdiction.</p>
       <p>Employment standards can differ between provinces and territories.</p>
       <p>That can affect areas such as:</p>
       <ul>
@@ -139,26 +139,26 @@ export const INITIAL_BLOGS: BlogPost[] = [
       <p>A competitive benefits package also matters from a recruitment perspective. Compliance is the baseline; competitive benefits can be part of what makes a company attractive to high-quality candidates.</p>
 
       <h2>Worker Classification and Contractor Risks</h2>
-      <p>Some companies consider hiring Canadian professionals as independent contractors because it appears simpler.</p>
+      <p>Some companies consider hiring global professionals as independent contractors because it appears simpler.</p>
       <p>But classification should not be based purely on what is easiest administratively.</p>
       <p>The actual relationship between the worker and company matters.</p>
       <p>Factors such as control, independence, working arrangements, responsibilities, and the nature of the engagement can affect classification.</p>
       <p>If a relationship functions like employment, simply calling someone a contractor does not automatically eliminate employment obligations.</p>
 
-      <h2>EOR vs. Establishing a Canadian Entity</h2>
+      <h2>EOR vs. Establishing a Local Entity</h2>
       <p>The right structure depends on the company's long-term plans.</p>
       <p><strong>EOR may make sense when:</strong></p>
       <ul>
         <li>You have a small initial team</li>
-        <li>You are testing the Canadian market</li>
+        <li>You are testing the global market</li>
         <li>You need a faster hiring setup</li>
-        <li>You don't yet need a Canadian entity</li>
+        <li>You don't yet need a local entity</li>
       </ul>
-      <p><strong>A Canadian entity may make more sense when:</strong></p>
+      <p><strong>A local entity may make more sense when:</strong></p>
       <ul>
         <li>You plan significant long-term operations</li>
         <li>You are building a large local workforce</li>
-        <li>You need a permanent Canadian business presence</li>
+        <li>You need a permanent local business presence</li>
         <li>Local operations justify the additional infrastructure</li>
       </ul>
 
@@ -167,23 +167,23 @@ export const INITIAL_BLOGS: BlogPost[] = [
       <p>Instead of building every local employment process from scratch, companies can work through an established employment framework while focusing their internal resources on recruitment, onboarding, performance, and business growth.</p>
       <p>That doesn't eliminate the need for professional advice or proper compliance review, but it can significantly simplify the operational side of cross-border hiring.</p>
 
-      <h2>Common Mistakes US Companies Make When Hiring in Canada</h2>
+      <h2>Common Mistakes Companies Make When Hiring Globally</h2>
       <ol>
-        <li>Using US employment documents without reviewing Canadian requirements.</li>
-        <li>Treating all Canadian provinces as having identical employment rules.</li>
+        <li>Using domestic employment documents without reviewing local requirements.</li>
+        <li>Treating all regions as having identical employment rules.</li>
         <li>Misclassifying employees as contractors.</li>
         <li>Ignoring payroll requirements until after hiring.</li>
         <li>Assuming remote work eliminates local employment obligations.</li>
-        <li>Offering benefits without considering the expectations of Canadian candidates.</li>
+        <li>Offering benefits without considering the expectations of global candidates.</li>
         <li>Hiring before deciding on the appropriate employment structure.</li>
       </ol>
       <p>Planning the employment model before making an offer is usually much easier than correcting a poorly structured arrangement later.</p>
 
       <h2>How Venus Hiring Supports Cross-Border Recruitment</h2>
       <p>Finding the right candidate is only part of building a successful cross-border workforce.</p>
-      <p>Venus Hiring helps organizations identify qualified Canadian professionals across technical, executive, automotive, financial, and specialized business functions.</p>
+      <p>Venus Hiring helps organizations identify qualified global professionals across technical, executive, automotive, financial, and specialized business functions.</p>
       <p>Our recruitment approach focuses on understanding the role, company requirements, market conditions, and candidate fit before presenting a shortlist.</p>
-      <p>For organizations expanding from the US into Canada, that means recruitment can be approached as part of a broader workforce strategy rather than as a simple resume-matching exercise.</p>
+      <p>For organizations expanding globally, that means recruitment can be approached as part of a broader workforce strategy rather than as a simple resume-matching exercise.</p>
     `,
     faqs: [
       {
@@ -193,22 +193,22 @@ export const INITIAL_BLOGS: BlogPost[] = [
       },
       {
         id: "faq-b1-2",
-        q: "Can a US company hire employees who live and work in Canada?",
-        a: "Yes. US companies can hire Canadian-based employees, but the employment arrangement needs to account for applicable Canadian payroll and employment requirements.",
+        q: "Can a company hire employees who live and work internationally?",
+        a: "Yes. Companies can hire internationally-based employees, but the employment arrangement needs to account for applicable local payroll and employment requirements.",
       },
       {
         id: "faq-b1-3",
-        q: "Why do US companies hire Canadian talent?",
-        a: "Canada provides access to established technology, engineering, finance, automotive, and professional talent markets, making it an attractive option for organizations expanding their workforce.",
+        q: "Why do companies hire global talent?",
+        a: "Global markets provide access to established technology, engineering, finance, automotive, and professional talent markets, making it an attractive option for organizations expanding their workforce.",
       },
       {
         id: "faq-b1-4",
-        q: "Does Canadian employment law vary by province?",
+        q: "Does employment law vary by region?",
         a: "Yes. Employment standards can differ by province and territory, so the employee's actual work location matters.",
       },
       {
         id: "faq-b1-5",
-        q: "Can an EOR manage Canadian payroll?",
+        q: "Can an EOR manage global payroll?",
         a: "Depending on the provider and agreement, an EOR can support local payroll administration and related employment processes.",
       },
       {
@@ -218,22 +218,22 @@ export const INITIAL_BLOGS: BlogPost[] = [
       },
       {
         id: "faq-b1-7",
-        q: "When should a company establish a Canadian entity instead?",
-        a: "A Canadian entity may become more appropriate when an organization plans substantial long-term operations and a larger local workforce.",
+        q: "When should a company establish a local entity instead?",
+        a: "A local entity may become more appropriate when an organization plans substantial long-term operations and a larger local workforce.",
       },
       {
         id: "faq-b1-8",
-        q: "Can a company hire Canadian contractors instead of employees?",
+        q: "Can a company hire global contractors instead of employees?",
         a: "It may be possible depending on the circumstances, but worker classification should reflect the actual relationship rather than simply the preferred label.",
       },
       {
         id: "faq-b1-9",
         q: "How does Venus Hiring help US companies?",
-        a: "Venus Hiring helps organizations identify and recruit qualified Canadian professionals for technical, executive, automotive, and specialized roles.",
+        a: "Venus Hiring helps organizations identify and recruit qualified global professionals for technical, executive, automotive, and specialized roles.",
       },
       {
         id: "faq-b1-10",
-        q: "How can I start hiring Canadian talent?",
+        q: "How can I start hiring global talent?",
         a: "Start by defining the role, location, employment structure, compensation expectations, and hiring timeline. A recruitment partner can then help build and qualify the candidate pipeline.",
       },
     ],
@@ -243,17 +243,17 @@ export const INITIAL_BLOGS: BlogPost[] = [
       name: "Marcus Vance",
       role: "HR & Cross-Border Advisory Lead",
       avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop",
-      bio: "Specializing in executive search, technical recruitment, and cross-border US-Canada workforce compliance strategy.",
+      bio: "Specializing in executive search, technical recruitment, and cross-border global workforce compliance strategy.",
     },
     readTime: "8 min read",
     publishDate: "July 15, 2026",
     isFeatured: true,
     seo: {
-      metaTitle: "US-Canada Remote Workforce Compliance & EOR Guide | Venus Hiring",
+      metaTitle: "Global Remote Workforce Compliance & EOR Guide | Venus Hiring",
       metaDescription:
-        "Comprehensive guide explaining how US companies can build Canadian teams with Employer of Record (EOR) solutions and compliance clarity.",
-      keywords: "Cross border hiring, EOR Canada, US Canada Remote Staffing, Canadian Payroll Compliance",
-      canonicalUrl: "https://venus-hiring.vercel.app/blog/navigating-us-canada-remote-workforce-compliance",
+        "Comprehensive guide explaining how companies can build global teams with Employer of Record (EOR) solutions and compliance clarity.",
+      keywords: "Cross border hiring, EOR Global, Remote Staffing, Global Payroll Compliance",
+      canonicalUrl: "https://venus-hiring.vercel.app/blog/navigating-global-remote-workforce-compliance",
       ogImage: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=1200&h=800&fit=crop&auto=format",
     },
   },
@@ -413,17 +413,17 @@ export const INITIAL_BLOGS: BlogPost[] = [
   },
   {
     id: "blog-3",
-    title: "2026 Canadian Tech Hiring Trends: Scaling Engineering Teams in Toronto & Vancouver",
-    slug: "2026-canadian-tech-hiring-trends",
+    title: "2026 Global Tech Hiring Trends: Scaling Engineering Teams",
+    slug: "2026-global-tech-hiring-trends",
     category: "Tech Hiring",
     tags: ["Tech Hiring", "Engineering Leadership", "Toronto", "Vancouver", "Salary Benchmarks"],
     excerpt:
-      "Canada's technology hiring market is becoming more specialized as companies build teams around AI, cloud infrastructure, cybersecurity, data, software engineering, and digital products. Explore the hiring trends shaping Toronto and Vancouver and learn how companies can compete for specialized engineering talent in 2026.",
+      "The global technology hiring market is becoming more specialized as companies build teams around AI, cloud infrastructure, cybersecurity, data, software engineering, and digital products. Explore the global hiring trends and learn how companies can compete for specialized engineering talent in 2026.",
     content: `
-      <h2>The Canadian Tech Hiring Market in 2026</h2>
+      <h2>The Global Tech Hiring Market in 2026</h2>
       <p>Technology hiring has become more selective.</p>
       <p>Rather than simply expanding engineering headcount, companies increasingly want specialized professionals who can contribute to specific technical and business priorities.</p>
-      <p>Recent Canadian tech hiring coverage points toward a more targeted hiring environment, with demand concentrated around specialized capabilities rather than broad-based hiring alone.</p>
+      <p>Recent global tech hiring coverage points toward a more targeted hiring environment, with demand concentrated around specialized capabilities rather than broad-based hiring alone.</p>
       <p>For employers, that changes the recruitment strategy. The question is no longer simply: <strong>"How many engineers do we need?"</strong> It becomes: <strong>"Which capabilities do we need to build next?"</strong></p>
 
       <h2>Why Specialized Talent Matters More Than Ever</h2>
@@ -431,7 +431,7 @@ export const INITIAL_BLOGS: BlogPost[] = [
       <p>A single generic engineering job description may not be enough to attract the right candidates. The more specialized the requirement, the more important targeted sourcing becomes.</p>
 
       <h2>Toronto's Engineering and Technology Talent Market</h2>
-      <p>Toronto remains one of Canada's major technology and business centers. Its ecosystem spans financial technology, enterprise software, AI, SaaS, professional services, cybersecurity, data, and digital products.</p>
+      <p>Toronto remains one of the major global technology and business centers. Its ecosystem spans financial technology, enterprise software, AI, SaaS, professional services, cybersecurity, data, and digital products.</p>
       <p>For employers, Toronto offers a deep talent market but also intense competition for experienced technical professionals. A strong employer proposition therefore needs to communicate more than salary.</p>
 
       <h2>Vancouver's Technology Talent Ecosystem</h2>
@@ -479,19 +479,19 @@ export const INITIAL_BLOGS: BlogPost[] = [
         <li>Failing to explain the technical challenge</li>
       </ul>
 
-      <h2>How Venus Hiring Supports Canadian Tech Recruitment</h2>
-      <p>Venus Hiring helps companies identify technical professionals across Canada's technology ecosystem. Our recruitment approach focuses on understanding technical requirements, business objectives, team structure, candidate experience, market availability, and role seniority.</p>
+      <h2>How Venus Hiring Supports Global Tech Recruitment</h2>
+      <p>Venus Hiring helps companies identify technical professionals across the global technology ecosystem. Our recruitment approach focuses on understanding technical requirements, business objectives, team structure, candidate experience, market availability, and role seniority.</p>
     `,
     faqs: [
       {
         id: "faq-b3-1",
-        q: "What are the biggest technology hiring trends in Canada in 2026?",
+        q: "What are the biggest technology hiring trends globally in 2026?",
         a: "Specialized hiring around AI, cloud, cybersecurity, data, and advanced software engineering continues to shape the market.",
       },
       {
         id: "faq-b3-2",
         q: "Is Toronto still a strong market for technology recruitment?",
-        a: "Yes. Toronto remains one of Canada's major technology hubs, with strong ecosystems across enterprise software, fintech, AI, and digital businesses.",
+        a: "Yes. Toronto remains one of the major global technology hubs, with strong ecosystems across enterprise software, fintech, AI, and digital businesses.",
       },
       {
         id: "faq-b3-3",
@@ -505,7 +505,7 @@ export const INITIAL_BLOGS: BlogPost[] = [
       },
       {
         id: "faq-b3-5",
-        q: "Are Canadian technology professionals open to remote work?",
+        q: "Are global technology professionals open to remote work?",
         a: "Remote and hybrid expectations vary by candidate and role. Companies should define their working model clearly during recruitment.",
       },
       {
@@ -531,7 +531,7 @@ export const INITIAL_BLOGS: BlogPost[] = [
       {
         id: "faq-b3-10",
         q: "Can Venus Hiring help companies recruit engineers in Toronto and Vancouver?",
-        a: "Yes. Venus Hiring can support organizations looking for technical and engineering professionals across Canadian markets.",
+        a: "Yes. Venus Hiring can support organizations looking for technical and engineering professionals across global markets.",
       },
     ],
     featuredImage:
@@ -546,25 +546,25 @@ export const INITIAL_BLOGS: BlogPost[] = [
     publishDate: "August 5, 2026",
     isFeatured: true,
     seo: {
-      metaTitle: "2026 Canadian Tech Hiring Trends: Toronto & Vancouver | Venus Hiring",
+      metaTitle: "2026 Global Tech Hiring Trends | Venus Hiring",
       metaDescription:
         "Explore 2026 technology hiring trends shaping Toronto and Vancouver engineering teams and learn how companies compete for specialized talent.",
-      keywords: "Canadian Tech Hiring, Software Recruitment Toronto, Engineering Salary Benchmarks 2026",
-      canonicalUrl: "https://venus-hiring.vercel.app/blog/2026-canadian-tech-hiring-trends",
+      keywords: "Global Tech Hiring, Software Recruitment, Engineering Salary Benchmarks 2026",
+      canonicalUrl: "https://venus-hiring.vercel.app/blog/2026-global-tech-hiring-trends",
       ogImage: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=800&fit=crop&auto=format",
     },
   },
   {
     id: "blog-4",
-    title: "2026 Salary & Compensation Benchmark Report for US-Canada Executive Roles",
+    title: "2026 Salary & Compensation Benchmark Report for Global Executive Roles",
     slug: "2026-salary-compensation-benchmark-report-executive-roles",
     category: "Workforce Trends",
-    tags: ["Workforce Trends", "Salary Benchmarks", "Compensation", "Executive Search", "Canada & US Market"],
+    tags: ["Workforce Trends", "Salary Benchmarks", "Compensation", "Executive Search", "Global Market"],
     excerpt:
       "A comprehensive analysis of executive and senior technical compensation across Toronto, Vancouver, Chicago, and Detroit. Learn how leading companies structure competitive equity, performance bonuses, and remote retention packages in 2026.",
     content: `
       <h2>2026 Executive Compensation Trends Across North America</h2>
-      <p>Executive compensation in 2026 is driven by strategic impact and transformation capabilities. Companies expanding across the US-Canada corridor face unique challenges in balancing currency differentials, tax treatments, and market expectations.</p>
+      <p>Executive compensation in 2026 is driven by strategic impact and transformation capabilities. Companies expanding globally face unique challenges in balancing currency differentials, tax treatments, and market expectations.</p>
       <h2>Key Salary & Bonus Benchmarks</h2>
       <p>VP of Engineering and CTO roles in major hubs like Toronto and Vancouver have seen steady growth, with variable compensation tied directly to product delivery milestones and team scaling metrics.</p>
     `,
@@ -579,7 +579,7 @@ export const INITIAL_BLOGS: BlogPost[] = [
     isFeatured: false,
     seo: {
       metaTitle: "2026 Executive Salary & Compensation Benchmark Report | Venus Hiring",
-      metaDescription: "Detailed executive salary benchmarks for US and Canadian tech, engineering, and operations leadership.",
+      metaDescription: "Detailed executive salary benchmarks for US and global tech, engineering, and operations leadership.",
       keywords: "Executive Salary Benchmarks, VP Engineering Salary Toronto, CTO Compensation 2026",
       canonicalUrl: "https://venus-hiring.vercel.app/blog/2026-salary-compensation-benchmark-report-executive-roles",
       ogImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=800&fit=crop&auto=format",
@@ -589,10 +589,10 @@ export const INITIAL_BLOGS: BlogPost[] = [
     id: "blog-5",
     title: "Cross-Border Talent Acquisition: Expanding US Tech Teams into Toronto & Waterloo",
     slug: "cross-border-talent-acquisition-expanding-us-tech-teams-toronto-waterloo",
-    category: "Canada & US Market",
-    tags: ["Canada & US Market", "Toronto", "Waterloo", "Cross-Border", "Tech Hiring"],
+    category: "Global Market",
+    tags: ["Global Market", "Toronto", "Waterloo", "Cross-Border", "Tech Hiring"],
     excerpt:
-      "Toronto and Waterloo are home to top-tier computer science graduates and seasoned software architects. Discover how US technology firms leverage strategic recruitment pipelines to build high-performance Canadian engineering hubs.",
+      "Top global cities are home to top-tier computer science graduates and seasoned software architects. Discover how technology firms leverage strategic recruitment pipelines to build high-performance global engineering hubs.",
     content: `
       <h2>The Toronto-Waterloo Innovation Corridor</h2>
       <p>The Toronto-Waterloo corridor is recognized globally as an incubator for world-class technical talent. US companies establishing presence in Southern Ontario benefit from top engineering talent pools without major time-zone friction.</p>
@@ -645,15 +645,15 @@ export const INITIAL_BLOGS: BlogPost[] = [
   },
   {
     id: "blog-7",
-    title: "Navigating Canadian Employment Standards (ESA) vs. US At-Will Employment",
-    slug: "navigating-canadian-employment-standards-vs-us-at-will-employment",
+    title: "Navigating Global Employment Standards vs. US At-Will Employment",
+    slug: "navigating-global-employment-standards-vs-us-at-will-employment",
     category: "HR & Compliance",
     tags: ["HR & Compliance", "ESA", "At-Will Employment", "Cross-Border", "Labor Laws"],
     excerpt:
-      "US companies expanding into Canada frequently misunderstand notice period obligations, statutory severance, and provincial employment standards acts (ESA). Critical differences every HR leader must know.",
+      "Companies expanding globally frequently misunderstand notice period obligations, statutory severance, and provincial employment standards acts (ESA). Critical differences every HR leader must know.",
     content: `
       <h2>The Fundamental Difference: At-Will vs. Statutory Rights</h2>
-      <p>Unlike US at-will employment, Canadian workers enjoy statutory protections under provincial law. Understanding notice requirements and severance guidelines is essential prior to issuing offers.</p>
+      <p>Unlike US at-will employment, International workers enjoy statutory protections under local employment law. Understanding notice requirements and severance guidelines is essential prior to issuing offers.</p>
     `,
     featuredImage: "https://images.unsplash.com/photo-1450133064473-71024230f91b?w=1200&h=800&fit=crop&auto=format",
     author: {
@@ -665,10 +665,10 @@ export const INITIAL_BLOGS: BlogPost[] = [
     publishDate: "August 14, 2026",
     isFeatured: false,
     seo: {
-      metaTitle: "Canadian ESA vs. US At-Will Employment Guide | Venus Hiring",
-      metaDescription: "Essential compliance breakdown comparing Canadian Employment Standards Acts against US at-will employment.",
-      keywords: "Canadian ESA, Employment Standards Canada, US Canada HR Compliance",
-      canonicalUrl: "https://venus-hiring.vercel.app/blog/navigating-canadian-employment-standards-vs-us-at-will-employment",
+      metaTitle: "Global ESA vs. US At-Will Employment Guide | Venus Hiring",
+      metaDescription: "Essential compliance breakdown comparing Global Employment Standards against US at-will employment.",
+      keywords: "Global ESA, Employment Standards, HR Compliance",
+      canonicalUrl: "https://venus-hiring.vercel.app/blog/navigating-global-employment-standards-vs-us-at-will-employment",
       ogImage: "https://images.unsplash.com/photo-1450133064473-71024230f91b?w=1200&h=800&fit=crop&auto=format",
     },
   },

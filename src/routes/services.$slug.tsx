@@ -53,7 +53,7 @@ export const Route = createFileRoute("/services/$slug")({
     const title = service ? service.metaTitle : "Service | Venus Hiring";
     const description = service
       ? service.metaDescription
-      : "Canadian and US recruitment, executive search, and workforce solutions.";
+      : "Global recruitment, executive search, and workforce solutions.";
     return {
       meta: [
         { title },

@@ -81,18 +81,18 @@ export const SERVICES_DATA: Record<string, ServiceDetail> = {
     eyebrow: "RECRUITMENT SOLUTIONS",
     heroHeadline: "The Right Leadership. For the Work That Matters.",
     heroValueProp:
-      "Precision direct-hire placement and executive search connecting Canadian and US enterprises with calibrated C-Suite leaders, VPs, and specialized technical experts.",
+      "Precision direct-hire placement and executive search connecting global enterprises with calibrated C-Suite leaders, VPs, and specialized technical experts.",
     heroImage:
       "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1600&h=900&fit=crop&auto=format",
     stats: [
       { label: "Retention Guarantee", value: "98.4% Retention" },
       { label: "Shortlist Velocity", value: "5 Business Days" },
-      { label: "Market Reach", value: "Canada & US Midwest" },
+      { label: "Market Reach", value: "Global" },
     ],
     introStatement:
       "Hiring isn't just about filling a vacancy. It's about finding the leader who moves your business forward.",
     introParagraphs: [
-      "Finding high-caliber permanent talent and executive leaders requires more than keyword matching. Venus Hiring combines discreet headhunting, domain-specific technical screening, and cultural alignment mapping across Canada and North America.",
+      "Finding high-caliber permanent talent and executive leaders requires more than keyword matching. Venus Hiring combines discreet headhunting, domain-specific technical screening, and cultural alignment mapping globally.",
       "We partner directly with founders, board directors, and HR executives to identify passive leaders who elevate your organization's trajectory and maintain long-term tenure.",
     ],
     introProofIndicators: [
@@ -218,8 +218,8 @@ export const SERVICES_DATA: Record<string, ServiceDetail> = {
         tag: "SPECIALIZED TALENT",
       },
       {
-        title: "Canada & US Expansion",
-        desc: "US companies scaling technical teams in Canada or Canadian firms building US market leadership.",
+        title: "Global Expansion",
+        desc: "Global companies scaling technical teams or building international market leadership.",
         tag: "CROSS-BORDER SCALING",
       },
       {
@@ -277,7 +277,7 @@ export const SERVICES_DATA: Record<string, ServiceDetail> = {
     ],
     whyVenus: {
       statement:
-        "We combine deep Canadian market fluency with active headhunting precision to deliver leaders who stay and succeed.",
+        "We combine deep global market fluency with active headhunting precision to deliver leaders who stay and succeed.",
       points: [
         {
           title: "Dedicated Named Consultant",
@@ -295,12 +295,12 @@ export const SERVICES_DATA: Record<string, ServiceDetail> = {
     },
     marketIntelligence: [
       {
-        title: "Canadian & US Compensation Data",
+        title: "Global Compensation Data",
         desc: "Access real-time salary benchmark reports for senior technology, finance, and industrial executive roles.",
       },
       {
         title: "Passive Talent Availability Maps",
-        desc: "Understand talent density and active vs. passive candidate ratios across Canadian tech corridors.",
+        desc: "Understand talent density and active vs. passive candidate ratios across global tech hubs.",
       },
       {
         title: "Counter-Offer & Retention Dynamics",
@@ -323,7 +323,7 @@ export const SERVICES_DATA: Record<string, ServiceDetail> = {
       "Connect with our senior recruitment partners to receive a calibrated candidate shortlist.",
     metaTitle: "Executive Search & Direct Placement | Venus Hiring",
     metaDescription:
-      "Precision executive search and direct-hire recruitment services in Canada & US. Sourcing C-Suite leaders, VPs, and technical specialists.",
+      "Precision executive search and direct-hire recruitment services globally. Sourcing C-Suite leaders, VPs, and technical specialists.",
   },
 
   "direct-hire-staffing": {
@@ -332,7 +332,7 @@ export const SERVICES_DATA: Record<string, ServiceDetail> = {
     eyebrow: "PERMANENT TALENT SOLUTIONS",
     heroHeadline: "Permanent Talent Sourced with Precision & Speed.",
     heroValueProp:
-      "End-to-end direct-hire staffing connecting enterprises across Canada and the US with pre-screened full-time specialists, senior managers, and technical domain experts.",
+      "End-to-end direct-hire staffing connecting enterprises globally with pre-screened full-time specialists, senior managers, and technical domain experts.",
     heroImage:
       "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1600&h=900&fit=crop&auto=format",
     stats: [
@@ -463,8 +463,8 @@ export const SERVICES_DATA: Record<string, ServiceDetail> = {
         tag: "SPECIALIZED TALENT",
       },
       {
-        title: "Canada & US Market Expansion",
-        desc: "US companies scaling technical teams in Canada or Canadian firms building US market leadership.",
+        title: "Global Market Expansion",
+        desc: "Global companies scaling technical teams or building international market leadership.",
         tag: "CROSS-BORDER SCALING",
       },
       {
@@ -495,7 +495,7 @@ export const SERVICES_DATA: Record<string, ServiceDetail> = {
         step: "02",
         shortTitle: "Headhunting",
         title: "Targeted Sourcing & Outreach",
-        desc: "Direct outreach to top passive talent currently employed at industry leaders across Canada and the US.",
+        desc: "Direct outreach to top passive talent currently employed at industry leaders globally.",
         detail: "Confidential candidate engagement",
       },
       {
@@ -540,7 +540,7 @@ export const SERVICES_DATA: Record<string, ServiceDetail> = {
     marketIntelligence: [
       {
         title: "42% Higher Acceptance Rates",
-        desc: "Direct-hire technical roles in Canada & US see 42% higher candidate conversion when paired with competitive compensation bands.",
+        desc: "Direct-hire technical roles globally see 42% higher candidate conversion when paired with competitive compensation bands.",
       },
       {
         title: "14-Day Time-to-Fill Average",
@@ -557,7 +557,7 @@ export const SERVICES_DATA: Record<string, ServiceDetail> = {
       "Speak with our direct-hire staffing leads today to receive your calibrated candidate shortlist within 5 business days.",
     metaTitle: "Direct Hire Staffing & Permanent Placement | Venus Hiring",
     metaDescription:
-      "Precision direct-hire staffing and permanent recruitment in Canada & US. Sourcing specialized engineers, finance leads, and plant managers.",
+      "Precision direct-hire staffing and permanent recruitment globally. Sourcing specialized engineers, finance leads, and plant managers.",
     relatedServicesSlugs: ["executive-search", "contract-staffing", "sow-project-pods"],
   },
 
@@ -567,7 +567,7 @@ export const SERVICES_DATA: Record<string, ServiceDetail> = {
     eyebrow: "AGILE WORKFORCE",
     heroHeadline: "Scalable Talent. Exactly When You Need It.",
     heroValueProp:
-      "Rapid-deployment contract, temporary, and interim staffing connecting Canadian and US employers with pre-screened technical, financial, and operational professionals.",
+      "Rapid-deployment contract, temporary, and interim staffing connecting global employers with pre-screened technical, financial, and operational professionals.",
     heroImage:
       "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1600&h=900&fit=crop&auto=format",
     stats: [
@@ -578,7 +578,7 @@ export const SERVICES_DATA: Record<string, ServiceDetail> = {
     introStatement:
       "Business demands fluctuate. Your capacity to scale talent shouldn't hold you back.",
     introParagraphs: [
-      "Whether managing seasonal peak workloads, covering parental leaves, or executing time-sensitive technical projects, Venus Hiring provides agile contract staffing across Canada and the US.",
+      "Whether managing seasonal peak workloads, covering parental leaves, or executing time-sensitive technical projects, Venus Hiring provides agile contract staffing globally.",
       "Our pre-screened contractor network enables organizations to onboard specialized skills within 48 to 72 hours while maintaining total payroll and legal compliance.",
     ],
     introProofIndicators: [
@@ -771,7 +771,7 @@ export const SERVICES_DATA: Record<string, ServiceDetail> = {
         },
         {
           title: "Full EOR & Payroll Coverage",
-          desc: "We handle all payroll, tax withholdings, and statutory compliance across Canada and the US.",
+          desc: "We handle all payroll, tax withholdings, and statutory compliance globally.",
         },
         {
           title: "Seamless Conversion Path",
@@ -786,7 +786,7 @@ export const SERVICES_DATA: Record<string, ServiceDetail> = {
       },
       {
         title: "Cross-Border EOR Compliance",
-        desc: "Understand Canadian provincial and US state employment laws governing independent contractors.",
+        desc: "Understand Global employment laws governing independent contractors.",
       },
       {
         title: "Agile Headcount Optimization",
@@ -809,7 +809,7 @@ export const SERVICES_DATA: Record<string, ServiceDetail> = {
       "Contact our contract staffing team to deploy pre-vetted specialists within 48 to 72 hours.",
     metaTitle: "Contract & Temporary Staffing Solutions | Venus Hiring",
     metaDescription:
-      "Agile contract staffing, temporary placement, and interim leadership in Canada & US. Onboard pre-screened contractors in 48-72 hours.",
+      "Agile contract staffing, temporary placement, and interim leadership globally. Onboard pre-screened contractors in 48-72 hours.",
   },
 
   "startup-hiring": {
@@ -958,8 +958,8 @@ export const SERVICES_DATA: Record<string, ServiceDetail> = {
         tag: "STEALTH MODE",
       },
       {
-        title: "Cross-Border US-Canada Remote Teams",
-        desc: "US startups hiring elite Canadian software talent at competitive rates with zero EOR hassle.",
+        title: "Cross-Border Global Remote Teams",
+        desc: "Global startups hiring elite software talent at competitive rates with zero EOR hassle.",
         tag: "CROSS-BORDER STARTUPS",
       },
     ],
@@ -1020,7 +1020,7 @@ export const SERVICES_DATA: Record<string, ServiceDetail> = {
         },
         {
           title: "VC & Ecosystem Network",
-          desc: "Active relationships across leading Canadian and US startup incubators, accelerators, and VC funds.",
+          desc: "Active relationships across leading global startup incubators, accelerators, and VC funds.",
         },
         {
           title: "Runway-Optimized Terms",
@@ -1034,7 +1034,7 @@ export const SERVICES_DATA: Record<string, ServiceDetail> = {
         desc: "Access updated data on stock option allocation percentages for Seed vs. Series A early hires.",
       },
       {
-        title: "Canadian Tech Salary Corridors",
+        title: "Global Tech Salary Corridors",
         desc: "Understand real-time compensation expectations for senior developers in Toronto, Waterloo, and Montreal.",
       },
       {
@@ -1083,7 +1083,7 @@ export const SERVICES_DATA: Record<string, ServiceDetail> = {
     ],
     introProofIndicators: [
       "Comprehensive audit of your internal recruitment process and candidate funnel",
-      "Custom salary and total rewards benchmarking reports for Canadian and US roles",
+      "Custom salary and total rewards benchmarking reports for global roles",
       "Hiring manager training and interview scorecard calibration frameworks",
       "Actionable roadmap to decrease time-to-hire by up to 35%",
     ],
@@ -1092,7 +1092,7 @@ export const SERVICES_DATA: Record<string, ServiceDetail> = {
         id: "consulting-planning",
         title: "Strategic Workforce & Headcount Planning",
         badge: "HEADCOUNT STRATEGY",
-        desc: "Aligning hiring roadmaps with revenue milestones, budget forecasts, and organizational capacity across Canada and the US.",
+        desc: "Aligning hiring roadmaps with revenue milestones, budget forecasts, and organizational capacity globally.",
         iconName: "BarChart3",
         topRoles: [
           "Workforce Planning Director",
@@ -1106,7 +1106,7 @@ export const SERVICES_DATA: Record<string, ServiceDetail> = {
         id: "consulting-comp",
         title: "Compensation & Market Rate Benchmarking",
         badge: "SALARY INTEL",
-        desc: "Real-time Canadian and US salary benchmarking, equity grant structuring, and regional compensation band analysis.",
+        desc: "Real-time global salary benchmarking, equity grant structuring, and regional compensation band analysis.",
         iconName: "DollarSign",
         topRoles: [
           "Compensation & Benefits Director",
@@ -1230,7 +1230,7 @@ export const SERVICES_DATA: Record<string, ServiceDetail> = {
         step: "02",
         shortTitle: "Benchmark",
         title: "Market & Compensation Intelligence",
-        desc: "We benchmark your salary structures and benefits against live market data in Canada and target US markets.",
+        desc: "We benchmark your salary structures and benefits against live global market data.",
         detail: "Delivering regional salary benchmark reports",
       },
       {
@@ -1275,8 +1275,8 @@ export const SERVICES_DATA: Record<string, ServiceDetail> = {
     },
     marketIntelligence: [
       {
-        title: "2026 Canadian Tech Salary Report",
-        desc: "Download our comprehensive salary analysis for software, cloud, and engineering roles in major Canadian hubs.",
+        title: "2026 Global Tech Salary Report",
+        desc: "Download our comprehensive salary analysis for software, cloud, and engineering roles in major global hubs.",
       },
       {
         title: "Interview Drop-Off Benchmark Study",
@@ -1303,7 +1303,7 @@ export const SERVICES_DATA: Record<string, ServiceDetail> = {
       "Book a complimentary talent strategy consultation with our senior advisors today.",
     metaTitle: "Talent Strategy & Workforce Consulting | Venus Hiring",
     metaDescription:
-      "Strategic talent consulting, compensation benchmarking, recruitment funnel optimization, and workforce planning in Canada & US.",
+      "Strategic talent consulting, compensation benchmarking, recruitment funnel optimization, and workforce planning globally.",
   },
 
   "hr-advisory": {
@@ -1312,23 +1312,23 @@ export const SERVICES_DATA: Record<string, ServiceDetail> = {
     eyebrow: "HR ADVISORY",
     heroHeadline: "Compliant HR Infrastructure. Empowered Teams.",
     heroValueProp:
-      "Fractional HR leadership, Canadian and US labor law compliance, employment audits, performance management frameworks, and HRIS integration.",
+      "Fractional HR leadership, global labor law compliance, employment audits, performance management frameworks, and HRIS integration.",
     heroImage:
       "https://images.unsplash.com/photo-1450133064473-71024230f91b?w=1600&h=900&fit=crop&auto=format",
     stats: [
       { label: "Compliance Focus", value: "ESA, FLSA & EOR Rules" },
       { label: "Advisory Model", value: "Fractional & Project" },
-      { label: "Market Reach", value: "Canada All Provinces & US" },
+      { label: "Market Reach", value: "Global" },
     ],
     introStatement:
-      "Navigating HR compliance across Canadian provinces and US states requires specialized expertise.",
+      "Navigating HR compliance globally requires specialized expertise.",
     introParagraphs: [
       "Growing companies often need senior HR leadership and compliance oversight without the expense of a full-time Chief Human Resources Officer.",
       "Venus Hiring provides fractional HR advisory services, helping organizations build legally compliant employment contracts, structured onboarding frameworks, performance review systems, and workplace policies.",
     ],
     introProofIndicators: [
       "Fractional CHRO and senior HR business partner availability on flexible retainers",
-      "Comprehensive Canadian provincial and US state employment law compliance audits",
+      "Comprehensive global employment law compliance audits",
       "Custom employee handbooks, termination protocols, and workplace policies",
       "Structured onboarding, KPI frameworks, and 90-day retention management",
     ],
@@ -1351,7 +1351,7 @@ export const SERVICES_DATA: Record<string, ServiceDetail> = {
         id: "hr-compliance",
         title: "Cross-Border Compliance & Labor Audits",
         badge: "LEGAL COMPLIANCE",
-        desc: "Navigating Canadian provincial employment standards, US FLSA rules, statutory benefits, and contractor risks.",
+        desc: "Navigating global employment standards, statutory benefits, and contractor risks.",
         iconName: "ShieldAlert",
         topRoles: [
           "HR Compliance Specialist",
@@ -1392,7 +1392,7 @@ export const SERVICES_DATA: Record<string, ServiceDetail> = {
       {
         number: "01",
         title: "Employment Compliance Audits",
-        desc: "Review existing contracts, contractor agreements, and policies for Canadian provincial and US compliance.",
+        desc: "Review existing contracts, contractor agreements, and policies for global compliance.",
         microDetail: "Mitigate employment liability",
         iconName: "CheckSquare",
       },
@@ -1434,8 +1434,8 @@ export const SERVICES_DATA: Record<string, ServiceDetail> = {
     ],
     whoWeHelp: [
       {
-        title: "US Companies Hiring Remote Talent in Canada",
-        desc: "US employers requiring Canadian provincial employment law guidance, contract drafting, and benefits setup.",
+        title: "Global Companies Hiring Remote Talent",
+        desc: "Global employers requiring employment law guidance, contract drafting, and benefits setup.",
         tag: "CROSS-BORDER HIRING",
       },
       {
@@ -1506,7 +1506,7 @@ export const SERVICES_DATA: Record<string, ServiceDetail> = {
         "We give you executive HR strength and legal peace of mind at a fraction of the cost of a full-time HR department.",
       points: [
         {
-          title: "Dual Canadian & US Legal Fluency",
+          title: "Dual Global Legal Fluency",
           desc: "Expert understanding of Ontario Employment Standards Act (ESA), Quebec Labour Code, and US FLSA rules.",
         },
         {
@@ -1521,7 +1521,7 @@ export const SERVICES_DATA: Record<string, ServiceDetail> = {
     },
     marketIntelligence: [
       {
-        title: "Canadian Employment Law Updates",
+        title: "Global Employment Law Updates",
         desc: "Stay informed on statutory termination notice rules, non-compete clause bans, and pay transparency mandates.",
       },
       {
@@ -1529,16 +1529,16 @@ export const SERVICES_DATA: Record<string, ServiceDetail> = {
         desc: "Understand CRA and IRS classification guidelines to avoid misclassification tax penalties.",
       },
       {
-        title: "Statutory Benefits Across Canadian Provinces",
+        title: "Statutory Benefits Across Global Regions",
         desc: "Compare mandatory health tax, vacation pay, and statutory holiday rules across ON, BC, QC, and AB.",
       },
     ],
     socialProof: {
       quote:
-        "Venus Hiring restructured our Canadian employment contracts and set up our ripples HRIS. Their fractional HR advice has saved us thousands in legal compliance and offboarding costs.",
+        "Venus Hiring restructured our global employment contracts and set up our ripples HRIS. Their fractional HR advice has saved us thousands in legal compliance and offboarding costs.",
       author: "Rachel Sterling",
       role: "Chief Operating Officer",
-      companyType: "US Tech Firm Expanding to Canada",
+      companyType: "Global Tech Firm Expansion",
       metricLabel: "Compliance Coverage",
       metricValue: "100% Audit Readiness",
     },
@@ -1549,7 +1549,7 @@ export const SERVICES_DATA: Record<string, ServiceDetail> = {
       "Schedule a consultation with our fractional HR advisors to review your HR compliance today.",
     metaTitle: "Fractional HR & Compliance Advisory | Venus Hiring",
     metaDescription:
-      "Fractional HR leadership, employment law compliance audits, employee handbooks, and HRIS setup in Canada & US.",
+      "Fractional HR leadership, employment law compliance audits, employee handbooks, and HRIS setup globally.",
   },
 
   "sow-project-pods": {
@@ -1570,7 +1570,7 @@ export const SERVICES_DATA: Record<string, ServiceDetail> = {
       "When project deadlines are non-negotiable, you need guaranteed team delivery—not just extra headcount.",
     introParagraphs: [
       "Traditional staffing provides individual talent, leaving project management, deliverable quality, and milestone risks on your shoulders.",
-      "Venus Hiring SOW Project Pods deliver fully managed multi-disciplinary teams bound by clear Statement of Work (SOW) milestone SLAs, fixed budgets, and quality sign-offs across Canada and North America.",
+      "Venus Hiring SOW Project Pods deliver fully managed multi-disciplinary teams bound by clear Statement of Work (SOW) milestone SLAs, fixed budgets, and quality sign-offs globally.",
     ],
     introProofIndicators: [
       "Turnkey project pods equipped with Lead Architects, Senior Engineers, and Scrum Masters",

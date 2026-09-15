@@ -37,7 +37,7 @@ export const VENUS_KNOWLEDGE_TOPICS: VenusKnowledgeTopic[] = [
     id: "company-overview",
     category: "Overview",
     title: "About Venus Consultancy (Venus Hiring)",
-    summary: "Venus Consultancy is a premier recruitment agency and executive search firm specializing in Canadian, US, and North American talent acquisition, direct placement, contract staffing, and workforce consulting.",
+    summary: "Venus Consultancy is a premier recruitment agency and executive search firm specializing in global talent acquisition, direct placement, contract staffing, and workforce consulting.",
     details: [
       "Venus Consultancy connects high-growth startups, mid-market enterprises, and Fortune 500 companies with top 1% leadership and technical talent.",
       "Track Record & Commitments: 98.4% candidate retention rate, calibrated shortlist presented within 3 to 5 business days, 100% code-verified technical screening, and a written replacement guarantee on permanent placements.",
@@ -53,7 +53,7 @@ export const VENUS_KNOWLEDGE_TOPICS: VenusKnowledgeTopic[] = [
     id: "service-executive-search",
     category: "Services",
     title: "Executive Search & Permanent Direct Placement",
-    summary: "Precision direct-hire placement and headhunting targeting C-Suite executives, VPs, and specialized technical leaders across Canada and North America.",
+    summary: "Precision direct-hire placement and headhunting targeting C-Suite executives, VPs, and specialized technical leaders globally.",
     details: [
       "Target Roles: Chief Executive Officer (CEO), Chief Technology Officer (CTO), Chief Financial Officer (CFO), VP of Engineering, VP of Enterprise Sales, Senior Software Architects, Financial Controllers.",
       "Highlights: Discreet headhunting targeting passive non-active job seekers, 5-day candidate shortlist turnaround, and 90-day full replacement guarantee.",
@@ -104,13 +104,13 @@ export const VENUS_KNOWLEDGE_TOPICS: VenusKnowledgeTopic[] = [
     id: "service-fractional-hr",
     category: "Services",
     title: "Fractional HR & HR Advisory Solutions",
-    summary: "On-demand Chief Human Resources Officer (CHRO) leadership, Canadian work permit/LMIA compliance, performance management, and HR policy setup.",
+    summary: "On-demand Chief Human Resources Officer (CHRO) leadership, global work permit/LMIA compliance, performance management, and HR policy setup.",
     details: [
       "Offerings: Fractional CHRO leadership, LMIA & Express Entry work-permit guidance, HR policy & compliance setup, performance appraisal frameworks.",
       "Route: /services/fractional-hr"
     ],
     route: "/services/fractional-hr",
-    keywords: ["fractional hr", "hr advisory", "chro", "lmia", "work permit canada", "express entry", "hr policies"]
+    keywords: ["fractional hr", "hr advisory", "chro", "lmia", "work permit global", "express entry", "hr policies"]
   },
   {
     id: "service-sow-project-pods",
@@ -190,7 +190,7 @@ export const VENUS_KNOWLEDGE_TOPICS: VenusKnowledgeTopic[] = [
     id: "industry-trades",
     category: "Industries",
     title: "Skilled Trades & Field Technical Services Practice",
-    summary: "Placement of licensed industrial electricians, millwrights, HVAC field technicians, and trade supervisors across Canada.",
+    summary: "Placement of licensed industrial electricians, millwrights, HVAC field technicians, and trade supervisors globally.",
     details: [
       "Target Roles: Licensed Industrial Electrician (309A/442A), Red Seal Millwright, HVAC Technician, Field Service Engineer, Trades Supervisor.",
       "Route: /industries/trades"
@@ -245,7 +245,7 @@ export const VENUS_KNOWLEDGE_TOPICS: VenusKnowledgeTopic[] = [
     id: "salary-calculator",
     category: "Tools",
     title: "Salary Calculator (Cost of Living & Tax Comparison)",
-    summary: "Comprehensive salary tax, take-home pay, and cost-of-living calculator for Canadian and North American locations.",
+    summary: "Comprehensive salary tax, take-home pay, and cost-of-living calculator for global locations.",
     details: [
       "Features: Tax deductions, net income calculation, city cost-of-living comparison.",
       "Route: /salary-calculator"
@@ -282,7 +282,7 @@ export const VENUS_KNOWLEDGE_TOPICS: VenusKnowledgeTopic[] = [
       "Employer Turnaround: Shortlist in 3-5 business days for direct-hire roles.",
       "Pre-Screening: 100% technical, behavioral, and reference verification.",
       "Replacement Guarantee: Full replacement guarantee on permanent placements.",
-      "Relocation & LMIA: Assistance with Canadian work permits, Express Entry, and LMIA transitions.",
+      "Relocation & LMIA: Assistance with global work permits, Express Entry, and LMIA transitions.",
       "Route: /faq"
     ],
     route: "/faq",

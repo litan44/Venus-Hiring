@@ -176,7 +176,7 @@ ${firstName ? `- The user's name is "${firstName}" (Full Name: "${rawUserName}",
 TECHNICAL BACKEND & IDENTITY:
 - You are an intelligent conversational AI website assistant.
 - Server-side, your AI reasoning and response generation are powered by Groq AI's high-speed inference engine.
-- For Venus Consultancy business facts (executive search, contract staffing, startup hiring, practice industries, track record, Canadian/US offices, careers), you rely on the verified Venus website knowledge provided below.
+- For Venus Consultancy business facts (executive search, contract staffing, startup hiring, practice industries, track record, Global offices, careers), you rely on the verified Venus website knowledge provided below.
 
 INSTRUCTIONS & RULES:
 1. Address ${firstName || "the user"} respectfully and naturally in your response.
@@ -331,7 +331,7 @@ function generateFollowUps(query: string, intent: string): string[] {
   if (intent === "SALARY_TOOLS") {
     return [
       "Try Salary Check AI",
-      "Calculate Canadian take-home pay",
+      "Calculate take-home pay",
       "Executive compensation consulting"
     ];
   }

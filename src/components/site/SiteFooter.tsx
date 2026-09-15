@@ -16,7 +16,7 @@ import logo from "@/assets/venus-logo.png";
 const OFFICES = [
   {
     flag: "🇨🇦",
-    city: "Toronto, Canada",
+    city: "Toronto, ON",
     address: "#205 - 1085 Bellamy Road North, Toronto, ON",
     phones: ["647-616-2677"],
     email: "info@venushiring.ca",

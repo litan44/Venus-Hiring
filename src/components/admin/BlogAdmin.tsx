@@ -930,7 +930,7 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
                     <input
                       type="text"
                       required
-                      placeholder="e.g., 2026 Canadian Tech Hiring Trends"
+                      placeholder="e.g., 2026 Global Tech Hiring Trends"
                       value={formData.title}
                       onChange={(e) => handleTitleChange(e.target.value)}
                       className="w-full rounded-xl border border-border bg-background px-4 py-2 text-sm font-bold text-foreground focus:border-brand focus:outline-none"
@@ -1757,7 +1757,7 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
                       </div>
                       <input
                         type="text"
-                        placeholder="e.g. Canadian Tech Hiring, Executive Search"
+                        placeholder="e.g. Global Tech Hiring, Executive Search"
                         value={formData.seo.keywords}
                         onChange={(e) =>
                           setFormData((prev) => ({

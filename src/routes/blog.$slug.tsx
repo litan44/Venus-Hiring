@@ -44,7 +44,7 @@ export const Route = createFileRoute("/blog/$slug")({
       {
         name: "description",
         content:
-          "Executive search strategies, Canadian tech recruitment, and cross-border workforce compliance intelligence from Venus Hiring.",
+          "Executive search strategies, global tech recruitment, and cross-border workforce compliance intelligence from Venus Hiring.",
       },
     ],
   }),
@@ -818,10 +818,10 @@ function BlogDetailPage() {
                 <div className="rounded-2xl border border-brand/30 bg-brand/5 p-5 space-y-3">
                   <Sparkles className="h-5 w-5 text-brand" />
                   <h4 className="font-bold text-sm text-foreground leading-snug uppercase">
-                    HIRING TOP CANADIAN TALENT?
+                    HIRING TOP GLOBAL TALENT?
                   </h4>
                   <p className="text-xs text-muted-foreground leading-relaxed">
-                    Receive a calibrated shortlist of pre-screened Canadian candidates within 5 business days.
+                    Receive a calibrated shortlist of pre-screened global candidates within 5 business days.
                   </p>
                   <a
                     href="#contact"

@@ -79,11 +79,11 @@ export const MOCK_JOBS: JobItem[] = [
       "6+ years of executive search, agency recruitment, or corporate talent acquisition experience.",
       "Proven track record of successfully placing VP and C-level executives in technology or professional services.",
       "Exceptional verbal and written communication, negotiation, and executive relationship management skills.",
-      "Deep understanding of the Canadian and US executive employment landscape.",
+      "Deep understanding of the global executive employment landscape.",
       "Bachelor's degree in Business, Human Resources, or related field."
     ],
     niceToHave: [
-      "Existing network of executive contacts in Canadian technology or finance sectors.",
+      "Existing network of executive contacts in global technology or finance sectors.",
       "Bilingual (English/French) proficiency."
     ],
     benefits: [
@@ -98,7 +98,7 @@ export const MOCK_JOBS: JobItem[] = [
     title: "Cloud Infrastructure Architect (AWS / Azure)",
     slug: "cloud-infrastructure-architect",
     department: "Technology",
-    location: "Remote (Canada)",
+    location: "Remote (Global)",
     employmentType: "Full-Time",
     experienceLevel: "Senior",
     salaryRange: "$150,000 - $185,000 CAD",
@@ -123,7 +123,7 @@ export const MOCK_JOBS: JobItem[] = [
       "Background in financial services or healthcare cloud compliance (SOC2, HIPAA)."
     ],
     benefits: [
-      "100% remote work flexibility from anywhere in Canada.",
+      "100% remote work flexibility from anywhere globally.",
       "Home office setup allowance ($1,500 CAD).",
       "Full medical, dental, and vision insurance.",
       "Uncapped learning and certification reimbursement."
@@ -175,7 +175,7 @@ export const MOCK_JOBS: JobItem[] = [
     postedDate: "1 week ago",
     aboutRole: "Venus Hiring is expanding its Montreal team! We are looking for an Enterprise Talent Acquisition Specialist to drive recruitment campaigns for specialized technical and healthcare clients.",
     responsibilities: [
-      "Manage full-lifecycle recruitment for active client requisitions in Quebec and Eastern Canada.",
+      "Manage full-lifecycle recruitment for active client requisitions globally.",
       "Utilize advanced sourcing methods, Boolean search, and professional networks to engage passive candidates.",
       "Conduct structured behavioral interviews and present qualified shortlists to hiring managers.",
       "Ensure an exceptional candidate experience throughout all recruitment stages."

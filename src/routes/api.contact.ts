@@ -270,7 +270,7 @@ export const Route = createFileRoute("/api/contact")({
                   </div>
                   <div class="footer">
                     <p><strong>Venus Consultancy</strong> &bull; Executive Search & Technical Staffing</p>
-                    <p>Canada &bull; USA &bull; India</p>
+                    <p>Global</p>
                     <p><a href="https://www.venushiring.ca" style="color: #e01e37; text-decoration: none; font-weight: 600;">www.venushiring.ca</a></p>
                   </div>
                 </div>

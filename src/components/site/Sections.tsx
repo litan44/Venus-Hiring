@@ -505,16 +505,16 @@ export function AboutVenus() {
 
   const FOOTPRINTS = [
     {
-      city: "Toronto, Canada",
-      role: "Canadian HQ & Talent Hub",
+      city: "Toronto (Global HQ)",
+      role: "Global HQ & Talent Hub",
       icon: MapPin,
-      desc: "Provincial compliance & Canadian talent pool coverage.",
+      desc: "Global talent pool coverage.",
     },
     {
       city: "Michigan / Troy, US",
       role: "North American Industrial Hub",
       icon: Building2,
-      desc: "Automotive, EV, and cross-border US-Canada staffing.",
+      desc: "Automotive, EV, and cross-border global staffing.",
     },
     {
       city: "India Operations",
@@ -525,7 +525,7 @@ export function AboutVenus() {
   ];
 
   const PILLARS = [
-    "Canadian market knowledge",
+    "Global market knowledge",
     "North American recruitment",
     "Global sourcing reach",
     "Structured candidate assessment",
@@ -556,11 +556,11 @@ export function AboutVenus() {
             </span>
 
             <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl leading-tight">
-              Canadian expertise. Global reach. Human partnership.
+              Global expertise. Global reach. Human partnership.
             </h2>
 
             <p className="text-base sm:text-lg leading-relaxed text-muted-foreground">
-              Venus Consultancy connects Canadian employers with exceptional talent while providing comprehensive recruitment, staffing, executive search, HR advisory, and talent consulting capabilities across North America.
+              Venus Consultancy connects Global employers with exceptional talent while providing comprehensive recruitment, staffing, executive search, HR advisory, and talent consulting capabilities across North America.
             </p>
 
             <div className="grid grid-cols-2 gap-3 pt-2">
@@ -641,8 +641,8 @@ const REASONS = [
   },
   {
     pill: "Local expertise",
-    title: "Canadian market fluency",
-    copy: "Provincial compliance, PR and work-permit pathways, and salary benchmarking across every major Canadian metro.",
+    title: "Global market fluency",
+    copy: "Global compliance, PR and work-permit pathways, and salary benchmarking across every major city.",
     Icon: Globe2,
     image:
       "https://images.unsplash.com/photo-1517935706615-2717063c2225?w=800&h=600&fit=crop&auto=format",
@@ -1352,7 +1352,7 @@ const BOTTOM_HIGHLIGHTS = [
   {
     icon: Globe,
     title: "North America Focus",
-    description: "Strong presence in Canada & beyond",
+    description: "Strong Global presence",
   },
 ];
 
@@ -1591,7 +1591,7 @@ export function Industries() {
           {/* Right Side Description & Navigation Controls */}
           <div className="flex flex-col items-start lg:items-end gap-5 max-w-md">
             <p className="text-base sm:text-lg leading-relaxed text-muted-foreground text-left">
-              Explore the specialized technical, executive, and operational positions we recruit across Canada and North America.
+              Explore the specialized technical, executive, and operational positions we recruit globally.
             </p>
 
             <div className="flex flex-col items-start lg:items-end gap-3 shrink-0">
@@ -1743,7 +1743,7 @@ const PROCESS_STEPS = [
     n: "02",
     tag: "Sourcing",
     title: "Targeted Precision Sourcing",
-    copy: "Agile outreach across top-tier Canadian and international talent pools to present candidates within 5 days.",
+    copy: "Agile outreach across top-tier global and international talent pools to present candidates within 5 days.",
     image:
       "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=900&h=1200&fit=crop&auto=format",
     topNumber: false,
@@ -2069,7 +2069,7 @@ export function Stats() {
           </div>
           <div className="max-w-md">
             <p className="text-base sm:text-lg leading-relaxed text-muted-foreground text-left">
-              We deliver measurable results through strategic talent solutions across Canadian and North American industries.
+              We deliver measurable results through strategic talent solutions across global industries.
             </p>
           </div>
         </div>

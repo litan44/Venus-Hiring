@@ -15,9 +15,9 @@ import {
 import { Testimonials, Faq, CtaBanner } from "@/components/site/Social";
 import { SiteFooter } from "@/components/site/SiteFooter";
 
-const TITLE = "Venus Consultancy | Recruitment & Staffing Across Canada";
+const TITLE = "Venus Consultancy | Recruitment & Staffing Across Global";
 const DESCRIPTION =
-  "Venus Consultancy unites technology, talent and opportunity — permanent, contract and executive recruitment plus HR advisory for Canadian employers and professionals.";
+  "Venus Consultancy unites technology, talent and opportunity — permanent, contract and executive recruitment plus HR advisory for Global employers and professionals.";
 
 const LOCAL_BUSINESS_SCHEMA = {
   "@context": "https://schema.org",

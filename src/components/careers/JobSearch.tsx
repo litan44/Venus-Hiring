@@ -24,7 +24,7 @@ export function JobSearch() {
       "Toronto, ON (Hybrid)",
       "Vancouver, BC",
       "Montreal, QC (Hybrid)",
-      "Remote (Canada)",
+      "Remote (Global)",
       "Remote (US)",
     ];
   }, []);

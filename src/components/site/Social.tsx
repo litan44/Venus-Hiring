@@ -100,7 +100,7 @@ export function Testimonials() {
             Employers who hire with us, hire again
           </h2>
           <p className="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto">
-            Ninety-two percent of our engagements come from repeat clients and referrals across Canada and the US Midwest.
+            Ninety-two percent of our engagements come from repeat clients and referrals globally.
           </p>
         </div>
 
@@ -283,8 +283,8 @@ const FAQS = [
     a: "For most standard and specialized roles, you receive a calibrated shortlist of pre-screened candidates within 5 business days of our initial discovery session. Complex executive or niche technical searches typically take 2 to 3 weeks.",
   },
   {
-    q: "Do you support international hiring and Canadian work-permit pathways?",
-    a: "Yes. We regularly source internationally trained professionals and guide employers through LMIA applications, work-permit transitions, and PR-pathway considerations alongside our domestic Canadian talent pools.",
+    q: "Do you support international hiring and global work-permit pathways?",
+    a: "Yes. We regularly source internationally trained professionals and guide employers through LMIA applications, work-permit transitions, and PR-pathway considerations alongside our domestic and global talent pools.",
   },
   {
     q: "What placement guarantees do you provide?",
@@ -292,7 +292,7 @@ const FAQS = [
   },
   {
     q: "Which industries and sectors do you specialize in?",
-    a: "We specialize in Finance & Accounting, Technology, Automotive & EV, Aerospace, Advanced Manufacturing, Skilled Trades, and Executive Leadership across Canada and the US Midwest.",
+    a: "We specialize in Finance & Accounting, Technology, Automotive & EV, Aerospace, Advanced Manufacturing, Skilled Trades, and Executive Leadership globally.",
   },
   {
     q: "Can Venus Consultancy function as our fractional HR department?",
@@ -460,11 +460,11 @@ export function CtaBanner() {
 
             <div className="space-y-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
               <p>
-                At Venus Consultancy, we connect exceptional Canadian talent with forward-thinking
-                companies across Canada—from coast to coast.
+                At Venus Consultancy, we connect exceptional global talent with forward-thinking
+                companies globally.
               </p>
               <p>
-                Whether you're a Canadian business looking to hire or a professional seeking your
+                Whether you're a global business looking to hire or a professional seeking your
                 next opportunity, we make the perfect match happen.
               </p>
             </div>
@@ -517,7 +517,7 @@ export function CtaBanner() {
             <div className="relative overflow-hidden rounded-[2rem] border border-border/80 bg-card shadow-[0_25px_60px_-15px_rgba(0,0,0,0.15)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-1.5 group-hover:shadow-[0_35px_70px_-15px_rgba(0,0,0,0.22)]">
               <img
                 src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1000&h=750&fit=crop&auto=format"
-                alt="Canadian business team collaborating in a modern office meeting"
+                alt="Global business team collaborating in a modern office meeting"
                 width={1000}
                 height={750}
                 loading="lazy"
@@ -539,7 +539,7 @@ export function CtaBanner() {
               <div>
                 <p className="text-xs font-bold text-foreground">Coast-to-Coast Reach</p>
                 <p className="text-[11px] font-medium text-muted-foreground">
-                  Serving Canada & USA
+                  Serving Global Markets
                 </p>
               </div>
             </div>
@@ -562,7 +562,7 @@ export function CtaBanner() {
               </div>
               <div>
                 <p className="text-sm font-bold text-foreground">100% Verified Candidates</p>
-                <p className="text-xs font-medium text-muted-foreground">Vetted Canadian Talent</p>
+                <p className="text-xs font-medium text-muted-foreground">Vetted Global Talent</p>
               </div>
             </div>
           </div>

@@ -25,7 +25,7 @@ import { Industries } from "@/components/site/Sections";
 
 const TITLE = "Industries & Roles We Hire For | Venus Consultancy";
 const DESCRIPTION =
-  "Explore the specialized technical, executive, and operational positions we recruit across Canada and North America.";
+  "Explore the specialized technical, executive, and operational positions we recruit globally.";
 
 export const Route = createFileRoute("/industries/")({
   head: () => ({
