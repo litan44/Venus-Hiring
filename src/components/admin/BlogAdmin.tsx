@@ -37,6 +37,7 @@ import {
   Mail,
   XCircle,
   Shield,
+  User,
 } from "lucide-react";
 import {
   isBlogAdminAuthenticated,
@@ -305,6 +306,19 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
     reader.onload = (e) => {
       if (e.target?.result) {
         updateBlock(blockId, { mediaUrl: e.target.result as string, mediaType: "upload" });
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleAuthorAvatarUpload = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      if (e.target?.result) {
+        setFormData((prev) => ({
+          ...prev,
+          author: { ...prev.author, avatar: e.target!.result as string },
+        }));
       }
     };
     reader.readAsDataURL(file);
@@ -955,6 +969,103 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
                         setFormData((prev) => ({ ...prev, featuredImage: e.target.value }))
                       }
                       className="w-full rounded-xl border border-border bg-background px-3 py-2 text-xs focus:border-brand focus:outline-none"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* AUTHOR PROFILE & DESIGNATION SETTINGS */}
+              <div className="rounded-2xl border border-border bg-card p-4 space-y-4">
+                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-2.5">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-brand flex items-center gap-1.5">
+                    <User className="h-4 w-4 text-brand" /> Author Details & Designation Settings
+                  </label>
+                  <span className="text-[11px] text-muted-foreground font-semibold">
+                    Edit article author name, job designation/title & profile picture
+                  </span>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-12 items-center">
+                  {/* Author Avatar Preview & Upload/URL input */}
+                  <div className="sm:col-span-4 flex items-center gap-3">
+                    <div className="relative shrink-0">
+                      <img
+                        src={
+                          formData.author?.avatar ||
+                          "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop"
+                        }
+                        alt={formData.author?.name || "Author Avatar"}
+                        className="h-12 w-12 rounded-full object-cover border-2 border-brand/40 shadow-sm"
+                      />
+                    </div>
+                    <div className="flex-1 space-y-1.5 min-w-0">
+                      <label className="block text-[11px] font-bold text-muted-foreground uppercase">
+                        Profile Image (URL or Upload)
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Paste image URL..."
+                        value={formData.author?.avatar || ""}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            author: { ...prev.author, avatar: e.target.value },
+                          }))
+                        }
+                        className="w-full rounded-lg border border-border bg-background px-2.5 py-1.5 text-xs text-foreground focus:border-brand focus:outline-none"
+                      />
+                      <label className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background px-2.5 py-1 text-[11px] font-bold text-muted-foreground hover:text-brand hover:border-brand cursor-pointer transition-colors shadow-xs">
+                        <Upload className="h-3 w-3" /> Upload Profile Photo
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) handleAuthorAvatarUpload(file);
+                          }}
+                        />
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* Author Name Input */}
+                  <div className="sm:col-span-4 space-y-1">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                      Author Name *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g., Subhram Nayak"
+                      value={formData.author?.name || ""}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          author: { ...prev.author, name: e.target.value },
+                        }))
+                      }
+                      className="w-full rounded-xl border border-border bg-background px-4 py-2 text-xs font-bold text-foreground focus:border-brand focus:outline-none"
+                    />
+                  </div>
+
+                  {/* Author Role / Designation Input */}
+                  <div className="sm:col-span-4 space-y-1">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                      Author Designation / Title *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g., Head of Placement"
+                      value={formData.author?.role || ""}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          author: { ...prev.author, role: e.target.value },
+                        }))
+                      }
+                      className="w-full rounded-xl border border-border bg-background px-4 py-2 text-xs font-bold text-foreground focus:border-brand focus:outline-none"
                     />
                   </div>
                 </div>
