@@ -622,33 +622,6 @@ function BlogDetailPage() {
                   dangerouslySetInnerHTML={{ __html: formattedContentHtml }}
                 />
 
-                {/* MAIN RECRUITMENT END CTA BANNER */}
-                <div className="my-12 rounded-3xl border border-brand/30 bg-gradient-to-br from-brand/10 via-card to-card p-6 sm:p-8 space-y-4 shadow-sm">
-                  <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-brand">
-                    <Users className="h-4 w-4 text-brand" /> Venus Hiring Talent Solution
-                  </div>
-                  <h3 className="font-display text-2xl sm:text-3xl font-bold text-foreground">
-                    READY TO BUILD YOUR CANADIAN TEAM?
-                  </h3>
-                  <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-2xl">
-                    Connect with Venus Hiring to find qualified Canadian talent and navigate cross-border recruitment with confidence.
-                  </p>
-                  <div className="flex flex-wrap items-center gap-3 pt-2">
-                    <a
-                      href="#contact"
-                      className="inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 text-xs font-bold text-white shadow-brand hover:brightness-110 transition-all"
-                    >
-                      Book a Consultation →
-                    </a>
-                    <a
-                      href="#contact"
-                      className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-6 py-3 text-xs font-bold text-foreground hover:bg-accent transition-colors"
-                    >
-                      Find Talent Now
-                    </a>
-                  </div>
-                </div>
-
                 {/* FAQ ACCORDION SECTION (#faq) */}
                 {blog.faqs && blog.faqs.length > 0 && (
                   <div id="faq" className="mt-14 pt-10 border-t border-border/80 space-y-6 scroll-mt-24">
