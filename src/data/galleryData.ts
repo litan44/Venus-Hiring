@@ -11,7 +11,7 @@ export interface GalleryItem {
   objectFit?: "cover" | "contain";
 }
 
-const BASE_REMOTE_URL = "https://venushiring.com/Gallery";
+const BASE_REMOTE_URL = "/Gallery";
 
 export const GALLERY_ITEMS: GalleryItem[] = [
   {
