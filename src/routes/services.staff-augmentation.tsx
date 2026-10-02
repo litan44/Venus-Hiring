@@ -1774,15 +1774,6 @@ export function StaffAugmentationPage() {
                 <span>Browse All Services</span>
               </Link>
             </div>
-
-            <div className="pt-2">
-              <Link
-                to="/contact"
-                className="text-blue-400 hover:text-blue-300 underline underline-offset-4 decoration-blue-400/60 hover:decoration-blue-300 font-bold text-sm inline-flex items-center gap-1.5 transition-colors"
-              >
-                <span>Book a Call →</span>
-              </Link>
-            </div>
           </div>
         </section>
       </main>
