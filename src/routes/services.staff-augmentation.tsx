@@ -413,17 +413,7 @@ export function StaffAugmentationPage() {
                 </div>
               </div>
 
-              {/* Transparent Benchmark Note */}
-              <div className="mt-6 rounded-2xl bg-amber-50/70 border border-amber-200/80 p-4 flex items-start gap-3 text-xs text-amber-900 leading-relaxed font-medium">
-                <AlertCircle className="h-4 w-4 text-amber-600 shrink-0 mt-0.5" />
-                <p>
-                  <strong>Benchmark Context:</strong> These figures are drawn
-                  from Venus's manufacturing, AI/Python, international, and
-                  sales/GTM placements. Non-engineering timelines and pricing
-                  for Finance, Healthcare, and Automotive & EV are benchmarked
-                  and verified per client engagement.
-                </p>
-              </div>
+
             </div>
           </div>
         </section>
@@ -959,13 +949,6 @@ export function StaffAugmentationPage() {
               </div>
             </div>
 
-            <div className="mt-4 rounded-2xl bg-slate-50 p-4 border border-slate-200/80 text-xs text-slate-600 font-medium leading-relaxed">
-              <strong>Benchmark Transparency:</strong> The national average
-              time-to-fill across roles is roughly 44 days; the figures above
-              reflect Venus's current benchmark categories. Finance,
-              Healthcare, and Automotive & EV timelines outside of engineering
-              roles are still being confirmed and will be added once verified.
-            </div>
           </div>
         </section>
 
@@ -1394,13 +1377,6 @@ export function StaffAugmentationPage() {
               </div>
             </div>
 
-            {/* Replacement Guarantee Callout */}
-            <div className="mt-8 rounded-2xl bg-slate-100/90 p-4 border border-slate-200 text-xs text-slate-600 font-medium leading-relaxed flex items-start gap-2.5">
-              <AlertCircle className="h-4 w-4 text-slate-500 shrink-0 mt-0.5" />
-              <p>
-                <strong>Guarantee & Policy Transparency:</strong> Exact replacement policy wording, warranty intervals, and specific co-employment terms are verified with enterprise legal and procurement teams during engagement onboarding.
-              </p>
-            </div>
           </div>
         </section>
 
