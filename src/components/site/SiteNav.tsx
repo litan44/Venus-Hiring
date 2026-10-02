@@ -58,13 +58,26 @@ const SERVICES_MEGA = {
       description: "Agile staffing and project-based talent solutions",
       href: "/services/contract-staffing",
       items: [
-        { title: "Staff Augmentation", desc: "Vetted contract talent & full project teams", href: "/services/staff-augmentation" },
         { title: "Project Staffing", desc: "Short or long-term specialized contractors", href: "/services/contract-staffing" },
         { title: "Interim Leadership", desc: "Interim Executives, CFOs & CTOs", href: "/services/contract-staffing" },
         { title: "Turnkey Payroll & EOR", desc: "Full payroll compliance across North America", href: "/services/contract-staffing" },
         { title: "Scaleup Talent Pods", desc: "Dedicated team augmentation for rapid scale", href: "/services/contract-staffing" },
         { title: "Engineering & Project Talent", desc: "Engineering, project management and technical specialists", href: "/services/contract-staffing" },
         { title: "Recruitment Process Outsourcing", desc: "Flexible recruitment support for growing organizations", href: "/services/contract-staffing" },
+      ],
+    },
+    {
+      id: "staff-augmentation",
+      name: "Staff Augmentation",
+      description: "Vetted contract talent & agile project teams across North America",
+      href: "/services/staff-augmentation",
+      items: [
+        { title: "Individual Contract Staffing", desc: "Embedded specialists placed directly under your management", href: "/services/staff-augmentation#models" },
+        { title: "SOW Project Pods", desc: "Complete delivery teams with technical leads & milestone SLAs", href: "/services/staff-augmentation#models" },
+        { title: "IT & Engineering Talent", desc: "Software engineers, cloud architects, DevOps & QA leads", href: "/services/staff-augmentation#talent-categories" },
+        { title: "Finance & Accounting", desc: "Controllers, senior financial analysts & project CPAs", href: "/services/staff-augmentation#talent-categories" },
+        { title: "Automotive & EV Talent", desc: "Process engineers, quality directors & manufacturing leads", href: "/services/staff-augmentation#talent-categories" },
+        { title: "2–3 Day Rapid Turnaround", desc: "Pre-screened shortlists delivered in days, contingency guarantee", href: "/services/staff-augmentation#quick-answer" },
       ],
     },
     {
@@ -602,9 +615,13 @@ export function SiteNav() {
                               else setActiveIndustryIdx(idx);
                             }}
                             onClick={() => {
-                              handleNavClick(
-                                activeMegaMenu === "services" ? "#services" : "#industries"
-                              );
+                              if (cat.href) {
+                                window.location.href = cat.href;
+                              } else {
+                                handleNavClick(
+                                  activeMegaMenu === "services" ? "#services" : "#industries"
+                                );
+                              }
                               setActiveMegaMenu(null);
                             }}
                             className={cn(

@@ -685,7 +685,10 @@ export function StaffAugmentationPage() {
         </section>
 
         {/* ── 5. TALENT CATEGORIES WE PROVIDE ── */}
-        <section className="py-16 sm:py-24 bg-white border-y border-slate-200/70">
+        <section
+          id="talent-categories"
+          className="py-16 sm:py-24 bg-white border-y border-slate-200/70"
+        >
           <div className="shell">
             <div className="text-center max-w-2xl mx-auto space-y-4 mb-16">
               <div className="inline-flex items-center gap-2 rounded-full bg-slate-100 px-4 py-1.5 text-xs font-extrabold uppercase tracking-widest text-slate-800">
