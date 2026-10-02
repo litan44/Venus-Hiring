@@ -52,6 +52,7 @@ const QUICK_LINKS = [
 const SOLUTIONS_LINKS = [
   { label: "Executive Search", href: "/services/executive-search" },
   { label: "Direct Hire Placement", href: "/services/direct-hire-staffing" },
+  { label: "Staff Augmentation Services", href: "/services/staff-augmentation" },
   { label: "Contract & Temporary Staffing", href: "/services/contract-staffing" },
   { label: "Startup Hiring & Scaleup Pods", href: "/services/startup-hiring" },
   { label: "Talent Consulting & Advisory", href: "/services/talent-consulting" },

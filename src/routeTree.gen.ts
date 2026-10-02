@@ -40,6 +40,7 @@ import { Route as IndustriesIndexRouteImport } from './routes/industries.index'
 import { Route as IndustriesSlugRouteImport } from './routes/industries.$slug'
 import { Route as ServicesIndexRouteImport } from './routes/services.index'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
+import { Route as ServicesStaffAugmentationRouteImport } from './routes/services.staff-augmentation'
 import { Route as ApiCareersApplicationsRouteImport } from './routes/api.careers.applications'
 import { Route as ApiCareersJobsRouteImport } from './routes/api.careers.jobs'
 import { Route as ApiSalaryChatRouteImport } from './routes/api.salary.chat'
@@ -201,6 +202,12 @@ const ServicesSlugRoute = ServicesSlugRouteImport.update({
   path: '/services/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ServicesStaffAugmentationRoute =
+  ServicesStaffAugmentationRouteImport.update({
+    id: '/services/staff-augmentation',
+    path: '/services/staff-augmentation',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiCareersApplicationsRoute = ApiCareersApplicationsRouteImport.update({
   id: '/api/careers/applications',
   path: '/api/careers/applications',
@@ -255,6 +262,7 @@ export interface FileRoutesByFullPath {
   '/careers/resume-builder': typeof CareersResumeBuilderRoute
   '/industries/$slug': typeof IndustriesSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/services/staff-augmentation': typeof ServicesStaffAugmentationRoute
   '/blog/': typeof BlogIndexRoute
   '/careers/': typeof CareersIndexRoute
   '/industries/': typeof IndustriesIndexRoute
@@ -293,6 +301,7 @@ export interface FileRoutesByTo {
   '/careers/resume-builder': typeof CareersResumeBuilderRoute
   '/industries/$slug': typeof IndustriesSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/services/staff-augmentation': typeof ServicesStaffAugmentationRoute
   '/blog': typeof BlogIndexRoute
   '/careers': typeof CareersIndexRoute
   '/industries': typeof IndustriesIndexRoute
@@ -332,6 +341,7 @@ export interface FileRoutesById {
   '/careers/resume-builder': typeof CareersResumeBuilderRoute
   '/industries/$slug': typeof IndustriesSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/services/staff-augmentation': typeof ServicesStaffAugmentationRoute
   '/blog/': typeof BlogIndexRoute
   '/careers/': typeof CareersIndexRoute
   '/industries/': typeof IndustriesIndexRoute
@@ -372,6 +382,7 @@ export interface FileRouteTypes {
     | '/careers/resume-builder'
     | '/industries/$slug'
     | '/services/$slug'
+    | '/services/staff-augmentation'
     | '/blog/'
     | '/careers/'
     | '/industries/'
@@ -410,6 +421,7 @@ export interface FileRouteTypes {
     | '/careers/resume-builder'
     | '/industries/$slug'
     | '/services/$slug'
+    | '/services/staff-augmentation'
     | '/blog'
     | '/careers'
     | '/industries'
@@ -448,6 +460,7 @@ export interface FileRouteTypes {
     | '/careers/resume-builder'
     | '/industries/$slug'
     | '/services/$slug'
+    | '/services/staff-augmentation'
     | '/blog/'
     | '/careers/'
     | '/industries/'
@@ -486,6 +499,7 @@ export interface RootRouteChildren {
   CareersResumeBuilderRoute: typeof CareersResumeBuilderRoute
   IndustriesSlugRoute: typeof IndustriesSlugRoute
   ServicesSlugRoute: typeof ServicesSlugRoute
+  ServicesStaffAugmentationRoute: typeof ServicesStaffAugmentationRoute
   BlogIndexRoute: typeof BlogIndexRoute
   CareersIndexRoute: typeof CareersIndexRoute
   IndustriesIndexRoute: typeof IndustriesIndexRoute
@@ -715,6 +729,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/services/staff-augmentation': {
+      id: '/services/staff-augmentation'
+      path: '/services/staff-augmentation'
+      fullPath: '/services/staff-augmentation'
+      preLoaderRoute: typeof ServicesStaffAugmentationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/careers/applications': {
       id: '/api/careers/applications'
       path: '/api/careers/applications'
@@ -802,6 +823,7 @@ const rootRouteChildren: RootRouteChildren = {
   CareersResumeBuilderRoute: CareersResumeBuilderRoute,
   IndustriesSlugRoute: IndustriesSlugRoute,
   ServicesSlugRoute: ServicesSlugRoute,
+  ServicesStaffAugmentationRoute: ServicesStaffAugmentationRoute,
   BlogIndexRoute: BlogIndexRoute,
   CareersIndexRoute: CareersIndexRoute,
   IndustriesIndexRoute: IndustriesIndexRoute,

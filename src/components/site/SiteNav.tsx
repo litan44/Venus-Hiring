@@ -58,6 +58,7 @@ const SERVICES_MEGA = {
       description: "Agile staffing and project-based talent solutions",
       href: "/services/contract-staffing",
       items: [
+        { title: "Staff Augmentation", desc: "Vetted contract talent & full project teams", href: "/services/staff-augmentation" },
         { title: "Project Staffing", desc: "Short or long-term specialized contractors", href: "/services/contract-staffing" },
         { title: "Interim Leadership", desc: "Interim Executives, CFOs & CTOs", href: "/services/contract-staffing" },
         { title: "Turnkey Payroll & EOR", desc: "Full payroll compliance across North America", href: "/services/contract-staffing" },

@@ -1801,6 +1801,204 @@ export const SERVICES_DATA: Record<string, ServiceDetail> = {
     metaDescription:
       "Outcome-based SOW project pods for software engineering, cloud migrations, plant automation, and financial ERP rollouts.",
   },
+
+  "staff-augmentation": {
+    slug: "staff-augmentation",
+    title: "Staff Augmentation Services",
+    eyebrow: "WORKFORCE AUGMENTATION & TALENT PODS",
+    heroHeadline: "Staff Augmentation Services for US & Canada",
+    heroValueProp:
+      "Venus Hiring's staff augmentation services connect US and Canadian employers with vetted contract talent and full project teams across IT, finance, healthcare, and automotive. Add skilled professionals to your team without the cost and delay of a permanent hire. Typical shortlists arrive in 2–3 days, compared with the roughly 44-day industry average time-to-fill.",
+    heroImage:
+      "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1600&h=900&fit=crop&auto=format",
+    stats: [
+      { label: "Shortlist Velocity", value: "2–3 Days" },
+      { label: "Fee Benchmark", value: "12–18%" },
+      { label: "Hiring Risk", value: "No-Placement, No-Fee" },
+    ],
+    introStatement:
+      "Add skilled professionals to your team without the cost, delay, or long-term overhead of a permanent hire.",
+    introParagraphs: [
+      "Staff augmentation is a flexible hiring model where a company adds external professionals to its existing team for a defined period or project, without making them permanent employees. The professionals work under your management and processes while we handle sourcing, vetting, and administration.",
+      "Scale your team up when workload increases and scale back down when the need ends, without the overhead of severance, benefits, or long-term commitment. Delivered onshore, nearshore, or offshore depending on your role and timeline.",
+    ],
+    introProofIndicators: [
+      "Vetted shortlists delivered in 2–3 days versus ~44-day market average",
+      "No-placement, no-fee performance model with replacement guarantee",
+      "Cross-border delivery operations across the US, Canada, and India",
+      "Dedicated recruitment practices in IT, Finance, Healthcare, and Automotive",
+    ],
+    specializedOfferings: [
+      {
+        id: "sa-contract-staffing",
+        title: "Individual Contract Staffing",
+        badge: "EMBEDDED TALENT",
+        desc: "We source, screen, and place individual professionals directly onto your team under your management.",
+        iconName: "UserCheck",
+        topRoles: [
+          "Senior Software Engineer",
+          "DevOps & Cloud Engineer",
+          "Financial Analyst & Controller",
+          "Automotive Quality Engineer",
+          "Healthcare Operations Specialist",
+        ],
+        ctaText: "Explore Contract Staffing",
+      },
+      {
+        id: "sa-project-pods",
+        title: "SOW Project Pods",
+        badge: "MANAGED OUTCOMES",
+        desc: "Complete project teams with technical leads under a Statement of Work with fixed-fee or milestone-based billing.",
+        iconName: "Layers",
+        topRoles: [
+          "Full-Stack Development Pod",
+          "Cloud & Infrastructure Migration Pod",
+          "Data Engineering & Analytics Team",
+          "ERP & Systems Integration Pod",
+          "Manufacturing Process Engineering Pod",
+        ],
+        ctaText: "Explore Project Pods",
+      },
+    ],
+    deliverables: [
+      {
+        number: "01",
+        title: "Calibrated 2–3 Day Shortlist",
+        desc: "Rapid delivery of vetted candidate profiles with technical and behavioral screening completed.",
+        microDetail: "2–3 Day Turnaround",
+        iconName: "Clock",
+      },
+      {
+        number: "02",
+        title: "Transparent Flat-Fee / Low Markup",
+        desc: "Flat-fee contractors for select technical roles, or 12–18% direct-hire placements below the 20–25% agency norm.",
+        microDetail: "12–18% vs 20–25%",
+        iconName: "DollarSign",
+      },
+      {
+        number: "03",
+        title: "100% Risk-Aligned Placement",
+        desc: "No-placement, no-fee guarantee with proactive replacement support if an engagement doesn't work out.",
+        microDetail: "Zero Risk",
+        iconName: "ShieldCheck",
+      },
+      {
+        number: "04",
+        title: "Cross-Border Onshore & Offshore",
+        desc: "Flexible time-zone coverage and cost control with delivery hubs in the United States, Canada, and India.",
+        microDetail: "US / CA / IN",
+        iconName: "Globe",
+      },
+      {
+        number: "05",
+        title: "Complete Legal & IP Governance",
+        desc: "Rigorous co-employment, IP assignment, and worker classification compliance managed end-to-end.",
+        microDetail: "Full Compliance",
+        iconName: "FileText",
+      },
+    ],
+    whoWeHelp: [
+      {
+        title: "Hiring Freeze with Active Workload",
+        desc: "Get mission-critical initiatives delivered without adding permanent headcount to your balance sheet.",
+        tag: "Headcount Constraint",
+      },
+      {
+        title: "Fixed-Term Projects & Builds",
+        desc: "Bring on specialized talent for the exact duration of a product launch, system migration, or clinical trial.",
+        tag: "Defined Scope",
+      },
+      {
+        title: "Sudden Skill Gaps & Unexpected Departures",
+        desc: "Fill key engineering, finance, or operational roles within days while conducting a deliberate permanent search.",
+        tag: "Immediate Coverage",
+      },
+      {
+        title: "Seasonal or Demand Spikes",
+        desc: "Rapidly expand your delivery capacity without long-term severance or overhead commitments.",
+        tag: "Demand Surge",
+      },
+    ],
+    targetRoles: [
+      "Software Developers & Cloud Engineers",
+      "DevOps, QA Automation & Data Engineers",
+      "Financial Analysts & Controllers",
+      "Healthcare Operations & Support Professionals",
+      "Automotive & EV Manufacturing Engineers",
+    ],
+    process: [
+      {
+        step: "01",
+        shortTitle: "Intake",
+        title: "Requirements Call",
+        desc: "We learn your project, timeline, and the skills you need.",
+      },
+      {
+        step: "02",
+        shortTitle: "Sourcing",
+        title: "Talent Matching",
+        desc: "We source and screen candidates from our active talent network.",
+      },
+      {
+        step: "03",
+        shortTitle: "Review",
+        title: "Shortlist & Interview",
+        desc: "You review and interview your preferred candidates within 2–3 days.",
+      },
+      {
+        step: "04",
+        shortTitle: "Placement",
+        title: "Selection & Onboarding",
+        desc: "The chosen professional is onboarded into your systems and workflows.",
+      },
+      {
+        step: "05",
+        shortTitle: "Retention",
+        title: "Ongoing Support",
+        desc: "We stay involved for the length of the engagement to manage any changes.",
+      },
+    ],
+    whyVenus: {
+      statement:
+        "Dedicated industry practices, 2–3 day shortlist velocity, and zero sunk cost for US & Canadian employers.",
+      points: [
+        {
+          title: "Dedicated Industry Practices",
+          desc: "Dedicated recruitment teams in IT, Finance, Healthcare, and Automotive & EV, not generalists spread thin.",
+        },
+        {
+          title: "Two Engagement Models",
+          desc: "Choose between embedded individual contractors or full outcome-based SOW project pods.",
+        },
+        {
+          title: "Cross-Border Delivery",
+          desc: "Seamless onshore, nearshore, and offshore operations in the US, Canada, and India.",
+        },
+        {
+          title: "Risk-Free Engagement",
+          desc: "No-placement, no-fee model with full replacement support.",
+        },
+      ],
+    },
+    marketIntelligence: [
+      {
+        title: "44-Day Market Average",
+        desc: "The North American staffing market average time-to-fill sits at roughly 44 days, creating costly project stalls.",
+      },
+      {
+        title: "2–3 Day Venus Velocity",
+        desc: "Venus delivers pre-screened technical and operations shortlists in 2 to 3 days, speeding time-to-value by over 90%.",
+      },
+    ],
+    relatedServicesSlugs: ["contract-staffing", "sow-project-pods", "direct-hire-staffing"],
+    faqCategory: "Employers",
+    ctaHeadline: "Scale Your Team in 2–3 Days",
+    ctaSubtext:
+      "Tell us what skills you need and our staffing specialists will deliver a calibrated shortlist.",
+    metaTitle: "Staff Augmentation Services for US & Canada | Venus Hiring",
+    metaDescription:
+      "Venus Hiring provides staff augmentation services and contract staffing for US and Canadian employers in IT, finance, healthcare, and automotive. Get a quote.",
+  },
 };
 
 export function getServiceBySlug(slug: string): ServiceDetail | undefined {

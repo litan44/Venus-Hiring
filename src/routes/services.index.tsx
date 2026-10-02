@@ -82,7 +82,7 @@ function ServicesIndexPage() {
           <div className="shell">
             <div className="text-center max-w-2xl mx-auto space-y-4 mb-16">
               <div className="inline-flex items-center gap-2 rounded-full bg-slate-200/80 px-4 py-1.5 text-xs font-extrabold uppercase tracking-widest text-slate-800">
-                <span>OUR SIX CORE PRACTICES</span>
+                <span>OUR CORE TALENT PRACTICES</span>
               </div>
               <h2 className="font-display text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
                 Recruitment & Workforce Solutions
