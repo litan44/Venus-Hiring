@@ -1,15 +1,24 @@
+import { useState, useEffect } from "react";
 import { createFileRoute, Outlet, useMatchRoute } from "@tanstack/react-router";
 import { SiteNav } from "@/components/site/SiteNav";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { JobDetails } from "@/components/careers/JobDetails";
-import { MOCK_JOBS } from "@/components/careers/mockJobs";
+import { MOCK_JOBS, type JobItem } from "@/components/careers/mockJobs";
+import { getStoredJobs } from "@/lib/careers/jobs";
 
 export const Route = createFileRoute("/careers/$slug")({
   head: ({ params }) => {
-    const job = MOCK_JOBS.find((j) => j.slug === params.slug);
+    const stored = getStoredJobs();
+    const job = stored.find((j) => j.slug === params.slug || j.id === params.slug) ||
+      MOCK_JOBS.find((j) => j.slug === params.slug || j.id === params.slug);
+
+    const formattedTitle = params.slug
+      .replace(/-/g, " ")
+      .replace(/\b\w/g, (c) => c.toUpperCase());
+
     const title = job
       ? `${job.title} | Careers at Venus Hiring`
-      : "Position Not Found | Venus Hiring Careers";
+      : `${formattedTitle} | Careers at Venus Hiring`;
     const description = job
       ? `${job.title} in ${job.location} (${job.employmentType}). ${job.description}`
       : "Explore career opportunities at Venus Hiring.";
@@ -29,7 +38,67 @@ export const Route = createFileRoute("/careers/$slug")({
 
 function JobDetailPage() {
   const { slug } = Route.useParams();
-  const job = MOCK_JOBS.find((j) => j.slug === slug);
+  const decodedSlug = decodeURIComponent(slug || "").toLowerCase().trim();
+
+  const [job, setJob] = useState<JobItem | undefined>(() =>
+    MOCK_JOBS.find(
+      (j) =>
+        (j.slug || "").toLowerCase().trim() === decodedSlug ||
+        (j.id || "").toLowerCase().trim() === decodedSlug
+    )
+  );
+
+  useEffect(() => {
+    const stored = getStoredJobs();
+    const cached = stored.find(
+      (j) =>
+        (j.slug || "").toLowerCase().trim() === decodedSlug ||
+        (j.id || "").toLowerCase().trim() === decodedSlug
+    );
+    if (cached) {
+      setJob(cached);
+    }
+
+    async function loadJobDetails() {
+      try {
+        const res = await fetch("/api/careers/jobs");
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data)) {
+            const found = data.find(
+              (j: any) =>
+                (j.slug || "").toLowerCase().trim() === decodedSlug ||
+                (j.id || "").toLowerCase().trim() === decodedSlug
+            );
+            if (found) {
+              setJob(found);
+            }
+          }
+        }
+      } catch (err) {
+        console.warn("Failed to fetch job details from API:", err);
+      }
+    }
+
+    loadJobDetails();
+
+    const handleUpdate = () => {
+      const stored = getStoredJobs();
+      const found = stored.find(
+        (j) =>
+          (j.slug || "").toLowerCase().trim() === decodedSlug ||
+          (j.id || "").toLowerCase().trim() === decodedSlug
+      );
+      if (found) {
+        setJob(found);
+      }
+      loadJobDetails();
+    };
+
+    window.addEventListener("venus_jobs_updated", handleUpdate);
+    return () => window.removeEventListener("venus_jobs_updated", handleUpdate);
+  }, [decodedSlug]);
+
   const matchRoute = useMatchRoute();
   const isApplyRoute = matchRoute({ to: "/careers/$slug/apply", fuzzy: false });
 

@@ -1,15 +1,24 @@
+import { useState, useEffect } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteNav } from "@/components/site/SiteNav";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { ApplicationForm } from "@/components/careers/ApplicationForm";
-import { MOCK_JOBS } from "@/components/careers/mockJobs";
+import { MOCK_JOBS, type JobItem } from "@/components/careers/mockJobs";
+import { getStoredJobs } from "@/lib/careers/jobs";
 
 export const Route = createFileRoute("/careers/$slug/apply")({
   head: ({ params }) => {
-    const job = MOCK_JOBS.find((j) => j.slug === params.slug);
+    const stored = getStoredJobs();
+    const job = stored.find((j) => j.slug === params.slug || j.id === params.slug) ||
+      MOCK_JOBS.find((j) => j.slug === params.slug || j.id === params.slug);
+
+    const formattedTitle = params.slug
+      .replace(/-/g, " ")
+      .replace(/\b\w/g, (c) => c.toUpperCase());
+
     const title = job
       ? `Apply for ${job.title} | Venus Hiring Careers`
-      : "Application Form | Venus Hiring Careers";
+      : `Apply for ${formattedTitle} | Venus Hiring Careers`;
     const description = job
       ? `Submit your application for the ${job.title} position in ${job.location}.`
       : "Submit your application to Venus Hiring.";
@@ -29,7 +38,66 @@ export const Route = createFileRoute("/careers/$slug/apply")({
 
 function ApplicationPage() {
   const { slug } = Route.useParams();
-  const job = MOCK_JOBS.find((j) => j.slug === slug);
+  const decodedSlug = decodeURIComponent(slug || "").toLowerCase().trim();
+
+  const [job, setJob] = useState<JobItem | undefined>(() =>
+    MOCK_JOBS.find(
+      (j) =>
+        (j.slug || "").toLowerCase().trim() === decodedSlug ||
+        (j.id || "").toLowerCase().trim() === decodedSlug
+    )
+  );
+
+  useEffect(() => {
+    const stored = getStoredJobs();
+    const cached = stored.find(
+      (j) =>
+        (j.slug || "").toLowerCase().trim() === decodedSlug ||
+        (j.id || "").toLowerCase().trim() === decodedSlug
+    );
+    if (cached) {
+      setJob(cached);
+    }
+
+    async function loadJobDetails() {
+      try {
+        const res = await fetch("/api/careers/jobs");
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data)) {
+            const found = data.find(
+              (j: any) =>
+                (j.slug || "").toLowerCase().trim() === decodedSlug ||
+                (j.id || "").toLowerCase().trim() === decodedSlug
+            );
+            if (found) {
+              setJob(found);
+            }
+          }
+        }
+      } catch (err) {
+        console.warn("Failed to fetch job details from API:", err);
+      }
+    }
+
+    loadJobDetails();
+
+    const handleUpdate = () => {
+      const stored = getStoredJobs();
+      const found = stored.find(
+        (j) =>
+          (j.slug || "").toLowerCase().trim() === decodedSlug ||
+          (j.id || "").toLowerCase().trim() === decodedSlug
+      );
+      if (found) {
+        setJob(found);
+      }
+      loadJobDetails();
+    };
+
+    window.addEventListener("venus_jobs_updated", handleUpdate);
+    return () => window.removeEventListener("venus_jobs_updated", handleUpdate);
+  }, [decodedSlug]);
 
   return (
     <div className="min-h-screen bg-background">

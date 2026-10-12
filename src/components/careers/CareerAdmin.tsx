@@ -133,6 +133,8 @@ export function CareerAdmin() {
   // Modal States
   const [isJobModalOpen, setIsJobModalOpen] = useState(false);
   const [editingJob, setEditingJob] = useState<AdminJobItem | null>(null);
+  const [isSavingJob, setIsSavingJob] = useState(false);
+  const [saveJobError, setSaveJobError] = useState<string | null>(null);
   const [selectedApp, setSelectedApp] = useState<CareerApplication | null>(null);
   const [deletingJobId, setDeletingJobId] = useState<string | null>(null);
   const [interviewModalApp, setInterviewModalApp] = useState<CareerApplication | null>(null);
@@ -238,6 +240,7 @@ export function CareerAdmin() {
   // Open Create Job Modal
   const handleOpenCreateModal = () => {
     setEditingJob(null);
+    setSaveJobError(null);
     setJobForm({
       title: "",
       slug: "",
@@ -270,6 +273,7 @@ export function CareerAdmin() {
   // Open Edit Job Modal
   const handleOpenEditModal = (job: AdminJobItem) => {
     setEditingJob(job);
+    setSaveJobError(null);
     setJobForm({
       title: job.title,
       slug: job.slug,
@@ -301,60 +305,78 @@ export function CareerAdmin() {
 
   // Save Job Handler
   const handleSaveJob = async (statusOverride?: "Draft" | "Published") => {
-    if (!jobForm.title.trim()) return;
-
-    const slug =
-      jobForm.slug.trim() ||
-      jobForm.title
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/(^-|-$)+/g, "");
-
-    const formattedData: Omit<AdminJobItem, "id" | "postedDate"> = {
-      title: jobForm.title.trim(),
-      slug,
-      department: jobForm.department,
-      category: jobForm.category,
-      location: jobForm.location,
-      workMode: jobForm.workMode,
-      employmentType: jobForm.employmentType,
-      experienceLevel: jobForm.experienceLevel,
-      minExperience: jobForm.minExperience,
-      maxExperience: jobForm.maxExperience,
-      salaryRange: jobForm.salaryRange.trim() || undefined,
-      currency: jobForm.currency,
-      description: jobForm.description.trim(),
-      aboutRole: jobForm.aboutRole.trim() || undefined,
-      responsibilities: jobForm.responsibilities
-        ? jobForm.responsibilities.split("\n").filter((l) => l.trim())
-        : [],
-      qualifications: jobForm.qualifications
-        ? jobForm.qualifications.split("\n").filter((l) => l.trim())
-        : [],
-      preferredQualifications: jobForm.preferredQualifications
-        ? jobForm.preferredQualifications.split("\n").filter((l) => l.trim())
-        : [],
-      niceToHave: jobForm.skills
-        ? jobForm.skills.split(",").map((s) => s.trim()).filter(Boolean)
-        : [],
-      benefits: jobForm.benefits
-        ? jobForm.benefits.split("\n").filter((l) => l.trim())
-        : [],
-      aboutCompany: jobForm.aboutCompany,
-      openingsCount: jobForm.openingsCount,
-      hiringManager: jobForm.hiringManager,
-      applicationDeadline: jobForm.applicationDeadline,
-      status: statusOverride || jobForm.status,
-    };
-
-    if (editingJob) {
-      await updateAdminJob(editingJob.id, formattedData);
-    } else {
-      await createAdminJob(formattedData);
+    setSaveJobError(null);
+    if (!jobForm.title.trim()) {
+      setSaveJobError("Job title is required.");
+      return;
+    }
+    if (!jobForm.description.trim()) {
+      setSaveJobError("Job description is required.");
+      return;
     }
 
-    setIsJobModalOpen(false);
-    loadData();
+    if (isSavingJob) return;
+    setIsSavingJob(true);
+
+    try {
+      const slug =
+        jobForm.slug.trim() ||
+        jobForm.title
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/(^-|-$)+/g, "");
+
+      const formattedData: Omit<AdminJobItem, "id" | "postedDate"> = {
+        title: jobForm.title.trim(),
+        slug,
+        department: jobForm.department,
+        category: jobForm.category,
+        location: jobForm.location,
+        workMode: jobForm.workMode,
+        employmentType: jobForm.employmentType,
+        experienceLevel: jobForm.experienceLevel,
+        minExperience: jobForm.minExperience,
+        maxExperience: jobForm.maxExperience,
+        salaryRange: jobForm.salaryRange.trim() || undefined,
+        currency: jobForm.currency,
+        description: jobForm.description.trim(),
+        aboutRole: jobForm.aboutRole.trim() || undefined,
+        responsibilities: jobForm.responsibilities
+          ? jobForm.responsibilities.split("\n").filter((l) => l.trim())
+          : [],
+        qualifications: jobForm.qualifications
+          ? jobForm.qualifications.split("\n").filter((l) => l.trim())
+          : [],
+        preferredQualifications: jobForm.preferredQualifications
+          ? jobForm.preferredQualifications.split("\n").filter((l) => l.trim())
+          : [],
+        niceToHave: jobForm.skills
+          ? jobForm.skills.split(",").map((s) => s.trim()).filter(Boolean)
+          : [],
+        benefits: jobForm.benefits
+          ? jobForm.benefits.split("\n").filter((l) => l.trim())
+          : [],
+        aboutCompany: jobForm.aboutCompany,
+        openingsCount: jobForm.openingsCount,
+        hiringManager: jobForm.hiringManager,
+        applicationDeadline: jobForm.applicationDeadline,
+        status: statusOverride || jobForm.status,
+      };
+
+      if (editingJob) {
+        await updateAdminJob(editingJob.id, formattedData);
+      } else {
+        await createAdminJob(formattedData);
+      }
+
+      setIsJobModalOpen(false);
+      await loadData();
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setSaveJobError(msg || "Failed to save job to database. Please check required fields.");
+    } finally {
+      setIsSavingJob(false);
+    }
   };
 
   // Delete Job Handler
@@ -711,7 +733,7 @@ export function CareerAdmin() {
               />
             </div>
 
-            {activeTab === "jobs" && userRole !== "Viewer" && (
+            {activeTab === "jobs" && (userRole as string) !== "Viewer" && (
               <button
                 type="button"
                 onClick={handleOpenCreateModal}
@@ -1217,6 +1239,13 @@ export function CareerAdmin() {
               </button>
             </div>
 
+            {saveJobError && (
+              <div className="flex items-center gap-2 rounded-xl border border-red-500/20 bg-red-500/10 p-3 text-xs font-semibold text-red-600 dark:text-red-400">
+                <XCircle className="h-4 w-4 shrink-0" />
+                <span>{saveJobError}</span>
+              </div>
+            )}
+
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
               <div className="sm:col-span-2">
                 <label className="text-xs font-semibold text-muted-foreground block mb-1">Job Title *</label>
@@ -1363,17 +1392,19 @@ export function CareerAdmin() {
             <div className="flex items-center justify-end gap-3 pt-4 border-t border-border/60">
               <button
                 type="button"
+                disabled={isSavingJob}
                 onClick={() => handleSaveJob("Draft")}
-                className="rounded-full border border-border bg-card px-6 py-2.5 text-xs font-bold text-foreground hover:bg-accent"
+                className="rounded-full border border-border bg-card px-6 py-2.5 text-xs font-bold text-foreground hover:bg-accent disabled:opacity-50"
               >
-                Save Draft
+                {isSavingJob ? "Saving..." : "Save Draft"}
               </button>
               <button
                 type="button"
+                disabled={isSavingJob}
                 onClick={() => handleSaveJob("Published")}
-                className="rounded-full bg-brand px-6 py-2.5 text-xs font-bold text-white shadow-brand hover:brightness-110"
+                className="rounded-full bg-brand px-6 py-2.5 text-xs font-bold text-white shadow-brand hover:brightness-110 disabled:opacity-50"
               >
-                Publish Position
+                {isSavingJob ? "Publishing..." : "Publish Position"}
               </button>
             </div>
           </div>

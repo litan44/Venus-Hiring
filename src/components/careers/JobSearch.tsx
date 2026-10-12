@@ -1,47 +1,82 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Search, X, SearchX } from "lucide-react";
 import { JobCard } from "./JobCard";
 import { JobFilters } from "./JobFilters";
 import { MOCK_JOBS, type JobItem } from "./mockJobs";
+import { getStoredJobs } from "@/lib/careers/jobs";
 
 export function JobSearch() {
+  const [jobs, setJobs] = useState<JobItem[]>(MOCK_JOBS);
   const [searchQuery, setSearchQuery] = useState("");
   const [department, setDepartment] = useState("All");
   const [location, setLocation] = useState("All");
   const [employmentType, setEmploymentType] = useState("All");
   const [experienceLevel, setExperienceLevel] = useState("All");
 
-  // Extract unique filter options dynamically from data
-  const departments = useMemo(() => {
-    const set = new Set(MOCK_JOBS.map((j) => j.department));
-    return ["All", ...Array.from(set)];
+  useEffect(() => {
+    // Sync local storage on client mount to prevent SSR hydration mismatch
+    const stored = getStoredJobs();
+    const publishedStored = stored.filter((j) => !j.status || j.status === "Published");
+    if (publishedStored.length > 0) {
+      setJobs(publishedStored);
+    }
+
+    async function loadJobs() {
+      try {
+        const res = await fetch("/api/careers/jobs");
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data) && data.length > 0) {
+            const published = data.filter((j: any) => !j.status || j.status === "Published");
+            if (published.length > 0) {
+              setJobs(published);
+            }
+          }
+        }
+      } catch (err) {
+        console.warn("Failed to load jobs from API, using fallback:", err);
+      }
+    }
+
+    loadJobs();
+
+    const handleUpdate = () => {
+      const stored = getStoredJobs();
+      const published = stored.filter((j) => !j.status || j.status === "Published");
+      if (published.length > 0) {
+        setJobs(published);
+      }
+      loadJobs();
+    };
+
+    window.addEventListener("venus_jobs_updated", handleUpdate);
+    return () => window.removeEventListener("venus_jobs_updated", handleUpdate);
   }, []);
+
+  // Extract unique filter options dynamically from active data
+  const departments = useMemo(() => {
+    const set = new Set(jobs.map((j) => j.department));
+    return ["All", ...Array.from(set)];
+  }, [jobs]);
 
   const locations = useMemo(() => {
-    return [
-      "All",
-      "Toronto, ON",
-      "Toronto, ON (Hybrid)",
-      "Vancouver, BC",
-      "Montreal, QC (Hybrid)",
-      "Remote (Global)",
-      "Remote (US)",
-    ];
-  }, []);
+    const set = new Set(jobs.map((j) => j.location));
+    return ["All", ...Array.from(set)];
+  }, [jobs]);
 
   const employmentTypes = useMemo(() => {
-    const set = new Set(MOCK_JOBS.map((j) => j.employmentType));
+    const set = new Set(jobs.map((j) => j.employmentType));
     return ["All", ...Array.from(set)];
-  }, []);
+  }, [jobs]);
 
   const experienceLevels = useMemo(() => {
-    const set = new Set(MOCK_JOBS.map((j) => j.experienceLevel));
+    const set = new Set(jobs.map((j) => j.experienceLevel));
     return ["All", ...Array.from(set)];
-  }, []);
+  }, [jobs]);
 
   // Filtered jobs calculation
   const filteredJobs = useMemo(() => {
-    return MOCK_JOBS.filter((job) => {
+    return jobs.filter((job) => {
       const matchesSearch =
         searchQuery.trim() === "" ||
         job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -68,7 +103,7 @@ export function JobSearch() {
         matchesLevel
       );
     });
-  }, [searchQuery, department, location, employmentType, experienceLevel]);
+  }, [jobs, searchQuery, department, location, employmentType, experienceLevel]);
 
   const handleResetFilters = () => {
     setSearchQuery("");
