@@ -6,6 +6,7 @@ export interface JobItem {
   location: string;
   employmentType: string;
   experienceLevel: string;
+  workMode?: string;
   salaryRange?: string;
   description: string;
   postedDate: string;
@@ -25,6 +26,7 @@ export const MOCK_JOBS: JobItem[] = [
     location: "Toronto, ON (Hybrid)",
     employmentType: "Full-Time",
     experienceLevel: "Senior",
+    workMode: "Hybrid",
     salaryRange: "$135,000 - $165,000 CAD",
     description: "Lead the development of scalable enterprise web applications, collaborating with cross-functional product and design teams across North America.",
     postedDate: "2 days ago",

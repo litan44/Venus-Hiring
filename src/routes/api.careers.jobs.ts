@@ -28,6 +28,7 @@ export const Route = createFileRoute("/api/careers/jobs")({
               id, title, slug, department, location,
               employment_type AS "employmentType",
               experience_level AS "experienceLevel",
+              work_mode AS "workMode",
               salary_range AS "salaryRange",
               description, about_role AS "aboutRole",
               responsibilities, qualifications, nice_to_have AS "niceToHave",
@@ -37,6 +38,7 @@ export const Route = createFileRoute("/api/careers/jobs")({
 
           const formatted = res.rows.map((row) => ({
             ...row,
+            workMode: row.workMode || "Hybrid",
             responsibilities: safeParseArray(row.responsibilities),
             qualifications: safeParseArray(row.qualifications),
             niceToHave: safeParseArray(row.niceToHave),
@@ -89,13 +91,14 @@ export const Route = createFileRoute("/api/careers/jobs")({
           const location = body.location || "Remote";
           const employmentType = body.employmentType || "Full-Time";
           const experienceLevel = body.experienceLevel || "Mid-Level";
+          const workMode = body.workMode || "Hybrid";
 
           const result = await pool.query(
             `INSERT INTO career_jobs (
               id, title, slug, department, location, employment_type, experience_level,
               salary_range, description, about_role, responsibilities, qualifications,
-              nice_to_have, benefits, status, posted_date
-            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
+              nice_to_have, benefits, status, posted_date, work_mode
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
             ON CONFLICT (slug) DO UPDATE SET
               title = EXCLUDED.title,
               department = EXCLUDED.department,
@@ -110,8 +113,9 @@ export const Route = createFileRoute("/api/careers/jobs")({
               nice_to_have = EXCLUDED.nice_to_have,
               benefits = EXCLUDED.benefits,
               status = EXCLUDED.status,
-              posted_date = EXCLUDED.posted_date
-            RETURNING id, title, slug, status, posted_date;`,
+              posted_date = EXCLUDED.posted_date,
+              work_mode = EXCLUDED.work_mode
+            RETURNING id, title, slug, status, posted_date, work_mode AS "workMode";`,
             [
               id,
               body.title.trim(),
@@ -129,6 +133,7 @@ export const Route = createFileRoute("/api/careers/jobs")({
               JSON.stringify(body.benefits || []),
               status,
               postedDate,
+              workMode,
             ]
           );
 
@@ -139,7 +144,7 @@ export const Route = createFileRoute("/api/careers/jobs")({
               success: true,
               id: savedRow ? savedRow.id : id,
               slug: savedRow ? savedRow.slug : slug,
-              job: savedRow,
+              job: savedRow ? { ...savedRow, workMode: savedRow.workMode || workMode } : { id, slug, workMode },
             }),
             {
               status: 201,
@@ -192,8 +197,9 @@ export const Route = createFileRoute("/api/careers/jobs")({
           const updatedNiceToHave = body.niceToHave !== undefined ? JSON.stringify(body.niceToHave) : existing.nice_to_have;
           const updatedBenefits = body.benefits !== undefined ? JSON.stringify(body.benefits) : existing.benefits;
           const updatedStatus = body.status !== undefined ? body.status : existing.status;
+          const updatedWorkMode = body.workMode !== undefined ? body.workMode : (existing.work_mode || "Hybrid");
 
-          await pool.query(
+          const updateRes = await pool.query(
             `UPDATE career_jobs SET
               title = $1,
               slug = $2,
@@ -208,8 +214,10 @@ export const Route = createFileRoute("/api/careers/jobs")({
               qualifications = $11,
               nice_to_have = $12,
               benefits = $13,
-              status = $14
-            WHERE id = $15;`,
+              status = $14,
+              work_mode = $15
+            WHERE id = $16
+            RETURNING id, title, slug, status, posted_date, work_mode AS "workMode";`,
             [
               updatedTitle,
               updatedSlug,
@@ -225,11 +233,14 @@ export const Route = createFileRoute("/api/careers/jobs")({
               updatedNiceToHave,
               updatedBenefits,
               updatedStatus,
+              updatedWorkMode,
               body.id,
             ]
           );
 
-          return new Response(JSON.stringify({ success: true, id: body.id }), {
+          const updatedRow = updateRes.rows[0];
+
+          return new Response(JSON.stringify({ success: true, id: body.id, job: updatedRow }), {
             status: 200,
             headers: { "Content-Type": "application/json" },
           });

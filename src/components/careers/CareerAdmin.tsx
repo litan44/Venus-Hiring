@@ -191,7 +191,7 @@ export function CareerAdmin() {
     department: "Technology",
     category: "Software Development",
     location: "Toronto, ON",
-    workMode: "Hybrid" as "Remote" | "Hybrid" | "On-site",
+    workMode: "Hybrid" as "Remote" | "Hybrid" | "On-site" | "Onsite" | string,
     employmentType: "Full-Time" as "Full-Time" | "Part-Time" | "Contract" | "Internship",
     experienceLevel: "Senior" as "Entry-Level" | "Mid-Level" | "Senior" | "Executive",
     minExperience: "3 years",
@@ -280,7 +280,7 @@ export function CareerAdmin() {
       department: job.department,
       category: job.category || "General",
       location: job.location,
-      workMode: (job.workMode as "Remote" | "Hybrid" | "On-site") || "Hybrid",
+      workMode: (job.workMode as any) || "Hybrid",
       employmentType: (job.employmentType as "Full-Time" | "Part-Time" | "Contract" | "Internship") || "Full-Time",
       experienceLevel: (job.experienceLevel as "Entry-Level" | "Mid-Level" | "Senior" | "Executive") || "Senior",
       minExperience: job.minExperience || "3 years",
@@ -736,8 +736,9 @@ export function CareerAdmin() {
             {activeTab === "jobs" && (userRole as string) !== "Viewer" && (
               <button
                 type="button"
+                id="create-new-job-btn"
                 onClick={handleOpenCreateModal}
-                className="inline-flex items-center gap-1.5 rounded-full bg-brand px-5 py-2.5 text-xs font-bold text-white shadow-brand hover:brightness-110 transition-all"
+                className="inline-flex items-center gap-1.5 rounded-full bg-brand px-5 py-2.5 text-xs font-bold text-white shadow-brand hover:brightness-110 transition-all cursor-pointer"
               >
                 <Plus className="h-4 w-4" /> Create New Job
               </button>
@@ -848,9 +849,11 @@ export function CareerAdmin() {
                           </button>
                           <button
                             type="button"
+                            id={`edit-job-btn-${job.slug}`}
+                            data-testid={`edit-job-${job.slug}`}
                             onClick={() => handleOpenEditModal(job)}
                             aria-label="Edit position"
-                            className="rounded-lg p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+                            className="rounded-lg p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors cursor-pointer"
                           >
                             <Edit2 className="h-4 w-4" />
                           </button>
@@ -1286,12 +1289,14 @@ export function CareerAdmin() {
               <div>
                 <label className="text-xs font-semibold text-muted-foreground block mb-1">Work Mode</label>
                 <select
+                  id="job-work-mode-select"
                   value={jobForm.workMode}
-                  onChange={(e) => setJobForm({ ...jobForm, workMode: e.target.value as "Remote" | "Hybrid" | "On-site" })}
+                  onChange={(e) => setJobForm({ ...jobForm, workMode: e.target.value })}
                   className="h-10 w-full rounded-xl border border-border bg-background px-3 text-xs font-medium text-foreground"
                 >
                   <option value="Hybrid">Hybrid</option>
                   <option value="Remote">Remote</option>
+                  <option value="Onsite">Onsite</option>
                   <option value="On-site">On-site</option>
                 </select>
               </div>
@@ -1392,6 +1397,7 @@ export function CareerAdmin() {
             <div className="flex items-center justify-end gap-3 pt-4 border-t border-border/60">
               <button
                 type="button"
+                id="save-draft-job-btn"
                 disabled={isSavingJob}
                 onClick={() => handleSaveJob("Draft")}
                 className="rounded-full border border-border bg-card px-6 py-2.5 text-xs font-bold text-foreground hover:bg-accent disabled:opacity-50"
@@ -1400,6 +1406,7 @@ export function CareerAdmin() {
               </button>
               <button
                 type="button"
+                id="publish-job-submit-btn"
                 disabled={isSavingJob}
                 onClick={() => handleSaveJob("Published")}
                 className="rounded-full bg-brand px-6 py-2.5 text-xs font-bold text-white shadow-brand hover:brightness-110 disabled:opacity-50"

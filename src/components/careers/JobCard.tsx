@@ -1,4 +1,4 @@
-import { MapPin, Briefcase, GraduationCap, ArrowRight } from "lucide-react";
+import { MapPin, Briefcase, GraduationCap, ArrowRight, Laptop } from "lucide-react";
 import type { JobItem } from "./mockJobs";
 
 interface JobCardProps {
@@ -41,6 +41,12 @@ export function JobCard({ job }: JobCardProps) {
             <GraduationCap className="h-4 w-4 text-brand" />
             <span>{job.experienceLevel}</span>
           </div>
+          {job.workMode && (
+            <div className="flex items-center gap-1.5 font-medium text-foreground/80">
+              <Laptop className="h-4 w-4 text-brand" />
+              <span>{job.workMode}</span>
+            </div>
+          )}
         </div>
       </div>
 

@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { MapPin, Briefcase, GraduationCap, DollarSign, Calendar, ArrowLeft, ArrowRight, CheckCircle2, ShieldCheck, Clock } from "lucide-react";
+import { MapPin, Briefcase, GraduationCap, DollarSign, Calendar, ArrowLeft, ArrowRight, CheckCircle2, ShieldCheck, Clock, Laptop } from "lucide-react";
 import heroOfficeImg from "@/assets/hero-office.jpg";
 import type { JobItem } from "./mockJobs";
 
@@ -76,7 +76,7 @@ export function JobDetails({ job }: JobDetailsProps) {
 
             {/* Subtitle Meta */}
             <p className="mt-6 text-lg font-medium text-white/80 sm:text-xl lg:text-2xl">
-              {job.location} &nbsp;·&nbsp; {job.employmentType} &nbsp;·&nbsp; {job.experienceLevel} Level
+              {job.location} &nbsp;·&nbsp; {job.employmentType} &nbsp;·&nbsp; {job.workMode ? `${job.workMode} · ` : ""}{job.experienceLevel} Level
             </p>
           </div>
         </div>
@@ -106,6 +106,15 @@ export function JobDetails({ job }: JobDetailsProps) {
                   </span>
                   <span className="text-sm font-semibold text-foreground">{job.employmentType}</span>
                 </div>
+
+                {job.workMode && (
+                  <div className="flex flex-col gap-1">
+                    <span className="text-xs text-muted-foreground flex items-center gap-1.5">
+                      <Laptop className="h-3.5 w-3.5 text-brand" /> Work Mode
+                    </span>
+                    <span className="text-sm font-semibold text-foreground">{job.workMode}</span>
+                  </div>
+                )}
 
                 <div className="flex flex-col gap-1">
                   <span className="text-xs text-muted-foreground flex items-center gap-1.5">

@@ -29,8 +29,10 @@ export async function initCareerDatabase(): Promise<void> {
         benefits TEXT,
         status VARCHAR(50) DEFAULT 'Published',
         posted_date VARCHAR(50) DEFAULT 'Just now',
+        work_mode VARCHAR(50) DEFAULT 'Hybrid',
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
+      ALTER TABLE career_jobs ADD COLUMN IF NOT EXISTS work_mode VARCHAR(50) DEFAULT 'Hybrid';
     `);
 
     // 2. Create career_applications table
