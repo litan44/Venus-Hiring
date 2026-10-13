@@ -257,5 +257,188 @@ export const US_GALLERY_ITEMS: GalleryItem[] = [
   },
 ];
 
-// Canadian Gallery Items: Empty until authentic Canadian operational photographs are available
-export const GALLERY_ITEMS: GalleryItem[] = [];
+const CANADA_BASE_URL = "/Gallery/Canada";
+
+// Canadian Gallery Items: Restored from verified source operational photographs
+export const GALLERY_ITEMS: GalleryItem[] = [
+  {
+    id: 101,
+    image: `${CANADA_BASE_URL}/Great%20Meeting%20with%20the%20President%20and%20CEO%20of%20BDC%20bank,%20Isabelle%20Hudon.jpg`,
+    eventName: "With Isabelle Hudon - President & CEO of BDC Bank",
+    location: "Montreal, Quebec, Canada",
+    description:
+      "Strategic discussion with Isabelle Hudon, President and CEO of BDC Bank, on expanding Canadian business financing, diversity initiatives, and talent solutions.",
+    attendees: "Venus Consultancy team met with Isabelle Hudon, President & CEO of BDC Bank",
+    orientation: "landscape",
+    category: "Diplomatic & Government",
+    objectPosition: "object-[center_15%]",
+  },
+  {
+    id: 102,
+    image: `${CANADA_BASE_URL}/Ontario%20Network%20Event%20with%20Venus%20Consultancy%20and%20Venus%20Global%20tech.jpg`,
+    eventName: "Ontario Network Event",
+    location: "Ontario, Canada",
+    description:
+      "Engaging with Ontario business leaders, entrepreneurs, and industry partners to discuss technological advancement and executive talent acquisition.",
+    attendees: "Venus Consultancy and Venus Global Technology teams at Ontario Network Event",
+    orientation: "landscape",
+    category: "Networking & Community",
+    objectPosition: "object-center",
+  },
+  {
+    id: 103,
+    image: `${CANADA_BASE_URL}/Panel%20Discussion%20with%20teh%20TD%20Bank,%20Scotia%20Bank.jpg`,
+    eventName: "Panel Discussion with TD Bank and Scotiabank",
+    location: "Toronto, Ontario, Canada",
+    description:
+      "Participating in an executive panel discussion with representatives from TD Bank and Scotiabank, focusing on financial sector innovation and workforce mobility.",
+    attendees: "Venus Consultancy participating in panel discussion with TD Bank and Scotiabank representatives",
+    orientation: "landscape",
+    category: "Industry Events",
+    objectPosition: "object-center",
+  },
+  {
+    id: 104,
+    image: `${CANADA_BASE_URL}/Sharing%20the%20Pizza%20with%20Team.jpg`,
+    eventName: "Team Building Event",
+    location: "Ontario, Canada",
+    description:
+      "Fostering teamwork, camaraderie, and company culture during a team building gathering.",
+    attendees: "Venus Consultancy core recruitment and operations team",
+    orientation: "landscape",
+    category: "Team & Culture",
+    objectPosition: "object-center",
+  },
+  {
+    id: 105,
+    image: `${CANADA_BASE_URL}/Team%20venus%20at%20Stellantis%20Headquarter%20Michigan.jpg`,
+    eventName: "Team Venus at Stellantis Headquarters",
+    location: "Stellantis Headquarters",
+    description:
+      "Venus Consultancy team visiting Stellantis headquarters to explore collaborative workforce initiatives and specialized talent acquisition.",
+    attendees: "Team Venus at Stellantis Headquarters",
+    orientation: "landscape",
+    category: "Corporate Partnerships",
+    objectPosition: "object-center",
+  },
+  {
+    id: 106,
+    image: `${CANADA_BASE_URL}/Venus%20Consultancy%20at%20Job-fair%20event.jpg`,
+    eventName: "Team Venus at Community Job Fair",
+    location: "Ontario, Canada",
+    description:
+      "Connecting job seekers with career opportunities, offering resume advice, and engaging with the local community at a regional job fair.",
+    attendees: "Team Venus Consultancy at community job fair",
+    orientation: "portrait",
+    category: "Community & Recruitment",
+    objectPosition: "object-[center_15%]",
+  },
+  {
+    id: 107,
+    image: `${CANADA_BASE_URL}/Venus%20Consultancy%20at%20HRPA.jpg`,
+    eventName: "Venus Consultancy at HRPA",
+    location: "Toronto, Ontario, Canada",
+    description:
+      "Attending the Human Resources Professionals Association (HRPA) Annual Conference to network with HR leaders and discuss emerging talent management strategies.",
+    attendees: "Venus Consultancy at Human Resources Professionals Association (HRPA)",
+    orientation: "landscape",
+    category: "HR & Industry Conferences",
+    objectPosition: "object-center",
+  },
+  {
+    id: 108,
+    image: `${CANADA_BASE_URL}/With%20The%20Minister%20of%20Energy%20Ontario%20Province,%20Todd%20Smith.jpg`,
+    eventName: "With Todd Smith - Minister of Energy Ontario Province",
+    location: "Ontario, Canada",
+    description:
+      "Productive meeting with the Ontario Minister of Energy, Todd Smith, discussing energy sector growth, clean technology initiatives, and skilled labour demand.",
+    attendees: "Venus Consultancy leadership met with Todd Smith, Ontario Minister of Energy",
+    orientation: "portrait",
+    category: "Diplomatic & Government",
+    objectPosition: "object-[center_15%]",
+  },
+  {
+    id: 109,
+    image: `${CANADA_BASE_URL}/At%20Canadian%20Embassy%20Washington%20DC.jpg`,
+    eventName: "At Canadian Embassy Washington DC",
+    location: "Washington, D.C.",
+    description:
+      "Representing Canadian recruitment and technology enterprise at the Embassy of Canada in Washington, D.C., supporting bilateral trade and workforce relations.",
+    attendees: "Venus Consultancy leadership at Embassy of Canada in Washington, D.C.",
+    orientation: "portrait",
+    category: "Diplomatic & Government",
+    objectPosition: "object-[center_10%]",
+  },
+  {
+    id: 110,
+    image: `${CANADA_BASE_URL}/Great%20Meeting%20With%20the%2022nd%20Prime%20Minister%20of%20Canada%20Stephen%20Harper.jpg`,
+    eventName: "With Stephen Harper - 22nd Prime Minister of Canada",
+    location: "Canada",
+    description:
+      "High-level meeting with the 22nd Prime Minister of Canada, Stephen Harper, discussing international business, trade policy, and economic competitiveness.",
+    attendees: "Venus Consultancy leadership met with Stephen Harper, 22nd Prime Minister of Canada",
+    orientation: "portrait",
+    category: "Diplomatic & Government",
+    objectPosition: "object-[center_15%]",
+  },
+  {
+    id: 111,
+    image: `${CANADA_BASE_URL}/Great%20meeting%20with%20the%20Governor%20of%20the%20Bank%20of%20Canada,%20Tiff%20Macklem.jpg`,
+    eventName: "With Tiff Macklem - Governor of the Bank of Canada",
+    location: "Canada",
+    description:
+      "Distinguished meeting with Tiff Macklem, Governor of the Bank of Canada, discussing economic trends, labor market conditions, and financial stability.",
+    attendees: "Venus Consultancy leadership met with Tiff Macklem, Governor of the Bank of Canada",
+    orientation: "portrait",
+    category: "Diplomatic & Government",
+    objectPosition: "object-[center_15%]",
+  },
+  {
+    id: 112,
+    image: `${CANADA_BASE_URL}/Ontario%20Business%20Network%20Event%20with%20Venus%20Consultancy%20and%20Venus%20Global%20tech.jpg`,
+    eventName: "Ontario Business Network Event",
+    location: "Ontario, Canada",
+    description:
+      "Presenting recognitions and engaging with entrepreneurs, executives, and technology innovators at the Ontario Business Network Event.",
+    attendees: "Venus Consultancy and Venus Global Technology at Ontario Business Network Event",
+    orientation: "portrait",
+    category: "Networking & Community",
+    objectPosition: "object-[center_15%]",
+  },
+  {
+    id: 113,
+    image: `${CANADA_BASE_URL}/Team%20Venus%20at%20US%20thanks%20giving%20dinner%20at%20AMCHAM%20Gala%20Event.jpg`,
+    eventName: "Team Venus at AMCHAM Gala Event",
+    location: "Canada / United States",
+    description:
+      "Celebrating at the American Chamber of Commerce Gala Event, networking with cross-border business leaders and industry partners.",
+    attendees: "Team Venus Consultancy at AMCHAM Thanksgiving Gala",
+    orientation: "portrait",
+    category: "Industry Events",
+    objectPosition: "object-[center_15%]",
+  },
+  {
+    id: 114,
+    image: `${CANADA_BASE_URL}/Team%20Venus%20helping%20at%20Community%20Job%20fair.jpg`,
+    eventName: "Team Venus Helping at Community Job Fair",
+    location: "Ontario, Canada",
+    description:
+      "Team Venus actively supporting the community job fair, helping connect talented individuals with career opportunities and providing recruitment guidance.",
+    attendees: "Team Venus Consultancy at community job fair",
+    orientation: "landscape",
+    category: "Community & Recruitment",
+    objectPosition: "object-top",
+  },
+  {
+    id: 115,
+    image: `${CANADA_BASE_URL}/Venus%20Consultancy%20at%20Toronto%20Police%20Booth.jpg`,
+    eventName: "Venus Consultancy at Toronto Police Booth",
+    location: "Toronto, Ontario, Canada",
+    description:
+      "Engaging with the Toronto Police Service community outreach booth, strengthening community partnerships and supporting public safety employment initiatives.",
+    attendees: "Venus Consultancy with Toronto Police Service community outreach",
+    orientation: "portrait",
+    category: "Community & Partnerships",
+    objectPosition: "object-[center_15%]",
+  },
+];
