@@ -13,7 +13,8 @@ export interface GalleryItem {
 
 const BASE_REMOTE_URL = "/Gallery";
 
-export const GALLERY_ITEMS: GalleryItem[] = [
+// US / International gallery items (preserved for reference & venushiring.com)
+export const US_GALLERY_ITEMS: GalleryItem[] = [
   {
     id: 5,
     image: `${BASE_REMOTE_URL}/With%20Consulate%20General%20of%20US.jpg`,
@@ -255,3 +256,6 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     objectPosition: "object-[center_10%]",
   },
 ];
+
+// Canadian Gallery Items: Empty until authentic Canadian operational photographs are available
+export const GALLERY_ITEMS: GalleryItem[] = [];
