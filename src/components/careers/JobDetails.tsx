@@ -186,40 +186,6 @@ export function JobDetails({ job }: JobDetailsProps) {
                 </ul>
               </section>
             )}
-
-            {/* NICE TO HAVE */}
-            {job.niceToHave && job.niceToHave.length > 0 && (
-              <section className="space-y-4 pt-4">
-                <h2 className="font-display text-2xl font-bold text-foreground">
-                  NICE TO HAVE
-                </h2>
-                <ul className="space-y-3">
-                  {job.niceToHave.map((item, idx) => (
-                    <li key={idx} className="flex items-start gap-3 text-sm sm:text-base text-muted-foreground leading-relaxed">
-                      <span className="h-2 w-2 rounded-full bg-brand/60 shrink-0 mt-2.5" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            )}
-
-            {/* WHAT WE OFFER */}
-            {job.benefits && job.benefits.length > 0 && (
-              <section className="space-y-4 pt-4 border-t border-border/60">
-                <h2 className="font-display text-2xl font-bold text-foreground">
-                  WHAT WE OFFER
-                </h2>
-                <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                  {job.benefits.map((benefit, idx) => (
-                    <li key={idx} className="flex items-start gap-3 rounded-xl border border-border/60 bg-porcelain/40 p-4 text-xs sm:text-sm font-medium text-foreground">
-                      <CheckCircle2 className="h-4 w-4 text-brand shrink-0 mt-0.5" />
-                      <span>{benefit}</span>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            )}
           </main>
 
           {/* Sticky Sidebar (Right 4 cols) */}

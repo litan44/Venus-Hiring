@@ -203,8 +203,6 @@ export function CareerAdmin() {
     responsibilities: "",
     qualifications: "",
     preferredQualifications: "",
-    skills: "",
-    benefits: "",
     aboutCompany: "",
     openingsCount: 1,
     hiringManager: "Executive Recruitment Team",
@@ -259,8 +257,6 @@ export function CareerAdmin() {
       responsibilities: "",
       qualifications: "",
       preferredQualifications: "",
-      skills: "React, Node.js, TypeScript, AWS",
-      benefits: "Health Insurance, Hybrid Work, Learning Allowance",
       aboutCompany: "Venus Consultancy is a premier talent solutions firm.",
       openingsCount: 1,
       hiringManager: "Recruitment Lead",
@@ -292,8 +288,6 @@ export function CareerAdmin() {
       responsibilities: job.responsibilities ? job.responsibilities.join("\n") : "",
       qualifications: job.qualifications ? job.qualifications.join("\n") : "",
       preferredQualifications: job.preferredQualifications ? job.preferredQualifications.join("\n") : "",
-      skills: job.niceToHave ? job.niceToHave.join(", ") : "",
-      benefits: job.benefits ? job.benefits.join("\n") : "",
       aboutCompany: job.aboutCompany || "",
       openingsCount: job.openingsCount || 1,
       hiringManager: job.hiringManager || "Hiring Team",
@@ -350,12 +344,8 @@ export function CareerAdmin() {
         preferredQualifications: jobForm.preferredQualifications
           ? jobForm.preferredQualifications.split("\n").filter((l) => l.trim())
           : [],
-        niceToHave: jobForm.skills
-          ? jobForm.skills.split(",").map((s) => s.trim()).filter(Boolean)
-          : [],
-        benefits: jobForm.benefits
-          ? jobForm.benefits.split("\n").filter((l) => l.trim())
-          : [],
+        niceToHave: [],
+        benefits: [],
         aboutCompany: jobForm.aboutCompany,
         openingsCount: jobForm.openingsCount,
         hiringManager: jobForm.hiringManager,
