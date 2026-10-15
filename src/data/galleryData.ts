@@ -13,8 +13,8 @@ export interface GalleryItem {
 
 const BASE_REMOTE_URL = "/Gallery";
 
-// US / International gallery items (preserved for reference & venushiring.com)
-export const US_GALLERY_ITEMS: GalleryItem[] = [
+// venushiring.com official gallery items (24 authentic events & meetings)
+export const GALLERY_ITEMS: GalleryItem[] = [
   {
     id: 5,
     image: `${BASE_REMOTE_URL}/With%20Consulate%20General%20of%20US.jpg`,
@@ -257,10 +257,12 @@ export const US_GALLERY_ITEMS: GalleryItem[] = [
   },
 ];
 
+export const US_GALLERY_ITEMS: GalleryItem[] = GALLERY_ITEMS;
+
 const CANADA_BASE_URL = "/Gallery/Canada";
 
-// Canadian Gallery Items: Restored from verified source operational photographs
-export const GALLERY_ITEMS: GalleryItem[] = [
+// Canadian Gallery Items: Preserved for Canadian operations
+export const CANADIAN_GALLERY_ITEMS: GalleryItem[] = [
   {
     id: 101,
     image: `${CANADA_BASE_URL}/Great%20Meeting%20with%20the%20President%20and%20CEO%20of%20BDC%20bank,%20Isabelle%20Hudon.jpg`,
