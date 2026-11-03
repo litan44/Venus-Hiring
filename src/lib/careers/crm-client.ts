@@ -244,6 +244,46 @@ export async function fetchCrmJob(idOrSlug: string): Promise<JobItem | null> {
   return result?.data || null;
 }
 
+export interface CandidateApplicationPayload {
+  jobPostingId: string;
+  jobTitle?: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string;
+  location?: string;
+  currentTitle?: string;
+  currentCompany?: string;
+  experienceYears?: string;
+  linkedinUrl?: string;
+  portfolioUrl?: string;
+  coverLetter?: string;
+  resumeDataUrl?: string;
+  resumeFileName?: string;
+  resumeFileSize?: string;
+  resumeFileType?: string;
+  isResumeBuiltLive?: boolean;
+  consentGiven?: boolean;
+  source?: string;
+}
+
+export interface CrmSubmissionResult {
+  success: boolean;
+  applicantId?: string;
+  resumeUrl?: string | null;
+  error?: string;
+}
+
+const ALLOWED_RESUME_MIME_TYPES = new Set([
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "text/plain",
+  "application/rtf",
+]);
+const MAX_RESUME_BYTES = 25 * 1024 * 1024; // 25MB CRM max
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 /**
  * Uploads a resume data URL to the CRM /careers/apply/upload-resume endpoint
  * Returns the relative resume URL matching CRM's RESUME_URL_PATTERN or null if failed.
@@ -257,14 +297,36 @@ export async function uploadResumeToCrm(
     if (parts.length < 2) return null;
 
     const mimeMatch = parts[0].match(/:(.*?);/);
-    const mimeType = mimeMatch ? mimeMatch[1] : "application/pdf";
-    const binary = atob(parts[1]);
-    const array = new Uint8Array(binary.length);
-    for (let i = 0; i < binary.length; i++) {
-      array[i] = binary.charCodeAt(i);
+    const mimeType = mimeMatch ? mimeMatch[1].toLowerCase() : "application/pdf";
+
+    // Validate MIME type
+    if (!ALLOWED_RESUME_MIME_TYPES.has(mimeType)) {
+      console.warn(`[VENUS CRM] Unsupported resume MIME type: ${mimeType}`);
+      return null;
     }
 
-    const blob = new Blob([array], { type: mimeType });
+    const base64Data = parts[1];
+    let uint8Array: Uint8Array;
+    if (typeof Buffer !== "undefined") {
+      const buf = Buffer.from(base64Data, "base64");
+      if (buf.length > MAX_RESUME_BYTES) {
+        console.warn(`[VENUS CRM] Resume file size (${buf.length} bytes) exceeds 25MB limit.`);
+        return null;
+      }
+      uint8Array = new Uint8Array(buf);
+    } else {
+      const binary = atob(base64Data);
+      if (binary.length > MAX_RESUME_BYTES) {
+        console.warn(`[VENUS CRM] Resume file size exceeds 25MB limit.`);
+        return null;
+      }
+      uint8Array = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) {
+        uint8Array[i] = binary.charCodeAt(i);
+      }
+    }
+
+    const blob = new Blob([uint8Array], { type: mimeType });
     const formData = new FormData();
     formData.append("file", blob, fileName);
 
@@ -275,7 +337,7 @@ export async function uploadResumeToCrm(
     }
 
     const controller = typeof AbortController !== "undefined" ? new AbortController() : null;
-    const timeoutId = controller ? setTimeout(() => controller.abort(), 6000) : null;
+    const timeoutId = controller ? setTimeout(() => controller.abort(), 8000) : null;
 
     try {
       const res = await fetch(uploadUrl, {
@@ -285,7 +347,8 @@ export async function uploadResumeToCrm(
       });
 
       if (!res.ok) {
-        console.warn(`[VENUS CRM] Resume upload returned HTTP ${res.status}`);
+        const errText = await res.text();
+        console.warn(`[VENUS CRM] Resume upload returned HTTP ${res.status}:`, errText);
         return null;
       }
 
@@ -303,3 +366,99 @@ export async function uploadResumeToCrm(
 
   return null;
 }
+
+/**
+ * Submits candidate application to Venus CRM:
+ * 1. Uploads resume to /careers/apply/upload-resume
+ * 2. Posts strictly whitelisted SubmitApplicationDto to /careers/apply
+ * Returns result containing applicantId and resumeUrl.
+ */
+export async function submitApplicantToVenusCRM(
+  payload: CandidateApplicationPayload
+): Promise<CrmSubmissionResult> {
+  const jobPostingId = (payload.jobPostingId || "").trim();
+  if (!jobPostingId || !UUID_PATTERN.test(jobPostingId)) {
+    return {
+      success: false,
+      error: `Invalid or missing CRM job posting UUID: '${jobPostingId}'. Must be a valid UUID.`,
+    };
+  }
+
+  // 1. Upload resume to CRM if provided
+  let uploadedResumeUrl: string | null = null;
+  if (payload.resumeDataUrl) {
+    uploadedResumeUrl = await uploadResumeToCrm(
+      payload.resumeDataUrl,
+      payload.resumeFileName || "resume.pdf"
+    );
+  }
+
+  // 2. Build strictly whitelisted DTO matching CRM's SubmitApplicationDto
+  // Note: CRM has forbidNonWhitelisted: true, so only send whitelisted fields!
+  const crmDto: Record<string, any> = {
+    jobPostingId,
+    firstName: (payload.firstName || "").trim(),
+    lastName: (payload.lastName || "").trim(),
+    email: (payload.email || "").trim(),
+    source: (payload.source || "VENUS_HIRING").toUpperCase(),
+  };
+
+  if (payload.phone && payload.phone.trim()) {
+    crmDto.phone = payload.phone.trim();
+  }
+
+  if (uploadedResumeUrl) {
+    crmDto.resumeUrl = uploadedResumeUrl;
+  }
+
+  const applyUrl = resolveCrmApiUrl("/careers/apply");
+  if (!applyUrl) {
+    return {
+      success: false,
+      error: "CRM_API_URL is not configured in environment.",
+    };
+  }
+
+  const controller = typeof AbortController !== "undefined" ? new AbortController() : null;
+  const timeoutId = controller ? setTimeout(() => controller.abort(), 8000) : null;
+
+  try {
+    const res = await fetch(applyUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      signal: controller?.signal,
+      body: JSON.stringify(crmDto),
+    });
+
+    if (!res.ok) {
+      const errText = await res.text();
+      console.warn(`[VENUS CRM] Submit application returned HTTP ${res.status}:`, errText);
+      return {
+        success: false,
+        error: `CRM returned status ${res.status}: ${errText}`,
+        resumeUrl: uploadedResumeUrl,
+      };
+    }
+
+    const json = await res.json();
+    console.log("[VENUS CRM] Applicant created successfully in CRM:", json);
+    return {
+      success: true,
+      applicantId: json?.id,
+      resumeUrl: uploadedResumeUrl,
+    };
+  } catch (err: any) {
+    console.error("[VENUS CRM] Failed to submit applicant to CRM:", err?.message || err);
+    return {
+      success: false,
+      error: err?.message || "Network error connecting to Venus CRM",
+      resumeUrl: uploadedResumeUrl,
+    };
+  } finally {
+    if (timeoutId) clearTimeout(timeoutId);
+  }
+}
+

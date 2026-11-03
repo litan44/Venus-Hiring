@@ -40,13 +40,22 @@ function ApplicationPage() {
   const { slug } = Route.useParams();
   const decodedSlug = decodeURIComponent(slug || "").toLowerCase().trim();
 
-  const [job, setJob] = useState<JobItem | undefined>(() =>
-    MOCK_JOBS.find(
-      (j) =>
-        (j.slug || "").toLowerCase().trim() === decodedSlug ||
-        (j.id || "").toLowerCase().trim() === decodedSlug
-    )
-  );
+  const [job, setJob] = useState<JobItem | undefined>(() => {
+    const stored = typeof window !== "undefined" ? getStoredJobs() : [];
+    return (
+      stored.find(
+        (j) =>
+          (j.slug || "").toLowerCase().trim() === decodedSlug ||
+          (j.id || "").toLowerCase().trim() === decodedSlug
+      ) ||
+      MOCK_JOBS.find(
+        (j) =>
+          (j.slug || "").toLowerCase().trim() === decodedSlug ||
+          (j.id || "").toLowerCase().trim() === decodedSlug
+      )
+    );
+  });
+  const [isLoading, setIsLoading] = useState(!job);
 
   useEffect(() => {
     const stored = getStoredJobs();
@@ -57,6 +66,7 @@ function ApplicationPage() {
     );
     if (cached) {
       setJob(cached);
+      setIsLoading(false);
     }
 
     async function loadJobDetails() {
@@ -67,6 +77,7 @@ function ApplicationPage() {
           const singleData = await singleRes.json();
           if (singleData && singleData.id) {
             setJob(singleData);
+            setIsLoading(false);
             return;
           }
         }
@@ -93,6 +104,8 @@ function ApplicationPage() {
         }
       } catch (err) {
         console.warn("Failed to fetch job details from API:", err);
+      } finally {
+        setIsLoading(false);
       }
     }
 
@@ -107,6 +120,7 @@ function ApplicationPage() {
       );
       if (found) {
         setJob(found);
+        setIsLoading(false);
       }
       loadJobDetails();
     };
@@ -119,7 +133,7 @@ function ApplicationPage() {
     <div className="min-h-screen bg-background">
       <SiteNav />
       <main id="main-content">
-        <ApplicationForm job={job} />
+        <ApplicationForm job={job} isLoading={isLoading} />
       </main>
       <SiteFooter />
     </div>

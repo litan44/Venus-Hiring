@@ -142,31 +142,39 @@ function saveStoredApplications(apps: CareerApplication[]): void {
 }
 
 export async function submitCareerApplication(
-  data: Omit<CareerApplication, "id" | "submittedAt" | "status">
+  data: Omit<CareerApplication, "id" | "submittedAt" | "status"> & { jobPostingId?: string }
 ): Promise<CareerApplication> {
-  const newId = `app_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+  let finalId = `app_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
   const submittedAt = new Date().toISOString();
-
-  const application: CareerApplication = {
-    ...data,
-    id: newId,
-    submittedAt,
-    status: "New",
-  };
 
   // 1. Attempt backend API database insert
   try {
     const res = await fetch("/api/careers/applications", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
+      body: JSON.stringify({
+        ...data,
+        jobPostingId: data.jobPostingId || data.jobId,
+      }),
     });
-    if (!res.ok) {
+    if (res.ok) {
+      const json = await res.json();
+      if (json?.id) {
+        finalId = json.id;
+      }
+    } else {
       console.warn("API database submission returned status:", res.status);
     }
   } catch (err) {
     console.warn("API database submission warning (using persistent storage fallback):", err);
   }
+
+  const application: CareerApplication = {
+    ...data,
+    id: finalId,
+    submittedAt,
+    status: "New",
+  };
 
   // 2. Persist locally to guarantee record immediately reaches Career Admin
   const currentApps = loadStoredApplications();

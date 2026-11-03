@@ -18,6 +18,7 @@ import heroOfficeImg from "@/assets/hero-office.jpg";
 
 interface ApplicationFormProps {
   job: JobItem | undefined;
+  isLoading?: boolean;
 }
 
 interface FormState {
@@ -47,7 +48,7 @@ interface FormErrors {
   consentGiven?: string;
 }
 
-export function ApplicationForm({ job }: ApplicationFormProps) {
+export function ApplicationForm({ job, isLoading = false }: ApplicationFormProps) {
   const [form, setForm] = useState<FormState>({
     firstName: "",
     lastName: "",
@@ -68,7 +69,19 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
   const [isResumeBuiltLive, setIsResumeBuiltLive] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [confirmationId, setConfirmationId] = useState<string>("");
   const [showBuilderNotice, setShowBuilderNotice] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-[60vh] flex flex-col items-center justify-center text-center py-20 px-4">
+        <Loader2 className="h-10 w-10 animate-spin text-brand mb-4" />
+        <h2 className="font-display text-xl font-bold text-foreground">Loading Application Form...</h2>
+        <p className="mt-2 text-sm text-muted-foreground">Retrieving position details from Venus Recruitment System.</p>
+      </div>
+    );
+  }
 
   if (!job) {
     return (
@@ -161,8 +174,6 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
     });
   };
 
-  const [submitError, setSubmitError] = useState<string | null>(null);
-
   // Form Validation
   const validate = (): boolean => {
     const newErrors: FormErrors = {};
@@ -239,8 +250,9 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
         }
       }
 
-      await submitCareerApplication({
+      const result = await submitCareerApplication({
         jobId: job.id,
+        jobPostingId: job.id,
         jobTitle: job.title,
         firstName: form.firstName.trim(),
         lastName: form.lastName.trim(),
@@ -260,6 +272,10 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
         coverLetter: form.coverLetter.trim() || undefined,
         consentGiven: form.consentGiven,
       });
+
+      if (result?.id) {
+        setConfirmationId(result.id);
+      }
 
       setIsSubmitting(false);
       setIsSubmitted(true);
@@ -287,6 +303,17 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
         <p className="mt-4 max-w-xl text-base text-muted-foreground sm:text-lg leading-relaxed">
           Thank you for applying for <strong className="text-foreground">{job.title}</strong>. Our executive recruitment team will review your application profile and contact you within 12 hours.
         </p>
+
+        {confirmationId && (
+          <div className="mt-6 rounded-2xl bg-card border border-border/80 px-6 py-4 shadow-soft inline-block text-left">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground block mb-1">
+              Application Reference ID
+            </span>
+            <span className="text-sm sm:text-base font-mono font-bold text-foreground">
+              {confirmationId}
+            </span>
+          </div>
+        )}
 
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
           <a

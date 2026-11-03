@@ -40,13 +40,22 @@ function JobDetailPage() {
   const { slug } = Route.useParams();
   const decodedSlug = decodeURIComponent(slug || "").toLowerCase().trim();
 
-  const [job, setJob] = useState<JobItem | undefined>(() =>
-    MOCK_JOBS.find(
-      (j) =>
-        (j.slug || "").toLowerCase().trim() === decodedSlug ||
-        (j.id || "").toLowerCase().trim() === decodedSlug
-    )
-  );
+  const [job, setJob] = useState<JobItem | undefined>(() => {
+    const stored = typeof window !== "undefined" ? getStoredJobs() : [];
+    return (
+      stored.find(
+        (j) =>
+          (j.slug || "").toLowerCase().trim() === decodedSlug ||
+          (j.id || "").toLowerCase().trim() === decodedSlug
+      ) ||
+      MOCK_JOBS.find(
+        (j) =>
+          (j.slug || "").toLowerCase().trim() === decodedSlug ||
+          (j.id || "").toLowerCase().trim() === decodedSlug
+      )
+    );
+  });
+  const [isLoading, setIsLoading] = useState(!job);
 
   useEffect(() => {
     const stored = getStoredJobs();
@@ -57,6 +66,7 @@ function JobDetailPage() {
     );
     if (cached) {
       setJob(cached);
+      setIsLoading(false);
     }
 
     async function loadJobDetails() {
@@ -67,6 +77,7 @@ function JobDetailPage() {
           const singleData = await singleRes.json();
           if (singleData && singleData.id) {
             setJob(singleData);
+            setIsLoading(false);
             return;
           }
         }
@@ -93,6 +104,8 @@ function JobDetailPage() {
         }
       } catch (err) {
         console.warn("Failed to fetch job details from API:", err);
+      } finally {
+        setIsLoading(false);
       }
     }
 
@@ -107,6 +120,7 @@ function JobDetailPage() {
       );
       if (found) {
         setJob(found);
+        setIsLoading(false);
       }
       loadJobDetails();
     };
@@ -120,6 +134,21 @@ function JobDetailPage() {
 
   if (isApplyRoute) {
     return <Outlet />;
+  }
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <SiteNav />
+        <main id="main-content">
+          <div className="min-h-[70vh] flex flex-col items-center justify-center text-center py-20 px-4">
+            <div className="h-10 w-10 animate-spin rounded-full border-4 border-brand border-t-transparent mb-4" />
+            <h2 className="font-display text-xl font-bold text-foreground">Loading Job Details...</h2>
+          </div>
+        </main>
+        <SiteFooter />
+      </div>
+    );
   }
 
   return (

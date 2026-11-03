@@ -1,7 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { pool } from "@/lib/db";
 import { initCareerDatabase } from "@/lib/careers/schema";
-import { resolveCrmApiUrl, uploadResumeToCrm } from "@/lib/careers/crm-client";
+import {
+  submitApplicantToVenusCRM,
+  type CandidateApplicationPayload,
+} from "@/lib/careers/crm-client";
 import { sendApplicationNotificationEmail } from "@/lib/careers/email-service";
 
 // In-memory rate-limiting and deduplication cache (60s TTL)
@@ -54,10 +57,11 @@ export const Route = createFileRoute("/api/careers/applications")({
 
       POST: async ({ request }) => {
         try {
-          const body = await request.json();
+          const body: CandidateApplicationPayload & { jobId?: string } = await request.json();
+          const jobPostingId = (body.jobPostingId || body.jobId || "").trim();
 
-          if (!body.email || !body.jobId) {
-            return new Response(JSON.stringify({ error: "Missing required fields (email, jobId)" }), {
+          if (!body.email || !jobPostingId) {
+            return new Response(JSON.stringify({ error: "Missing required fields (email, jobPostingId)" }), {
               status: 400,
               headers: { "Content-Type": "application/json" },
             });
@@ -65,11 +69,11 @@ export const Route = createFileRoute("/api/careers/applications")({
 
           // Layer 1: In-memory deduplication cache (rapid double-click guard on same instance)
           cleanupDeduplicationCache();
-          const dedupeKey = `${body.email.toLowerCase().trim()}_${body.jobId}`;
+          const dedupeKey = `${body.email.toLowerCase().trim()}_${jobPostingId}`;
 
           if (recentSubmissions.has(dedupeKey)) {
             const existing = recentSubmissions.get(dedupeKey)!;
-            console.log(`[VENUS CRM] In-memory duplicate blocked for candidate ${body.email} on job ${body.jobId}`);
+            console.log(`[VENUS CRM] In-memory duplicate blocked for candidate ${body.email} on job ${jobPostingId}`);
             return new Response(
               JSON.stringify({
                 success: true,
@@ -93,11 +97,11 @@ export const Route = createFileRoute("/api/careers/applications")({
                WHERE LOWER(email) = LOWER($1) AND job_id = $2
                  AND submitted_at > NOW() - INTERVAL '60 seconds'
                LIMIT 1;`,
-              [body.email.trim(), body.jobId]
+              [body.email.trim(), jobPostingId]
             );
             if (existingRecent.rows && existingRecent.rows.length > 0) {
               const row = existingRecent.rows[0];
-              console.log(`[VENUS CRM] Database-level duplicate blocked for candidate ${body.email} on job ${body.jobId}`);
+              console.log(`[VENUS CRM] Database-level duplicate blocked for candidate ${body.email} on job ${jobPostingId}`);
               return new Response(
                 JSON.stringify({
                   success: true,
@@ -117,71 +121,30 @@ export const Route = createFileRoute("/api/careers/applications")({
             console.warn("[VENUS CRM] DB duplicate check warning:", dbCheckErr);
           }
 
-          let crmResponse: any = null;
-          const isCrmJob = UUID_REGEX.test(body.jobId);
+          let crmApplicantId: string | null = null;
+          let uploadedResumeUrl: string | null = null;
+          const isCrmJob = UUID_REGEX.test(jobPostingId);
 
-          // 1. Forward candidate to Venus CRM API if associated with a genuine CRM Job Posting UUID
+          // 1. Submit applicant to Venus CRM if associated with a genuine CRM Job Posting UUID
           if (isCrmJob) {
-            let uploadedResumeUrl: string | null = null;
-            if (body.resumeDataUrl) {
-              uploadedResumeUrl = await uploadResumeToCrm(body.resumeDataUrl, body.resumeFileName);
-            }
-
-            // Strictly conform to CRM NestJS SubmitApplicationDto (whitelisted fields only)
-            const crmPayload: Record<string, any> = {
-              jobPostingId: body.jobId,
-              firstName: (body.firstName || "").trim(),
-              lastName: (body.lastName || "").trim(),
-              email: (body.email || "").trim(),
+            const crmResult = await submitApplicantToVenusCRM({
+              ...body,
+              jobPostingId,
               source: "VENUS_HIRING",
-            };
+            });
 
-            if (body.phone && body.phone.trim()) {
-              crmPayload.phone = body.phone.trim();
-            }
-
-            if (uploadedResumeUrl) {
-              crmPayload.resumeUrl = uploadedResumeUrl;
-            }
-
-            const sendToCrm = async (url: string) => {
-              const controller = typeof AbortController !== "undefined" ? new AbortController() : null;
-              const timeoutId = controller ? setTimeout(() => controller.abort(), 4000) : null;
-              try {
-                const res = await fetch(url, {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  signal: controller?.signal,
-                  body: JSON.stringify(crmPayload),
-                });
-                return res;
-              } finally {
-                if (timeoutId) clearTimeout(timeoutId);
-              }
-            };
-
-            const primaryUrl = resolveCrmApiUrl("/careers/apply");
-            if (!primaryUrl) {
-              console.log("[VENUS CRM] CRM_API_URL is not configured. Forwarding skipped; candidate preserved locally.");
+            if (crmResult.success && crmResult.applicantId) {
+              crmApplicantId = crmResult.applicantId;
+              uploadedResumeUrl = crmResult.resumeUrl || null;
+              console.log(`[VENUS CRM] Candidate successfully linked in CRM with ID: ${crmApplicantId}`);
             } else {
-              try {
-                const res = await sendToCrm(primaryUrl);
-                if (res.ok) {
-                  crmResponse = await res.json();
-                  console.log("[VENUS CRM] Candidate created successfully in CRM:", crmResponse);
-                } else {
-                  const errText = await res.text();
-                  console.warn(`[VENUS CRM] Primary CRM status ${res.status}:`, errText);
-                }
-              } catch (crmErr: any) {
-                console.warn(`[VENUS CRM] Primary CRM (${primaryUrl}) unreachable:`, crmErr?.message || crmErr);
-              }
+              console.warn(`[VENUS CRM] CRM submission fallback: ${crmResult.error}`);
             }
           } else {
-            console.log(`[VENUS CRM] Job ID '${body.jobId}' is non-CRM reference. Preserving in local system.`);
+            console.log(`[VENUS CRM] Job ID '${jobPostingId}' is non-CRM reference. Preserving in local system.`);
           }
 
-          const id = crmResponse?.id || `app_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+          const id = crmApplicantId || `app_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
           const submittedAt = new Date().toISOString();
 
           // Record in deduplication cache
@@ -254,7 +217,8 @@ export const Route = createFileRoute("/api/careers/applications")({
           return new Response(
             JSON.stringify({
               success: true,
-              crmCandidateId: crmResponse?.id || null,
+              crmCandidateId: crmApplicantId,
+              crmApplicantId,
               id,
               submittedAt,
             }),
