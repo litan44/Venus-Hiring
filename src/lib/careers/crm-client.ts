@@ -102,10 +102,14 @@ function formatRelativeDate(isoDateString?: string): string {
 }
 
 export function transformCrmJobToJobItem(crmJob: CrmJobPosting): JobItem {
-  const slug = crmJob.title
+  const baseSlug = crmJob.title
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+    .replace(/^-+|-+$/g, "") || "career";
+
+  // Derive short 8-char identifier from job UUID to ensure multiple postings with identical titles have unique, reliable detail URLs
+  const shortId = crmJob.id ? crmJob.id.split("-")[0] : "";
+  const slug = shortId ? `${baseSlug}-${shortId}` : baseSlug;
 
   const experienceLevel =
     crmJob.minExperienceYears >= 8
@@ -210,7 +214,29 @@ export async function fetchCrmJobs(forceRefresh = false): Promise<JobItem[]> {
 }
 
 export async function fetchCrmJob(idOrSlug: string): Promise<JobItem | null> {
-  const result = await fetchWithFallback<JobItem | null>(`/careers/jobs/${encodeURIComponent(idOrSlug)}`, (json) => {
+  const normalized = idOrSlug.trim().toLowerCase();
+
+  // 1. First, search within active CRM jobs (resolves unique slug, shortId, or bare slug immediately)
+  try {
+    const allJobs = await fetchCrmJobs();
+    const match = allJobs.find((j) => {
+      const jSlug = (j.slug || "").toLowerCase();
+      const jId = (j.id || "").toLowerCase();
+      const shortId = jId.split("-")[0];
+      return (
+        jSlug === normalized ||
+        jId === normalized ||
+        (shortId && normalized.endsWith(shortId)) ||
+        jSlug.startsWith(`${normalized}-`)
+      );
+    });
+    if (match) return match;
+  } catch (err) {
+    console.warn("[VENUS CRM] Failed to search cached jobs for single job lookup:", err);
+  }
+
+  // 2. Direct lookup against CRM API endpoint
+  const result = await fetchWithFallback<JobItem | null>(`/careers/jobs/${encodeURIComponent(idOrSlug.trim())}`, (json) => {
     if (!json || typeof json !== "object") return null;
     return transformCrmJobToJobItem(json);
   });

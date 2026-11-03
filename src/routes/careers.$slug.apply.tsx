@@ -61,15 +61,31 @@ function ApplicationPage() {
 
     async function loadJobDetails() {
       try {
+        // 1. Try direct single-job lookup via API
+        const singleRes = await fetch(`/api/careers/jobs?slug=${encodeURIComponent(decodedSlug)}`);
+        if (singleRes.ok) {
+          const singleData = await singleRes.json();
+          if (singleData && singleData.id) {
+            setJob(singleData);
+            return;
+          }
+        }
+
+        // 2. Fallback to active jobs list
         const res = await fetch("/api/careers/jobs");
         if (res.ok) {
           const data = await res.json();
           if (Array.isArray(data)) {
-            const found = data.find(
-              (j: any) =>
-                (j.slug || "").toLowerCase().trim() === decodedSlug ||
-                (j.id || "").toLowerCase().trim() === decodedSlug
-            );
+            const found = data.find((j: any) => {
+              const jSlug = (j.slug || "").toLowerCase().trim();
+              const jId = (j.id || "").toLowerCase().trim();
+              return (
+                jSlug === decodedSlug ||
+                jId === decodedSlug ||
+                (jId && decodedSlug.endsWith(jId.split("-")[0])) ||
+                jSlug.startsWith(`${decodedSlug}-`)
+              );
+            });
             if (found) {
               setJob(found);
             }
