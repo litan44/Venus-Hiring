@@ -169,7 +169,7 @@ async function fetchWithFallback<T>(
     const timeoutId = controller ? setTimeout(() => controller.abort(), 4000) : null;
     try {
       const res = await fetch(url, {
-        headers: { Accept: "application/json" },
+        headers: { Accept: "application/json", "X-Site": "venus_hiring", Origin: "https://venushiring.com" },
         signal: controller?.signal,
       });
       if (!res.ok) throw new Error(`CRM API HTTP ${res.status}`);
@@ -195,7 +195,7 @@ export async function fetchCrmJobs(forceRefresh = false): Promise<JobItem[]> {
     return cachedJobs;
   }
 
-  const result = await fetchWithFallback<JobItem[]>("/careers/jobs", (json) => {
+  const result = await fetchWithFallback<JobItem[]>("/careers/jobs?site=venus_hiring", (json) => {
     if (!Array.isArray(json)) return [];
     return json.map(transformCrmJobToJobItem);
   });
@@ -236,7 +236,7 @@ export async function fetchCrmJob(idOrSlug: string): Promise<JobItem | null> {
   }
 
   // 2. Direct lookup against CRM API endpoint
-  const result = await fetchWithFallback<JobItem | null>(`/careers/jobs/${encodeURIComponent(idOrSlug.trim())}`, (json) => {
+  const result = await fetchWithFallback<JobItem | null>(`/careers/jobs/${encodeURIComponent(idOrSlug.trim())}?site=venus_hiring`, (json) => {
     if (!json || typeof json !== "object") return null;
     return transformCrmJobToJobItem(json);
   });
