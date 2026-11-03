@@ -15,6 +15,7 @@ export interface JobItem {
   qualifications?: string[];
   niceToHave?: string[];
   benefits?: string[];
+  source?: "crm" | "database" | "mock_fallback";
 }
 
 export const MOCK_JOBS: JobItem[] = [

@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { pool } from "@/lib/db";
 import { initCareerDatabase } from "@/lib/careers/schema";
+import { fetchCrmJobs, fetchCrmJob } from "@/lib/careers/crm-client";
 import { MOCK_JOBS } from "@/components/careers/mockJobs";
 
 function safeParseArray(val: unknown): string[] {
@@ -20,7 +21,45 @@ function safeParseArray(val: unknown): string[] {
 export const Route = createFileRoute("/api/careers/jobs")({
   server: {
     handlers: {
-      GET: async () => {
+      GET: async ({ request }: { request?: Request }) => {
+        // Support single-job lookup via ?slug= or ?id=
+        const url = request ? new URL(request.url) : null;
+        const querySlug = url?.searchParams.get("slug") || url?.searchParams.get("id");
+
+        if (querySlug) {
+          try {
+            const singleJob = await fetchCrmJob(querySlug);
+            if (singleJob) {
+              console.log(`[VENUS CRM] Fetched single live job '${singleJob.title}' (${singleJob.id})`);
+              return new Response(JSON.stringify(singleJob), {
+                headers: {
+                  "Content-Type": "application/json",
+                  "X-Jobs-Source": "crm",
+                },
+              });
+            }
+          } catch (err) {
+            console.warn(`[VENUS CRM] Single job query failed for '${querySlug}':`, err);
+          }
+        }
+
+        // 1. Prioritize live job postings directly from Venus CRM
+        try {
+          const liveJobs = await fetchCrmJobs();
+          if (liveJobs && liveJobs.length > 0) {
+            console.log(`[VENUS CRM] Successfully retrieved ${liveJobs.length} live job(s) from Venus CRM.`);
+            return new Response(JSON.stringify(liveJobs), {
+              headers: {
+                "Content-Type": "application/json",
+                "X-Jobs-Source": "crm",
+              },
+            });
+          }
+        } catch (crmErr: any) {
+          console.warn("[VENUS CRM] Venus CRM API unreachable, failing over to database/mock fallback:", crmErr?.message || crmErr);
+        }
+
+        // 2. Fall back to local PostgreSQL database
         try {
           await initCareerDatabase();
           const res = await pool.query(
@@ -36,26 +75,39 @@ export const Route = createFileRoute("/api/careers/jobs")({
             FROM career_jobs ORDER BY created_at DESC;`
           );
 
-          const formatted = res.rows.map((row) => ({
-            ...row,
-            workMode: row.workMode || "Hybrid",
-            responsibilities: safeParseArray(row.responsibilities),
-            qualifications: safeParseArray(row.qualifications),
-            niceToHave: safeParseArray(row.niceToHave),
-            benefits: safeParseArray(row.benefits),
-          }));
+          if (res.rows && res.rows.length > 0) {
+            console.log(`[DATABASE] Retrieved ${res.rows.length} job(s) from PostgreSQL database.`);
+            const formatted = res.rows.map((row) => ({
+              ...row,
+              workMode: row.workMode || "Hybrid",
+              responsibilities: safeParseArray(row.responsibilities),
+              qualifications: safeParseArray(row.qualifications),
+              niceToHave: safeParseArray(row.niceToHave),
+              benefits: safeParseArray(row.benefits),
+              source: "database" as const,
+            }));
 
-          return new Response(JSON.stringify(formatted), {
-            headers: { "Content-Type": "application/json" },
-          });
-        } catch (err) {
-          console.error("GET /api/careers/jobs error:", err);
-          // Return MOCK_JOBS as fallback so public site never breaks if database is temporarily unavailable
-          return new Response(JSON.stringify(MOCK_JOBS), {
-            status: 200,
-            headers: { "Content-Type": "application/json" },
-          });
+            return new Response(JSON.stringify(formatted), {
+              headers: {
+                "Content-Type": "application/json",
+                "X-Jobs-Source": "database",
+              },
+            });
+          }
+        } catch (dbErr: any) {
+          console.warn("[DATABASE FALLBACK] PostgreSQL query failed:", dbErr?.message || dbErr);
         }
+
+        // 3. Fallback to standard mock jobs
+        console.warn(`[MOCK FALLBACK] CRM and Database offline. Serving ${MOCK_JOBS.length} fallback mock jobs.`);
+        const taggedMocks = MOCK_JOBS.map((j) => ({ ...j, source: "mock_fallback" as const }));
+        return new Response(JSON.stringify(taggedMocks), {
+          status: 200,
+          headers: {
+            "Content-Type": "application/json",
+            "X-Jobs-Source": "mock_fallback",
+          },
+        });
       },
 
       POST: async ({ request }) => {

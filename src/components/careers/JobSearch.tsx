@@ -1,12 +1,12 @@
 import { useState, useMemo, useEffect } from "react";
-import { Search, X, SearchX } from "lucide-react";
+import { Search, SearchX, Loader2, X, AlertTriangle, CheckCircle2 } from "lucide-react";
 import { JobCard } from "./JobCard";
 import { JobFilters } from "./JobFilters";
 import { MOCK_JOBS, type JobItem } from "./mockJobs";
-import { getStoredJobs } from "@/lib/careers/jobs";
 
 export function JobSearch() {
   const [jobs, setJobs] = useState<JobItem[]>(MOCK_JOBS);
+  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [department, setDepartment] = useState("All");
   const [location, setLocation] = useState("All");
@@ -14,94 +14,40 @@ export function JobSearch() {
   const [experienceLevel, setExperienceLevel] = useState("All");
 
   useEffect(() => {
-    // Sync local storage on client mount to prevent SSR hydration mismatch
-    const stored = getStoredJobs();
-    const publishedStored = stored.filter((j) => !j.status || j.status === "Published");
-    if (publishedStored.length > 0) {
-      setJobs(publishedStored);
-    }
-
-    async function loadJobs() {
-      try {
-        const res = await fetch("/api/careers/jobs");
-        if (res.ok) {
-          const data = await res.json();
-          if (Array.isArray(data) && data.length > 0) {
-            const published = data.filter((j: any) => !j.status || j.status === "Published");
-            if (published.length > 0) {
-              setJobs(published);
-            }
-          }
+    fetch("/api/careers/jobs")
+      .then((r) => (r.ok ? r.json() : MOCK_JOBS))
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setJobs(data);
         }
-      } catch (err) {
-        console.warn("Failed to load jobs from API, using fallback:", err);
-      }
-    }
-
-    loadJobs();
-
-    const handleUpdate = () => {
-      const stored = getStoredJobs();
-      const published = stored.filter((j) => !j.status || j.status === "Published");
-      if (published.length > 0) {
-        setJobs(published);
-      }
-      loadJobs();
-    };
-
-    window.addEventListener("venus_jobs_updated", handleUpdate);
-    return () => window.removeEventListener("venus_jobs_updated", handleUpdate);
+      })
+      .catch((err) => {
+        console.warn("Failed to load jobs from /api/careers/jobs:", err);
+      })
+      .finally(() => setLoading(false));
   }, []);
 
-  // Extract unique filter options dynamically from active data
-  const departments = useMemo(() => {
-    const set = new Set(jobs.map((j) => j.department));
-    return ["All", ...Array.from(set)];
+  const dataSource = useMemo(() => {
+    return jobs[0]?.source || "crm";
   }, [jobs]);
 
-  const locations = useMemo(() => {
-    const set = new Set(jobs.map((j) => j.location));
-    return ["All", ...Array.from(set)];
-  }, [jobs]);
+  const departments = useMemo(() => ["All", ...Array.from(new Set(jobs.map((j) => j.department)))], [jobs]);
+  const locations = useMemo(() => ["All", ...Array.from(new Set(jobs.map((j) => j.location)))], [jobs]);
+  const employmentTypes = useMemo(() => ["All", ...Array.from(new Set(jobs.map((j) => j.employmentType)))], [jobs]);
+  const experienceLevels = useMemo(() => ["All", ...Array.from(new Set(jobs.map((j) => j.experienceLevel)))], [jobs]);
 
-  const employmentTypes = useMemo(() => {
-    const set = new Set(jobs.map((j) => j.employmentType));
-    return ["All", ...Array.from(set)];
-  }, [jobs]);
-
-  const experienceLevels = useMemo(() => {
-    const set = new Set(jobs.map((j) => j.experienceLevel));
-    return ["All", ...Array.from(set)];
-  }, [jobs]);
-
-  // Filtered jobs calculation
   const filteredJobs = useMemo(() => {
     return jobs.filter((job) => {
       const matchesSearch =
-        searchQuery.trim() === "" ||
+        !searchQuery.trim() ||
         job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         job.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
         job.department.toLowerCase().includes(searchQuery.toLowerCase());
-
-      const matchesDepartment =
-        department === "All" || job.department === department;
-
-      const matchesLocation =
-        location === "All" || job.location.includes(location);
-
-      const matchesType =
-        employmentType === "All" || job.employmentType === employmentType;
-
-      const matchesLevel =
-        experienceLevel === "All" || job.experienceLevel === experienceLevel;
-
-      return (
-        matchesSearch &&
-        matchesDepartment &&
-        matchesLocation &&
-        matchesType &&
-        matchesLevel
-      );
+      const matchesDept = department === "All" || job.department === department;
+      const matchesLoc = location === "All" || job.location.includes(location);
+      const matchesType = employmentType === "All" || job.employmentType === employmentType;
+      const matchesLevel = experienceLevel === "All" || job.experienceLevel === experienceLevel;
+      return matchesSearch && matchesDept && matchesLoc && matchesType && matchesLevel;
     });
   }, [jobs, searchQuery, department, location, employmentType, experienceLevel]);
 
@@ -129,6 +75,21 @@ export function JobSearch() {
             Discover roles where you can innovate, grow, and shape the future of talent with Venus Hiring.
           </p>
         </div>
+
+        {/* Fallback Notice Banner when CRM is offline/maintenance */}
+        {dataSource === "mock_fallback" && (
+          <div className="relative mx-auto max-w-4xl mb-8 rounded-2xl border border-amber-300/60 bg-amber-50/80 p-4 sm:p-5 text-amber-900 shadow-soft flex items-start gap-3.5">
+            <div className="mt-0.5 rounded-full bg-amber-200/80 p-1.5 text-amber-800 shrink-0">
+              <AlertTriangle className="h-4 w-4" />
+            </div>
+            <div className="text-xs sm:text-sm">
+              <h4 className="font-bold text-amber-950">Live Vacancy Synchronization Notice</h4>
+              <p className="mt-1 text-amber-800 leading-relaxed">
+                Live vacancy synchronization with Venus CRM is currently undergoing scheduled refresh. The positions displayed below represent our active recruitment categories and compensation benchmarks. Applications remain fully active.
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Search Bar */}
         <div className="relative mx-auto max-w-2xl mb-8">
@@ -172,10 +133,33 @@ export function JobSearch() {
         />
 
         {/* Results Info Bar */}
-        <div className="flex items-center justify-between mb-6 px-1 text-xs font-semibold text-muted-foreground sm:text-sm">
-          <span>
-            Showing <strong className="text-foreground">{filteredJobs.length}</strong> {filteredJobs.length === 1 ? "position" : "positions"}
-          </span>
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-6 px-1 text-xs font-semibold text-muted-foreground sm:text-sm">
+          <div className="flex items-center gap-3">
+            <span>
+              Showing <strong className="text-foreground">{filteredJobs.length}</strong>{" "}
+              {filteredJobs.length === 1 ? "position" : "positions"}
+            </span>
+
+            {/* Source Identification Badge */}
+            {dataSource === "crm" ? (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                Live CRM Openings
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">
+                <span className="h-2 w-2 rounded-full bg-amber-500" />
+                Representative Positions
+              </span>
+            )}
+          </div>
+
+          {loading && (
+            <div className="flex items-center gap-2 text-brand">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              <span className="text-xs">Updating listings...</span>
+            </div>
+          )}
         </div>
 
         {/* Job Listings Grid */}

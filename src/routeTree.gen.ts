@@ -43,6 +43,7 @@ import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as ServicesStaffAugmentationRouteImport } from './routes/services.staff-augmentation'
 import { Route as ApiCareersApplicationsRouteImport } from './routes/api.careers.applications'
 import { Route as ApiCareersJobsRouteImport } from './routes/api.careers.jobs'
+import { Route as ApiCareersSyncRouteImport } from './routes/api.careers.sync'
 import { Route as ApiSalaryChatRouteImport } from './routes/api.salary.chat'
 import { Route as ApiSalaryResearchRouteImport } from './routes/api.salary.research'
 import { Route as CareersSlugApplyRouteImport } from './routes/careers.$slug.apply'
@@ -218,6 +219,11 @@ const ApiCareersJobsRoute = ApiCareersJobsRouteImport.update({
   path: '/api/careers/jobs',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiCareersSyncRoute = ApiCareersSyncRouteImport.update({
+  id: '/api/careers/sync',
+  path: '/api/careers/sync',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiSalaryChatRoute = ApiSalaryChatRouteImport.update({
   id: '/api/salary/chat',
   path: '/api/salary/chat',
@@ -269,6 +275,7 @@ export interface FileRoutesByFullPath {
   '/services/': typeof ServicesIndexRoute
   '/api/careers/applications': typeof ApiCareersApplicationsRoute
   '/api/careers/jobs': typeof ApiCareersJobsRoute
+  '/api/careers/sync': typeof ApiCareersSyncRoute
   '/api/salary/chat': typeof ApiSalaryChatRoute
   '/api/salary/research': typeof ApiSalaryResearchRoute
   '/careers/$slug/apply': typeof CareersSlugApplyRoute
@@ -308,6 +315,7 @@ export interface FileRoutesByTo {
   '/services': typeof ServicesIndexRoute
   '/api/careers/applications': typeof ApiCareersApplicationsRoute
   '/api/careers/jobs': typeof ApiCareersJobsRoute
+  '/api/careers/sync': typeof ApiCareersSyncRoute
   '/api/salary/chat': typeof ApiSalaryChatRoute
   '/api/salary/research': typeof ApiSalaryResearchRoute
   '/careers/$slug/apply': typeof CareersSlugApplyRoute
@@ -348,6 +356,7 @@ export interface FileRoutesById {
   '/services/': typeof ServicesIndexRoute
   '/api/careers/applications': typeof ApiCareersApplicationsRoute
   '/api/careers/jobs': typeof ApiCareersJobsRoute
+  '/api/careers/sync': typeof ApiCareersSyncRoute
   '/api/salary/chat': typeof ApiSalaryChatRoute
   '/api/salary/research': typeof ApiSalaryResearchRoute
   '/careers/$slug/apply': typeof CareersSlugApplyRoute
@@ -389,6 +398,7 @@ export interface FileRouteTypes {
     | '/services/'
     | '/api/careers/applications'
     | '/api/careers/jobs'
+    | '/api/careers/sync'
     | '/api/salary/chat'
     | '/api/salary/research'
     | '/careers/$slug/apply'
@@ -428,6 +438,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/api/careers/applications'
     | '/api/careers/jobs'
+    | '/api/careers/sync'
     | '/api/salary/chat'
     | '/api/salary/research'
     | '/careers/$slug/apply'
@@ -467,6 +478,7 @@ export interface FileRouteTypes {
     | '/services/'
     | '/api/careers/applications'
     | '/api/careers/jobs'
+    | '/api/careers/sync'
     | '/api/salary/chat'
     | '/api/salary/research'
     | '/careers/$slug/apply'
@@ -506,6 +518,7 @@ export interface RootRouteChildren {
   ServicesIndexRoute: typeof ServicesIndexRoute
   ApiCareersApplicationsRoute: typeof ApiCareersApplicationsRoute
   ApiCareersJobsRoute: typeof ApiCareersJobsRoute
+  ApiCareersSyncRoute: typeof ApiCareersSyncRoute
   ApiSalaryChatRoute: typeof ApiSalaryChatRoute
   ApiSalaryResearchRoute: typeof ApiSalaryResearchRoute
 }
@@ -750,6 +763,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiCareersJobsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/careers/sync': {
+      id: '/api/careers/sync'
+      path: '/api/careers/sync'
+      fullPath: '/api/careers/sync'
+      preLoaderRoute: typeof ApiCareersSyncRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/salary/chat': {
       id: '/api/salary/chat'
       path: '/api/salary/chat'
@@ -830,6 +850,7 @@ const rootRouteChildren: RootRouteChildren = {
   ServicesIndexRoute: ServicesIndexRoute,
   ApiCareersApplicationsRoute: ApiCareersApplicationsRoute,
   ApiCareersJobsRoute: ApiCareersJobsRoute,
+  ApiCareersSyncRoute: ApiCareersSyncRoute,
   ApiSalaryChatRoute: ApiSalaryChatRoute,
   ApiSalaryResearchRoute: ApiSalaryResearchRoute,
 }
