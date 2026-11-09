@@ -1,4 +1,15 @@
 import { MOCK_JOBS, type JobItem } from "@/components/careers/mockJobs";
+import { getAdminAuthToken } from "./auth";
+
+function getAdminAuthHeaders(): Record<string, string> {
+  const token = getAdminAuthToken();
+  if (token) {
+    return {
+      Authorization: `Bearer ${token}`,
+    };
+  }
+  return {};
+}
 
 export interface AdminJobItem extends JobItem {
   status: "Draft" | "Published" | "Paused" | "Closed";
@@ -55,7 +66,9 @@ export function saveStoredJobs(jobs: AdminJobItem[]): void {
 export async function fetchAllAdminJobs(): Promise<AdminJobItem[]> {
   if (typeof window !== "undefined") {
     try {
-      const res = await fetch("/api/careers/jobs");
+      const res = await fetch("/api/careers/jobs?admin=true", {
+        headers: getAdminAuthHeaders(),
+      });
       if (res.ok) {
         const data = await res.json();
         if (Array.isArray(data) && data.length > 0) {
@@ -82,7 +95,10 @@ export async function createAdminJob(jobData: Omit<AdminJobItem, "id" | "postedD
   if (typeof window !== "undefined") {
     const res = await fetch("/api/careers/jobs", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        ...getAdminAuthHeaders(),
+      },
       body: JSON.stringify(jobData),
     });
 
@@ -93,13 +109,16 @@ export async function createAdminJob(jobData: Omit<AdminJobItem, "id" | "postedD
 
     const resData = await res.json();
     const id = resData.id || `job_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+    const savedJob = resData.job || {};
 
     createdJob = {
       ...jobData,
+      ...savedJob,
       id,
-      postedDate: resData.job?.posted_date || "Just now",
-      createdAt: new Date().toISOString(),
-      status: jobData.status || "Published",
+      slug: savedJob.slug || resData.slug || jobData.slug,
+      postedDate: savedJob.postedDate || savedJob.posted_date || "Just now",
+      createdAt: savedJob.createdAt || new Date().toISOString(),
+      status: jobData.status || savedJob.status || "Published",
     };
   } else {
     createdJob = {
@@ -122,7 +141,10 @@ export async function updateAdminJob(id: string, updatedFields: Partial<AdminJob
   if (typeof window !== "undefined") {
     const res = await fetch("/api/careers/jobs", {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        ...getAdminAuthHeaders(),
+      },
       body: JSON.stringify({ id, ...updatedFields }),
     });
 
@@ -150,7 +172,10 @@ export async function deleteAdminJob(id: string): Promise<boolean> {
   if (typeof window !== "undefined") {
     const res = await fetch("/api/careers/jobs", {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        ...getAdminAuthHeaders(),
+      },
       body: JSON.stringify({ id }),
     });
 

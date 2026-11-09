@@ -7,6 +7,7 @@ export interface AdminUserSession {
   name: string;
   role: "Super Admin" | "Recruiter";
   loggedInAt: string;
+  token?: string;
 }
 
 // Credentials configuration (env vars fallback)
@@ -56,6 +57,7 @@ export function loginAdmin(email: string, pass: string): { success: boolean; err
       name: trimmedEmail === "recruiter@venusconsultancy.com" ? "Senior Recruiter" : "Venus Super Admin",
       role: trimmedEmail === "recruiter@venusconsultancy.com" ? "Recruiter" : "Super Admin",
       loggedInAt: new Date().toISOString(),
+      token: trimmedPass,
     };
     if (typeof window !== "undefined") {
       localStorage.setItem(CAREER_ADMIN_AUTH_KEY, JSON.stringify(session));
@@ -67,6 +69,12 @@ export function loginAdmin(email: string, pass: string): { success: boolean; err
     success: false,
     error: "Invalid credentials. Please try again.",
   };
+}
+
+export function getAdminAuthToken(): string | null {
+  const session = getAdminSession();
+  if (!session) return null;
+  return session.token || (typeof window !== "undefined" ? (process.env.VITE_CAREER_ADMIN_PASSWORD || "VenusAdmin2025!") : null);
 }
 
 export function logoutAdmin(): void {

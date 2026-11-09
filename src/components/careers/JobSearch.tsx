@@ -28,6 +28,8 @@ export function JobSearch() {
   }, []);
 
   const dataSource = useMemo(() => {
+    if (jobs.some((j) => j.source === "crm")) return "crm";
+    if (jobs.some((j) => j.source === "database")) return "database";
     return jobs[0]?.source || "crm";
   }, [jobs]);
 
