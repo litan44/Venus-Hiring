@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 export interface ContentBlock {
   id: string;
   type: "heading" | "paragraph" | "image" | "video" | "quote";
-  headingLevel?: "h2" | "h3";
+  headingLevel?: "h1" | "h2" | "h3" | "h4";
   text?: string;
   mediaUrl?: string;
   mediaType?: "url" | "upload";

@@ -15,8 +15,10 @@ import {
   Italic,
   List,
   ListOrdered,
+  Heading1,
   Heading2,
   Heading3,
+  Heading4,
   Quote,
   Code,
   Link as LinkIcon,
@@ -1126,6 +1128,14 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
                     <div className="flex flex-wrap items-center gap-1.5 rounded-t-xl border border-border bg-background p-2 border-b-0">
                       <button
                         type="button"
+                        title="Heading 1"
+                        onClick={() => insertCkFormatting("<h1>", "</h1>")}
+                        className="rounded-lg p-1.5 hover:bg-accent text-foreground text-xs font-bold flex items-center gap-1"
+                      >
+                        <Heading1 className="h-4 w-4" /> H1
+                      </button>
+                      <button
+                        type="button"
                         title="Heading 2"
                         onClick={() => insertCkFormatting("<h2>", "</h2>")}
                         className="rounded-lg p-1.5 hover:bg-accent text-foreground text-xs font-bold flex items-center gap-1"
@@ -1139,6 +1149,14 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
                         className="rounded-lg p-1.5 hover:bg-accent text-foreground text-xs font-bold flex items-center gap-1"
                       >
                         <Heading3 className="h-4 w-4" /> H3
+                      </button>
+                      <button
+                        type="button"
+                        title="Heading 4"
+                        onClick={() => insertCkFormatting("<h4>", "</h4>")}
+                        className="rounded-lg p-1.5 hover:bg-accent text-foreground text-xs font-bold flex items-center gap-1"
+                      >
+                        <Heading4 className="h-4 w-4" /> H4
                       </button>
                       <div className="h-4 w-px bg-border my-auto mx-1" />
                       <button
@@ -1322,13 +1340,15 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
                                 value={block.headingLevel || "h2"}
                                 onChange={(e) =>
                                   updateBlock(block.id, {
-                                    headingLevel: e.target.value as "h2" | "h3",
+                                    headingLevel: e.target.value as "h1" | "h2" | "h3" | "h4",
                                   })
                                 }
                                 className="rounded-xl border border-border bg-background px-3 py-2 text-xs font-bold text-brand focus:border-brand focus:outline-none shrink-0"
                               >
+                                <option value="h1">H1 Heading</option>
                                 <option value="h2">H2 Heading</option>
                                 <option value="h3">H3 Subheading</option>
+                                <option value="h4">H4 Subheading</option>
                               </select>
                               <input
                                 type="text"
@@ -1679,7 +1699,7 @@ export function BlogAdmin({ isOpen, onClose }: BlogAdminProps) {
                     )}
 
                     <div
-                      className="prose prose-slate dark:prose-invert max-w-none prose-h2:text-2xl prose-p:leading-relaxed"
+                      className="prose prose-slate dark:prose-invert max-w-none prose-h1:text-3xl prose-h1:font-bold prose-h2:text-2xl prose-h3:text-xl prose-p:leading-relaxed"
                       dangerouslySetInnerHTML={{
                         __html: compileBlocksToHtml() || formData.content,
                       }}
